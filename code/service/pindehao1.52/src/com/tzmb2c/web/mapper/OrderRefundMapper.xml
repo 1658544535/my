@@ -73,15 +73,11 @@
 			<if test="createBy != null">
 				create_by,
 			</if>
-			<if test="createDate != null">
 				create_date,
-			</if>
 			<if test="updateBy != null">
 				update_by,
 			</if>
-			<if test="updateDate != null">
 				update_date,
-			</if>
 			<if test="remarks != null">
 				remarks,
 			</if>
@@ -192,15 +188,11 @@
 			<if test="createBy != null">
 				#{createBy},
 			</if>
-			<if test="createDate != null">
-				#{createDate},
-			</if>
+				sysdate(),
 			<if test="updateBy != null">
 				#{updateBy},
 			</if>
-			<if test="updateDate != null">
-				#{updateDate},
-			</if>
+				sysdate(),
 			<if test="remarks != null">
 				#{remarks},
 			</if>
