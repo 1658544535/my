@@ -3242,7 +3242,7 @@ public class AppApiWalletActivityAction extends SuperAction {
             }
           }
           orderRefundPojo.setShopId(sid);
-          orderRefundPojo.setType(Long.valueOf(type));
+          orderRefundPojo.setType(Integer.valueOf(type));
           orderRefundPojo.setRefundType(refundType);
           orderRefundPojo.setRefundReason(refundReason);
           if ("2".equals(type) || "3".equals(type)) {

@@ -4386,7 +4386,7 @@ public class AppApiSellerAction extends SuperAction {
             }
           }
           orderRefundPojo.setShopId(sid);
-          orderRefundPojo.setType(Long.valueOf(type));
+          orderRefundPojo.setType(Integer.valueOf(type));
           orderRefundPojo.setRefundType(refundType);
           orderRefundPojo.setRefundReason(refundReason);
           orderRefundPojo.setStatus(1);

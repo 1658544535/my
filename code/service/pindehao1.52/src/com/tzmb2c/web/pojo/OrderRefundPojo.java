@@ -1,3 +1,7 @@
+/*
+ * Copyright(c) 2016 cncounter.com All rights reserved. distributed with this file and available
+ * online at http://b2c.taozhuma.com/
+ */
 package com.tzmb2c.web.pojo;
 
 import java.util.Date;
@@ -5,52 +9,174 @@ import java.util.Date;
 import maowu.framework.utils.pojo.SuperPojo;
 
 /**
+ * 用户退货订单; InnoDB free: 44032 kB; (`sku_link_id`) REFER `maduoduo/product_sku_link`
  * 
- * 用户退货订单-- user_order_refund by Lie
- * 
+ * @version 1.0
+ * @author
  */
-
 public class OrderRefundPojo extends SuperPojo {
-  private Long id;// 编号
-  private Long orderId;// 订单ID
-  private Long userId;// 用户编号
-  private String loginname;// 下订单的用户登录名
-  private Long shopId;// 店铺ID
-  private Long productId;// 产品ID
-  private String productName;// 产品名称
-  private String productModel;// 产品规格
-  private Long stockId;// 库存ID
-  private Double stockPriceOld;// 产品原价
-  private Double stockPrice;// 产品价格
-  private Integer refundNum;// 数量
-  private String refundReason;// 退货原因
-  private Integer status;// 状态(取业务字典：0未审核1已审核)
-  private String statusName;
-  private Long createBy;// 创建者
-  private Date createDate;// 创建时间
-  private Long updateBy;// 更新者
-  private Date updateDate;// 更新时间
-  private String remarks; // 备注信息
-  private Integer version;// 版本号
-  private Integer refundType;// 退货类型
-  private String images;// 图片
-  private String logistics;// 物流编号
-  private String logType;// 物流类型
-  private Long detailId;
-  private Long type;// 退货\退款状态
-  // sku关联id
-  private Integer skuLinkId;
-  private Double couponPrice;// 优惠金额
-  private String option;// 用于操作判断
-  private int serviceInvolved;// 是否申请客服介入1否2为是
-  private String consigneePhone;
+
+  /**
+   * 编号id
+   */
+  private Long id;
+  /**
+   * 订单id
+   */
+  private Long orderId;
+  /**
+   * 用户id
+   */
+  private Long userId;
+  /**
+   * 下订单的用户名
+   */
+  private String loginname;
+  /**
+   * 店铺id
+   */
+  private Long shopId;
+  /**
+   * 产品id
+   */
+  private Long productId;
+  /**
+   * 产品名称
+   */
+  private String productName;
+  /**
+   * 产品规格
+   */
+  private String productModel;
+  /**
+   * 库存id
+   */
+  private Long stockId;
+  /**
+   * 产品原价
+   */
+  private Double stockPriceOld;
+  /**
+   * 产品价格
+   */
+  private Double stockPrice;
+  /**
+   * 退回数量
+   */
+  private Integer refundNum;
+  /**
+   * 说明
+   */
+  private String refundReason;
+  /**
+   * 退货类型(1=>审核，2=>请退货，3=》退货中，4=》退货成功，5=》退货失败，6=》审核不成功，7=》退款成功)
+   */
+  private Integer status;
+  /**
+   * 图片1
+   */
+  private String images;
+  /**
+   * 图片2
+   */
   private String images2;
+  /**
+   * 图片3
+   */
   private String images3;
+  /**
+   * 物流编号
+   */
+  private String logistics;
+  /**
+   * 物流类型
+   */
+  private String logType;
+  /**
+   * 退货原因
+   */
+  private Integer refundType;
+  /**
+   * 退货地址
+   */
+  private String address;
+  /**
+   * 订单详情ID
+   */
+  private Long detailId;
+  /**
+   * 类型1：退款 2：退货 3：售后服务
+   */
+  private Integer type;
+  /**
+   * product_sku_link.id
+   */
+  private Integer skuLinkId;
+  /**
+   * 优惠金额
+   */
+  private Double couponPrice;
+  /**
+   * 实际退回钱包的钱（0为未退，非0为已退）
+   */
+  private Double refundMoney;
+  /**
+   * 是否申请客服介入,0为否,1为是
+   */
+  private Integer serviceInvolved;
+  /**
+   * 商家的驳回凭证
+   */
+  private String rejectImages;
+  /**
+   * 商家驳回理由
+   */
+  private String rejectReason;
+  /**
+   * 下订单的人手机号码
+   */
   private String phone;
+  /**
+   * 退款状态：0-未退款，1-处理中，2-退款成功，3-退款失败
+   */
+  private Integer isRefund;
+  /**
+   * 商户退款单号
+   */
+  private String outRefundNo;
+  /**
+   * 退款时间
+   */
+  private Date refundDate;
+  private String statusName;
+  private String option;// 用于操作判断
+  private String consigneePhone;
   private String beginTime;
   private String endTime;
-  private Double refundMoney;
 
+  public String getStatusName() {
+    return statusName;
+  }
+
+  public void setStatusName(String statusName) {
+    this.statusName = statusName;
+  }
+
+  public String getOption() {
+    return option;
+  }
+
+  public void setOption(String option) {
+    this.option = option;
+  }
+
+  public String getConsigneePhone() {
+    return consigneePhone;
+  }
+
+  public void setConsigneePhone(String consigneePhone) {
+    this.consigneePhone = consigneePhone;
+  }
 
   public String getBeginTime() {
     return beginTime;
@@ -68,305 +194,269 @@ public class OrderRefundPojo extends SuperPojo {
     this.endTime = endTime;
   }
 
-  public String getPhone() {
-    return phone;
-  }
-
-  public void setPhone(String phone) {
-    this.phone = phone;
-  }
-
-  public String getConsigneePhone() {
-    return consigneePhone;
-  }
-
-  public void setConsigneePhone(String consigneePhone) {
-    this.consigneePhone = consigneePhone;
-  }
-
-  public int getServiceInvolved() {
-    return serviceInvolved;
-  }
-
-  public void setServiceInvolved(int serviceInvolved) {
-    this.serviceInvolved = serviceInvolved;
-  }
-
-  public Integer getSkuLinkId() {
-    return skuLinkId;
-  }
-
-  public void setSkuLinkId(Integer skuLinkId) {
-    this.skuLinkId = skuLinkId;
-  }
-
-  public String getLogistics() {
-    return logistics;
-  }
-
-  public void setLogistics(String logistics) {
-    this.logistics = logistics;
-  }
-
-  public String getLogType() {
-    return logType;
-  }
-
-  public void setLogType(String logType) {
-    this.logType = logType;
-  }
-
-  public String getImages() {
-    return images;
-  }
-
-  public void setImages(String images) {
-    this.images = images;
-  }
-
-  public Integer getRefundType() {
-    return refundType;
-  }
-
-  public void setRefundType(Integer refundType) {
-    this.refundType = refundType;
-  }
-
-  public String getStatusName() {
-    return statusName;
-  }
-
-  public void setStatusName(String statusName) {
-    this.statusName = statusName;
+  public void setId(Long value) {
+    this.id = value;
   }
 
   public Long getId() {
-    return id;
+    return this.id;
   }
 
-  public void setId(Long id) {
-    this.id = id;
+  public void setOrderId(Long value) {
+    this.orderId = value;
   }
 
   public Long getOrderId() {
-    return orderId;
+    return this.orderId;
   }
 
-  public void setOrderId(Long orderId) {
-    this.orderId = orderId;
+  public void setUserId(Long value) {
+    this.userId = value;
   }
 
   public Long getUserId() {
-    return userId;
+    return this.userId;
   }
 
-  public void setUserId(Long userId) {
-    this.userId = userId;
+  public void setLoginname(String value) {
+    this.loginname = value;
   }
 
   public String getLoginname() {
-    return loginname;
+    return this.loginname;
   }
 
-  public void setLoginname(String loginname) {
-    this.loginname = loginname;
+  public void setShopId(Long value) {
+    this.shopId = value;
   }
 
   public Long getShopId() {
-    return shopId;
+    return this.shopId;
   }
 
-  public void setShopId(Long shopId) {
-    this.shopId = shopId;
+  public void setProductId(Long value) {
+    this.productId = value;
   }
 
   public Long getProductId() {
-    return productId;
+    return this.productId;
   }
 
-  public void setProductId(Long productId) {
-    this.productId = productId;
+  public void setProductName(String value) {
+    this.productName = value;
   }
 
   public String getProductName() {
-    return productName;
+    return this.productName;
   }
 
-  public void setProductName(String productName) {
-    this.productName = productName;
+  public void setProductModel(String value) {
+    this.productModel = value;
   }
 
   public String getProductModel() {
-    return productModel;
+    return this.productModel;
   }
 
-  public void setProductModel(String productModel) {
-    this.productModel = productModel;
+  public void setStockId(Long value) {
+    this.stockId = value;
   }
 
   public Long getStockId() {
-    return stockId;
+    return this.stockId;
   }
 
-  public void setStockId(Long stockId) {
-    this.stockId = stockId;
+  public void setStockPriceOld(Double value) {
+    this.stockPriceOld = value;
   }
 
   public Double getStockPriceOld() {
-    return stockPriceOld;
+    return this.stockPriceOld;
   }
 
-  public void setStockPriceOld(Double stockPriceOld) {
-    this.stockPriceOld = stockPriceOld;
+  public void setStockPrice(Double value) {
+    this.stockPrice = value;
   }
 
   public Double getStockPrice() {
-    return stockPrice;
+    return this.stockPrice;
   }
 
-  public void setStockPrice(Double stockPrice) {
-    this.stockPrice = stockPrice;
+  public void setRefundNum(Integer value) {
+    this.refundNum = value;
   }
 
   public Integer getRefundNum() {
-    return refundNum;
+    return this.refundNum;
   }
 
-  public void setRefundNum(Integer refundNum) {
-    this.refundNum = refundNum;
+  public void setRefundReason(String value) {
+    this.refundReason = value;
   }
 
   public String getRefundReason() {
-    return refundReason;
+    return this.refundReason;
   }
 
-  public void setRefundReason(String refundReason) {
-    this.refundReason = refundReason;
+  public void setStatus(Integer value) {
+    this.status = value;
   }
 
   public Integer getStatus() {
-    return status;
+    return this.status;
   }
 
-  public void setStatus(Integer status) {
-    this.status = status;
+  public void setImages(String value) {
+    this.images = value;
   }
 
-  @Override
-  public Long getCreateBy() {
-    return createBy;
+  public String getImages() {
+    return this.images;
   }
 
-  @Override
-  public void setCreateBy(Long createBy) {
-    this.createBy = createBy;
-  }
-
-  @Override
-  public Date getCreateDate() {
-    return createDate;
-  }
-
-  @Override
-  public void setCreateDate(Date createDate) {
-    this.createDate = createDate;
-  }
-
-  @Override
-  public Long getUpdateBy() {
-    return updateBy;
-  }
-
-  @Override
-  public void setUpdateBy(Long updateBy) {
-    this.updateBy = updateBy;
-  }
-
-  @Override
-  public Date getUpdateDate() {
-    return updateDate;
-  }
-
-  @Override
-  public void setUpdateDate(Date updateDate) {
-    this.updateDate = updateDate;
-  }
-
-  @Override
-  public String getRemarks() {
-    return remarks;
-  }
-
-  @Override
-  public void setRemarks(String remarks) {
-    this.remarks = remarks;
-  }
-
-  @Override
-  public Integer getVersion() {
-    return version;
-  }
-
-  @Override
-  public void setVersion(Integer version) {
-    this.version = version;
-  }
-
-  public Long getDetailId() {
-    return detailId;
-  }
-
-  public void setDetailId(Long detailId) {
-    this.detailId = detailId;
-  }
-
-  public Long getType() {
-    return type;
-  }
-
-  public void setType(Long type) {
-    this.type = type;
-  }
-
-  public Double getCouponPrice() {
-    return couponPrice;
-  }
-
-  public void setCouponPrice(Double couponPrice) {
-    this.couponPrice = couponPrice;
-  }
-
-  public String getOption() {
-    return option;
-  }
-
-  public void setOption(String option) {
-    this.option = option;
+  public void setImages2(String value) {
+    this.images2 = value;
   }
 
   public String getImages2() {
-    return images2;
+    return this.images2;
   }
 
-  public void setImages2(String images2) {
-    this.images2 = images2;
+  public void setImages3(String value) {
+    this.images3 = value;
   }
 
   public String getImages3() {
-    return images3;
+    return this.images3;
   }
 
-  public void setImages3(String images3) {
-    this.images3 = images3;
+  public void setLogistics(String value) {
+    this.logistics = value;
+  }
+
+  public String getLogistics() {
+    return this.logistics;
+  }
+
+  public void setLogType(String value) {
+    this.logType = value;
+  }
+
+  public String getLogType() {
+    return this.logType;
+  }
+
+  public void setRefundType(Integer value) {
+    this.refundType = value;
+  }
+
+  public Integer getRefundType() {
+    return this.refundType;
+  }
+
+  public void setAddress(String value) {
+    this.address = value;
+  }
+
+  public String getAddress() {
+    return this.address;
+  }
+
+  public void setDetailId(Long value) {
+    this.detailId = value;
+  }
+
+  public Long getDetailId() {
+    return this.detailId;
+  }
+
+  public void setType(Integer value) {
+    this.type = value;
+  }
+
+  public Integer getType() {
+    return this.type;
+  }
+
+  public void setSkuLinkId(Integer value) {
+    this.skuLinkId = value;
+  }
+
+  public Integer getSkuLinkId() {
+    return this.skuLinkId;
+  }
+
+  public void setCouponPrice(Double value) {
+    this.couponPrice = value;
+  }
+
+  public Double getCouponPrice() {
+    return this.couponPrice;
+  }
+
+  public void setRefundMoney(Double value) {
+    if (value != null) {
+      this.refundMoney = value;
+    }
   }
 
   public Double getRefundMoney() {
-    return refundMoney;
+    return this.refundMoney;
   }
 
-  public void setRefundMoney(Double refundMoney) {
-    if (refundMoney != null) {
-      this.refundMoney = refundMoney;
-    }
+  public void setServiceInvolved(Integer value) {
+    this.serviceInvolved = value;
+  }
+
+  public Integer getServiceInvolved() {
+    return this.serviceInvolved;
+  }
+
+  public void setRejectImages(String value) {
+    this.rejectImages = value;
+  }
+
+  public String getRejectImages() {
+    return this.rejectImages;
+  }
+
+  public void setRejectReason(String value) {
+    this.rejectReason = value;
+  }
+
+  public String getRejectReason() {
+    return this.rejectReason;
+  }
+
+  public void setPhone(String value) {
+    this.phone = value;
+  }
+
+  public String getPhone() {
+    return this.phone;
+  }
+
+  public void setIsRefund(Integer value) {
+    this.isRefund = value;
+  }
+
+  public Integer getIsRefund() {
+    return this.isRefund;
+  }
+
+  public void setOutRefundNo(String value) {
+    this.outRefundNo = value;
+  }
+
+  public String getOutRefundNo() {
+    return this.outRefundNo;
+  }
+
+  public void setRefundDate(Date value) {
+    this.refundDate = value;
+  }
+
+  public Date getRefundDate() {
+    return this.refundDate;
   }
 }

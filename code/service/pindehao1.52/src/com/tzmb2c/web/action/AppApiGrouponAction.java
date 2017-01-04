@@ -1750,7 +1750,7 @@ public class AppApiGrouponAction extends SuperAction {
               }
             }
             orderRefundPojo.setShopId(orderDetailPojo.getShopId());
-            orderRefundPojo.setType(Long.valueOf(type));
+            orderRefundPojo.setType(type);
             orderRefundPojo.setRefundType(refundType);
             orderRefundPojo.setRefundReason(refundReason);
             orderRefundPojo.setStatus(1);
@@ -1902,7 +1902,7 @@ public class AppApiGrouponAction extends SuperAction {
             }
           }
           orderRefundPojo.setShopId(sid);
-          orderRefundPojo.setType(Long.valueOf(type));
+          orderRefundPojo.setType(type);
           orderRefundPojo.setRefundType(refundType);
           orderRefundPojo.setRefundReason(refundReason);
           if (type == 2 || type == 3) {
