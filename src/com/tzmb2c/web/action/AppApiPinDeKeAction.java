@@ -3966,8 +3966,11 @@ public class AppApiPinDeKeAction extends SuperAction {
       UserRedeemCodePojo userRedeemCodePojo = userRedeemCodeService.getByCode(code);
       if (userRedeemCodePojo != null) {
         Date date = new Date();
-        if (userRedeemCodePojo.getValidStime().before(date)
-            && date.before(userRedeemCodePojo.getValidEtime())) {
+        if (date.before(userRedeemCodePojo.getValidStime())) {
+          msg = "兑换券还未到有效期！~";
+        } else if (userRedeemCodePojo.getValidEtime().before(date)) {
+          msg = "兑换券已经过了有效期！~";
+        } else {
           if (userRedeemCodePojo.getUsed() == 0 && userRedeemCodePojo.getStatus() == 1) {
             UserRedeemCodePojo userRedeemCode = new UserRedeemCodePojo();
             userRedeemCode.setUserId(userId);
@@ -4001,8 +4004,6 @@ public class AppApiPinDeKeAction extends SuperAction {
           } else {
             msg = "兑换券已经使用过！~";
           }
-        } else {
-          msg = "兑换券已经过了有效期！~";
         }
       } else {
         msg = "兑换券不存在！~";
