@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="seckillGoods" extends="default">
+		<!-- 进入列表页面 -->
+		<action name="goSeckillGoods" class="com.tzmb2c.web.action.SeckillGoodsAction" method="goSeckillGoods">
+			<result name="success">/page/system/seckill/seckillGoodsList.jsp</result>
+		</action>
+		<!-- 新增 -->
+		<action name="goAddSeckillGoods" class="com.tzmb2c.web.action.SeckillGoodsAction" method="goAddSeckillGoods">
+		    <result name="success">/page/system/seckill/addSeckillGoods.jsp</result>
+		</action>
+		<!-- 新增提交 -->
+		<action name="addSeckillGoods" class="com.tzmb2c.web.action.SeckillGoodsAction" method="add">
+		</action>		
+		<!-- 编辑页面 -->
+		<action name="goEditSeckillGoods" class="com.tzmb2c.web.action.SeckillGoodsAction" method="goEditSeckillGoods">
+			<result name="success">/page/system/seckill/updateSeckillGoods.jsp</result>
+		</action>
+		<!-- 编辑提交 -->
+		<action name="updateSeckillGoods" class="com.tzmb2c.web.action.SeckillGoodsAction" method="update">
+		</action>
+		<!-- 参加限时秒杀活动开团列表 -->
+		<action name="goSeckillGroRec" class="com.tzmb2c.web.action.SeckillGoodsAction" method="seckillGroRecCount">
+			<result name="success">/page/system/seckill/seckillGroRecList.jsp</result>
+		</action>
+		<!-- 参加限时秒杀活动人列表 -->
+		<action name="goSeckillGroUserRec" class="com.tzmb2c.web.action.SeckillGoodsAction" method="seckillGroUserRecCount">
+			<result name="success">/page/system/seckill/seckillGroUserRecList.jsp</result>
+		</action>
+	</package>
+	<package name="seckillGoods-json" extends="json-default">
+		<!-- 内容 -->
+		<action name="seckillGoodsList" class="com.tzmb2c.web.action.SeckillGoodsAction" method="seckillGoodsList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="seckillGoodsCnt" class="com.tzmb2c.web.action.SeckillGoodsAction" method="goSeckillGoods">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+		<!-- 根据ID删除 -->
+		<action name="delSeckillGoods" class="com.tzmb2c.web.action.SeckillGoodsAction" method="delete">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+		<!-- 删除选中 -->
+		<action name="delSeckillGoodsAll" class="com.tzmb2c.web.action.SeckillGoodsAction" method="deleteAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 通过审核 -->
+		<action name="checkSeckillGoods" class="com.tzmb2c.web.action.SeckillGoodsAction" method="check">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 取消审核 -->
+		<action name="uncheckSeckillGoods" class="com.tzmb2c.web.action.SeckillGoodsAction" method="uncheck">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中通过审核 -->
+		<action name="checkSeckillGoodsAll" class="com.tzmb2c.web.action.SeckillGoodsAction" method="checkAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中取消审核 -->
+		<action name="uncheckSeckillGoodsAll" class="com.tzmb2c.web.action.SeckillGoodsAction" method="uncheckAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+		<!-- 编辑排序 -->
+		<action name="updateSeckillGoodsSorting" class="com.tzmb2c.web.action.SeckillGoodsAction"
+			method="updateSorting">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>	
+		<!-- 限时秒杀活动开团列表count -->
+		<action name="seckillGroRecCount" class="com.tzmb2c.web.action.SeckillGoodsAction" method="seckillGroRecCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>			
+		<!--限时秒杀活动开团列表list -->
+		<action name="seckillGroRecList" class="com.tzmb2c.web.action.SeckillGoodsAction" method="seckillGroRecList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 限时秒杀活动参团人count -->
+		<action name="seckillGroUserRecCount" class="com.tzmb2c.web.action.SeckillGoodsAction" method="seckillGroUserRecCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>			
+		<!--限时秒杀活动参团人list -->
+		<action name="seckillGroUserRecList" class="com.tzmb2c.web.action.SeckillGoodsAction" method="seckillGroUserRecList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>			
+		<!-- 更新上首页状态 -->
+		<action name="updateIsHome" class="com.tzmb2c.web.action.SeckillGoodsAction" method="updateIsHome">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+	</package>
+</struts>

@@ -1,0 +1,586 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.ShopMapper">
+
+
+	<!--前端调用，状态默认已审核-->
+	<select id="shopAllCountStatus" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from user_shop t left join sys_login s on t.user_id = s.id
+		where 
+		1=1
+		and t.status=1
+		<if test="userName!=null and userName!=''">
+			and s.name like CONCAT("%",#{userName},"%")
+		</if>
+		<if test="address!=null and address!=''">
+			and t.address like CONCAT("%",#{address},"%")
+		</if>
+		<if test="isNew!=null and isNew!=''">
+			and t.is_new = #{isNew}
+		</if>
+		<if test="mainCategory!=null and mainCategory!=''">
+			and t.main_category like CONCAT("%:",#{mainCategory},":%")
+		</if>
+		<if test="salesArea!=null and salesArea!=''">
+			and t.sales_area like CONCAT("%",#{salesArea},"%")
+		</if>
+		<if test="name!=null and name!=''">
+			and t.name like CONCAT("%",#{name},"%")
+		</if>
+	</select>
+	
+	<insert id="insertShop" parameterType="shopPojo" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		user_shop(top_image,province,city,area,recommend_type,location_certification,identity_certification,user_id,name,images,address,phone,main_product,main_category,sales_area,
+		content,lat,lng,is_new,sorting,status,create_by,create_date,update_by,update_date,remarks,version)
+		values(#{topImage},#{province},#{city},#{area},#{recommendType},#{locationCertification},#{identityCertification},#{userId},#{name},#{images},#{address},#{phone},#{mainProduct},#{mainCategory},
+		#{salesArea},#{content},#{lat},#{lng},#{isNew},#{sorting},#{status},#{createBy},#{createDate},#{updateBy},#{updateDate},#{remarks},#{version})
+	</insert>
+
+	<select id="getShopNew"  resultType="shopPojo">
+		select 
+		t.top_image as topImage,t.province as province,t.city as city,t.area as area,t.recommend_type as recommendType,t.location_certification as locationCertification,t.identity_certification as identityCertification,
+		t.id as id,
+		t.user_id as userId, 
+		t.name as name,
+		t.images as images,
+		t.address as address, 
+		t.phone as phone,
+		t.main_product as mainProduct,
+		substring_index(substring_index(t.main_category,':',2),':',-1) as mainCategory,
+		t.sales_area as salesArea,
+		t.content as content,
+		t.lat as lat,
+		t.lng as lng,
+		t.is_new  as isNew,
+		t.sorting as sorting,
+		(select name from sys_area where id=t.province ) provinceName,
+		(select name from sys_area where id=t.city ) cityName,
+		(select name from sys_area where id=t.area ) areaName,
+		t.status as status,
+		s.name userName 
+		from user_shop t left join sys_login s on t.user_id = s.id
+		where
+		t.status = 1 and t.is_new = 1
+		order by sorting desc
+	</select>
+
+	<select id="getShopAll" parameterType="java.util.Map" resultType="shopPojo">
+		select 
+		t.top_image as topImage,t.province as province,t.city as city,t.area as area,t.recommend_type as recommendType,t.location_certification as locationCertification,t.identity_certification as identityCertification,
+		t.id as id,
+		t.user_id as userId, 
+		t.name as name,
+		t.images as images,
+		t.address as address, 
+		t.phone as phone,
+		t.main_product as mainProduct,
+		substring_index(substring_index(t.main_category,':',2),':',-1) as mainCategory,
+		t.sales_area as salesArea,
+		t.content as content,
+		t.lat as lat,
+		t.lng as lng,
+		t.is_new  as isNew,
+		t.sorting as sorting,
+		t.status as status,
+		(select name from sys_area where id=t.province ) provinceName,
+		(select name from sys_area where id=t.city ) cityName,
+		(select name from sys_area where id=t.area ) areaName,
+		(select name from sys_dict where value=substring_index(substring_index(t.main_category,':',2),':',-1) and type = 'main_category') mainCategoryName,
+		(select name from sys_dict where value=t.status and type = 'status') statusName,
+		s.name userName 
+		from user_shop t left join sys_login s on t.user_id = s.id
+		where
+		t.status = 1 
+		<if test="mainCategory!=null and mainCategory!=''">
+			and t.main_category like CONCAT("%:",#{mainCategory},":%")
+		</if>
+		<if test="name!=null and name!=''">
+			and t.name like CONCAT("%",#{name},"%")
+		</if>
+		order by t.sorting desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<select id="getfindByIdShop" parameterType="Long" resultType="shopPojo" >
+		select 
+		t.top_image as topImage,t.province as province,t.city as city,t.area as area,t.recommend_type as recommendType,t.location_certification as locationCertification,t.identity_certification as identityCertification,
+		t.id as id,
+		t.user_id as userId, 
+		t.name as name,
+		t.images as images,
+		t.address as address, 
+		t.phone as phone,
+		t.main_product as mainProduct,
+		substring_index(substring_index(t.main_category,':',2),':',-1) as mainCategory,
+		t.sales_area as salesArea,
+		t.content as content,
+		t.product_commt as productCommt,
+		t.deliver_commt as deliverCommt,
+		t.logistics_commt as logisticsCommt,
+		t.lat as lat,
+		t.lng as lng,
+		t.is_new  as isNew,
+		t.sorting as sorting,
+		t.status as status,
+		(select name from sys_area where id=t.province ) provinceName,
+		(select name from sys_area where id=t.city ) cityName,
+		(select name from sys_area where id=t.area ) areaName,
+		(select name from sys_dict where value=t.status and type = 'status') statusName,
+		s.name userName 
+		from user_shop t left join sys_login s on t.user_id = s.id
+		where
+		t.id = #{id} 
+	</select>
+	<select id="getfindByIdShop2" parameterType="Long" resultType="shopPojo" >
+		select 
+		t.top_image as topImage,t.province as province,t.city as city,t.area as area,t.recommend_type as recommendType,t.location_certification as locationCertification,t.identity_certification as identityCertification,
+		t.id as id,
+		t.user_id as userId, 
+		t.name as name,
+		t.images as images,
+		t.address as address, 
+		t.phone as phone,
+		t.main_product as mainProduct,
+		t.main_category as mainCategory,
+		t.sales_area as salesArea,
+		t.content as content,
+		t.product_commt as productCommt,
+		t.deliver_commt as deliverCommt,
+		t.logistics_commt as logisticsCommt,
+		t.lat as lat,
+		t.lng as lng,
+		t.is_new  as isNew,
+		t.sorting as sorting,
+		t.status as status,
+		(select name from sys_area where id=t.province ) provinceName,
+		(select name from sys_area where id=t.city ) cityName,
+		(select name from sys_area where id=t.area ) areaName,
+		(select name from sys_dict where value=t.status and type = 'status') statusName,
+		s.name userName 
+		from user_shop t left join sys_login s on t.user_id = s.id
+		where
+		t.id = #{id} 
+	</select>
+	
+	<delete id="delShop" parameterType="Long">
+		delete from user_shop where id = #{id}
+	</delete>
+	<update id="updateShopStatus" parameterType="shopPojo">
+		update user_shop set
+		status =#{status}
+		where id = #{id}
+	</update>
+	<update id="updateShop" parameterType="shopPojo">
+		update user_shop set
+		<if test="updateBy != null and updateBy != '' ">
+		update_by = #{updateBy},
+		</if>
+		<if test="updateDate != null and updateDate != '' ">
+		update_date = #{updateDate},
+		</if>
+		<if test="userId != null">
+		user_id = #{userId},
+		</if>
+		<if test="name != null and name != '' ">
+		name = #{name},
+		</if>
+		<if test="images != null and images != '' ">
+		images = #{images},
+		</if>
+		<if test="recommendType != null">
+		recommend_type = #{recommendType},
+		</if>
+		<if test="province != null">
+		province = #{province}
+		,</if>
+		<if test="city != null">
+		city = #{city},
+		</if>
+		<if test="area != null">
+		area = #{area},
+		</if>
+		<if test="address != null and address != '' ">
+		address = #{address},
+		</if>
+		<if test="content != null and content != '' ">
+		content = #{content},
+		</if>
+		<if test="productCommt != null and productCommt != '' ">
+		product_commt = #{productCommt},
+		</if>
+		<if test="deliverCommt != null and deliverCommt != '' ">
+		deliver_commt = #{deliverCommt},
+		</if>
+		<if test="logisticsCommt != null and logisticsCommt != '' ">
+		logistics_commt = #{logisticsCommt},
+		</if>
+		<if test="phone != null and phone != '' ">
+		phone =#{phone},
+		</if>
+		<if test="mainProduct != null and mainProduct != '' ">
+		main_product =#{mainProduct},
+		</if>
+		<if test="mainCategory != null and mainCategory != '' ">
+		main_category =#{mainCategory},
+		</if>
+		<if test="salesArea != null and salesArea != '' ">
+		sales_area =#{salesArea},
+		</if>
+		<if test="lat != null">
+		lat =#{lat},
+		</if>
+		<if test="lng != null">
+		lng =#{lng},
+		</if>
+		<if test="isNew != null">
+		is_new =#{isNew},
+		</if>
+		<if test="sorting != null">
+		sorting =#{sorting},
+		</if>
+		<if test="topImage != null and topImage != '' ">
+		top_image =#{topImage},
+		</if>
+		<if test="status != null">
+		status =#{status},
+		</if>
+		<if test="selfSupport != null">
+		self_support =#{selfSupport},
+		</if>
+		version = 0
+		where 
+		1=1 
+		<if test="id != null">
+		and id = #{id}
+		</if>
+		<if test="userId != null">
+		and user_id = #{userId}
+		</if>
+	</update>
+	
+	<update id="checkShop" parameterType="Long">
+		update user_shop set status = 1 where id = #{id}
+	</update>
+		
+	<update id="uncheckShop" parameterType="Long">
+		update user_shop set status = 0 where id = #{id}
+	</update>
+	
+	<select id="shopAllCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from user_shop as t 
+		left join sys_login s on t.user_id = s.id
+		where 1=1
+		<if test="status!=null">
+			and t.status=1
+		</if>
+		<if test="userName!=null and userName!=''">
+			and s.name like CONCAT("%",#{userName},"%")
+		</if>
+		<if test="address!=null and address!=''">
+			and t.address like CONCAT("%",#{address},"%")
+		</if>
+		<if test="isNew!=null and isNew!=''">
+			and t.is_new = #{isNew}
+		</if>
+		<if test="mainCategory!=null and mainCategory!=''">
+			and t.main_category like CONCAT("%:",#{mainCategory},":%")
+		</if>
+		<if test="salesArea!=null and salesArea!=''">
+			and t.sales_area like CONCAT("%",#{salesArea},"%")
+		</if>
+		<if test="name!=null and name!=''">
+			and t.name like CONCAT("%",#{name},"%")
+		</if>
+	</select>
+	<!--后台店铺信息-->
+	<select id="shopAllList" resultType="shopPojo"
+		parameterType="java.util.Map">
+		select 
+		t.top_image as topImage,t.province as province,t.city as city,t.area as area,t.recommend_type as recommendType,t.location_certification as locationCertification,t.identity_certification as identityCertification,
+		t.id as id,
+		t.self_support as selfSupport,
+		(CASE WHEN t.self_support = 0 THEN '非自营' WHEN t.self_support = 1 THEN '自营' END)  as selfSupportName,
+		t.user_id as userId, 
+		t.name as name,
+		t.images as images,
+		t.address as address, 
+		t.phone as phone,
+		t.main_product as mainProduct,
+		substring_index(substring_index(t.main_category,':',2),':',-1) as mainCategory,
+		t.sales_area as salesArea,
+		t.content as content,
+		t.lat as lat,
+		t.lng as lng,
+		t.is_new  as isNew,
+		t.sorting as sorting,
+		t.status as status,
+		(select name from sys_area where id=t.province ) provinceName,
+		(select name from sys_area where id=t.city ) cityName,
+		(select name from sys_area where id=t.area ) areaName,
+		<!-- (select name from sys_dict where value=substring_index(substring_index(t.main_category,':',2),':',-1) and type = 'main_category') mainCategoryName, -->
+		pt.name as mainCategoryName,
+		(select name from sys_dict where value=t.status and type = 'status') statusName,
+		(select name from sys_dict where value=t.is_new and type = 'yes_no') isNewName,
+		s.name userName
+		from user_shop as t 
+		left join sys_login s on t.user_id = s.id
+		left join product_type pt on pt.id = t.main_category
+		where
+		1=1
+		<if test="userName!=null and userName!=''">
+			and s.name like CONCAT("%",#{userName},"%")
+		</if>
+		<if test="address!=null and address!=''">
+			and t.address like CONCAT("%",#{address},"%")
+		</if>
+		<if test="isNew!=null and isNew!=''">
+			and t.is_new = #{isNew}
+		</if>
+		<if test="mainCategory!=null and mainCategory!=''">
+			and t.main_category like CONCAT("%:",#{mainCategory},":%")
+		</if>
+		<if test="salesArea!=null and salesArea!=''">
+			and t.sales_area like CONCAT("%",#{salesArea},"%")
+		</if>
+		<if test="name!=null and name!=''">
+			and t.name like CONCAT("%",#{name},"%")
+		</if>
+		<if test="status!=null and status!=''">
+			and t.status=1
+		</if>
+		order by sorting desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+		
+	</select>
+	
+	<select id="shopAllListByName" resultType="shopPojo"
+		parameterType="java.util.Map">
+		select 
+		t.top_image as topImage,t.province as province,t.city as city,t.area as area,t.recommend_type as recommendType,t.location_certification as locationCertification,t.identity_certification as identityCertification,
+		t.id as id,
+		t.user_id as userId, 
+		t.name as name,
+		t.images as images,
+		t.address as address, 
+		t.phone as phone,
+		t.main_product as mainProduct,
+		substring_index(substring_index(t.main_category,':',2),':',-1) as mainCategory,
+		t.sales_area as salesArea,
+		t.content as content,
+		t.lat as lat,
+		t.lng as lng,
+		t.is_new  as isNew,
+		t.sorting as sorting,
+		t.status as status,
+		(select name from sys_area where id=t.province ) provinceName,
+		(select name from sys_area where id=t.city ) cityName,
+		(select name from sys_area where id=t.area ) areaName,
+		(select name from sys_dict where value=substring_index(substring_index(t.main_category,':',2),':',-1) and type = 'main_category') mainCategoryName,
+		(select name from sys_dict where value=t.status and type = 'status') statusName,
+		(select name from sys_dict where value=t.is_new and type = 'yes_no') isNewName,
+		s.name userName 
+		from user_shop t left join sys_login s on t.user_id = s.id
+		where
+		1=1 
+		<if test="userName!=null and userName!=''">
+			and s.name like CONCAT("%",#{userName},"%")
+		</if>
+		<if test="address!=null and address!=''">
+			and t.address like CONCAT("%",#{address},"%")
+		</if>
+		<if test="isNew!=null and isNew!=''">
+			and t.is_new = #{isNew}
+		</if>
+		<if test="mainCategory!=null and mainCategory!=''">
+			and t.main_category like CONCAT("%:",#{mainCategory},":%")
+		</if>
+		<if test="salesArea!=null and salesArea!=''">
+			and t.sales_area like CONCAT("%",#{salesArea},"%")
+		</if>
+		<if test="name!=null and name!=''">
+			and t.name like CONCAT("%",#{name},"%")
+		</if>
+		and t.status=1 order by sorting 
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<select id="findShopIndex" parameterType="shopPojo" resultType="shopPojo">
+		select 
+		t.top_image as topImage,t.province as province,t.city as city,t.area as area,t.recommend_type as recommendType,t.location_certification as locationCertification,t.identity_certification as identityCertification,
+		t.id as id,
+		t.user_id as userId, 
+		t.name as name,
+		t.images as images,
+		t.address as address, 
+		t.phone as phone,
+		t.main_product as mainProduct,
+		substring_index(substring_index(t.main_category,':',2),':',-1) as mainCategory,
+		t.sales_area as salesArea,
+		t.content as content,
+		t.lat as lat,
+		t.lng as lng,
+		t.is_new  as isNew,
+		t.sorting as sorting,
+		t.status as status,
+		(select name from sys_dict where value=t.status and type = 'status') statusName,
+		s.name userName 
+		from user_shop t left join sys_login s on t.user_id = s.id
+		where 1=1
+		and t.recommend_type = #{recommendType}
+		<if test="status!=null and status!=''">
+			and t.status=#{status}
+		</if> 
+		order by sorting asc
+	</select>
+	
+	<select id="findShop" parameterType="shopPojo" resultType="shopPojo">
+		select 
+		t.top_image as topImage,t.province as province,t.city as city,t.area as area,t.recommend_type as recommendType,t.location_certification as locationCertification,t.identity_certification as identityCertification,
+		t.id as id,
+		t.user_id as userId, 
+		t.name as name,
+		t.images as images,
+		t.address as address, 
+		t.phone as phone,
+		t.main_product as mainProduct,
+		substring_index(substring_index(t.main_category,':',2),':',-1) as mainCategory,
+		t.sales_area as salesArea,
+		t.content as content,
+		t.lat as lat,
+		t.lng as lng,
+		t.is_new  as isNew,
+		t.sorting as sorting,
+		t.status as status,
+		(select name from sys_dict where value=substring_index(substring_index(t.main_category,':',2),':',-1) and type = 'main_category') mainCategoryName,
+		(select name from sys_dict where value=t.status and type = 'status') statusName,
+		s.name userName,
+		t.product_commt as productCommt,
+		t.deliver_commt as deliverCommt,
+		t.logistics_commt as logisticsCommt,
+		(select name from sys_area where id=t.province ) provinceName,
+		(select name from sys_area where id=t.city ) cityName,
+		(select name from sys_area where id=t.area ) areaName,
+		self_support as selfSupport
+		from user_shop t left join sys_login s on t.user_id = s.id
+		where
+		t.user_id = #{userId} 
+	</select>
+	
+	<!-- 前端调用 -->
+	<select id="getfindByIdShopWeb" parameterType="Long" resultType="shopPojo" >
+		select 
+		t.top_image as topImage,t.province as province,t.city as city,t.area as area,t.recommend_type as recommendType,t.location_certification as locationCertification,t.identity_certification as identityCertification,
+		t.id as id,
+		t.user_id as userId, 
+		t.name as name,
+		t.images as images,
+		t.address as address, 
+		t.phone as phone,
+		t.main_product as mainProduct,
+		substring_index(substring_index(t.main_category,':',2),':',-1) as mainCategory,
+		t.sales_area as salesArea,
+		t.content as content,
+		t.lat as lat,
+		t.lng as lng,
+		t.is_new  as isNew,
+		t.sorting as sorting,
+		t.status as status,
+		(select name from sys_dict where value=t.status and type = 'status') statusName,
+		s.name userName 
+		from user_shop t left join sys_login s on t.user_id = s.id
+		where
+		t.user_id = #{userId} 
+	</select>
+	
+	<update id="updateShopWeb" parameterType="shopPojo">
+		update user_shop set
+		update_by = #{updateBy},
+		update_date = #{updateDate},
+		user_id = #{userId},
+		name = #{name},
+		images = #{images},
+		address = #{address},
+		content = #{content},
+		phone =#{phone},
+		main_product =#{mainProduct},
+		main_category =#{mainCategory},
+		sales_area =#{salesArea},
+		lat =#{lat},
+		lng =#{lng},
+		sorting =#{sorting},
+		status =#{status}
+		where id = #{id}
+	</update>
+	<update id="updateShopInfo" parameterType="java.util.Map">
+	update user_shop set
+	<if test="name!=null and name!=''"> 
+ 		name = #{name},
+	</if>
+	<if test="images!=null and images!=''"> 
+		 images = #{images},
+	</if>
+	<if test="address!=null and address!=''">
+		 address = #{address},
+	</if>
+	<if test="content!=null and content!=''">
+	 	 content = #{content},
+	</if>
+	<if test="phone!=null and phone!=''">
+	 	phone =#{phone},
+	</if>
+	<if test="mainProduct!=null and mainProduct!=''">
+		main_product =#{mainProduct},
+	</if>
+	<if test="mainCategory!=null and mainCategory!=''">
+	  	main_category =#{mainCategory},
+	</if>
+	<if test="salesArea!=null and salesArea!=''">
+	 	 sales_area =#{salesArea},
+	</if>
+		 update_date = now()
+	where id = #{id} and user_id = #{userId}
+</update>
+
+<select id="selectShopInfo" parameterType="java.util.Map" resultType="shopPojo">
+	select 
+	t.id as id,
+	t.user_id as userId, 
+	t.name as name,
+	t.province as province,
+	t.city as city,
+	t.area as area,
+	t.images as images,
+	t.address as address, 
+	t.phone as phone,
+	t.main_product as mainProduct,
+	substring_index(substring_index(t.main_category,':',2),':',-1) as mainCategory,
+	t.sales_area as salesArea,
+	t.content as content,
+	t.status as status
+	from user_shop t 
+	where
+	t.user_id = #{userId} 
+</select>
+
+<select id="FindshopAll" resultType="shopPojo">
+		select 
+	    id as shopId,
+	    name as shopName
+		from user_shop 
+		where status="1"
+	</select>
+
+</mapper>

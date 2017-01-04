@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="order" extends="default">
+
+		<action name="order" class="com.tzmb2c.web.action.OrderAction" method="getOrderCount">
+			<result>/page/system/user/order.jsp</result>
+		</action>
+		
+		<action name="OrderDeleteId" class="com.tzmb2c.web.action.OrderAction" method="checkAllOrderById">
+		
+		</action>
+		
+		<action name="goFindOrder" class="com.tzmb2c.web.action.OrderAction" method="goFindOrder">
+			<result>/page/system/user/orderupdate.jsp</result>
+		</action>
+		
+		<action name="goFindOrderPrint" class="com.tzmb2c.web.action.OrderAction" method="goFindOrder">
+			<result>/page/system/user/orderPrintWeb.jsp</result>
+		</action>
+		
+		<!--退货 -->
+		<action name="goReturnGoods" class="com.tzmb2c.web.action.OrderAction" method="goReturnGoods">
+			<result>/page/system/user/returnGoods.jsp</result>
+		</action>
+		
+		<action name="updateOrder" class="com.tzmb2c.web.action.OrderAction" method="updateOrder">
+		</action>
+		<!-- 后台修改 发货 订单状态-->
+		<action name="updatesendOrderStatus" class="com.tzmb2c.web.action.OrderAction" method="updatesendOrderStatus">
+		</action>
+		<!--导出订单EXCEL-->
+		<action name="getOrderExcel" class="com.tzmb2c.web.action.OrderAction" method="getOrderExcel">
+			<result name="success" type="stream">  
+				<param name="contentType">application/vnd.ms-excel</param>  
+				<param name="inputName">inputStream</param>  
+				<param name="contentDisposition">attachment;filename="${downloadFileName}"</param>  
+				<param name="bufferSize">4096</param>  
+			</result>  
+		</action>
+		<action name="getOrderExcel2" class="com.tzmb2c.web.action.OrderAction" method="getOrderExcel2">
+		</action>
+		<action name="getOrderExcelExport" class="com.tzmb2c.web.action.OrderAction" method="getOrderExcelExport">
+		</action>
+		<!--总订单结算-->
+		<action name="orderSettle" class="com.tzmb2c.web.action.OrderAction" method="getOrderCountSettle">
+			<result>/page/system/user/orderSettle.jsp</result>
+		</action>
+		
+		
+		<!--供应商订单结算-->
+		<action name="orderSettleMF" class="com.tzmb2c.web.action.OrderAction" method="getOrderCountSettleMF">
+			<result>/page/system/user/orderSettleMF.jsp</result>
+		</action>
+		<!--发货审核 （批量）-->
+		<action name="checkOrderTypeAll" class="com.tzmb2c.web.action.OrderAction" method="checkOrderTypeAll">
+		</action>
+		<!-- 退款进入列表页面 -->
+		<action name="goRefundUserOrder" class="com.tzmb2c.web.action.OrderAction" method="userOrderRefundRowCnt">
+			<result name="success">/page/system/userOderRefund/groupRefundOrderList.jsp</result>
+		</action>
+		<!-- 自动退款 -->
+		<action name="countDownRefund" class="com.tzmb2c.web.action.OrderAction" method="countDownRefundRowCnt">
+			<result name="success">/page/system/userOderRefund/countDownRefund.jsp</result>
+		</action>
+		<!-- 支付宝退款 -->
+		<action name="aliGroupRefundHandle" class="com.tzmb2c.web.action.OrderAction" method="aliGroupRefundHandle">
+		</action>
+		<!-- 微信退款 -->
+		<action name="wxPayRefundRequest" class="com.tzmb2c.web.action.OrderAction" method="wxPayRefundRequest">
+		</action>
+	</package>
+	<package name="order-refund" extends="struts-default">
+		<!-- 支付宝退款异步通知 -->
+		<action name="aliPayBatchRefundNotify" class="com.tzmb2c.web.action.OrderAction" method="aliPayBatchRefundNotify">
+		</action>
+	</package>
+	<package name="order-json" extends="json-default">
+		<!-- 批量退款 -->
+		<action name="goaliWxRefund" class="com.tzmb2c.web.action.OrderAction" method="aliWxRefund">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		<!-- 退款页面内容 -->
+		<action name="userOrderRefundList" class="com.tzmb2c.web.action.OrderAction" method="userOrderRefundList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 退款页面条数 -->
+		<action name="userOrderRefundRowCnt" class="com.tzmb2c.web.action.OrderAction" method="userOrderRefundRowCnt">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		<!-- 自动退款页面内容 -->
+		<action name="countDownRefundList" class="com.tzmb2c.web.action.OrderAction" method="countDownRefundList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 自动退款页面条数 -->
+		<action name="countDownRefundRowCnt" class="com.tzmb2c.web.action.OrderAction" method="countDownRefundRowCnt">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		<!--平台入口-->
+		<action name="getOrderCount" class="com.tzmb2c.web.action.OrderAction" method="getOrderCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+			<action name="orderAllList" class="com.tzmb2c.web.action.OrderAction" method="orderAllList">
+			<result type="json">
+				<param name="root">page.result</param>.
+			</result>
+		</action>
+		
+		<action name="getOrderCountSettleMF" class="com.tzmb2c.web.action.OrderAction" method="getOrderCountSettleMF">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+			<action name="orderAllListSettleMF" class="com.tzmb2c.web.action.OrderAction" method="orderAllListSettleMF">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<action name="getOrderCountSettle" class="com.tzmb2c.web.action.OrderAction" method="getOrderCountSettle">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+			<action name="orderAllListSettle" class="com.tzmb2c.web.action.OrderAction" method="orderAllListSettle">
+			<result type="json">
+				<param name="root">page.result</param>.
+			</result>
+		</action>
+		<action name="isDelete" class="com.tzmb2c.web.action.OrderAction" method="isDelete">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		<action name="isCancel" class="com.tzmb2c.web.action.OrderAction" method="isCancel">
+		</action>
+		<action name="checkOrderType" class="com.tzmb2c.web.action.OrderAction" method="checkOrderType">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

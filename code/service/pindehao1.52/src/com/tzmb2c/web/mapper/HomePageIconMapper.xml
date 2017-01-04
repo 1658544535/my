@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tzmb2c.web.mapper.HomePageIconMapper">
+<select id="findHomePageIconList" resultType="HomePageIconPojo" parameterType="java.util.Map">
+		select
+			h.id          as id,
+			h.type,
+			(CASE WHEN h.type = 1 THEN '免费试用列表' WHEN h.type = 2 THEN '猜价格列表' WHEN h.type = 3 THEN '9.9特卖' WHEN h.type = 4 THEN '掌上秒杀' WHEN h.type = 5 THEN '抽奖团列表' WHEN h.type = 6 THEN '专题分类' WHEN h.type = 7 THEN '专题' END) as typeName,
+			h.image       as image,
+			h.title       as title,
+			h.url         as url,
+			h.sorting     as sorting,
+			h.status      as status,
+			(CASE WHEN h.status = 0 THEN '未审核' WHEN h.status = 1 THEN '已审核' END) as statusName,
+			h.create_date as createDate
+        from home_page_icon h
+	    where 1=1
+		<if test="title!=null and title!=''">
+			and h.title like CONCAT("%",#{title},"%")
+		</if>	
+		<if test="sorting!=null">
+			and h.sorting = #{sorting}
+		</if>
+		<if test="status!=null">
+			and h.status = #{status}
+		</if>
+		<if test="type!=null">
+			and h.type = #{type}
+		</if>
+			order by h.sorting desc,h.id desc 
+		<if test="pageNo != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+</select>
+<select id="findHomePageIconCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from home_page_icon h 
+		where 1=1
+		<if test="title!=null and title!=''">
+			and h.title like CONCAT("%",#{title},"%")
+		</if>	
+		<if test="sorting!=null">
+			and h.sorting = #{sorting}
+		</if>
+		<if test="status!=null">
+			and h.status = #{status}
+		</if>
+		<if test="type!=null">
+			and h.type = #{type}
+		</if>
+</select>
+<!-- 审核单条 -->
+	<update id="checkHomePageIcon" parameterType="Long">
+		update home_page_icon h 
+		set    h.status = 1,
+		update_date = now(),
+		update_by = 1
+		where
+		h.id = #{id}
+	</update>
+	<!-- 取审单条 -->
+	<update id="uncheckHomePageIcon" parameterType="Long">
+		update home_page_icon h 
+		set    h.status = 0,
+		update_date = now(),
+		update_by = 1
+		where
+		h.id = #{id}
+	</update>	
+<!-- 查找单条(id) -->
+<select id="findHomePageIconById" resultType="HomePageIconPojo" parameterType="Long">
+		select
+			h.id          as id,
+			h.image       as image,
+			h.type		  as type,
+			h.title       as title,
+			h.url         as url,
+			h.sorting     as sorting,
+			h.status      as status,
+			(CASE WHEN h.status = 0 THEN '未审核' WHEN h.status = 1 THEN '已审核' END) as statusName,
+			h.create_date as createDate
+        from home_page_icon h
+		where
+		h.id=#{id}
+</select>
+<!--加入某条-->
+<insert id="insertHomePageIcon" parameterType="HomePageIconPojo">
+		insert into home_page_icon  (image,title,type,url,sorting,status,create_by,create_date,update_by,update_date)
+		values(#{image},#{title},#{type},#{url},#{sorting},#{status},#{createBy},now(),#{updateBy},now())
+</insert>
+<!-- 删除单条(id) -->
+<delete id="delHomePageIcon" parameterType="Long">
+		delete from home_page_icon  where id = #{id}
+</delete>
+<!--编辑单条-->
+<update id="updateHomePageIcon" parameterType="HomePageIconPojo">
+		update home_page_icon set
+        <if test="image != null and image !=''">
+			image = #{image},
+		</if>
+		<if test="title != null and title !=''">
+			title = #{title},
+		</if>
+		<if test="url != null and url !=''">
+			url = #{url},
+		</if>
+		<if test="sorting != null">
+			sorting = #{sorting},
+		</if>
+		<if test="status != null">
+			status = #{status},
+		</if>
+		<if test="type != null">
+			type = #{type},
+		</if>
+		update_date = now()
+		where
+		id=#{id}
+</update>
+</mapper>

@@ -1,0 +1,437 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="css/all.css" rel="stylesheet" type="text/css" />
+<link href="css/slide.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui.js"></script>
+<script type="text/javascript" src="js/g.base.js"></script>
+<script>
+	$(function() {
+		$( "#tabs" ).tabs();
+		var time = null;
+		$('.nav_box-L-category li').hover(
+			function () {
+				$('div[r-cate]').hide();
+				$(this).addClass('nav_box-L-category_a_hover');
+				$('div[r-cate="'+$(this).attr('a-cate')+'"]').show();
+				$('.topBanner').css('background','url('+$(this).attr('banner')+') no-repeat top center;');
+			},
+			function () {
+				$(this).removeClass('nav_box-L-category_a_hover');
+				var cate = $(this).attr('a-cate');
+				time = setTimeout(function(){
+					$('div[r-cate="'+cate+'"]').hide();
+				},50);
+			}
+		);
+		$(".nav_box-R-cate01").hover(function(){
+				clearTimeout(time);
+				$('li[a-cate="'+$(this).attr('r-cate')+'"]').addClass('nav_box-L-category_a_hover');
+				$(this).show();
+			},function(){
+				var cate = $(this).attr('r-cate');
+				time = setTimeout(function(){
+					$('li[a-cate="'+cate+'"]').removeClass('nav_box-L-category_a_hover');
+					$('div[r-cate]').hide();
+			},50);
+    	});
+	});
+</script>
+<title>M2C分销平台</title>
+</head>
+
+<body>
+<div class="top">
+	<div class="top-width">
+    	<div class="welcome">您好，欢迎djyww0505来到M2C分销平台<a href="#" class="out">退出</a></div>
+        <div class="login"><a href="#" class="login-a">首页</a><span class="login-line">|</span><a href="#" class="login-a">我的</a><span class="login-line">|</span><a href="shopping_Cart.html" class="login-a">购物车</a><span class="login-line">|</span><a href="#" class="login-a">收藏夹</a><span class="login-line">|</span><a href="help.html" class="login-a">帮助中心</a><span class="login-line">|</span><a href="#" class="login-a">网站导航</a></div>
+    </div>
+</div>
+
+<div class="top02-width">
+	<div class="logo"></div>
+	<div class="search"><input name="" type="text" value="搜索 商品/店铺" onfocus="this.value=''" onblur="if(this.value==''){this.value='搜索 商品/店铺'}" class="search-input"/><button type="submit" class="search-button">搜 索</button></div>
+
+	<div class="clear"></div> 
+
+	<div class="nav">
+        <ul>
+            <li><a href="index.html"><img src="images/new_01.jpg" alt="" width="20" height="20" /> 首页</a></li>
+            <li><a href="new.html">新品快订</a></li>
+            <li><a href="shop.html">店铺街</a></li>
+            <li class="indexColor arrow"><a href="infor.html"><span>行业资讯</span></a></li>
+        </ul>
+        
+    <div class="account">
+   	  <span class="account-line"></span><a href="#"><div class="account-Bg">我的帐户</div></a>
+    </div>
+    </div>
+</div> 
+
+<div class="clear"></div>
+
+<div class="bigeyes">
+	<div id="banner">
+    	<div class="topBanner" style="background:url(images/index_18.jpg) no-repeat top center;"></div>
+    </div>
+</div>
+
+<div class="nav_box-Posit">
+    <div class="nav_box">
+        <!--左侧栏目开始-->
+        <div class="nav_box-L">
+            <div class="nav_box-L-all"><img src="images/index_11.jpg" alt="" width="26" height="26" />全部分类</div>
+            <div class="nav_box-L-category">
+                <ul>
+                    <li a-cate="01" banner="images/index_18.jpg"><a href="#"><img src="images/index_12.png" alt="" width="26" height="26" /> 遥控玩具</a></li>
+                    <li a-cate="02" banner="images/new_02.jpg"><a href="#"><img src="images/index_13.png" alt="" width="26" height="26" /> 早教玩具</a></li>
+                    <li a-cate="03" banner="images/index_18.jpg"><a href="#"><img src="images/index_14.png" alt="" width="26" height="26" /> 过家家玩具</a></li>
+                    <li a-cate="04" banner="images/new_02.jpg"><a href="#"><img src="images/index_15.png" alt="" width="26" height="26" /> 童车玩具</a></li>
+                    <li a-cate="05" banner="images/index_18.jpg"><a href="#"><img src="images/index_16.png" alt="" width="26" height="26" /> 益智玩具</a></li>
+                    <li a-cate="06" banner="images/new_02.jpg"><a href="#"><img src="images/index_17.png" alt="" width="26" height="26" /> 电动玩具</a></li>
+                </ul>
+            </div>
+        </div>
+        <!--左侧栏目结束-->
+        
+        <!--右侧内容开始-->
+        <div class="nav_box-R">
+            <div class="nav_box-R-cate01" r-cate="01">
+                <ul>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">棋类玩具</a></li>
+                    <li><a href="#">拼图</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#"><span class="red">婴儿座便器</span></a></li>
+                    <li><a href="#">DIY玩具</a></li>
+                    <li><a href="#">装糖玩具</a></li>
+                    <li><a href="#">办公室玩具</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#"><span class="red">棋类玩具</span></a></li>
+                    <li><a href="#">拼图</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">婴儿座便器</a></li>
+                    <li><a href="#">DIY玩具</a></li>
+                    <li><a href="#">装糖玩具</a></li>
+                    <li><a href="#"><span class="red">办公室玩具</span></a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">棋类玩具</a></li>
+                    <li><a href="#">拼图</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">婴儿座便器</a></li>
+                    <li><a href="#"><span class="red">DIY玩具</span></a></li>
+                    <li><a href="#">装糖玩具</a></li>
+                    <li><a href="#">办公室玩具</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">棋类玩具</a></li>
+                    <li><a href="#">拼图</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">婴儿座便器</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav_box-R-cate01" r-cate="02">
+                <ul>
+                    <li><a href="#">学习机2</a></li>
+                    <li><a href="#">棋类玩具</a></li>
+                    <li><a href="#">拼图</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#"><span class="red">婴儿座便器</span></a></li>
+                    <li><a href="#">DIY玩具</a></li>
+                    <li><a href="#">装糖玩具</a></li>
+                    <li><a href="#">办公室玩具</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#"><span class="red">棋类玩具</span></a></li>
+                    <li><a href="#">拼图</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">婴儿座便器</a></li>
+                    <li><a href="#">DIY玩具</a></li>
+                    <li><a href="#">装糖玩具</a></li>
+                    <li><a href="#"><span class="red">办公室玩具</span></a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">棋类玩具</a></li>
+                    <li><a href="#">拼图</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">婴儿座便器</a></li>
+                    <li><a href="#"><span class="red">DIY玩具</span></a></li>
+                    <li><a href="#">装糖玩具</a></li>
+                    <li><a href="#">办公室玩具</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">棋类玩具</a></li>
+                    <li><a href="#">拼图</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">婴儿座便器</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav_box-R-cate01" r-cate="03">
+                <ul>
+                    <li><a href="#">学习机3</a></li>
+                    <li><a href="#">棋类玩具</a></li>
+                    <li><a href="#">拼图</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#"><span class="red">婴儿座便器</span></a></li>
+                    <li><a href="#">DIY玩具</a></li>
+                    <li><a href="#">装糖玩具</a></li>
+                    <li><a href="#">办公室玩具</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#"><span class="red">棋类玩具</span></a></li>
+                    <li><a href="#">拼图</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">婴儿座便器</a></li>
+                    <li><a href="#">DIY玩具</a></li>
+                    <li><a href="#">装糖玩具</a></li>
+                    <li><a href="#"><span class="red">办公室玩具</span></a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">棋类玩具</a></li>
+                    <li><a href="#">拼图</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">婴儿座便器</a></li>
+                    <li><a href="#"><span class="red">DIY玩具</span></a></li>
+                    <li><a href="#">装糖玩具</a></li>
+                    <li><a href="#">办公室玩具</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">棋类玩具</a></li>
+                    <li><a href="#">拼图</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">婴儿座便器</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav_box-R-cate01" r-cate="04">
+                <ul>
+                    <li><a href="#">学习机4</a></li>
+                    <li><a href="#">棋类玩具</a></li>
+                    <li><a href="#">拼图</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#"><span class="red">婴儿座便器</span></a></li>
+                    <li><a href="#">DIY玩具</a></li>
+                    <li><a href="#">装糖玩具</a></li>
+                    <li><a href="#">办公室玩具</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#"><span class="red">棋类玩具</span></a></li>
+                    <li><a href="#">拼图</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">婴儿座便器</a></li>
+                    <li><a href="#">DIY玩具</a></li>
+                    <li><a href="#">装糖玩具</a></li>
+                    <li><a href="#"><span class="red">办公室玩具</span></a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">棋类玩具</a></li>
+                    <li><a href="#">拼图</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">婴儿座便器</a></li>
+                    <li><a href="#"><span class="red">DIY玩具</span></a></li>
+                    <li><a href="#">装糖玩具</a></li>
+                    <li><a href="#">办公室玩具</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">棋类玩具</a></li>
+                    <li><a href="#">拼图</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">婴儿座便器</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav_box-R-cate01" r-cate="05">
+                <ul>
+                    <li><a href="#">学习机5</a></li>
+                    <li><a href="#">棋类玩具</a></li>
+                    <li><a href="#">拼图</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#"><span class="red">婴儿座便器</span></a></li>
+                    <li><a href="#">DIY玩具</a></li>
+                    <li><a href="#">装糖玩具</a></li>
+                    <li><a href="#">办公室玩具</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#"><span class="red">棋类玩具</span></a></li>
+                    <li><a href="#">拼图</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">婴儿座便器</a></li>
+                    <li><a href="#">DIY玩具</a></li>
+                    <li><a href="#">装糖玩具</a></li>
+                    <li><a href="#"><span class="red">办公室玩具</span></a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">棋类玩具</a></li>
+                    <li><a href="#">拼图</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">婴儿座便器</a></li>
+                    <li><a href="#"><span class="red">DIY玩具</span></a></li>
+                    <li><a href="#">装糖玩具</a></li>
+                    <li><a href="#">办公室玩具</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">棋类玩具</a></li>
+                    <li><a href="#">拼图</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">婴儿座便器</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav_box-R-cate01" r-cate="06">
+                <ul>
+                    <li><a href="#">学习机6</a></li>
+                    <li><a href="#">棋类玩具</a></li>
+                    <li><a href="#">拼图</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#"><span class="red">婴儿座便器</span></a></li>
+                    <li><a href="#">DIY玩具</a></li>
+                    <li><a href="#">装糖玩具</a></li>
+                    <li><a href="#">办公室玩具</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#"><span class="red">棋类玩具</span></a></li>
+                    <li><a href="#">拼图</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">婴儿座便器</a></li>
+                    <li><a href="#">DIY玩具</a></li>
+                    <li><a href="#">装糖玩具</a></li>
+                    <li><a href="#"><span class="red">办公室玩具</span></a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">棋类玩具</a></li>
+                    <li><a href="#">拼图</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">婴儿座便器</a></li>
+                    <li><a href="#"><span class="red">DIY玩具</span></a></li>
+                    <li><a href="#">装糖玩具</a></li>
+                    <li><a href="#">办公室玩具</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">棋类玩具</a></li>
+                    <li><a href="#">拼图</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">学习机</a></li>
+                    <li><a href="#">婴儿座便器</a></li>
+                </ul>
+            </div>
+        </div>
+        <!--右侧内容结束-->
+    </div>
+</div>
+
+<div class="clear"></div>
+
+<div class="infor">
+	<div class="infor-L">
+    	<div class="infor-L-search">商城新闻<input name="" type="text" class="infor-L-searchTxt01"/><input name="" type="button" value="搜 索" class="infor-L-searchTxt02"/></div>
+        
+        <div class="infor-L-List">
+        	<div class="infor-L-List-Title">
+            	<div class="infor-L-List-Title-L">标题</div>
+                <div class="infor-L-List-Title-R">发表时间</div>
+            </div>
+            <div class="infor-L-List-Txt">
+            	<ul>
+                	<li><div class="infor-L-List-Txt01"><a href="#">1212万件好货齐满减</a></div><div class="infor-L-List-Txt02">2014-12-10  15：54：11</div></li>
+                    <li><div class="infor-L-List-Txt01"><a href="#">1212万件好货齐满减</a></div><div class="infor-L-List-Txt02">2014-12-10  15：54：11</div></li>
+                    <li><div class="infor-L-List-Txt01"><a href="#">1212万件好货齐满减</a></div><div class="infor-L-List-Txt02">2014-12-10  15：54：11</div></li>
+                    <li><div class="infor-L-List-Txt01"><a href="#">1212万件好货齐满减</a></div><div class="infor-L-List-Txt02">2014-12-10  15：54：11</div></li>
+                    <li><div class="infor-L-List-Txt01"><a href="#">1212万件好货齐满减</a></div><div class="infor-L-List-Txt02">2014-12-10  15：54：11</div></li>
+                    <li><div class="infor-L-List-Txt01"><a href="#">1212万件好货齐满减</a></div><div class="infor-L-List-Txt02">2014-12-10  15：54：11</div></li>
+                    <li><div class="infor-L-List-Txt01"><a href="#">1212万件好货齐满减</a></div><div class="infor-L-List-Txt02">2014-12-10  15：54：11</div></li>
+                    <li><div class="infor-L-List-Txt01"><a href="#">1212万件好货齐满减</a></div><div class="infor-L-List-Txt02">2014-12-10  15：54：11</div></li>
+                    <li><div class="infor-L-List-Txt01"><a href="#">1212万件好货齐满减</a></div><div class="infor-L-List-Txt02">2014-12-10  15：54：11</div></li>
+                    <li><div class="infor-L-List-Txt01"><a href="#">1212万件好货齐满减</a></div><div class="infor-L-List-Txt02">2014-12-10  15：54：11</div></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="infor-R">
+    	<div class="infor-L-search">行业新闻<input name="" type="text" class="infor-L-searchTxt01"/><input name="" type="button" value="搜 索" class="infor-L-searchTxt02"/></div>
+        
+        <div class="infor-L-List">
+        	<div class="infor-L-List-Title">
+            	<div class="infor-L-List-Title-L">标题</div>
+                <div class="infor-L-List-Title-R">发表时间</div>
+            </div>
+            <div class="infor-L-List-Txt">
+            	<ul>
+                	<li><div class="infor-L-List-Txt01"><a href="#">1212万件好货齐满减</a></div><div class="infor-L-List-Txt02">2014-12-10  15：54：11</div></li>
+                    <li><div class="infor-L-List-Txt01"><a href="#">1212万件好货齐满减</a></div><div class="infor-L-List-Txt02">2014-12-10  15：54：11</div></li>
+                    <li><div class="infor-L-List-Txt01"><a href="#">1212万件好货齐满减</a></div><div class="infor-L-List-Txt02">2014-12-10  15：54：11</div></li>
+                    <li><div class="infor-L-List-Txt01"><a href="#">1212万件好货齐满减</a></div><div class="infor-L-List-Txt02">2014-12-10  15：54：11</div></li>
+                    <li><div class="infor-L-List-Txt01"><a href="#">1212万件好货齐满减</a></div><div class="infor-L-List-Txt02">2014-12-10  15：54：11</div></li>
+                    <li><div class="infor-L-List-Txt01"><a href="#">1212万件好货齐满减</a></div><div class="infor-L-List-Txt02">2014-12-10  15：54：11</div></li>
+                    <li><div class="infor-L-List-Txt01"><a href="#">1212万件好货齐满减</a></div><div class="infor-L-List-Txt02">2014-12-10  15：54：11</div></li>
+                    <li><div class="infor-L-List-Txt01"><a href="#">1212万件好货齐满减</a></div><div class="infor-L-List-Txt02">2014-12-10  15：54：11</div></li>
+                    <li><div class="infor-L-List-Txt01"><a href="#">1212万件好货齐满减</a></div><div class="infor-L-List-Txt02">2014-12-10  15：54：11</div></li>
+                    <li><div class="infor-L-List-Txt01"><a href="#">1212万件好货齐满减</a></div><div class="infor-L-List-Txt02">2014-12-10  15：54：11</div></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="clear"></div>
+<div class="foot">
+	<div class="foot-line">
+    	<div class="foot-Kj"><img src="images/index_81.jpg" alt="" width="37" height="37" /> <span class="foot-Kj-title">新手指南</span>
+        	<ul>
+            	<li><a href="#">免费注册</a></li>
+                <li><a href="#">买家入门</a></li>
+                <li><a href="#">卖家入门</a></li>
+                <li><a href="#">绑定支付宝</a></li>
+            </ul>
+        </div>
+        
+        <div class="foot-Kj"><img src="images/index_84.jpg" alt="" width="37" height="37" /> <span class="foot-Kj-title">采购商服务</span>
+        	<ul>
+            	<li><a href="#">找供应商</a></li>
+                <li><a href="#">采购平台</a></li>
+                <li><a href="#">价格行情</a></li>
+            </ul>
+        </div>
+        
+        <div class="foot-Kj"><span class="foot-Kj-title">二维码</span>
+        	<div class="code"><img src="images/index_92.jpg" alt="" width="102" height="102" /></div>
+        </div>
+        
+        <div class="foot-Kj"><img src="images/index_87.jpg" alt="" width="37" height="37" /> <span class="foot-Kj-title">供货商服务</span>
+        	<ul>
+            	<li><a href="#">应用市场</a></li>
+                <li><a href="#">物流服务</a></li>
+                <li><a href="#">诚信通服务</a></li>
+                <li><a href="#">网销宝服务</a></li>
+            </ul>
+        </div>
+        
+        <div class="foot-Kj"><img src="images/index_89.jpg" alt="" width="37" height="37" /> <span class="foot-Kj-title">关于我们</span>
+        	<ul>
+            	<li><a href="#">公司简介</a></li>
+                <li><a href="#">服务项目</a></li>
+                <li><a href="#">联系我们</a></li>
+                <li><a href="#">加入我们</a></li>
+            </ul>
+        </div>
+	</div>
+    
+    <div class="foot-link"><a href="#">M2C分销平台</a><span class="foot-foot-link-line">｜</span><a href="#">阿里巴巴国际站</a><span class="foot-link-line">｜</span><a href="#">1688</a><span class="foot-link-line">｜</span><a href="#">全球速卖通</a><span class="foot-link-line">｜</span><a href="#">淘宝网</a><span class="foot-link-line">｜</span><a href="#">天猫</a><span class="foot-link-line">｜</span><a href="#">聚划算</a><span class="foot-link-line">｜</span><a href="#">一淘</a><span class="foot-link-line">｜</span><a href="#">阿里旅行 · 去啊</a><span class="foot-link-line">｜</span><a href="#">阿里妈妈</a><span class="foot-link-line">｜</span><a href="#">酷盘</a><span class="foot-link-line">｜</span><a href="#">虾米</a><span class="foot-link-line">｜</span><a href="#">支付宝</a><span class="foot-link-line">｜</span><a href="#">阿里通信</a><br />
+<a href="#">欢迎合作</a><span class="foot-link-line">｜</span><a href="#">知识产权</a><span class="foot-link-line">｜</span><a href="#">著作权与商标声明</a><span class="foot-link-line">｜</span><a href="#">法律声明</a><span class="foot-link-line">｜</span><a href="#">服务条款</a><span class="foot-link-line">｜</span><a href="#">隐私声明</a><span class="foot-link-line">｜</span><a href="#">网站导航</a></div>
+
+	<div class="foot-company">澄海市宇博电子商务有限公司 Copyright © 2014 All Rights Reserved 版权所有 粤ICP备13081564号</div>
+    
+</div>
+</body>
+</html>

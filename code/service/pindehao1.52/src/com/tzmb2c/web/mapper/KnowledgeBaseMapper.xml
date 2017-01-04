@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.KnowledgeBaseMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id as id,
+		score as score,
+		title as title,
+		small_icon as smallIcon,
+		sketch as sketch,
+		content as content,
+		age_type as ageType,
+		(select name from sys_dict where value = age_type and type="user_age") as ageTypeName, 
+		skill_type as skillType,
+		(select name from sys_dict where value = skill_type and type="ability") as skillTypeName,
+		option_type as optionType, 
+		(select name from label_bucket where id = optionType) as optionTypeName,
+		product_type as productType,
+		(select name from product_type where id = productType) as productTypeName,
+		sec_skill_type as secSkillType,
+		(select name from sys_dict where value = sec_skill_type and type="second_ability") as secSkillTypeName,
+		sorting as sorting,
+		status as status,
+		(CASE WHEN status = 0 THEN '未审核' WHEN status = 1 THEN '审核通过' WHEN status = 2 THEN '审核不通过' END) as statusName,
+		create_date as createDate,
+		create_by as createBy,
+		update_date as updateDate,
+		update_by as updateBy,
+		your_favourites_id as yourFavouritesId
+	</sql>
+	
+	<select id="getById" parameterType="int" resultType="KnowledgeBasePojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			knowledge_base
+		where
+			id = #{id}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from knowledge_base
+		where 1=1
+		  <if test="id != null ">
+			and id = #{id}
+		  </if>
+		   <if test="title != null and title !=''">
+			and title like concat("%",#{title},"%")
+		  </if>
+		  <if test="smallIcon != null and smallIcon != '' ">
+			and small_icon = #{smallIcon}
+		  </if>
+		  <if test="content != null ">
+			and content = #{content}
+		  </if>
+		  <if test="ageType != null ">
+			and age_type = #{ageType}
+		  </if>
+		  <if test="skillType != null ">
+			and skill_type = #{skillType}
+		  </if>
+		  <if test="optionType != null ">
+			and option_type = #{optionType}
+		  </if>
+		  <if test="productType != null ">
+			and product_type = #{productType}
+		  </if>
+		  <if test="secSkillType != null ">
+			and sec_skill_type = #{secSkillType}
+		  </if>
+		  <if test="sorting != null ">
+			and sorting = #{sorting}
+		  </if>
+		  <if test="status != null ">
+			and status = #{status}
+		  </if>
+		  <if test="createDate != null ">
+			and create_date = #{createDate}
+		  </if>
+		  <if test="createBy != null ">
+			and create_by = #{createBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and update_date = #{updateDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and update_by = #{updateBy}
+		  </if>
+		  <if test="yourFavouritesId != null ">
+			and your_favourites_id = #{yourFavouritesId}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="KnowledgeBasePojo">
+		select
+			<include refid="Base_Column_List" />
+		from knowledge_base
+		where 1=1
+			<if test="id != null ">
+			  and id = #{id}
+			</if>
+			<if test="title != null and title !=''">
+			and title like concat("%",#{title},"%")
+		  </if>
+			<if test="smallIcon != null and smallIcon != '' ">
+			  and small_icon = #{smallIcon}
+			</if>
+			<if test="content != null and content !=''">
+			  and content = #{content}
+			</if>
+			<if test="ageType != null ">
+			  and age_type = #{ageType}
+			</if>
+			<if test="skillType != null ">
+			  and skill_type = #{skillType}
+			</if>
+			<if test="optionType != null ">
+			  and option_type = #{optionType}
+			</if>
+			<if test="productType != null ">
+			  and product_type = #{productType}
+			</if>
+			<if test="secSkillType != null ">
+			and sec_skill_type = #{secSkillType}
+		  </if>
+			<if test="sorting != null ">
+			  and sorting = #{sorting}
+			</if>
+			<if test="status != null ">
+			  and status = #{status}
+			</if>
+			<if test="createDate != null ">
+			  and create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and update_by = #{updateBy}
+			</if>
+			<if test="yourFavouritesId != null ">
+			  and your_favourites_id = #{yourFavouritesId}
+			</if>
+		<if test="orderBy != null and orderBy == 'update_date desc,create_date desc' ">
+			order by update_date desc,create_date desc
+		   </if>
+		   <if test="orderBy == null or orderBy == '' ">
+			 order by create_date desc
+		   </if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	<select id="findKnowledgeByParams" parameterType="java.util.Map" resultType="KnowledgeBasePojo">
+		select
+			<include refid="Base_Column_List" />
+		from knowledge_base
+		where 1=1
+			<if test="id != null ">
+			  and id = #{id}
+			</if>
+			<if test="title != null and title !=''">
+			  and title like concat("%",#{title},"%")
+		  	</if>
+			<if test="smallIcon != null and smallIcon != '' ">
+			  and small_icon = #{smallIcon}
+			</if>
+			<if test="content != null and content !=''">
+			  and content = #{content}
+			</if>
+			<if test="ageType != null ">
+			  and age_type = #{ageType}
+			</if>
+			<if test="skillType != null ">
+			  and skill_type = #{skillType}
+			</if>
+			<if test="optionType != null ">
+			  and option_type = #{optionType}
+			</if>
+			<if test="productType != null ">
+			  and product_type = #{productType}
+			</if>
+			<if test="secSkillType != null ">
+			  and sec_skill_type = #{secSkillType}
+		  	</if>
+			<if test="sorting != null ">
+			  and sorting = #{sorting}
+			</if>
+			<if test="status != null ">
+			  and status = #{status}
+			</if>
+			<if test="createDate != null ">
+			  and create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and update_by = #{updateBy}
+			</if>
+			<if test="yourFavouritesId != null ">
+			  and your_favourites_id = #{yourFavouritesId}
+			</if>
+			<if test="orderBy != null and orderBy == 'update_date desc,create_date desc' ">
+			  order by update_date desc,create_date desc
+		    </if>
+		    <if test="orderBy == null or orderBy == '' ">
+			 order by sorting 
+		    </if>
+			limit 1
+	</select>
+	
+	<!--更新单条-->
+	<update id="update" parameterType="KnowledgeBasePojo">
+		update knowledge_base set
+		<if test="title!=null and title!='' ">
+		title=#{title},
+		</if>
+		<if test="score!=null">
+		score=#{score},
+		</if>
+		<if test="smallIcon!=null and smallIcon!='' ">
+		small_icon=#{smallIcon},
+		</if>
+		<if test="sketch!=null and sketch!='' ">
+		sketch=#{sketch},
+		</if>
+		<if test="content!=null and content!='' ">
+		content=#{content},
+		</if>
+		<if test="ageType!=null">
+		age_type=#{ageType},
+		</if>
+		<if test="skillType!=null">
+		skill_type=#{skillType},
+		</if>
+		<if test="optionType!=null">
+		option_type=#{optionType},
+		</if>
+		<if test="productType!=null">
+		product_type = #{productType},
+		</if>
+		<if test="secSkillType != null">
+	    sec_skill_type = #{secSkillType},
+		</if>
+		<if test="sorting!=null">
+		sorting = #{sorting},
+		</if>
+		<if test="status!=null">
+		status = #{status},
+		</if>
+		<if test="yourFavouritesId!=null">
+		your_favourites_id = #{yourFavouritesId},
+		</if>
+		<if test="updateBy!=null and updateBy!='' ">
+		update_by = #{updateBy},
+		</if>
+		update_date = now()
+		where id = #{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="int">
+		delete from knowledge_base 
+		where
+			id = #{id}
+	</delete>
+	
+<!-- 插入单条 -->
+	<insert id="insert" parameterType="KnowledgeBasePojo" useGeneratedKeys="true" keyProperty="id">
+		insert into knowledge_base 
+		(id,title,small_icon,content,age_type,skill_type,option_type,product_type,sorting,status,create_by,create_date,update_by,update_date,sec_skill_type,score,sketch,your_favourites_id)
+		values(#{id},#{title},#{smallIcon},#{content},#{ageType},#{skillType},#{optionType},#{productType},#{sorting},#{status},#{createBy},now(),#{updateBy},now(),#{secSkillType},#{score},#{sketch},#{yourFavouritesId})
+	</insert>
+		<!--更新单条状态-->
+	<update id="checkKnowledgeBase" parameterType="Long">
+		update knowledge_base set status = 1,update_date = now() where id = #{id}
+	</update>
+	<!--更新单条状态-->
+	<update id="uncheckKnowledgeBase" parameterType="Long">
+		update knowledge_base set status = 2,update_date = now() where id = #{id}
+	</update>
+	
+</mapper>

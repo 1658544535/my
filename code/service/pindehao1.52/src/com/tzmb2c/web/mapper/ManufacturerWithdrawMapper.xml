@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.ManufacturerWithdrawMapper">
+
+	<insert id="insertManufacturerWithdraw" parameterType="manufacturerWithdrawPojo" useGeneratedKeys="true" keyProperty="id">
+		insert into user_manufacturer_withdraw 
+		(user_id,withdraw_date,withdraw_amount,status,create_by,create_date,update_by,update_date,version,remarks)
+		values
+		(#{userId},#{withdrawDate},#{withdrawAmount},#{status},#{createBy},now(),#{updateBy},now(),#{version},#{remarks})
+	</insert>
+
+	<delete id="delWithdrawById" parameterType="Long">
+		delete from user_manufacturer_withdraw where id = #{id}
+	</delete>
+	
+	<delete id="delWithdrawByUserId" parameterType="Long">
+		delete from user_manufacturer_settle where user_id = #{userId}
+	</delete>
+	
+	<update id="updateWithdrawInfo" parameterType="manufacturerWithdrawPojo">
+		update user_manufacturer_withdraw set
+		<if test="withdrawDate != null">
+		withdraw_date = #{withdrawDate},
+		</if>
+		<if test="withdrawAmount != null">
+		withdraw_amount = #{withdrawAmount},
+		</if>
+		<if test="status != null">
+		status = #{status},
+		</if>
+		<if test="updateBy != null">
+		update_by = #{updateBy},
+		</if>
+		<if test="updateDate != null">
+		update_date = #{updateDate},
+		</if>
+		<if test="remarks != null">
+		remarks = #{remarks},
+		</if>
+		version = #{version}
+		where 
+		1 = 1
+		<if test="id != null">
+		and id = #{id}
+		</if>
+		<if test="userId != null">
+		and user_id = #{userId}
+		</if>
+	</update>
+	
+	<select id="getManufacturerWithdrawList" parameterType="java.util.Map" resultType="manufacturerWithdrawPojo" >
+		select 
+		t.id as id,
+		t.user_id as userId,
+		(select name from sys_login where id=t.user_id) as userName,
+		(select balance from user_manufacturer where user_id = t.user_id) as settleBalance,
+		t.withdraw_date as withdrawDate,
+		t.withdraw_amount as withdrawAmount,
+		t.status as status,
+		t.create_by as createBy,
+		t.create_date as createDate,
+		t.update_by as updateBy,
+		t.update_date as updateDate,
+		t.version as version
+		from user_manufacturer_withdraw t 
+		where 1=1
+		<if test="userId != null">
+		and t.user_id = #{userId} 
+		</if>
+		<if test="status != null">
+		and t.status = #{status}
+		</if>
+		<if test="beginDateStr !=null and beginDateStr !=''">
+			and str_to_date(t.withdraw_date,'%Y-%m-%d') &gt;= #{beginDateStr}
+		</if>
+		<if test="endDateStr !=null and endDateStr !=''">
+			and str_to_date(t.withdraw_date,'%Y-%m-%d') &lt;= #{endDateStr}
+		</if>
+		order by t.create_date desc,t.user_id
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<select id="getManufacturerWithdrawCount" parameterType="java.util.Map" resultType="int" >
+		select 
+		count(*)
+		from user_manufacturer_withdraw t 
+		where 1=1
+		<if test="userId != null">
+		and t.user_id = #{userId} 
+		</if>
+		<if test="status != null">
+		and t.status = #{status}
+		</if>
+		<if test="beginDateStr !=null and beginDateStr !=''">
+			and str_to_date(t.withdraw_date,'%Y-%m-%d') &gt;= #{beginDateStr}
+		</if>
+		<if test="endDateStr !=null and endDateStr !=''">
+			and str_to_date(t.withdraw_date,'%Y-%m-%d') &lt;= #{endDateStr}
+		</if>
+	</select>
+	
+	<select id="getManufacturerWithdrawByUserId" parameterType="java.util.Map" resultType="manufacturerWithdrawPojo" >
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.withdraw_date as withdrawDate,
+		t.withdraw_amount as withdrawAmount,
+		t.status as status,
+		t.create_by as createBy,
+		t.create_date as createDate,
+		t.update_by as updateBy,
+		t.update_date as updateDate,
+		t.remarks as remarks,
+		t.version as version,
+		HOUR(TIMEDIFF(NOW(),t.create_date)) as period
+		from user_manufacturer_withdraw t 
+		where t.user_id = #{userId}
+		<if test="status != null">
+		and t.status = #{status}
+		</if>
+		order by t.create_date desc
+	</select>
+	
+	<select id="getManufacturerWithdrawById" parameterType="Long" resultType="manufacturerWithdrawPojo" >
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.withdraw_date as withdrawDate,
+		t.withdraw_amount as withdrawAmount,
+		t.status as status,
+		t.create_by as createBy,
+		t.create_date as createDate,
+		t.update_by as updateBy,
+		t.update_date as updateDate,
+		t.version as version
+		from user_manufacturer_withdraw t 
+		where t.id = #{id}
+	</select>
+	
+</mapper>

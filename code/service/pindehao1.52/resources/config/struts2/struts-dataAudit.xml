@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="dataAudit" extends="default">
+		<!-- 视频审核结果记录 -->
+		<action name="dataAuditList" class="com.tzmb2c.web.action.DataAuditAction" method="dataAuditListCount">
+			<result name="success">/page/system/dataAudit/dataAuditList.jsp</result>
+		</action>
+		<!-- 审核数据总计 -->
+		<action name="dataAuditTotalList" class="com.tzmb2c.web.action.DataAuditAction" method="dataAuditTotal">
+			<result name="success">/page/system/dataAudit/dataAuditTotalList.jsp</result>
+		</action>
+		<!-- 个人审核数据统计 -->
+		<action name="dataAuditPeopleList" class="com.tzmb2c.web.action.DataAuditAction" method="dataAuditPeople">
+			<result name="success">/page/system/dataAudit/dataAuditPeopleList.jsp</result>
+		</action>
+		
+
+		
+	</package>
+	<package name="dataAudit-json" extends="json-default">
+		<!-- 视频审核结果记录列表 -->
+		<action name="dataAuditListAll" class="com.tzmb2c.web.action.DataAuditAction" method="dataAuditListAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>		
+		<!-- 视频审核结果记录条数 -->
+		<action name="dataAuditListCount" class="com.tzmb2c.web.action.DataAuditAction" method="dataAuditListCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		<!-- 审核数据总计列表 -->
+		<action name="dataAuditTotalListAll" class="com.tzmb2c.web.action.DataAuditAction" method="dataAuditTotalListAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>		
+		<!-- 审核数据总计条数 -->
+		<action name="dataAuditTotalListCount" class="com.tzmb2c.web.action.DataAuditAction" method="dataAuditTotalListCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		<!-- 平均量统计 -->
+		<action name="dataAuditAverageCount" class="com.tzmb2c.web.action.DataAuditAction" method="dataAuditAverageCount">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<!-- 个人审核数据列表 -->
+		<action name="dataAuditPeopleListAll" class="com.tzmb2c.web.action.DataAuditAction" method="dataAuditPeopleListAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>		
+		<!-- 个人审核数据条数 -->
+		<action name="dataAuditPeopleListCount" class="com.tzmb2c.web.action.DataAuditAction" method="dataAuditPeopleListCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+		<!-- 个人审核审平均量统计 -->
+		<action name="getAuditAverageCount" class="com.tzmb2c.web.action.DataAuditAction" method="getAuditAverageCount">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>		
+				
+	</package>
+</struts>

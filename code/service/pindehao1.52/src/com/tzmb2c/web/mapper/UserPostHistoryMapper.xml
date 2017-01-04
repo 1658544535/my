@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.UserPostHistoryMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id,
+		user_id as userId,
+		post_id as postId,
+		view_date as viewDate,
+		look_num as lookNum,
+		update_date as updateDate,
+		is_delete as isDelete
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="UserPostHistoryPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			user_post_history
+		where
+			id = #{id}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from user_post_history h
+		left join user_circle_post p on h.post_id = p.id
+		left join sys_login l on p.user_id = l.id
+		where 1=1
+		  <if test="id != null ">
+			and h.id = #{id}
+		  </if>
+		  <if test="userId != null ">
+			and h.user_id = #{userId}
+		  </if>
+		  <if test="postId != null ">
+			and h.post_id = #{postId}
+		  </if>
+		  <if test="viewDate != null ">
+			and h.view_date = #{viewDate}
+		  </if>
+		  <if test="lookNum != null ">
+			and h.look_num = #{lookNum}
+		  </if>
+		  <if test="updateDate != null ">
+			and h.update_date = #{updateDate}
+		  </if>
+		  <if test="isDelete != null ">
+			and h.is_delete = #{isDelete}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="UserPostHistoryPojo">
+		select
+			h.id,
+			h.user_id as userId,
+			h.post_id as postId,
+			h.view_date as viewDate,
+			h.look_num as lookNum,
+			h.update_date as updateDate,
+			p.title,
+			p.banner,
+			p.collect_num as collectNum,
+			l.name as author,
+			l.id as authorId,
+			l.image as authorLogo,
+			ui.sex as authorSex
+		from user_post_history h 
+		left join user_circle_post p on h.post_id = p.id
+		left join sys_login l on p.user_id = l.id
+		left join user_info ui on p.user_id = ui.user_id
+		where 1=1
+			<if test="id != null ">
+			  and h.id = #{id}
+			</if>
+			<if test="userId != null ">
+			  and h.user_id = #{userId}
+			</if>
+			<if test="postId != null ">
+			  and h.post_id = #{postId}
+			</if>
+			<if test="viewDate != null ">
+			  and h.view_date = #{viewDate}
+			</if>
+			<if test="lookNum != null ">
+			  and h.look_num = #{lookNum}
+			</if>
+			<if test="updateDate != null ">
+			  and h.update_date = #{updateDate}
+			</if>
+			<if test="isDelete != null ">
+			  and h.is_delete = #{isDelete}
+			</if>
+		order by h.view_date desc,id desc
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="UserPostHistoryPojo">
+		update user_post_history
+		<set>
+			<if test="userId != null">
+			  user_id = #{userId},
+			</if>
+			<if test="postId != null">
+			  post_id = #{postId},
+			</if>
+			<if test="viewDate != null">
+			  view_date = #{viewDate},
+			</if>
+			<if test="lookNum != null">
+			  look_num = #{lookNum},
+			</if>
+			<if test="updateDate != null">
+			  update_date = #{updateDate},
+			</if>
+			<if test="isDelete != null">
+			  is_delete = #{isDelete},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	<!--添加浏览记录次数 -->
+	<update id="addLookNum" parameterType="java.util.Map">
+		update user_post_history
+		<set>
+			<if test="userId != null">
+			  user_id = #{userId},
+			</if>
+			<if test="postId != null">
+			  post_id = #{postId},
+			</if>
+			<if test="viewDate != null">
+			  view_date = #{viewDate},
+			</if>
+			<if test="lookNum != null">
+			  look_num = look_num + 1,
+			</if>
+			<if test="updateDate != null">
+			  update_date = #{updateDate},
+			</if>
+			<if test="isDelete != null">
+			  is_delete = #{isDelete},
+			</if>
+		</set>
+		where user_id = #{userId}
+			  and post_id = #{postId}
+			  
+	</update>
+	<!--
+	<delete id="deleteById" parameterType="Long">
+		delete from user_post_history 
+		where
+			id = #{id}
+	</delete>
+	-->
+	<update id="deleteById" parameterType="Long">
+		update user_post_history 
+		set 
+			is_delete = 1,
+			update_date = now()
+		where
+			id = #{id}
+	</update>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="UserPostHistoryPojo">
+		insert into user_post_history
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="postId != null">
+				post_id,
+			</if>
+			<if test="viewDate != null">
+				view_date,
+			</if>
+			<if test="lookNum != null">
+				look_num,
+			</if>
+			<if test="updateDate != null">
+				update_date,
+			</if>
+			<if test="isDelete != null">
+				is_delete,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="userId != null">
+				#{userId},
+			</if>
+			<if test="postId != null">
+				#{postId},
+			</if>
+			<if test="viewDate != null">
+				#{viewDate},
+			</if>
+			<if test="lookNum != null">
+				#{lookNum},
+			</if>
+			<if test="updateDate != null">
+				#{updateDate},
+			</if>
+			<if test="isDelete != null">
+				#{isDelete},
+			</if>
+		</trim>
+	</insert>
+	
+</mapper>

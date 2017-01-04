@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="navigationShow" extends="default">
+		<!-- APP导航 -->
+		<action name="navigationList" class="com.tzmb2c.web.action.NavigationAction" method="navigationListCount">
+			<result name="success">/page/system/navigation/navigationList.jsp</result>
+		</action>		
+		<!-- 根据ID删除 -->
+		<action name="delNavigation" class="com.tzmb2c.web.action.NavigationAction" method="delNavigation">
+		</action>
+		<!-- 根据ID批量删除 -->
+		<action name="delNavigationAll" class="com.tzmb2c.web.action.NavigationAction" method="delNavigationAll">
+		</action>
+		<!-- 根据ID编辑(跳转) -->
+		<action name="goUpdateNavigation" class="com.tzmb2c.web.action.NavigationAction" method="goUpdateNavigation">
+			<result name="success">/page/system/navigation/updateNavigation.jsp</result>
+		</action>
+	    <!-- 根据ID编辑 -->
+		<action name="updateNavigation" class="com.tzmb2c.web.action.NavigationAction" method="updateNavigation">
+		</action>
+		<!-- 批量通过审核 -->
+		<action name="checkNavigationAll" class="com.tzmb2c.web.action.NavigationAction" method="checkNavigationAll">
+		</action>
+		<!-- 通过审核 -->
+		<action name="checkNavigation" class="com.tzmb2c.web.action.NavigationAction" method="checkNavigation">
+		</action>
+		<!-- 取消审核 -->
+		<action name="uncheckNavigation" class="com.tzmb2c.web.action.NavigationAction" method="uncheckNavigation">
+		</action>
+		<!-- （跳转）新增导航 -->
+		<action name="goAddNavigation" class="com.tzmb2c.web.action.NavigationAction" method="addNavigation">
+			<result name="success">/page/system/navigation/addNavigation.jsp</result>
+		</action>	
+		<!-- 提交新增导航 -->
+		<action name="addNavigationOK" class="com.tzmb2c.web.action.NavigationAction" method="addNavigationOK">			
+		</action>		
+	</package>
+	<package name="navigation-json" extends="json-default">
+		<!-- 导航列表 -->
+		<action name="navigationListAll" class="com.tzmb2c.web.action.NavigationAction" method="navigationListAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>		
+		<!-- 导航条数 -->
+		<action name="navigationListCount" class="com.tzmb2c.web.action.NavigationAction" method="navigationListCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+	</package>
+</struts>

@@ -1,0 +1,105 @@
+/*bootstrap reset*/
+.container{width:1170px!important;}
+.breadcrumb{background-color:#fff;}
+.nav-tabs{border:1px solid #ddd;border-radius:5px;}
+.nav-tabs li{padding:0;margin-bottom:0;}
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{color:#d50d57;border:none;border-radius:0;background:#ffdf00;}
+.nav-tabs > li > a{margin-right:0;color:#333;font-size:15px;border:none;}
+.popover.right > .arrow{top:30px;}
+.r-hidden{display:none;}
+.modal-backdrop{z-index:10061;}
+.modal{z-index:10062;}
+.table td{vertical-align:middle!important;}
+
+/*页面css*/
+.phone-box{position:relative;float:left;width:390px;height:815px;margin-top:50px;margin-bottom:30px;background:url(../images/v-phone.jpg) no-repeat 0 0;}
+.phone-view{position:absolute;top:102px;left:27px;width:338px;height:601px;overflow-y:scroll;}
+.popover-box{float:left;position:relative;width:620px;margin-top:50px;}
+.popover-box .popover{position:relative;max-width:inherit;width:100%;}
+.popover-box .popover .popover-close{position:absolute;top:-10px;right:-10px;width:30px;height:30px;border-radius:50%;font-size:16px;line-height:29px;}
+.phone-add{clear:both;margin-left:40px;}
+.phone-add .row{margin:0;padding:0;}
+.phone-add li{list-style:none;}
+
+#phoneView>section{position:relative;border:2px dashed transparent;cursor:move;}
+#phoneView>section:hover,#phoneView>section.active{border-color:red;}
+#phoneView>section:after{content:'';position:absolute;width:100%;height:100%;top:0;left:0;z-index:998;}
+.tpl-edit{display:none;position:absolute;bottom:5px;right:5px;z-index:999;}
+.tpl-edit a{margin-left:5px;}
+.popover-del>div{padding:5px 0;}
+.popover-del>div button{margin:0 5px;}
+#phoneView>section:hover .tpl-edit, #phoneView>section.active .tpl-edit{display:block;}
+
+.popover-goods .img{padding:0;list-style:none;}
+.popover-goods .img li div{position:relative;padding-bottom:100%;margin-bottom:10px;}
+.popover-goods .img li img{position:absolute;width:100%;height:100%;}
+.popover-goods .img li button{position:absolute;top:-7px;right:-7px;border-radius:50%;padding:0;width:24px;height:24px;text-align:center;line-height:24px;}
+.popover-goods .img li div>span{position:absolute;width:100%;height:100%;text-align:center;line-height:60px;font-size:48px;color:#ddd;cursor:pointer;}
+
+.submit-group{clear:both;padding:30px 0 60px;text-align:center;border-top:1px solid #ddd;}
+
+#goods_add .glyphicon-ok{font-size:20px;}
+
+.popover-image>div{position:relative;}
+.view-image .pagination{position:absolute;bottom:0;left:0;width:100%;padding:5px;text-align:center;}
+.view-image .pagination>div{display:inline-block;width:8px;height:8px;margin:0 5px;background:#666;border-:1px solid #666;border-radius:50%;}
+.view-image .pagination>div:first-child{background:#fff;}
+.popover-image>div button.image-rel{position:absolute;top:0;right:5px;border-radius:50%;padding:0;width:24px;height:24px;text-align:center;line-height:24px;}
+.popover-image img{display:block;width:100%;margin:10px 0;border:1px solid #ddd;}
+.popover-image .image-add{position:relative;clear:both;margin:0 15px;text-align:center;padding:10px 0;border:1px solid #ddd;border-radius:5px;}
+.popover-image .image-add input{position:absolute;width:100%;height:100%;top:0;bottom:0;z-index:3;opacity:0;*filter:alpha(opacity=0);cursor:pointer;}
+.popover-image .image-add .mask{display:none;position:absolute;width:100%;height:100%;top:0;bottom:0;z-index:4;line-height:40px;background:#fff;}
+.popover-image .title{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:10px;cursor:pointer;}
+
+.popover-coupon .list-group-item{position:relative;}
+.popover-coupon .coupon-rel{position:absolute;top:0;right:0;}
+#popover_coupons_add{cursor:pointer;}
+
+.popover-ueditor .edui-container,.popover-ueditor .edui-editor-body .edui-body-container{width:auto!important;}
+
+/*手机视图css*/
+.view-text{padding:10px;font-size:14px;color:#585858;}
+
+.view-goods ul,.view-goods li{margin:0;padding:0;list-style:none;}
+.view-goods ul{margin:10px;overflow:hidden;}
+.view-goods ul .img{position:relative;width:100%;padding-bottom:100%;overflow:hidden;margin-bottom:10px;}
+.view-goods ul .img img{position:absolute;top:0;left:0;width:100%;height:100%;}
+.view-goods ul .title{margin:10px 0;font-size:16px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.view-goods ul .price{font-size:16px;color:#d50d57;line-height:30px;}
+.view-goods ul.big li{margin-bottom:20px;}
+.view-goods ul.big .price{float:left;}
+.view-goods ul.big .seeDetail button{background:#d50d57;color:#fff;border:none;}
+.view-goods ul.small li{float:left;width:50%;}
+.view-goods ul.small{margin:10px 5px;}
+.view-goods ul.small li .box{padding:5px;}
+.view-goods ul.small .title,.view-goods ul.small .price{margin-bottom:0;text-align:center;}
+.view-goods ul.detail li{clear:both;overflow:hidden;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid #ddd;}
+.view-goods ul.detail li:last-child{border-bottom:0;margin-bottom:0;}
+.view-goods ul.detail .img{float:left;width:100px;height:100px;padding:0;}
+.view-goods ul.detail .info{margin-left:110px;text-align:right;margin-top:0;padding-top:10px;}
+.view-goods ul.detail .oldPrice{text-decoration:line-through;color:#999;}
+.view-goods ul.small .oldPrice,.view-goods ul.small .seeDetail,.view-goods ul.big .oldPrice,.view-goods ul.detail .seeDetail{display:none;}
+
+.view-video>div{margin:5px 10px;}
+.view-video>div>iframe{width:100%;}
+
+.view-image>div{margin:5px 10px;}
+.view-image img{display:block;width:100%;}
+
+.view-ueditor>div{margin:10px;}
+
+.view-coupon>div{margin:10px 15px;}
+.view-coupon>div>ul{padding:0;list-style:none;}
+.view-coupon>div>ul li{position:relative;margin:5px 0;padding-bottom:25.25%;padding-right:23%;overflow:hidden;background:url(../images/coupon.png) no-repeat 0 0;background-size:100% auto;color:#fff;font-size:12px;}
+.view-coupon>div>ul li.disabled{background-image:url(../images/coupon-disable.png);}
+.view-coupon>div>ul li p{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.view-coupon>div>ul li .price{position:absolute;width:77%;left:0;top:20%;margin:0;text-align:center;color:#f9f3cf;}
+.view-coupon>div>ul li .price strong{font-size:20px;padding-right:2px;}
+.view-coupon>div>ul li .condition{position:absolute;width:77%;left:0;top:45%;margin:0;text-align:center;color:#f9f3cf;}
+.view-coupon>div>ul li .time{position:absolute;width:77%;left:0;bottom:20%;margin:0;text-align:center;color:#f9f3cf;}
+
+
+
+
+
+

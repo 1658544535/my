@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+	<package name="packageProductWeb" extends="struts-default">
+		<!-- 套餐产品前端显示 -->
+		<action name="goPackageProductWeb" class="com.tzmb2c.web.action.PackageProductAction" method="packageProductWeb">
+			<result name="success">/page/system/homePackage/packageProductWeb.jsp</result>
+		</action>
+	</package>
+
+	<package name="packageProduct" extends="default">
+		<!-- 套餐产品设置 -->
+		<action name="packageProductManage" class="com.tzmb2c.web.action.PackageProductAction" method="packageProductManage">
+			<result name="success">/page/system/homePackage/packageProductManage.jsp</result>
+		</action>
+		
+		<!-- 批量删除套餐产品 -->
+		<action name="deletePackageProductAll" class="com.tzmb2c.web.action.PackageProductAction" method="deletePackageProductAll">
+		</action>
+		
+		<!-- 批量审核套餐产品 -->
+		<action name="checkPackageProductAll" class="com.tzmb2c.web.action.PackageProductAction" method="checkPackageProductAll">
+		</action>
+		
+		<!-- 添加/修改套餐产品信息 -->
+		<action name="packageProductAddInfo" class="com.tzmb2c.web.action.PackageProductAction" method="packageProductAddInfo">
+			<result name="success">/page/system/homePackage/packageProductAddInfo.jsp</result>
+		</action>
+		
+		<!-- 添加/修改套餐产品 -->
+		<action name="packageProductAdd" class="com.tzmb2c.web.action.PackageProductAction" method="packageProductAdd">
+			<result name="success">/page/system/homePackage/packageProductAdd.jsp</result>
+		</action>
+		
+		<!-- 添加/修改套餐产品提交 -->
+		<action name="packageProductAddOk" class="com.tzmb2c.web.action.PackageProductAction" method="packageProductAddOk">
+		</action>
+		
+		<!-- 添加/修改专场产品信息 -->
+		<action name="specialProductAddInfo" class="com.tzmb2c.web.action.PackageProductAction" method="specialProductAddInfo">
+			<result name="success">/page/system/homePackage/specialProductAddInfo.jsp</result>
+		</action>
+		
+		<!-- 添加/修改专场产品 -->
+		<action name="specialProductAdd" class="com.tzmb2c.web.action.PackageProductAction" method="specialProductAdd">
+			<result name="success">/page/system/homePackage/specialProductAdd.jsp</result>
+		</action>
+		
+		<!-- 添加/修改专场产品提交 -->
+		<action name="specialProductAddOk" class="com.tzmb2c.web.action.PackageProductAction" method="specialProductAddOk">
+		</action>
+		
+		
+	</package>
+	<package name="packageProduct-json" extends="json-default">
+		<!-- 套餐产品列表 -->
+		<action name="packageProductCount" class="com.tzmb2c.web.action.PackageProductAction" method="packageProductManage">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+
+		<!-- 套餐产品条数 -->
+		<action name="packageProductAllList" class="com.tzmb2c.web.action.PackageProductAction" method="packageProductAllList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<!--  删除套餐产品 -->
+		<action name="deletePackageProduct" class="com.tzmb2c.web.action.PackageProductAction" method="deletePackageProduct">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 审核套餐产品 -->
+		<action name="checkPackageProduct" class="com.tzmb2c.web.action.PackageProductAction" method="checkPackageProduct">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 取消审核套餐产品 -->
+		<action name="uncheckPackageProduct" class="com.tzmb2c.web.action.PackageProductAction" method="uncheckPackageProduct">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 添加/修改套餐产品信息条数 -->
+		<!-- <action name="packageProductAddInfoCount" class="com.tzmb2c.web.action.PackageProductAction" method="packageProductAddInfo">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action> -->
+		
+		<!-- 添加/修改套餐产品信息列表 -->
+		<!-- <action name="packageProductAddInfoList" class="com.tzmb2c.web.action.PackageProductAction" method="packageProductAddInfoList">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action> -->
+		
+		
+	</package>
+</struts>

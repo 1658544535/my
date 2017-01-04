@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="zh">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>web</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="css/web-b-reset.css" />
+    <link rel="stylesheet" type="text/css" href="js/Swiper/swiper.css" />
+    <script src="js/jquery-1.11.2.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/baiduTemplate.js"></script>
+    <script src="js/Swiper/swiper.min.js"></script>
+    <script src="js/web-app.js"></script>
+    <style type="text/css">
+    #popover{
+    	 max-height: 800px;
+    	 overflow: auto;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+		<div id="phoneView"></div>
+    </div>
+	<!-- 前端模板开始 -->
+    <script id='tpl_text' type="text/template">
+		<section class="view-text" data-type="<%=type%>" data-id=<%=id%>>
+			<%=data.text%>
+		</section> 
+	</script>
+	<script id='tpl_goods' type="text/template">
+		<section class="view-goods" data-type="<%=type%>" data-id=<%=id%>>
+			<%if(data.view=="big"){%>
+				<ul class="big" id="goodsList">
+			<%}else if(data.view=="small"){%>
+				<ul class="small" id="goodsList">
+			<%}else{%>
+				<ul class="detail" id="goodsList">
+			<%}%>
+					<%for(var i=0;i<data.list.length;i++){%>
+						<li data-goodId="<%=data.list[i]["goodId"]%>" data-activityId="<%=data.list[i]['activityId']%>" class="goodDetail">
+							<div class="box">
+								<div class="img"><img src="<%=data.list[i]["img"]%>" /></div>
+								<div class="info">
+									<%if(data.viewAttr.title){%>
+										<h3 class="title <%if(!data.viewAttr.title){%> r-hidden<%}%>"><%=data.list[i]["title"]%></h3>
+									<%}%>
+									<div class="clearfix">
+										<div class="oldPrice">￥<%=data.list[i]["oldPrice"]%></div>
+										<div class="price<%if(!data.viewAttr.price){%> r-hidden<%}%>">￥<%=data.list[i]["price"]%></div>
+										<div class="seeDetail<%if(!data.viewAttr.seeDetail){%> r-hidden<%}%>"><button class="btn btn-sm btn-default pull-right" type="button">查看详情</button></div>
+									</div>
+								</div>
+							</div>
+						</li>
+					<%}%>
+				</ul>
+		</section>
+	</script>
+    <script id='tpl_video' type="text/template">
+		<section class="view-video" data-type="<%=type%>" data-id=<%=id%>>
+			<div><iframe src="<%=data.src%>" frameborder=0 'allowfullscreen'></iframe></div>
+		</section> 
+	</script>
+    <script id='tpl_image' type="text/template">
+		<section class="view-image" data-type="<%=type%>" data-id=<%=id%>>
+			<%if(data.carousel){%>
+				<div class="swiper-container">
+		            <div class="swiper-wrapper">
+						<%for(var i=0;i<data.list.length;i++){%>
+						<div class="swiper-slide">
+							<%if(!!data["list"][i]["goodId"]){%>
+								<a href="{'goodId':<%=data["list"][i]["goodId"]%>,'activityId',<%=data["list"][i]["activityId"]%>"><img src="<%=data["list"][i]["img"]%>" /></a>
+							<%}else{%>
+								<img src="<%=data["list"][i]["img"]%>" />
+							<%}%>
+						</div>
+						<%}%>
+		            </div>
+		            <!-- Add Pagination -->
+		            <div class="swiper-pagination"></div>
+	            </div>
+			<%}else{%>
+				<%for(var i=0;i<data.list.length;i++){%>
+				<div>
+					<%if(!!data["list"][i]["goodId"]){%>
+						<a href="{'goodId':<%=data["list"][i]["goodId"]%>,'activityId',<%=data["list"][i]["activityId"]%>"><img src="<%=data["list"][i]["img"]%>" /></a></div>
+					<%}else{%>
+						<img src="<%=data["list"][i]["img"]%>" />
+					<%}%>
+				</div>
+				<%}%>
+			<%}%>
+		</section> 
+	</script>
+    <script id='tpl_ueditor' type="text/template">
+		<section class="view-ueditor" data-type="<%=type%>" data-id=<%=id%>>
+			<div><%=data.html%></div>
+		</section> 
+	</script>
+    <script id='tpl_coupon' type="text/template">
+		<section class="view-coupon" data-type="<%=type%>" data-id=<%=id%>>
+			<div>
+				<ul id="couponList">
+					<%for(var i=0;i<data.list.length;i++){%>
+					<li class="coupon <%if(data["list"][i]["disabled"]){%>disabled<%}%>" data-couponId="<%=data["list"][i]["couponId"]%>">
+						<p class="price"><strong><%=data["list"][i]["title"]%></strong></p>
+						<p class="time"><%=data["list"][i]["starTime"]%> - <%=data["list"][i]["endTime"]%></p>
+					</li>
+					<%}%>
+				</ul>
+			</div>
+		</section> 
+	</script>
+	<!-- 前端模板结束 -->
+	<script type="text/javascript">
+    	$(document).delegate("#goodsList .goodDetail","click", function(){
+    		goodsId = $.trim($(this).attr('data-goodId'));
+    		activityId = $.trim($(this).attr('data-activityId'));
+    		location.href="{'goodsId':"+goodsId+",'activityId':"+activityId+"}";
+    	});
+    	$(document).delegate("#couponList .coupon","click", function(){
+    		couponId = $.trim($(this).attr('data-couponId'));
+    		location.href="{'couponId':"+couponId+"}";
+    	});
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tzmb2c.web.mapper.SpecialProductMapper">
+	<!-- 查询所有的记录 -->
+		<select id="findSpecialProductList" resultType="SpecialProductPojo" parameterType="java.util.Map">
+		select
+              s.id                 as id,
+			  s.special_id         as specialId,			  
+			  t.name               as specialName,
+			  s.title              as title,
+			  s.introduction       as introduction,
+			  s.product_id         as productId,
+			  s.good_id            as goodId,
+			  p.image              as image,
+			  p.product_name       as productName,
+			  p.product_num        as productNum,
+			  p.product_no         as productNo,
+			  a.tips               as tips,
+			  a.sell_price         as sellPrice,
+			  a.active_price       as specialPrice,
+			  a.activity_num       as specialNum,
+			  a.activity_stock     as specialStock,
+			  a.sorting            as sorting,
+			  a.status             as status,
+			  (CASE WHEN a.status = 0 THEN '未审核' WHEN a.status = 1 THEN '已审核' END) as statusName,
+			  a.update_date        as updateDate,
+			  a.create_date        as createDate,
+			  t.user_brand_id      as userBrandId,
+			  b.brand_name         as brandName
+	   	from  special_product s left join special_show t on t.id=s.special_id
+	   	left  join activity_goods a on a.id=s.good_id
+	   	left  join product p on p.id=s.product_id
+	   	left  join user_brand b on t.user_brand_id = b.id 
+		where 1=1
+		<if test="specialId != null">
+			and s.special_id =#{specialId}
+		</if>
+		<if test="productId != null">
+			and s.product_id =#{productId}
+		</if>
+		<if test="productName != null and productName != '' ">
+			and p.product_name like CONCAT("%",#{productName},"%")
+		</if>
+		<if test="title != null and title != '' ">
+			and s.title like CONCAT("%",#{title},"%")
+		</if>
+		<if test="status != null">
+			and a.status=#{status}
+		</if>
+		order by a.sorting desc,a.create_date desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	<!-- 查询记录的数目 -->
+	<select id="findSpecialProductCount" resultType="int" parameterType="java.util.Map">
+		select count(*)
+	    from   special_product s left join special_show t on t.id=s.special_id
+	   	left   join activity_goods a on a.id=s.good_id
+	   	left   join product p on p.id=s.product_id
+		where  1=1
+	    <if test="specialId != null">
+			and s.special_id =#{specialId}
+		</if>
+		<if test="productId != null">
+			and s.product_id =#{productId}
+		</if>
+		<if test="title != null and title != '' ">
+			and s.title like CONCAT("%",#{title},"%")
+		</if>
+		<if test="productName != null and productName != '' ">
+			and p.product_name like CONCAT("%",#{productName},"%")
+		</if>
+		<if test="status != null">
+			and a.status=#{status}
+		</if>
+	</select>
+	<!-- 查询单条 -->
+	<select id="findSpecialProductById" resultType="SpecialProductPojo" parameterType="Long">
+		select
+              s.id                 as id,
+			  s.special_id         as specialId,			  
+			  t.name               as specialName,
+			  s.title              as title,
+			  s.introduction       as introduction,
+			  s.product_id         as productId,
+			  s.good_id            as goodId,
+			  p.image              as image,
+			  p.product_name       as productName,
+			  a.tips               as tips,
+			  a.sell_price         as sellPrice,
+			  a.active_price       as specialPrice,
+			  a.activity_num       as specialNum,
+			  a.activity_stock     as specialStock,
+			  a.sorting            as sorting,
+			  a.status             as status,
+			  (CASE WHEN a.status = 0 THEN '未审核' WHEN a.status = 1 THEN '已审核' END) as statusName,
+			  a.update_date        as updateDate,
+			  a.create_date        as createDate
+	   	from  special_product s left join special_show t on t.id=s.special_id
+	   	left  join activity_goods a on a.id=s.good_id
+	   	left  join product p on p.id=s.product_id 
+		where 
+		1=1
+		and s.id = #{id}		
+	</select>	
+	<!-- 审核单条 -->
+	<!-- <update id="checkSceneProduct" parameterType="Long">
+		update special_product s set  status = 1
+		where
+		s.id = #{id}
+	</update> -->
+	<!-- 取审单条  -->
+	<!-- <update id="uncheckSceneProduct" parameterType="Long">
+		update special_product s set  status = 0
+		where
+		s.id = #{id}
+	</update> -->
+	<!-- 审核单条（activityId） -->
+	<update id="checkSpecialProductByActivityId" parameterType="Long">
+		update activity_goods a set  status = 1
+		where
+		a.time_id = #{activityId} and a.status = 0
+	</update>
+	<!-- 审核单条（activityId） -->
+	<update id="uncheckSpecialProductByActivityId" parameterType="Long">
+		update activity_goods a set  status = 0
+		where
+		a.time_id = #{activityId} and a.status = 1
+	</update>
+	<!-- 插入单条  -->
+	<insert id="insertSpecialProduct" parameterType="SpecialProductPojo">
+		insert into special_product 
+		(special_id,title,introduction,product_id,good_id) 
+		values (#{specialId},#{title},#{introduction},#{productId},#{goodId})
+	</insert>	
+	<!-- 删除单条 -->
+	<delete id="delSpecialProduct" parameterType="Long">
+		delete from special_product where id = #{id}
+	</delete>	
+	<!-- 删除多条（SPECIAL_ID） -->
+	<delete id="delSpecialProductBySpecialId" parameterType="Long">
+		delete from special_product where special_id = #{specialId}
+	</delete>	
+	<!--更新单条-->
+	<update id="updateSpecialProduct" parameterType="SpecialProductPojo">
+		update special_product set
+		<if test="specialId != null">
+			special_id = #{specialId},
+		</if>
+	    <!-- <if test="title != null and title != ''">
+			title = #{title},
+		</if> -->
+		<if test="introduction != null">
+			introduction = #{introduction},
+		</if>
+		<if test="image != null and image !=''">
+			image = #{image},
+		</if>
+		<if test="productId != null">
+			product_id = #{productId},
+		</if>
+		<if test="goodId != null">
+			good_id = #{goodId},
+		</if>
+		title = #{title}
+		where id = #{id}
+	</update>	
+</mapper>

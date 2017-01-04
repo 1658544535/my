@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.CategorySettingMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id as id,
+		title as title,
+		banner as banner,
+		type as type,
+		(CASE WHEN type = 1 THEN '品类' WHEN type = 2 THEN '年龄' END)  as typeName,
+		sorting as sorting,
+		status as status,
+		(CASE WHEN status = 0 THEN '未审核' WHEN status = 1 THEN '已审核' END)  as statusName,
+		create_by as createBy,
+		create_date as createDate,
+		update_by as updateBy,
+		update_date as updateDate
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="CategorySettingPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			category_setting
+		where
+			id = #{id}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from category_setting
+		where 1=1
+		  <if test="id != null ">
+			and id = #{id}
+		  </if>
+		  <if test="title != null and title != '' ">
+			and title like concat("%",#{title},"%")
+		  </if>
+		  <if test="banner != null and banner != '' ">
+			and banner = #{banner}
+		  </if>
+		  <if test="type != null ">
+			and type = #{type}
+		  </if>
+		  <if test="sorting != null ">
+			and sorting = #{sorting}
+		  </if>
+		  <if test="status != null ">
+			and status = #{status}
+		  </if>
+		  <if test="createBy != null ">
+			and create_by = #{createBy}
+		  </if>
+		  <if test="createDate != null ">
+			and create_date = #{createDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and update_by = #{updateBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and update_date = #{updateDate}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="CategorySettingPojo">
+		select
+			<include refid="Base_Column_List" />
+		from category_setting
+		where 1=1
+			<if test="id != null ">
+			  and id = #{id}
+			</if>
+			<if test="title != null and title != '' ">
+			  and title like concat("%",#{title},"%")
+			</if>
+			<if test="banner != null and banner != '' ">
+			  and banner = #{banner}
+			</if>
+			<if test="type != null ">
+			  and type = #{type}
+			</if>
+			<if test="sorting != null ">
+			  and sorting = #{sorting}
+			</if>
+			<if test="status != null ">
+			  and status = #{status}
+			</if>
+			<if test="createBy != null ">
+			  and create_by = #{createBy}
+			</if>
+			<if test="createDate != null ">
+			  and create_date = #{createDate}
+			</if>
+			<if test="updateBy != null ">
+			  and update_by = #{updateBy}
+			</if>
+			<if test="updateDate != null ">
+			  and update_date = #{updateDate}
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="CategorySettingPojo">
+		update category_setting
+		<set>
+			<if test="title != null">
+			  title = #{title},
+			</if>
+			<if test="banner != null">
+			  banner = #{banner},
+			</if>
+			<if test="type != null">
+			  type = #{type},
+			</if>
+			<if test="sorting != null">
+			  sorting = #{sorting},
+			</if>
+			<if test="status != null">
+			  status = #{status},
+			</if>
+			<if test="createBy != null">
+			  create_by = #{createBy},
+			</if>
+			<if test="createDate != null">
+			  create_date = #{createDate},
+			</if>
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+			<if test="updateDate != null">
+			  update_date = #{updateDate},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from category_setting 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="CategorySettingPojo">
+		insert into category_setting
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="title != null">
+				title,
+			</if>
+			<if test="banner != null">
+				banner,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="sorting != null">
+				sorting,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="updateBy != null">
+				update_by,
+			</if>
+			<if test="updateDate != null">
+				update_date,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="title != null">
+				#{title},
+			</if>
+			<if test="banner != null">
+				#{banner},
+			</if>
+			<if test="type != null">
+				#{type},
+			</if>
+			<if test="sorting != null">
+				#{sorting},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+			<if test="createDate != null">
+				#{createDate},
+			</if>
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+			<if test="updateDate != null">
+				#{updateDate},
+			</if>
+		</trim>
+	</insert>
+	
+</mapper>

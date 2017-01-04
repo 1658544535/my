@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tzmb2c.web.mapper.NavigationMapper">
+	<!-- 查询所有的记录 -->
+	<select id="findNavigationList" resultType="NavigationPojo" parameterType="java.util.Map">
+		SELECT
+		n.id          as id,
+		n.name        as name,
+		n.level       as level,
+		(CASE WHEN level = 1 THEN '一级类目' WHEN level = 2 THEN '二级类目' END) as levelName,
+		n.category_id as categoryId,
+		n.sorting     as sorting,
+		n.status      as status,
+		(CASE WHEN status = 1 THEN '未审核' WHEN status = 2 THEN '已审核' END) as statusName,
+		n.create_by   as createBy,
+		n.create_date as createDate,
+		n.update_by   as updateBy,
+		n.update_date as updateDate
+		FROM
+		navigation n
+		WHERE
+		1 = 1
+		<if test="id != null">
+			and n.id = #{id}
+		</if>
+		<if test="name != null and name != '' ">
+			and n.name like CONCAT("%",#{name},"%")
+		</if>
+		<if test="status != null">
+			and n.status = #{status}
+		</if>
+		order by n.sorting,
+		n.update_date desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	<!-- 查询记录的数目 -->
+    <select id="findNavigationCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from navigation n
+		where 1=1
+       <if test="id != null">
+			and n.id = #{id}
+		</if>
+		<if test="name != null and name != '' ">
+			and n.name like CONCAT("%",#{name},"%")
+		</if>
+		<if test="status != null">
+			and n.status = #{status}
+		</if>
+	</select>
+	<!--审核某条-->
+	<update id="checkNavigation" parameterType="Long">
+		update navigation n set
+		status = 2,
+		update_date = now()
+		where 
+		n.id = #{id}
+	</update>	
+	<!--取审某条-->
+	<update id="uncheckNavigation" parameterType="Long">
+		update navigation n set
+		status = 1,
+		update_date = now()
+		where 
+		n.id = #{id}
+	</update>
+	<!--加入某条-->
+	<insert id="insertNavigation" parameterType="NavigationPojo">
+		insert into navigation (name,level,category_id,sorting,status,create_by,create_date,update_by,update_date)
+		values(#{name},#{level},#{categoryId},#{sorting},#{status},#{createBy},now(),#{updateBy},now())
+	</insert>	
+	<!-- 删除单条(id) -->
+	<delete id="delNavigation" parameterType="Long">
+		delete from navigation where id = #{id}
+	</delete>
+	<!-- 查找单条 -->
+	<select id="findNavigationById" resultType="NavigationPojo" parameterType="Long">
+		SELECT
+		n.id          as id,
+		n.name        as name,
+		n.level       as level,
+		(CASE WHEN level = 1 THEN '一级类目' WHEN level = 2 THEN '二级类目' END) as levelName,
+		n.category_id as categoryId,
+		n.sorting     as sorting,
+		n.status      as status,
+		(CASE WHEN status = 1 THEN '未审核' WHEN status = 2 THEN '已审核' END) as statusName,
+		n.create_by   as createBy,
+		n.create_date as createDate,
+		n.update_by   as updateBy,
+		n.update_date as updateDate
+	    from navigation n
+		where
+		n.id=#{id}
+	</select>
+	<!--编辑单条-->
+	<update id="updateNavigation" parameterType="NavigationPojo">
+		update navigation set
+        <if test="name != null and name != ''">
+			name = #{name},
+		</if>
+		<if test="level != null">
+			level = #{level},
+		</if>
+		<if test="categoryId != null and categoryId != ''">
+			category_id = #{categoryId},
+		</if>
+		<if test="sorting != null">
+			sorting = #{sorting},
+		</if>
+		<if test="status != null">
+			status = #{status},
+		</if>
+		<if test="updateBy!=null and updateBy!='' ">
+			update_by = #{updateBy},
+		</if>
+		update_date = now()
+		where  id = #{id}			
+	</update>
+</mapper>

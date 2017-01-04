@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="userOrderStatistics" extends="default">
+		<!-- 用户购物车页 -->
+		<action name="userOrderStatistics" class="com.tzmb2c.web.action.UserOrderStatisticsAction"
+			method="getUserOrderStatisticsCount">
+			<result>/page/system/user/userOrderStatistics.jsp</result>
+		</action>
+
+		<action name="UserOrderStatisticsDeleteId" class="com.tzmb2c.web.action.UserOrderStatisticsAction"
+			method="userOrderStatisticsDeleteId">
+
+		</action>
+
+		<action name="goFindUserOrderStatistics" class="com.tzmb2c.web.action.UserOrderStatisticsAction"
+			method="goFindUserOrderStatistics">
+			<result>/page/system/user/userOrderStatisticsupdate.jsp</result>
+		</action>
+		<action name="updateUserOrderStatistics" class="com.tzmb2c.web.action.UserOrderStatisticsAction"
+			method="updateUserOrderStatistics">
+		</action>
+		<!-- 用户订单结算 -->
+		<action name="jiesUserOrderStatistics" class="com.tzmb2c.web.action.UserOrderStatisticsAction"
+			method="jiesUserOrderStatistics">
+
+		</action>
+
+	</package>
+	<package name="userOrderStatistics-json" extends="json-default">
+		<action name="deleUserOrderStatistics" class="com.tzmb2c.web.action.UserOrderStatisticsAction"
+			method="deleUserOrderStatistics">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!--平台入口 -->
+		<action name="getUserOrderStatisticsCount" class="com.tzmb2c.web.action.UserOrderStatisticsAction"
+			method="getUserOrderStatisticsCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		<action name="userOrderStatisticsAllList" class="com.tzmb2c.web.action.UserOrderStatisticsAction"
+			method="userOrderStatisticsAllList">
+			<result type="json">
+				<param name="root">page.result</param>
+
+			</result>
+		</action>
+	</package>
+</struts>

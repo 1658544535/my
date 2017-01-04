@@ -1,0 +1,691 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>商家中心</title>
+		<link rel="stylesheet" href="../../css/default.css" media="all" />
+		<link rel="stylesheet" href="../../css/seller_common.css" type="text/css" media="all" />
+    </head>
+	<body>
+		<div id="head">
+			<div class="wrapper">
+				<div class="main-logo ">
+					<a class="main-logo-a" href="#" title="返回首页">
+						&nbsp;
+					</a>
+					<span class="sec-title">
+						<i class="b-inco">
+						</i>
+						<a href='../index.html'>
+							商家中心
+						</a>
+					</span>
+					<div id="st-nav">
+						<span id="login-status" class="op" data-status="1">
+							<a class="st-icons account" href="#">
+								yunyingbu@5315.cn
+							</a>
+							<a href="../login.html" rel="nofollow">
+								退出
+							</a>
+							|
+							<a href="../message.html">
+								消息
+							</a>
+						</span>
+						|
+						<a href="#" target="_blank">
+							商家咨询
+						</a>
+						|
+						<a class="bold" href="../help.html">
+							帮助中心
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="container">
+			<div class="ui-nav seller-nav">
+				<div class="ui-nav-main  seller-nav-bg">
+					<ul class="wrapper seller-nav-main" id="J_sellerNav">
+                        <li class="ui-nav-item">
+                            <a href="../index.html">
+                                首页
+                            </a>
+                        </li>
+                        <li class="ui-nav-item has-sub">
+                            <a href="../baseinfo/profile.html">
+                                基本信息
+                                <i class="iconfont">
+                                    &#xe601;
+                                </i>
+                            </a>
+                            <ul class="ui-nav-submain">
+                                <li class="ui-nav-subitem">
+                                    <a href="../baseinfo/profile.html">
+                                        基本信息
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="../baseinfo/pay_account.html">
+                                        收款银行账户
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="../baseinfo/invoice.html">
+                                        开票信息
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="../baseinfo/refund_address.html">
+                                        退货地址管理
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="../baseinfo/passwd.html">
+                                        修改密码
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="ui-nav-item has-sub">
+                            <a href="../productmng/plist.html">
+                                商品管理
+                                <i class="iconfont">
+                                    &#xe601;
+                                </i>
+                            </a>
+                            <ul class="ui-nav-submain">
+                                <li class="ui-nav-subitem">
+                                    <a href="../productmng/plist.html">
+                                        商品库
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="../productmng/select_v2.html">
+                                        添加商品
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="../productmng/brand.html">
+                                        品牌列表
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="../productmng/brand-add.html">
+                                        添加品牌
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="ui-nav-item has-sub">
+                            <a href="../martshow/martshow.html">
+                                品牌特卖
+                                <i class="iconfont">
+                                    &#xe601;
+                                </i>
+                            </a>
+                            <ul class="ui-nav-submain">
+                                <li class="ui-nav-subitem">
+                                    <a href="../martshow/martshow.html">
+                                        专场列表
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="../martshow/apply.html">
+                                        报名专场
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="ui-nav-item has-sub">
+                            <a href="../trademng/order.html" class="active">
+                                交易管理
+                                <i class="iconfont">
+                                    &#xe601;
+                                </i>
+                            </a>
+                            <ul class="ui-nav-submain">
+                                <li class="ui-nav-subitem">
+                                    <a href="../trademng/order.html">
+                                        我的订单
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem pageSellerOrderShipexportlist">
+                                    <a href="../trademng/ship.html">
+                                        发货
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="../trademng/refund.html">
+                                        售后管理
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+				</div>
+			</div>
+			<div id="content" class="wrapper">
+                <div class="pure-g admin-wrapper">
+                    <div class="pure-u-1 main">
+                        <style>
+                           .u-icon-fenxiao{display:inline-block;*display:inline;*zoom:1;height:14px;line-height:14px;color:#fff;background:#ffae2e;border:1px solid #fa9a12;border-radius:2px;padding:0 3px;}.ol-b-item-info{width:344px;}.ol-b-item-price.pink{text-align:left;}
+                        </style>
+                        <h1 class="seller-title">
+                            售后管理
+                            <a style="font-size: 14px;margin-left: 15px;" href="#"
+                            target="_blank">
+                                退货/退款帮助说明
+                            </a>
+                        </h1>
+                        <div class="p20">
+                            <div class="ui-box seller-search-form">
+                                <div class="ui-box-head">
+                                    <h3 class="ui-box-head-title">
+                                        售后查询
+                                    </h3>
+                                    <a href="#" class="ui-box-head-text underline">
+                                        查看所有待处理申请
+                                    </a>
+                                </div>
+                                <div class="ui-box-container">
+                                    <form action="#" method="" accept-charset="utf-8">
+                                        <div class="ui-box-content">
+                                            <div class="ui-form-item">
+                                                <label for="" class="ui-label">
+                                                    服务编号
+                                                </label>
+                                                <input class="ui-input" type="text" name="refund_id" value="">
+                                            </div>
+                                            <div class="ui-form-item">
+                                                <label for="" class="ui-label">
+                                                    售后状态
+                                                </label>
+                                                <select class="ui-select" name="status">
+                                                    <option value="0" selected="">
+                                                        全部
+                                                    </option>
+                                                    <option value="2">
+                                                        等待寄回商品
+                                                    </option>
+                                                    <option value="3">
+                                                        等待签收退货
+                                                    </option>
+                                                    <option value="6">
+                                                        等待商家处理
+                                                    </option>
+                                                    <option value="4">
+                                                        已完成
+                                                    </option>
+                                                    <option value="-1">
+                                                        已取消
+                                                    </option>
+                                                    <option value="-2">
+                                                        待仲裁
+                                                    </option>
+                                                    <option value="-4">
+                                                        收货仲裁
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="ui-form-item">
+                                                <label for="" class="ui-label">
+                                                    订单号
+                                                </label>
+                                                <input class="ui-input" type="text" name="order_id" value="">
+                                            </div>
+                                            <div class="ui-form-item c-999">
+                                                <label for="" class="ui-label">
+                                                    申请时间
+                                                </label>
+                                                <input class="ui-input ui-input-small" id="create-time-start-selector" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'create-time-end-selector\')}'})" type="text" name="create_time_start" value="">
+                                                至
+                                                <input class="ui-input ui-input-small" id="create-time-end-selector" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'create-time-start-selector\')}'})" type="text" name="create_time_end" value="">
+                                            </div>
+                                            <div class="ui-form-item">
+                                                <label for="" class="ui-label">
+                                                    专场ID
+                                                </label>
+                                                <input class="ui-input" type="text" name="event_id" value="">
+                                            </div>
+                                            <div class="ui-form-item">
+                                                <label for="" class="ui-label">
+                                                    手机号
+                                                </label>
+                                                <input class="ui-input" type="text" name="receiver_phone" value="">
+                                            </div>
+                                            <div class="ui-form-item search-btn">
+                                                <input type="hidden" name="refund_type" value="">
+                                                <button type="submit" class="ui-button ui-button-mred">
+                                                    <i class="iconfont">&#xf012c;</i>
+                                                    查询
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <table class="ui-table order-list">
+                                <thead>
+                                    <tr>
+                                        <th class="ol-order-items">
+                                            商品
+                                        </th>
+                                        <th class="ol-order-price">
+                                            单价
+                                        </th>
+                                        <th class="ol-order-number">
+                                            售后数量
+                                        </th>
+                                        <th class="ol-order-number">
+                                            售后类型
+                                        </th>
+                                        <th class="ol-order-price">
+                                            退货金额
+                                        </th>
+                                        <th class="ol-order-status">
+                                            售后状态
+                                        </th>
+                                        <th class="ol-order-operate">
+                                            操作
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <div class="trade-entry mt-10">
+                                <div class="order-entry">
+                                    <div class="order-head">
+                                        <span>
+                                            服务编号：2617680
+                                        </span>
+                                        <span>
+                                            申请时间：2015-11-20 16:24
+                                        </span>
+                                        <span>
+                                            买家姓名：徐莹
+                                        </span>
+                                        <span>
+                                            手机号码：13863089316
+                                        </span>
+                                    </div>
+                                    <table class="pure-table">
+                                        <tbody>
+                                            <tr class="order-item">
+                                                <td class="ol-b-item-info clearfix">
+                                                    <a class="image" href="javascript:;">
+                                                        <img src="http://b1.hucdn.com/upload/item/1509/21/01155879446827_800x800.jpg!60x60.jpg">
+                                                    </a>
+                                                    <span class="title c-666">
+                                                        柏晖6807 仿真嘉乐岛表演时间爵士鼓6件套益智玩具
+                                                    </span>
+                                                    <span class="sku">
+                                                        订单号：
+                                                        <a target="_blank" class="c-999" href="order-detail.html">
+                                                            231758287635987577
+                                                        </a>
+                                                    </span>
+                                                </td>
+                                                <td class="ol-b-item-price">
+                                                    <p>
+                                                        ￥68.00
+                                                    </p>
+                                                </td>
+                                                <td class="ol-b-number c-999">
+                                                    x 1
+                                                </td>
+                                                <td class="ol-b-number c-999">
+                                                    -
+                                                </td>
+                                                <td class="ol-b-item-price pink">
+                                                    ￥68.00
+                                                </td>
+                                                <td class="ol-b-status c-999">
+                                                    <p>
+                                                        商品已寄出
+                                                    </p>
+                                                    <p>
+                                                        <a href="refund-detail.html" target="_blank">
+                                                            售后详情
+                                                        </a>
+                                                    </p>
+                                                </td>
+                                                <td class="ol-b-operate">
+                                                    <p style="margin-bottom: 10px">
+                                                        <a href="javascript:void(0)" ba-ins="click~refundConfirm:2617680" class="ui-button ui-button-sblue">
+                                                            确认收货
+                                                        </a>
+                                                    </p>
+                                                    <p ba-ins="refundCountDown" data-format="{d}天{hh}时{mm}分{ss}秒" data-time="1448612799"
+                                                    style="color:#ffc700">
+                                                        <div wg-view="main" widget-id="widgetCountdown9767597991448176867331"
+                                                        widget-name="widgetCountdown" class="countdown">
+                                                            5天00时55分02秒
+                                                        </div>
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="trade-entry mt-10">
+                                <div class="order-entry">
+                                    <div class="order-head">
+                                        <span>
+                                            服务编号：2615356
+                                        </span>
+                                        <span>
+                                            申请时间：2015-11-20 15:17
+                                        </span>
+                                        <span>
+                                            买家姓名：叶花
+                                        </span>
+                                        <span>
+                                            手机号码：13758199378
+                                        </span>
+                                    </div>
+                                    <table class="pure-table">
+                                        <tbody>
+                                            <tr class="order-item">
+                                                <td class="ol-b-item-info clearfix">
+                                                    <a class="image" href="javascript:;">
+                                                        <img src="http://b1.hucdn.com/upload/item/1511/04/08480209666827_600x600.jpg!60x60.jpg">
+                                                    </a>
+                                                    <span class="title c-666">
+                                                        万达隆W037 3合1餐具手提箱过家家益智玩具
+                                                    </span>
+                                                    <span class="sku">
+                                                        订单号：
+                                                        <a target="_blank" class="c-999" href="order-detail.html">
+                                                            232178220885846625
+                                                        </a>
+                                                    </span>
+                                                </td>
+                                                <td class="ol-b-item-price">
+                                                    <p>
+                                                        ￥68.00
+                                                    </p>
+                                                </td>
+                                                <td class="ol-b-number c-999">
+                                                    x 1
+                                                </td>
+                                                <td class="ol-b-number c-999">
+                                                    -
+                                                </td>
+                                                <td class="ol-b-item-price pink">
+                                                    ￥68.00
+                                                </td>
+                                                <td class="ol-b-status c-999">
+                                                    <p>
+                                                        等待寄回商品
+                                                    </p>
+                                                    <p>
+                                                        <a href="refund-detail.html" target="_blank">
+                                                            售后详情
+                                                        </a>
+                                                    </p>
+                                                </td>
+                                                <td class="ol-b-operate">
+                                                    <p>
+                                                        <a target="_blank" href="#">
+                                                            申请客服介入
+                                                        </a>
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="trade-entry mt-10">
+                                <div class="order-entry">
+                                    <div class="order-head">
+                                        <span>
+                                            服务编号：2605382
+                                        </span>
+                                        <span>
+                                            申请时间：2015-11-20 10:56
+                                        </span>
+                                        <span>
+                                            买家姓名：刘凌云
+                                        </span>
+                                        <span>
+                                            手机号码：13668773332
+                                        </span>
+                                    </div>
+                                    <table class="pure-table">
+                                        <tbody>
+                                            <tr class="order-item">
+                                                <td class="ol-b-item-info clearfix">
+                                                    <a class="image" href="javascript:;">
+                                                        <img src="http://b1.hucdn.com/upload/item/1509/23/77084668886827_800x800.jpg!60x60.jpg">
+                                                    </a>
+                                                    <span class="title c-666">
+                                                        柏晖仿真音乐购物车677-678过家家玩具
+                                                    </span>
+                                                    <span class="sku">
+                                                        订单号：
+                                                        <a target="_blank" class="c-999" href="order-detail.html">
+                                                            231881543468877138
+                                                        </a>
+                                                    </span>
+                                                </td>
+                                                <td class="ol-b-item-price">
+                                                    <p>
+                                                        ￥58.00
+                                                    </p>
+                                                </td>
+                                                <td class="ol-b-number c-999">
+                                                    x 1
+                                                </td>
+                                                <td class="ol-b-number c-999">
+                                                    -
+                                                </td>
+                                                <td class="ol-b-item-price pink">
+                                                    ￥55.10
+                                                </td>
+                                                <td class="ol-b-status c-999">
+                                                    <p>
+                                                        商品已寄出
+                                                    </p>
+                                                    <p>
+                                                        <a href="refund-detail.html" target="_blank">
+                                                            售后详情
+                                                        </a>
+                                                    </p>
+                                                </td>
+                                                <td class="ol-b-operate">
+                                                    <p style="margin-bottom: 10px">
+                                                        <a href="javascript:void(0)" ba-ins="click~refundConfirm:2605382" class="ui-button ui-button-sblue">
+                                                            确认收货
+                                                        </a>
+                                                    </p>
+                                                    <p ba-ins="refundCountDown" data-format="{d}天{hh}时{mm}分{ss}秒" data-time="1448602036"
+                                                    style="color:#ffc700">
+                                                        <div wg-view="main" widget-id="widgetCountdown7243878481448176867430"
+                                                        widget-name="widgetCountdown" class="countdown">
+                                                            4天21时55分39秒
+                                                        </div>
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="trade-entry mt-10">
+                                <div class="order-entry">
+                                    <div class="order-head">
+                                        <span>
+                                            服务编号：2571451
+                                        </span>
+                                        <span>
+                                            申请时间：2015-11-19 10:26
+                                        </span>
+                                        <span>
+                                            买家姓名：白乐乐
+                                        </span>
+                                        <span>
+                                            手机号码：18752898509
+                                        </span>
+                                    </div>
+                                    <table class="pure-table">
+                                        <tbody>
+                                            <tr class="order-item">
+                                                <td class="ol-b-item-info clearfix">
+                                                    <a class="image" href="javascript:;">
+                                                        <img src="http://b1.hucdn.com/upload/item/1509/22/04177901836827_800x800.jpg!60x60.jpg">
+                                                    </a>
+                                                    <span class="title c-666">
+                                                        柏晖622 婕茜小屋-音乐沐浴缸
+                                                    </span>
+                                                    <span class="sku">
+                                                        订单号：
+                                                        <a target="_blank" class="c-999" href="order-detail.html">
+                                                            231754448904493983
+                                                        </a>
+                                                    </span>
+                                                </td>
+                                                <td class="ol-b-item-price">
+                                                    <p>
+                                                        ￥43.50
+                                                    </p>
+                                                </td>
+                                                <td class="ol-b-number c-999">
+                                                    x 1
+                                                </td>
+                                                <td class="ol-b-number c-999">
+                                                    -
+                                                </td>
+                                                <td class="ol-b-item-price pink">
+                                                    ￥43.50
+                                                </td>
+                                                <td class="ol-b-status c-999">
+                                                    <p>
+                                                        售后关闭
+                                                    </p>
+                                                    <p>
+                                                        无需寄回
+                                                    </p>
+                                                    <p>
+                                                        <a href="refund-detail.html" target="_blank">
+                                                            售后详情
+                                                        </a>
+                                                    </p>
+                                                </td>
+                                                <td class="ol-b-operate">
+                                                    <p>
+                                                        <a target="_blank" href="#">
+                                                            申请客服介入
+                                                        </a>
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="ui-paging">
+                                <span class="ui-paging-prev">
+                                    <i class="iconfont">&#xf016e;</i>
+                                    上一页
+                                </span>
+                                <a href="#" class="ui-paging-next">
+                                    下一页
+                                    <i class="iconfont">&#xf016d;</i>
+                                </a>
+                                <span class="ui-paging-info">
+                                    <span class="ui-paging-bold">
+                                        1/2
+                                    </span>
+                                    页（共44条）
+                                </span>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+		</div>
+		<div class="m-feedback J_feedback">
+		</div>
+		<div class="m-fb-shadow J_fb-shadow">
+		</div>
+		<div class="m-fb-dialog J_fb-dialog">
+            <form action="">
+                <div class="title">
+                    意见反馈
+                </div>
+                <div class="mnc">
+                    <p class="control-label">
+                        您的意见：
+                    </p>
+                    <textarea class="control-text J_fb-text" placeholder="请给我们提意见哟，么么哒！"></textarea>
+                </div>
+                <div class="footer">
+                    <button class="btn btn-sure">
+                        确定
+                    </button>
+                    <button class="btn btn-cancel">
+                        取消
+                    </button>
+                </div>
+            </form>
+		</div>
+		<div id="footer">
+			<div class="footer-nav">
+				<a rel="nofollow" href="../index.html">
+					首页
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="../help.html">
+					关于淘竹马
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="../help.html">
+					商家入驻
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="../help.html">
+					正品保证
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="../help.html">
+					人才招聘
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="../help.html">
+					联系我们
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="../help.html">
+					帮助中心
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="../help.html">
+					友情链接
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="#">
+					手机客户端
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="../help.html">
+					客服在线
+				</a>
+			</div>
+			<div class="footer-content">
+				<div class="wrapper">
+					<p>
+                    	广东群宇互动科技有限公司 Copyright © 2014 All Rights Reserved 版权所有 粤ICP备13081564号
+					</p>
+				</div>
+			</div>
+		</div>
+		<script src="../../js/jquery-1.11.2.min.js" type="text/javascript"></script>
+		<script src="../../js/base.js" type="text/javascript"></script>
+		<script src="../../js/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+	</body>
+</html>

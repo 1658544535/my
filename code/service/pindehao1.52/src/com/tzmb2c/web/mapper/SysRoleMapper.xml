@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.SysRoleMapper">
+ 
+
+	<select id="getSysRoleAll" resultType="sysRolePojo">
+		select t.id as id, t.type as type, t.name as name ,t.name_en as nameEn, t.sorting as sorting,t.status as status 
+		from sys_role t order by t.create_date desc
+	</select>
+	
+	<select id="getfindByIdSysRole" parameterType="Long" resultType="sysRolePojo" >
+		select t.id as id, t.type as type, t.name as name ,t.name_en as nameEn, t.sorting as sorting,t.status as status 
+		from sys_role t where
+		t.id = #{id} 
+	</select>
+
+	<insert id="insertSysRole" parameterType="sysRolePojo">
+		insert into
+		sys_role(name,name_en,sorting,status,create_by,create_date,update_by,update_date,remarks,version)
+		values(#{name},#{nameEn},#{sorting},#{status},#{createBy},#{createDate},#{updateBy},#{updateDate},#{remarks},#{version})
+	</insert>
+	
+	<delete id="delSysRole" parameterType="Long">
+		delete from sys_role where id = #{id}
+	</delete>
+	
+	<delete id="deleteSysRole"  parameterType="Long">
+		delete from sys_role where id = #{id}
+	</delete>
+	
+	<update id="updateSysRole" parameterType="sysRolePojo">
+	
+		update sys_role set
+		update_by = #{updateBy},
+		update_date = #{updateDate},
+		type = #{type},
+		name =#{name},
+		name_en =#{nameEn},
+		sorting =#{sorting},
+		status =#{status}
+		where id = #{id}
+	</update>
+	
+	<select id="sysRoleAllCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from sys_role where
+		1=1
+		<if test="name!=null and name!=''">
+			and name like CONCAT("%",#{name},"%")
+		</if>
+	</select>
+	
+	<select id="sysRoleAllList" resultType="sysRolePojo"
+		parameterType="java.util.Map">
+
+		select t.id as id, 
+		t.type as type, 
+		t.name as name ,
+		t.name_en as nameEn, 
+		t.sorting as sorting,
+		t.status as status,
+		(select name from sys_dict where value=t.status and type = 'sys_role_status') statusName
+		from sys_role as t
+		where
+		1=1
+
+		<if test="name!=null and name!=''">
+			and name like CONCAT("%",#{name},"%")
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+		
+	</select>
+	
+</mapper>

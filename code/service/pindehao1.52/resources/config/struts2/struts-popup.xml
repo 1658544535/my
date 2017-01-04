@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="popup" extends="default">
+		<!-- 页面（全部）  -->
+		<action name="popupList" class="com.tzmb2c.web.action.PopupAction" method="popupListCount">
+			<result name="success">/page/system/popup/popup.jsp</result>
+		</action>	
+		<!-- 根据ID删除    -->
+		<action name="delPopup" class="com.tzmb2c.web.action.PopupAction" method="delPopup">
+		</action>
+		<!-- 页面（编辑） -->
+		<action name="goUpdatePopup" class="com.tzmb2c.web.action.PopupAction" method="goUpdatePopup">
+			<result name="success">/page/system/popup/updatePopup.jsp</result>
+		</action>
+		<!-- 编辑                 -->
+		<action name="updatePopup" class="com.tzmb2c.web.action.PopupAction" method="updatePopup">
+		</action>
+		<!-- 通过审核         -->
+		<action name="checkPopup" class="com.tzmb2c.web.action.PopupAction" method="checkPopup">
+		</action>
+		<!-- 取消审核         -->
+		<action name="uncheckPopup" class="com.tzmb2c.web.action.PopupAction" method="uncheckPopup">
+		</action>
+		<!-- 新增                 -->
+		<action name="addPopup" class="com.tzmb2c.web.action.PopupAction" method="addPopup">
+		    <result name="success">/page/system/popup/addPopup.jsp</result>
+		</action>
+		<!-- 新增提交         -->
+		<action name="addPopupOK" class="com.tzmb2c.web.action.PopupAction" method="addPopupOK">
+		</action>
+	</package>
+	<package name="popup-json" extends="json-default">
+		<!-- 内容 -->
+		<action name="popupListAll" class="com.tzmb2c.web.action.PopupAction" method="popupListAll">
+			<result type="json">
+			<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="popupListCount" class="com.tzmb2c.web.action.PopupAction" method="popupListCount">
+			<result type="json">
+			<param name="root">page.rowCount</param>
+			</result>
+		</action>		
+	</package>
+</struts>

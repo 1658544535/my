@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="categoryDetailSetting" extends="default">
+	<!--频道列表-->
+	<action name="categoryDetailSettingList" class="com.tzmb2c.web.action.CategoryDetailSettingAction" method="findCategoryDetailSettingCount">
+			<result>/page/system/categoryDetailSetting/categoryDetailSettingList.jsp</result>
+		</action>	 
+		<!-- 根据ID删除 -->
+		<action name="delCategoryDetailSettingById" class="com.tzmb2c.web.action.CategoryDetailSettingAction" method="delCategoryDetailSettingById">
+		</action>
+		<!-- 根据ID批量删除 -->
+		<action name="delCategoryDetailSettingAllById" class="com.tzmb2c.web.action.CategoryDetailSettingAction" method="delCategoryDetailSettingAllById">
+		</action>
+		<!-- 根据ID编辑(跳转) -->
+		<action name="goUpdateCategoryDetailSettingById" class="com.tzmb2c.web.action.CategoryDetailSettingAction" method="findCategoryDetailSettingById">
+			<result name="success">/page/system/categoryDetailSetting/updateCategoryDetailSettingList.jsp</result>
+		</action>
+	    <!-- 根据ID编辑 -->
+		<action name="updateCategoryDetailSettingById" class="com.tzmb2c.web.action.CategoryDetailSettingAction" method="updateCategoryDetailSettingById">
+		</action>
+		<!-- 批量通过审核 -->
+		<action name="checkCategoryDetailSettingAllById" class="com.tzmb2c.web.action.CategoryDetailSettingAction" method="checkCategoryDetailSettingAllById">
+		</action>
+		<!-- 通过审核 -->
+		<action name="checkCategoryDetailSettingById" class="com.tzmb2c.web.action.CategoryDetailSettingAction" method="checkCategoryDetailSettingById">
+		</action>
+		<!-- 取消审核 -->
+		<action name="uncheckCategoryDetailSettingById" class="com.tzmb2c.web.action.CategoryDetailSettingAction" method="uncheckCategoryDetailSettingById">
+		</action>
+		<!-- （跳转）新增频道 -->
+		<action name="goAddCategoryDetailSettingList" class="com.tzmb2c.web.action.CategoryDetailSettingAction" method="goAddCategoryDetailSettingList">
+			<result name="success">/page/system/categoryDetailSetting/addCategoryDetailSettingList.jsp</result>
+		</action>	
+		<!-- 提交新增频道 -->
+		<action name="addCategoryDetailSettingListOk" class="com.tzmb2c.web.action.CategoryDetailSettingAction" method="addCategoryDetailSettingListOk">			
+		</action>		  
+		
+	</package>
+	
+	<package name="categoryDetailSetting-json" extends="json-default">
+		    <action name="findCategoryDetailSettingList" class="com.tzmb2c.web.action.CategoryDetailSettingAction" method="findCategoryDetailSettingList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="findCategoryDetailSettingCount" class="com.tzmb2c.web.action.CategoryDetailSettingAction" method="findCategoryDetailSettingCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+	</package>
+</struts>

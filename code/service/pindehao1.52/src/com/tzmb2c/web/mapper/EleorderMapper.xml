@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.EleorderMapper">
+ 	<select id="findEleorderAll" resultType="eleorderPojo" parameterType="java.util.Map">
+		select sum(num) as allnum,sum(pay)as allpay,id,order_no as orderNo,product_id as productId,num,
+		product_name as productName,pay,consignee_address as consigneeAddress,consignee,
+		consignee_phone as consigneePhone,create_date as createDateStr 
+		from ele_order where 1=1 
+		<if test="beganday!=null and beganday!='' and endday!=null and endday!=''">
+			and create_date between #{beganday} and #{endday}
+		</if>
+		group by order_no
+		order by id
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	<select id="findEleorderByorderNo" resultType="eleorderPojo" parameterType="java.util.Map">
+		select id,order_no as orderNo,product_id as productId,num,
+		product_name as productName,pay,consignee_address as consigneeAddress,consignee,
+		consignee_phone as consigneePhone,create_date as createDateStr 
+		from ele_order where 1=1 
+		<if test="orderNo != null and orderNo!=''">
+			and order_no=#{orderNo}
+		</if>
+		<if test="productId != null and productId!=''">
+			and product_id=#{productId}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	<select id="findEleorderByorderNos" resultType="eleorderPojo" parameterType="java.util.Map">
+		select SUM(num) as allnum,SUM(pay) as allpay,id,order_no as orderNo,consignee_address as consigneeAddress,consignee,
+		consignee_phone as consigneePhone,create_date as createDateStr 
+		from ele_order where 1=1 
+		<if test="orderNo != null and orderNo!=''">
+			and order_no=#{orderNo}
+		</if>
+	</select>
+	<select id="EleorderAllCount" resultType="int" parameterType="java.util.Map">
+		select count(DISTINCT order_no)
+		from ele_order where 1=1
+		<if test="beganday!=null and beganday!='' and endday!=null and endday!=''">
+			and create_date between #{beganday} and #{endday}
+		</if>
+		<if test="productId != null and productId!=''">
+			and product_id=#{productId}
+		</if>
+	</select>
+	<insert id="insertEleorder" parameterType="java.util.Map">
+		insert into ele_order(order_no,product_id,num,product_name,pay,consignee_address,consignee,consignee_phone,create_date,weight,espress,espress_no,espress_price)
+		values(#{orderNo},#{productId},#{num},#{productName},#{pay},#{consigneeAddress},#{consignee},#{consigneePhone},#{createDate},#{weight},#{espress},#{espressNo},#{espressPrice})
+	</insert>
+	
+	<!-- 电商成交总数 -->
+	<select id="sellSumNum" resultType="int"
+		parameterType="Long">
+		select ifnull(sum(num),0) from ele_order  where product_id= #{productId}
+	</select>
+</mapper>

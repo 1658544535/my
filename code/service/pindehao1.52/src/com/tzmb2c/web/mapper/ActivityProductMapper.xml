@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.ActivityProductMapper">
+
+	<!--前台调用，默认审核状态为1-->
+	<select id="getActivityProductCount" parameterType="java.util.Map" resultType="int">
+		SELECT
+		    count(*)
+		FROM product_activity b
+		LEFT JOIN product a
+		ON a.id = b.product_id
+		LEFT JOIN sys_login c 
+		ON a.user_id = c.id 
+		LEFT JOIN user_shop us
+		ON us.user_id = a.user_id
+		WHERE 1=1
+		<if test="productId !=null and productId != ''">
+			and a.id = #{productId}
+		</if>
+		<if test="name != null and name != ''">
+			and us.name like CONCAT("%",#{name},"%" )
+		</if>
+		<if test="productName != null and productName != ''">
+			and a.product_name like CONCAT("%",#{productName},"%" )
+		</if>
+		<if test="productNum !=null and productNum != ''">
+			and a.product_num like CONCAT("%",#{productNum},"%" )
+		</if>
+		<if test="type !=null and type != ''">
+			and b.type = #{type}
+		</if>
+		<if test="status!=null">
+			and b.status = #{status}
+		</if>
+		<if test="proStatus!=null">
+			and a.status = #{proStatus}
+		</if>
+		<if test="remarks !=null and remarks != ''">
+	        and b.remarks = #{remarks}
+        </if>
+        <if test="proStatus !=null">
+	        and a.status = #{proStatus}
+        </if>
+		order by a.create_date desc
+	</select>
+	
+	<select id="getActivityProductList" parameterType="java.util.Map" resultType="activityProductPojo">
+		SELECT
+		    a.id as productId,
+		    a.user_id as userId,
+		    a.product_no as productNo,
+		    a.product_num as productNum,
+		    a.product_type_id as productTypeId,
+		    (select name from product_type where id = a.product_type_id) as productTypeName,
+		    a.product_name as productName,
+		    a.distribution_price as distributionPrice,
+		    a.selling_price as sellingPrice,
+		    a.sell_number as sellNumber,
+		    a.base_number as baseNumber,
+		    a.image as image,
+		    b.id as id,
+		    a.status as proStatus,
+		    (case when a.status = 0 then '下架' when a.status=1 then '在售' end) as proStatusName,
+		    b.status as status,
+		    (select s.name from sys_dict s where s.value=b.status and s.type="status") as statusName,
+		    b.sorting as sorting,
+		    c.name as userName,
+		    b.type as type,
+		    b.recommendation as recommendation,
+		    b.product_type as productType,		   
+		    <if test="timeIdIsN != null and timeIdIsN != '' ">
+			g.time_id as activityId,
+			g.active_price as activePrice,
+			g.sell_price as sellPrice,
+			at.begin_time as beginTime,
+			at.end_time as endTime,
+			at.title as activityTitle,
+		    </if>	
+            us.name as name
+		    from product_activity b
+		    left join product a on a.id = b.product_id
+		    left join sys_login c on a.user_id = c.id 
+		    left join user_shop us on us.user_id = a.user_id
+		    <if test="timeIdIsN != null and timeIdIsN != '' ">
+		    left join activity_goods g on g.product_id = b.product_id 
+			left join activity_time at on g.time_id = at.id
+			left join special_show ss on at.id = ss.activity_id
+		    </if>	
+		WHERE 1=1	
+		<if test="timeIdIsN != null and timeIdIsN != '' ">
+			and ss.status = 4
+			and g.status = 1
+			and g.time_id is not null
+			and at.channel = 1
+			and at.isdelete = '0'
+			<if test="activityType != null">
+				and at.type = #{activityType}
+			</if>
+			and ((at.type = 0
+			and date_format(now(),'%Y-%m-%d') = date_format(at.activity_date,'%Y-%m-%d')
+			and date_format(now(),'%H:%i') &gt;= at.begin_time 
+			and date_format(now(),'%H:%i') &lt; at.end_time)
+			or (at.type > 0
+			and date_format(now(),'%Y-%m-%d %T') &gt;= date_format(at.begin_time,'%Y-%m-%d %T')
+			and date_format(now(),'%Y-%m-%d %T') &lt; date_format(at.end_time,'%Y-%m-%d %T')))
+		</if>		 
+		<if test="productId !=null and productId != ''">
+            	and a.id = #{productId}   
+		</if>
+		<if test="name != null and name != ''">
+			and us.name like CONCAT("%",#{name},"%" )
+		</if>
+		<if test="productName != null and productName != ''">
+			and a.product_name like CONCAT("%",#{productName},"%" )
+		</if>
+		<if test="productNum !=null and productNum != ''">
+			and a.product_num like CONCAT("%",#{productNum},"%" )
+		</if>
+		<if test="type !=null and type != ''">
+			and b.type = #{type}
+		</if>
+		<if test="productType !=null and productType != ''">
+			and b.product_type = #{productType}
+		</if>
+		<if test="status!=null">
+			and b.status = #{status}
+		</if>
+		<if test="remarks !=null and remarks != ''">
+	        and b.remarks = #{remarks}
+        </if>
+        <if test="titleId !=null and titleId != ''">
+	        and b.title_id = #{titleId}
+        </if>
+		<if test="proStatus !=null">
+	        and a.status = #{proStatus}
+        </if>
+		<if test="sorting == null or sorting == ''">
+			order by a.create_date desc
+        </if>
+		<if test="sorting != null and sorting == 1">
+			order by a.sell_number+a.base_number desc
+        </if>
+		<if test="sorting != null and sorting == 11">
+			order by a.sell_number+a.base_number asc
+        </if>
+		<if test="timeIdIsN == null and sorting != null and sorting == 2">
+			order by a.distribution_price desc
+        </if>
+		<if test="timeIdIsN == null and sorting != null and sorting == 22">
+			order by a.distribution_price asc
+        </if>
+		<if test="timeIdIsN != null and sorting != null and sorting == 2">
+			order by g.active_price desc
+        </if>
+		<if test="timeIdIsN != null and sorting != null and sorting == 22">
+			order by g.active_price asc
+        </if>
+		<if test="sorting != null and sorting == 4">
+			order by a.hits desc
+        </if>
+		<if test="sorting != null and sorting == 44">
+			order by a.hits asc
+        </if>
+	    <if test="pageSize!=null and pageSize !=''">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<select id="getActivityProductListWeb" parameterType="java.util.Map" resultType="activityProductPojo">
+		SELECT
+		    a.id as productId,
+		    a.product_name as productName,
+		    a.image as image,
+		    b.id as id,
+		    b.type as type,
+		    b.product_type as productType,
+		    b.activity_id as activityId,
+		    b.title_id as titleId,	
+		    g.active_price as activePrice,
+			g.sell_price as sellPrice,
+			t.title as activityTitle  
+		    from product_activity b
+		    left join product a on a.id = b.product_id
+		    left join activity_goods g on g.product_id = b.product_id and g.time_id = b.activity_id
+		    left join activity_time t on t.id = b.activity_id
+		    WHERE 1=1	
+			and g.status = 1
+			and t.isdelete = '0'
+			and t.type = 3
+			and b.status = 1
+			and a.status = 1
+		<if test="type !=null and type != ''">
+			and b.type = #{type}
+		</if>
+		<if test="productType !=null and productType != ''">
+			and b.product_type = #{productType}
+		</if>
+        <if test="titleId !=null and titleId != ''">
+	        and b.title_id = #{titleId}
+        </if>
+        order by b.sorting
+        <if test="limitNo!=null and limitNo !=''">
+			limit  #{limitNo} 
+		</if>		
+	</select>
+	
+	<select id="getActivityProductById" parameterType="java.util.Map" resultType="activityProductPojo">
+		SELECT
+		    a.id as id,
+		    a.type as type,
+		    a.product_id as productId,
+		    (select id from special_show where activity_id = a.activity_id) as specialId,
+		    a.sorting as sorting,
+		    a.status as status,
+		    (select name from sys_dict where value = a.status and type="status") as statusName,
+		    a.recommendation as recommendation,
+		    a.image as image,
+		    a.create_by as createBy,
+		    a.create_date as createDate,
+		    a.update_by as updateBy,
+		    a.update_date as updateDate,
+		    a.remarks as remarks,
+		    a.product_type as productType,
+		    a.category_id as categoryId,
+		    (CASE WHEN a.product_type = 1 THEN '活动单品' WHEN a.product_type = 2 THEN '单品连接专场' END) as productTypeName,
+		    a.activity_id as activityId
+		FROM product_activity a
+		WHERE 1=1
+		<if test="remarks !=null and remarks != ''">
+			and a.remarks = #{remarks}
+		</if>
+		<if test="type !=null and type != ''">
+		    and a.type = #{type}
+	    </if>
+		<if test="productId!=null and productId !=''">
+			and a.product_Id = #{productId}
+		</if>
+		<if test="recommendation!=null and recommendation !=''">
+			and a.recommendation = #{recommendation}
+		</if>
+		<if test="id !=null and id != ''">
+			and a.id = #{id}
+		</if>
+	</select>
+	<!-- 
+	<insert id="insertActivityProduct" parameterType="ActivityProductPojo">
+		insert into product_activity(id,type,product_id,sorting,status,recommendation,create_by,create_date,update_by,update_date,remarks,product_type,activity_id,title_id,image,category_id)
+		values(#{id},#{type},#{productId},#{sorting},#{status},#{recommendation},#{createBy},now(),#{updateBy},now(),#{remarks},#{productType},#{activityId},#{titleId},#{image},#{categoryId})
+	</insert>
+	-->
+	<insert id="insertActivityProduct" useGeneratedKeys="true" keyProperty="id" parameterType="ActivityProductPojo">
+		insert into product_activity
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="productId != null">
+				product_id,
+			</if>
+			<if test="sorting != null">
+				sorting,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+			<if test="updateBy != null">
+				update_by,
+			</if>
+			<if test="remarks != null">
+				remarks,
+			</if>
+			<if test="recommendation != null">
+				recommendation,
+			</if>
+			<if test="productType != null">
+				product_type,
+			</if>
+			<if test="activityId != null">
+				activity_id,
+			</if>
+			<if test="titleId != null">
+				title_id,
+			</if>
+			<if test="image != null">
+				image,
+			</if>
+			<if test="categoryId != null">
+				category_id,
+			</if>
+			create_date,
+			update_date,
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="type != null">
+				#{type},
+			</if>
+			<if test="productId != null">
+				#{productId},
+			</if>
+			<if test="sorting != null">
+				#{sorting},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+			<if test="remarks != null">
+				#{remarks},
+			</if>
+			<if test="recommendation != null">
+				#{recommendation},
+			</if>
+			<if test="productType != null">
+				#{productType},
+			</if>
+			<if test="activityId != null">
+				#{activityId},
+			</if>
+			<if test="titleId != null">
+				#{titleId},
+			</if>
+			<if test="image != null">
+				#{image},
+			</if>
+			<if test="categoryId != null">
+				#{categoryId},
+			</if>
+			now(),
+			now(),
+		</trim>
+	</insert>
+	
+	<update id="checkActivityProduct" parameterType="Long">
+		update product_activity t set
+		status = 1,
+		update_date = now()
+		where
+		t.id = #{id}
+	</update>
+	
+	<update id="uncheckActivityProduct" parameterType="Long">
+		update product_activity t set
+		status = 0,
+		update_date = now()
+		where
+		t.id = #{id}
+	</update>
+	
+	<update id="updateActivityProduct" parameterType="ActivityProductPojo">
+		update product_activity t 
+		<set>
+		<if test="productType != null">
+			product_type = #{productType},
+		</if>
+		<if test="activityId != null">
+			activity_id = #{activityId},
+		</if>
+		<if test="productId != null">
+			product_id = #{productId},
+		</if>
+		<if test="status != null">
+			status = #{status},
+		</if>
+		<if test="updateBy != null">
+			update_by = #{updateBy},
+		</if>
+		<if test="sorting != null">
+			sorting = #{sorting},
+		</if>
+		<if test="recommendation != null and recommendation !=''">
+			recommendation = #{recommendation},
+		</if>
+		<if test="image != null and image !=''">
+			image = #{image},
+		</if>
+		<if test="remarks!=null and remarks!=''">
+	    	remarks = #{remarks},
+		</if>
+		<if test="categoryId != null and categoryId != ''">
+	    	category_id = #{categoryId},
+		</if>
+		update_date = now()
+		</set>
+		where
+		t.id = #{id}
+		<if test="remarks!=null and remarks!=''">
+		and t.remarks = #{remarks}
+		</if>
+
+	</update>
+	
+	<delete id="delActivityProduct" parameterType="Long">
+		delete from product_activity where id=#{id}
+	</delete>
+	
+	<delete id="delProductByTitleId" parameterType="java.util.Map">
+	    delete from product_activity 
+	    where 
+	    remarks=#{remarks}
+	    and type=#{type}
+    </delete>
+    
+	<select id="getActivityPlaceCount" parameterType="java.util.Map" resultType="int">
+		SELECT count(*) FROM product_activity a
+		LEFT JOIN activity_title b 
+		ON b.id=a.title_id
+		LEFT JOIN product p 
+		ON p.id=a.product_id
+		WHERE 1=1
+		<if test="type !=null and type != ''">
+			and b.type = #{type}
+		</if>
+		<if test="types !=null and types != ''">
+			and a.type = #{types}
+		</if>
+		<if test="titleId !=null and titleId != ''">
+			and a.title_id = #{titleId}
+		</if>
+		<if test="productType !=null and productType != ''">
+			and a.product_type = #{productType}
+		</if>
+		<if test="productName !=null and productName != ''">
+			and p.product_name like CONCAT ("%",#{productName},"%")
+		</if>
+		<if test="productId !=null and productId != ''">
+			and a.product_id = #{productId}
+		</if>
+		<if test="id !=null and id != ''">
+			and a.id = #{id}
+		</if>
+	</select>
+	<select id="getActivityPlaceList" parameterType="java.util.Map" resultType="activityProductPojo">
+		SELECT
+		    a.id as id,
+		    a.activity_id as activityId,
+		    a.product_id as productId,
+		    (select id from special_show where activity_id = a.activity_id) as specialId,
+		    a.sorting as sorting,
+		    a.status as status,
+		    (select name from sys_dict where value = a.status and type="status") as statusName,
+		    a.product_type as productType,
+		    (CASE WHEN a.product_type = 1 THEN '活动单品' WHEN a.product_type = 2 THEN '单品连接专场' END) as productTypeName
+		    from product_activity a	
+		    LEFT JOIN activity_title b 
+		    ON b.id=a.title_id
+		WHERE 1=1
+		<if test="type !=null and type != ''">
+			and b.type = #{type}
+		</if>
+		<if test="titleId !=null and titleId != ''">
+			and a.title_id = #{titleId}
+		</if>
+		order by a.sorting desc	
+		 <if test="pageSize!=null and pageSize !=''">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+
+	<select id="findActivityGoods" parameterType="java.util.Map" resultType="activityProductPojo">
+		SELECT
+		    a.id as productId,
+		    a.product_name as productName,
+		    a.image as image,
+		    b.image as productImg,
+		    b.id as id,
+		    b.type as type,
+		    b.product_type as productType,
+		    b.activity_id as activityId,
+		    b.title_id as titleId,	
+		    g.active_price as activePrice,
+			g.sell_price as sellPrice,
+			t.title as activityTitle  
+		    from product_activity b
+		    left join product a on a.id = b.product_id
+		    left join activity_goods g on g.product_id = b.product_id and g.time_id = b.activity_id
+		    left join activity_time t on t.id = b.activity_id
+		    WHERE 1=1	
+			and g.status = 1
+			and t.isdelete = '0'
+			and t.type = 3
+			and b.status = 1
+			and a.status = 1
+		<if test="type !=null and type != ''">
+			and b.type = #{type}
+		</if>
+		<if test="productType !=null and productType != ''">
+			and b.product_type = #{productType}
+		</if>
+		<if test="categoryId !=null">
+			and b.category_id = #{categoryId}
+		</if>
+        <if test="titleId !=null and titleId != ''">
+	        and b.title_id = #{titleId}
+        </if>
+        order by b.sorting desc
+		 <if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<select id="getActivitySetCount" parameterType="java.util.Map" resultType="int">
+		SELECT count(*) FROM product_activity a
+		LEFT JOIN product p 
+		ON p.id=a.product_id
+		WHERE 1=1
+		<if test="type !=null and type != ''">
+			and a.type = #{type}
+		</if>
+		<if test="productType !=null and productType != ''">
+			and a.product_type = #{productType}
+		</if>
+		<if test="categoryId !=null and categoryId != ''">
+			and a.category_id = #{categoryId}
+		</if>
+		<if test="productName !=null and productName != ''">
+			and p.product_name like CONCAT ("%",#{productName},"%")
+		</if>
+		<if test="productId !=null and productId != ''">
+			and a.product_id = #{productId}
+		</if>
+		<if test="id !=null and id != ''">
+			and a.id = #{id}
+		</if>
+	</select>
+	<select id="getActivitySetList" parameterType="java.util.Map" resultType="activityProductPojo">
+		SELECT
+		    a.id as id,
+		    a.activity_id as activityId,
+		    a.product_id as productId,
+		    a.image as productImg,
+		    p.image as image,
+		    p.product_name as productName,
+		    (select id from special_show where activity_id = a.activity_id) as specialId,
+		    a.sorting as sorting,
+		    a.status as status,
+		    (select name from sys_dict where value = a.status and type="status") as statusName,
+		    a.product_type as productType,
+		    a.category_id as categoryId,
+		    (select name from navigation where status = 2 and category_id = a.category_id limit 1 ) as categoryName,
+		    (CASE WHEN a.product_type = 1 THEN '活动单品' WHEN a.product_type = 2 THEN '单品连接专场' END) as productTypeName
+		    from product_activity a	
+		    LEFT JOIN product p 
+			ON p.id=a.product_id
+		WHERE 1=1
+		<if test="type !=null and type != ''">
+			and a.type = #{type}
+		</if>
+		<if test="productType !=null and productType != ''">
+			and a.product_type = #{productType}
+		</if>
+		<if test="categoryId !=null and categoryId != ''">
+			and a.category_id = #{categoryId}
+		</if>
+		<if test="productName !=null and productName != ''">
+			and p.product_name like CONCAT ("%",#{productName},"%")
+		</if>
+		<if test="productId !=null and productId != ''">
+			and a.product_id = #{productId}
+		</if>
+		<if test="id !=null and id != ''">
+			and a.id = #{id}
+		</if>
+		order by a.product_type,a.category_id,a.sorting desc,a.update_date desc	
+		 <if test="pageSize!=null and pageSize !=''">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+
+</mapper>

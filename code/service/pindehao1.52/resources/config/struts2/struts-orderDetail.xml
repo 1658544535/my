@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="orderDetail" extends="default">
+
+		<action name="orderDetail" class="com.tzmb2c.web.action.OrderDetailAction" method="getOrderDetailCount">
+			<result>/page/system/user/orderDetail.jsp</result>
+		</action>
+		
+		<action name="OrderDetailDeleteId" class="com.tzmb2c.web.action.OrderDetailAction" method="orderDetailDeleteId">
+		
+		</action>
+		
+		<action name="goFindOrderDetail" class="com.tzmb2c.web.action.OrderDetailAction" method="goFindOrderDetail">
+			<result>/page/system/user/orderDetailupdate.jsp</result>
+		</action>
+		<action name="updateOrderDetail" class="com.tzmb2c.web.action.OrderDetailAction" method="updateOrderDetail">
+		</action>
+		<action name="code" class="com.tzmb2c.web.action.OrderDetailAction" method="code">
+		</action>
+	</package>
+	
+	<package name="orderDetail-json" extends="json-default">
+		<!--平台入口-->
+		<action name="getOrderDetailCount" class="com.tzmb2c.web.action.OrderDetailAction" method="getOrderDetailCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+			<action name="orderDetailAllList" class="com.tzmb2c.web.action.OrderDetailAction" method="orderDetailAllList">
+			<result type="json">
+				<param name="root">page.result</param>.
+			</result>
+		</action>
+		<action name="deleOrderDetail" class="com.tzmb2c.web.action.OrderDetailAction" method="deleOrderDetail">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.UserCalendarMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id,
+		user_id as userId,
+		calendar
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="UserCalendarPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			user_calendar
+		where
+			id = #{id}
+	</select>
+	
+	<select id="getByUid" parameterType="Long" resultType="UserCalendarPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			user_calendar
+		where
+			user_id = #{userId}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from user_calendar
+		where 1=1
+		  <if test="id != null ">
+			and id = #{id}
+		  </if>
+		  <if test="userId != null ">
+			and user_id = #{userId}
+		  </if>
+		  <if test="calendar != null and calendar != '' ">
+			and calendar = #{calendar}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="UserCalendarPojo">
+		select
+			<include refid="Base_Column_List" />
+		from user_calendar
+		where 1=1
+			<if test="id != null ">
+			  and id = #{id}
+			</if>
+			<if test="userId != null ">
+			  and user_id = #{userId}
+			</if>
+			<if test="calendar != null and calendar != '' ">
+			  and calendar = #{calendar}
+			</if>
+			<if test="cal != null and cal != '' ">
+			  and date_format(calendar,'%Y-%m') = #{cal}
+			</if>
+		order by calendar
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="UserCalendarPojo">
+		update user_calendar
+		<set>
+			<if test="userId != null">
+			  user_id = #{userId},
+			</if>
+			<if test="calendar != null">
+			  calendar = #{calendar},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from user_calendar 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="UserCalendarPojo">
+		<!--
+		insert into user_calendar
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="calendar != null">
+				calendar,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="userId != null">
+				#{userId},
+			</if>
+			<if test="calendar != null">
+				#{calendar},
+			</if>
+		</trim>
+		-->
+		insert into user_calendar (user_id,calendar) 
+		select #{userId},#{calendar} from dual 
+		where not exists (select * from user_calendar where user_id=#{userId} and calendar = #{calendar})
+	</insert>
+	
+</mapper>

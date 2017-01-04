@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.PushHomePageMapper">
+	<!-- 查询所有的记录 -->
+	<select id="findAll" resultType="PushHomePagePojo" parameterType="java.util.Map">
+		select
+		a.id as id,
+		a.type as type,
+	    a.image as image,
+	    a.title as title,
+	    a.param as param,
+	    a.sorting as sorting,
+	    a.status as status,
+	    (select s.name from sys_dict s where s.value=a.status and s.type="status") as statusName, 
+	    a.create_by as createBy,
+		a.create_date as createDate,
+		a.update_by as updateBy,
+		a.update_date as updateDate, 
+	    a.remarks as remarks,
+	    a.activity_id as activityId
+	   	from homepage_push a
+		where
+		1=1
+		<if test="type!=null and type!='' ">
+			and type=#{type}
+		</if>
+		<if test="activityId != null and activityId != '' ">
+			and activity_id = #{activityId}
+		</if>
+		<if test="title!=null and title!=''">
+			and title like concat("%",#{title},"%")
+		</if>
+		<if test="status!=null">
+			and status like concat("%",#{status},"%")
+		</if>
+		order by createDate desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+		
+	</select>
+	<select id="findAllCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from homepage_push a
+		where
+		1=1
+		<if test="type!=null and type!='' ">
+			and type=#{type}
+		</if>
+		<if test="title!=null and title!=''">
+			and title like concat("%",#{title},"%")
+		</if>
+		<if test="status!=null">
+			and status like concat("%",#{status},"%")
+		</if>
+	</select>
+	<insert id="insertPushHomePage" parameterType="PushHomePagePojo">
+		insert into homepage_push (type,image,title,param,sorting,status,create_by,create_date,remarks,activity_id)
+		values(#{type},#{image},#{title},#{param},#{sorting},#{status},#{createBy},now(),#{remarks},#{activityId})
+	</insert>
+	<!-- 删除单条 -->
+	<delete id="delPushHomePage" parameterType="PushHomePagePojo">
+		delete from homepage_push
+		where
+		id = #{id}
+	</delete>
+	<!-- 删除单条 -->
+	<delete id="pushHomePageDeleteId" parameterType="Long">
+		delete from homepage_push
+		where
+		id = #{id}
+	</delete>
+	
+	<!-- 查找单条 -->
+	<select id="findPushHomePageById" resultType="PushHomePagePojo"
+		parameterType="Long">
+		select
+		a.id as id,
+		a.type as type,
+	    a.image as image,
+	    a.title as title,
+	    a.param as param,
+	    a.sorting as sorting,
+	    a.status as status,
+	    a.create_by as createBy,
+		a.create_date as createDate,
+		a.update_by as updateBy,
+		a.update_date as updateDate, 
+	    a.remarks as remarks,
+	    a.activity_id as activityId
+	    from homepage_push a
+		where
+		a.id=#{id}
+	</select>
+	<!--更新单条-->
+	<update id="updatePushHomePage" parameterType="PushHomePagePojo">
+		update homepage_push  set
+		type=#{type},
+		title=#{title},
+		param=#{param},
+		sorting=#{sorting},
+		status=#{status},
+		update_date=date_format(now(),'%Y-%m-%d'),
+		remarks=#{remarks},
+		activity_id = #{activityId}
+		<if test="image!=null and image!='' ">
+			,image=#{image}
+		</if>
+		where
+		id = #{id}
+	</update>
+	<!--更新单条状态-->
+	<update id="checkPushHomePage" parameterType="Long">
+		update homepage_push set status = 1 where id = #{id}
+	</update>
+	<!--更新单条状态-->
+	<update id="uncheckPushHomePage" parameterType="Long">
+		update homepage_push set status = 0 where id = #{id}
+	</update>
+	
+</mapper>

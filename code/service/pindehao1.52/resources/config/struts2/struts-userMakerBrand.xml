@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="userMakerBrand" extends="default">
+		<!-- 页面（全部）  -->
+		<action name="userMakerBrand" class="com.tzmb2c.web.action.UserMakerBrandAction" method="userMakerBrandListCount">
+			<result name="success">/page/system/userMaker/userMakerBrand.jsp</result>
+		</action>	
+		<!-- 审核页面         -->
+		<action name="goCheckUserMakerBrand" class="com.tzmb2c.web.action.UserMakerBrandAction" method="goCheckUserMakerBrand">
+			<result name="success">/page/system/userMaker/checkUserMakerBrand.jsp</result>
+		</action>
+		<!-- 通过审核         -->
+		<action name="checkUserMakerBrand" class="com.tzmb2c.web.action.UserMakerBrandAction" method="checkUserMakerBrand">
+		</action>
+		<!-- 取消审核         -->
+		<action name="uncheckUserMakerBrand" class="com.tzmb2c.web.action.UserMakerBrandAction" method="uncheckUserMakerBrand">
+		</action>
+		<!-- 改变品牌类型-->
+		<action name="changeTypeUserMakerBrand1" class="com.tzmb2c.web.action.UserMakerBrandAction" method="changeTypeUserMakerBrand1">
+		</action>
+		<!-- 改变品牌类型-->
+		<action name="changeTypeUserMakerBrand2" class="com.tzmb2c.web.action.UserMakerBrandAction" method="changeTypeUserMakerBrand2">
+		</action>
+		<!-- 跳转编辑图文说明页-->
+		<action name="goUpdateUserMakerContent" class="com.tzmb2c.web.action.UserMakerBrandAction" method="goUpdateUserMakerContent">
+		<result name="success">/page/system/userMaker/updateUserMakerContent.jsp</result>
+		</action>
+		<!-- 编辑图文说明-->
+		<action name="updateUserMakerBrand" class="com.tzmb2c.web.action.UserMakerBrandAction" method="updateUserMakerBrand">
+		</action>
+		
+	</package>
+	<package name="userMakerBrand-json" extends="json-default">
+		<!-- 内容 -->
+		<action name="userMakerBrandListAll" class="com.tzmb2c.web.action.UserMakerBrandAction" method="userMakerBrandListAll">
+			<result type="json">
+			<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="userMakerBrandListCount" class="com.tzmb2c.web.action.UserMakerBrandAction" method="userMakerBrandListCount">
+			<result type="json">
+			<param name="root">page.rowCount</param>
+			</result>
+		</action>		
+	</package>
+</struts>

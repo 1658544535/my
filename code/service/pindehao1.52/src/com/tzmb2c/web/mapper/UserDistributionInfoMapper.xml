@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.UserDistributionInfoMapper">
+
+	<!-- 分销商账户信息列表 -->
+	<select id="userDistributionInfoAll" parameterType="java.util.Map" resultType="userDistributionInfoPojo">
+		select u.id as id,
+		u.user_id as userId,
+		s.name as userName,
+		s.loginname as loginname,
+		u.name as name,
+		u.sex as sex,
+		(case when u.sex = 0 then "" when u.sex = 1 then "男" when u.sex = 2 then "女" end) as sexName,
+		u.person_code as personCode,
+		u.person_code_img as personCodeImg,
+		u.create_date as createDate,
+		u.status as status,
+		(case when u.status = -1 then "未通过" when u.status = 0 then "审核中" when u.status = 1 then "审核通过" end) as statusName,
+		s.external_sign_code as externalSignCode
+		from user_distribution_info u
+		left join sys_login s on s.id = u.user_id
+		where 1 = 1 
+		<if test="id != null">
+			and u.id = #{id}
+		</if>
+		<if test="userId != null">
+			and u.user_id = #{userId}
+		</if>
+		<if test="userName != null and userName != ''">
+			and s.name like CONCAT("%",#{userName},"%")
+		</if>
+		<if test="loginname != null and loginname != ''">
+			and s.loginname like CONCAT("%",#{loginname},"%")
+		</if>
+		<if test="name != null and name != ''">
+			and u.name like CONCAT("%",#{name},"%")
+		</if>
+		<if test="sex != null">
+			and u.sex = #{sex}
+		</if>
+		<if test="personCode != null and personCode != ''">
+			and u.person_code like CONCAT("%",#{personCode},"%")
+		</if>
+		<if test="createDate != null and createDate != ''">
+			<!-- and u.create_date = #{createDate} -->
+			and u.create_date >= #{createDate}
+		</if>
+		<if test="status != null">
+			and u.status = #{status}
+		</if>
+		order by u.id desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<!-- 编辑分销商账户信息 -->
+	<update id="userDistributionInfoUpdate" parameterType="userDistributionInfoPojo">
+		update user_distribution_info u set
+		<!-- u.user_id = #{userId}, -->
+		u.name = #{name},
+		u.sex = #{sex},
+		u.person_code = #{personCode},
+		<!-- u.person_code_img = #{personCodeImg}, -->
+		u.status = #{status}
+		where u.id = #{id}
+	</update>
+	
+	<!-- 审核分销商账户信息 -->
+	<update id="userDistributionInfoCheckById" parameterType="Long">
+		update user_distribution_info u set
+		u.status = 1
+		where u.id = #{id} 
+	</update>
+	
+	<!-- 分销商信息管理列表 -->
+	<select id="userDistributionInfoManage" resultType="sysLoginPojo" parameterType="java.util.Map">
+		select 
+		s.loginname as loginname,
+		s.name as name,
+		u.name as distribName,
+		i.create_date as createDate,
+		i.loginname as inviterAct,
+		i.name as inviterName,
+		i.id as inviterId
+		from user_distribution_info u
+		left join sys_login s on u.user_id=s.id
+		left join sys_login i on u.user_id=i.inviter_id
+		where s.inviter_id is not null and s.type=3
+		<if test="name != null and name != ''">
+			and u.name like CONCAT("%",#{name},"%")
+		</if>
+		<if test="loginname != null and loginname != ''">
+			and s.loginname like CONCAT("%",#{loginname},"%")
+		</if>
+		<if test="inviterName != null and inviterName != ''">
+			and i.name like CONCAT("%",#{inviterName},"%")
+		</if>
+		<if test="inviterAct != null and inviterAct != ''">
+			and i.loginname like CONCAT("%",#{inviterAct},"%")
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	
+</mapper>

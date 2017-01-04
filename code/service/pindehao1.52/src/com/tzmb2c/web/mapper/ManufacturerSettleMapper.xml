@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.ManufacturerSettleMapper">
+
+	<insert id="insertManufacturerSettle" parameterType="manufacturerSettlePojo" useGeneratedKeys="true" keyProperty="id">
+		insert into user_manufacturer_settle 
+		(user_id,settle_date,settle_amount,status,create_by,create_date,update_by,update_date,version)
+		values
+		(#{userId},#{settleDate},#{settleAmount},#{status},#{createBy},now(),#{updateBy},now(),#{version})
+	</insert>
+
+	<delete id="delSettleById" parameterType="Long">
+		delete from user_manufacturer_settle where id = #{id}
+	</delete>
+	
+	<delete id="delSettleByUserId" parameterType="Long">
+		delete from user_manufacturer_settle where user_id = #{userId}
+	</delete>
+	
+	<update id="updateSettleInfo" parameterType="manufacturerSettlePojo">
+		update user_manufacturer_settle set
+		<if test="settleDate != null">
+		settle_date = #{settleDate},
+		</if>
+		<if test="settleAmount != null">
+		settle_amount = #{settleAmount},
+		</if>
+		<if test="status != null">
+		status = #{status},
+		</if>
+		<if test="updateBy != null">
+		update_by = #{updateBy},
+		</if>
+		<if test="updateDate != null">
+		update_date = #{updateDate},
+		</if>
+		version = #{version}
+		where 
+		1 = 1
+		<if test="id != null">
+		and id = #{id}
+		</if>
+		<if test="userId != null">
+		and user_id = #{userId}
+		</if>
+	</update>
+	
+	<select id="getManufacturerSettleList" parameterType="java.util.Map" resultType="manufacturerSettlePojo" >
+		select 
+		t.id as id,
+		t.user_id as userId,
+		um.company as company,
+		t.settle_date as settleDate,
+		t.settle_amount as settleAmount,
+		t.status as status,
+		t.create_by as createBy,
+		t.create_date as createDate,
+		t.update_by as updateBy,
+		t.update_date as updateDate,
+		t.version as version
+		from user_manufacturer_settle t left join user_manufacturer um on t.user_id=um.user_id
+		where 1=1
+		<if test="userId != null">
+		and t.user_id = #{userId} 
+		</if>
+		<if test="status != null">
+		and t.status = #{status}
+		</if>
+		<if test="statusAll != null">
+		and t.status in (1,2)
+		</if>
+		<if test="beginDateStr !=null and beginDateStr !=''">
+			and str_to_date(t.settle_date,'%Y-%m-%d') &gt;= #{beginDateStr}
+		</if>
+		<if test="endDateStr !=null and endDateStr !=''">
+			and str_to_date(t.settle_date,'%Y-%m-%d') &lt;= #{endDateStr}
+		</if>
+		order by t.settle_date desc,t.user_id
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<select id="getManufacturerSettleCount" parameterType="java.util.Map" resultType="int" >
+		select 
+		count(*)
+		from user_manufacturer_settle t left join user_manufacturer um on t.user_id=um.user_id
+		where 1=1
+		<if test="userId != null">
+		and t.user_id = #{userId} 
+		</if>
+		<if test="status != null">
+		and t.status = #{status}
+		</if>
+		<if test="statusAll != null">
+		and t.status in (1,2)
+		</if>
+		<if test="beginDateStr !=null and beginDateStr !=''">
+			and str_to_date(t.settle_date,'%Y-%m-%d') &gt;= #{beginDateStr}
+		</if>
+		<if test="endDateStr !=null and endDateStr !=''">
+			and str_to_date(t.settle_date,'%Y-%m-%d') &lt;= #{endDateStr}
+		</if>
+	</select>
+	
+	<select id="getManufacturerSettleByUserId" parameterType="java.util.Map" resultType="manufacturerSettlePojo" >
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.settle_date as settleDate,
+		t.settle_amount as settleAmount,
+		t.status as status,
+		t.create_by as createBy,
+		t.create_date as createDate,
+		t.update_by as updateBy,
+		t.update_date as updateDate,
+		t.version as version
+		from user_manufacturer_settle t 
+		where t.user_id = #{userId}
+		<if test="status != null">
+		and t.status = #{status}
+		</if>
+	</select>
+	
+	<select id="getManufacturerSettleById" parameterType="Long" resultType="manufacturerSettlePojo" >
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.settle_date as settleDate,
+		t.settle_amount as settleAmount,
+		t.status as status,
+		t.create_by as createBy,
+		t.create_date as createDate,
+		t.update_by as updateBy,
+		t.update_date as updateDate,
+		t.version as version
+		from user_manufacturer_settle t 
+		where t.id = #{id}
+	</select>
+	
+</mapper>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+	<package name="accountSecurity" extends="default">
+
+		<!--获取记录数目 -->
+		<action name="accountSecurityManage" class="com.tzmb2c.web.action.AccountSecurityAction"
+			method="getSecurityQuesionCount">
+			<result name="success">/page/system/accountsecurity/supplierAccountSecurity.jsp
+			</result>
+			<result name="purchaser">/page/system/accountsecurity/purchaserAccountSecurity.jsp
+			</result>
+		</action>
+
+		<!-- 审核 -->
+		<action name="verifySecurityQuesion" class="com.tzmb2c.web.action.AccountSecurityAction"
+			method="verifySecurityQuesion">
+		</action>
+
+		<!-- 审核全部 -->
+		<action name="verifyAllSecurityQuesion" class="com.tzmb2c.web.action.AccountSecurityAction"
+			method="verifyAllSecurityQuesion">
+		</action>
+
+		<!-- 删除 -->
+		<action name="delSecurityQuesion" class="com.tzmb2c.web.action.AccountSecurityAction"
+			method="delSecurityQuesion">
+		</action>
+
+		<!-- 删除全部 -->
+		<action name="securityQuesionDeleteId" class="com.tzmb2c.web.action.AccountSecurityAction"
+			method="delAllSecurityQuesionById">
+		</action>
+
+		
+	</package>
+	<package name="accountSecurity-json" extends="json-default">
+	<!--平台入口 -->
+		<action name="getSecurityQuesionCount" class="com.tzmb2c.web.action.AccountSecurityAction"
+			method="getSecurityQuesionCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+
+		<action name="securityQuesionAllList" class="com.tzmb2c.web.action.AccountSecurityAction"
+			method="securityQuesionAllList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+
+		<action name="getSecurityQuesionRowCount" class="com.tzmb2c.web.action.AccountSecurityAction"
+			method="getSecurityQuesionRowCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+
+		<action name="delSecurityQuesion" class="com.tzmb2c.web.action.AccountSecurityAction"
+			method="delSecurityQuesion">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+
+		<action name="verifySecurityQuesion" class="com.tzmb2c.web.action.AccountSecurityAction"
+			method="verifySecurityQuesion">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

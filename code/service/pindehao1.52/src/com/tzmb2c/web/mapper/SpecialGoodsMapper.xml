@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.SpecialGoodsMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		sg.id as id,
+		sg.special_id as specialId,
+		sg.activity_id as activityId,
+		sg.product_id as productId,
+		sg.status as status,
+		(CASE WHEN sg.status = 0 THEN '未审核' WHEN sg.status = 1 THEN '已审核' END)  as statusName,
+		sg.sorting as sorting,
+		sg.create_date as createDate,
+		sg.create_by as createBy,
+		sg.update_date as updateDate,
+		sg.update_by as updateBy,
+		p.product_no as productNo,
+		p.product_num as productNum,
+		p.product_name as productName,
+		p.image as image
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="SpecialGoodsPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			special_goods sg left join product p on p.id = sg.product_id
+		where
+			sg.id = #{id}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from special_goods
+		where 1=1
+		  <if test="id != null ">
+			and id = #{id}
+		  </if>
+		  <if test="specialId != null ">
+			and special_id = #{specialId}
+		  </if>
+		  <if test="activityId != null ">
+			and activity_id = #{activityId}
+		  </if>
+		  <if test="productId != null ">
+			and product_id = #{productId}
+		  </if>
+		  <if test="status != null ">
+			and status = #{status}
+		  </if>
+		  <if test="sorting != null ">
+			and sorting = #{sorting}
+		  </if>
+		  <if test="createDate != null ">
+			and create_date = #{createDate}
+		  </if>
+		  <if test="createBy != null ">
+			and create_by = #{createBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and update_date = #{updateDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and update_by = #{updateBy}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="SpecialGoodsPojo">
+		select
+			sg.id as id,
+			sg.special_id as specialId,
+			sg.activity_id as activityId,
+			sg.product_id as productId,
+			sg.status as status,
+			(CASE WHEN sg.status = 0 THEN '未审核' WHEN sg.status = 1 THEN '已审核' END)  as statusName,
+			sg.sorting as sorting,
+			sg.create_date as createDate,
+			sg.create_by as createBy,
+			sg.update_date as updateDate,
+			sg.update_by as updateBy,
+			p.product_no as productNo,
+			p.product_num as productNum,
+			p.product_name as productName,
+			p.distribution_price as alonePrice,
+			p.sell_number + p.base_number as sellNumber,
+			p.image as image,
+			ga.num as num,
+			ga.price as groupPrice
+		from special_goods sg 
+		left join product p on p.id = sg.product_id
+		left join groupon_activity ga on ga.id = sg.activity_id
+		where 1=1
+			<if test="id != null ">
+			  and sg.id = #{id}
+			</if>
+			<if test="specialId != null ">
+			  and sg.special_id = #{specialId}
+			</if>
+			<if test="activityId != null ">
+			  and sg.activity_id = #{activityId}
+			</if>
+			<if test="productId != null ">
+			  and sg.product_id = #{productId}
+			</if>
+			<if test="status != null ">
+			  and sg.status = #{status}
+			</if>
+			<if test="activityStatus != null ">
+			  and ga.status = #{activityStatus}
+			</if>
+			<if test="sorting != null ">
+			  and sg.sorting = #{sorting}
+			</if>
+			<if test="createDate != null ">
+			  and sg.create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and sg.create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and sg.update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and sg.update_by = #{updateBy}
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="SpecialGoodsPojo">
+		update special_goods
+		<set>
+			<if test="specialId != null">
+			  special_id = #{specialId},
+			</if>
+			<if test="activityId != null">
+			  activity_id = #{activityId},
+			</if>
+			<if test="productId != null">
+			  product_id = #{productId},
+			</if>
+			<if test="status != null">
+			  status = #{status},
+			</if>
+			<if test="sorting != null">
+			  sorting = #{sorting},
+			</if>
+			<if test="createDate != null">
+			  create_date = #{createDate},
+			</if>
+			<if test="createBy != null">
+			  create_by = #{createBy},
+			</if>
+			<if test="updateDate != null">
+			  update_date = #{updateDate},
+			</if>
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from special_goods 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="SpecialGoodsPojo">
+		insert into special_goods
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="specialId != null">
+				special_id,
+			</if>
+			<if test="activityId != null">
+				activity_id,
+			</if>
+			<if test="productId != null">
+				product_id,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="sorting != null">
+				sorting,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+			<if test="updateDate != null">
+				update_date,
+			</if>
+			<if test="updateBy != null">
+				update_by,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="specialId != null">
+				#{specialId},
+			</if>
+			<if test="activityId != null">
+				#{activityId},
+			</if>
+			<if test="productId != null">
+				#{productId},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+			<if test="sorting != null">
+				#{sorting},
+			</if>
+			<if test="createDate != null">
+				#{createDate},
+			</if>
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+			<if test="updateDate != null">
+				#{updateDate},
+			</if>
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+		</trim>
+	</insert>
+	
+</mapper>

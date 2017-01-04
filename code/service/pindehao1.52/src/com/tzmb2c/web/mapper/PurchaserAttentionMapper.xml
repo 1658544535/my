@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.PurchaserAttentionMapper">
+
+	<!-- 插入 <insert id="addPushNotice" parameterType="PagePushPojo"> insert 
+		into ad (id,status,type,title,url,images,create_by,create_date,update_by,update_date,remarks,version) 
+		values (#{id}, #{status}, #{type},#{title},#{url},#{images},#{create_by}, 
+		#{create_date},#{update_by},#{update_date},#{version},#{remarks}) </insert> -->
+
+	<!--更新
+	<select id="findNoticeById" resultType="PagePushPojo"
+		parameterType="Long">
+		select
+		id,status,type,title,url,images,create_by,date_format(create_date,'%Y-%c-%d
+		%h:%i:%s'),update_by,update_date,remarks,version
+		from ad
+		where
+		id=#{id}
+	</select>
+ 	 -->
+	<!--更新 
+	<update id="updatePushNotice" parameterType="PagePushPojo">
+		update ad a set
+		title=#{title},type=#{type},status=#{status},url=#{url},images=#{images},
+		update_date=#{update_date}
+		where
+		a.id = #{id}
+	</update>
+	-->
+
+	<!-- 审核 <update id="verifyNotice" parameterType="PagePushPojo"> update ad 
+		a set status=1 where a.id = #{id} </update> <update id="checkAllNoticeById" 
+		parameterType="String"> update ad a set status=1 where a.id = #{id} </update> -->
+
+	<!-- 删除全部 -->
+	<delete id="delAllAttentionById" parameterType="String">
+		delete from user_attention
+		where
+		id = #{id}
+	</delete>
+
+	<!-- 删除单个 -->
+	<delete id="delAttention" parameterType="PurchaserAttentionPojo">
+		delete from user_attention
+		where
+		id =
+		#{id}
+	</delete>
+
+	<!-- 查询所有的记录 -->
+	<select id="attentionAllList" resultType="PurchaserAttentionPojo"
+		parameterType="java.util.Map">
+		select 
+		ura.id as id, 
+		ura.user_id as userId, 
+		(select p.name from product_type p where ura.product_type_id=p.id) as productType,
+		ura.product_type_id as productTypeId, 
+		ura.create_by as createBy, 
+		ura.create_date as createDate, 
+		ura.update_by as updateBy, 
+		ura.update_date as updateDate, 
+		ura.remarks as remarks,
+		ura.version as version,
+		sl.name as userName
+		from user_attention ura left join sys_login sl on ura.user_id = sl.id
+		where
+		1=1
+		<if test="userId!=null and userId !='' ">
+			and ura.user_id like concat("%",#{userId},"%" )
+		</if>
+		<if test="userName!=null and userName !='' ">
+			and sl.name like concat("%",#{userName},"%" )
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+
+	<!-- 返回信息记录的数目count -->
+	<select id="attentionAllCount" resultType="int" parameterType="java.util.Map">
+		select count(ura.user_id)
+		from user_attention ura left join sys_login sl on ura.user_id = sl.id 
+		where 1=1
+		<if test="userId!=null and userId !='' ">
+			and ura.user_id like concat("%",#{userId},"%" )
+		</if>
+		<if test="userName!=null and userName !='' ">
+			and sl.name like concat("%",#{userName},"%" )
+		</if>
+	</select>
+	
+	<select id="attentionByUserId" resultType="PurchaserAttentionPojo"
+		parameterType="Long">
+		select 
+		an.id as id,
+		an.user_id as userId,
+		an.product_type_id as productTypeId
+		from user_attention an 
+		where
+		an.user_id = #{userId}
+		order by an.create_date desc
+		limit 1
+	</select>
+
+</mapper>

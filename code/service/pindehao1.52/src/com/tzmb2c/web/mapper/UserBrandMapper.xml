@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tzmb2c.web.mapper.UserBrandMapper">
+	<!-- 查询所有的记录 -->
+	<select id="findUserBrandList" resultType="userBrandPojo" parameterType="java.util.Map">
+		SELECT
+		u.id            as id,
+		u.user_id       as userId,
+		(select s.name from sys_login s where s.id=u.user_id) as userName,
+		u.brand_id      as brandId,
+		u.brand_disc    as brandDisc,
+		u.grant_type    as grantType,
+		(CASE WHEN u.grant_type = 1 THEN '自主品牌' WHEN u.grant_type = 2 THEN '独家代理' 
+		WHEN u.grant_type = 3 THEN '一级代理'  WHEN u.grant_type = 4 THEN '二级代理'  WHEN u.grant_type = 5 THEN '三级代理'  END) as grantTypeName,
+		u.start_date    as startDate,
+		u.end_date      as endDate,
+		u.main_category as mainCategory,
+		u.manage_level  as manageLevel,
+		(CASE WHEN u.manage_level = 1 THEN '品牌' WHEN u.manage_level = 2 THEN '单品' END)  as manageLevelName,
+		u.image1        as image1,
+		u.image2        as image2,
+		u.image3        as image3,
+		u.sorting       as sorting,
+		u.status        as status,
+		(CASE WHEN u.status = 0 THEN '未审核' WHEN u.status = 1 THEN '已审核' END)  as statusName,
+		u.create_by     as createBy,
+		u.create_date   as createDate,
+		u.update_by     as updateBy,
+		u.update_date   as updateDate,
+		u.brand_name    as brandName,
+		b.logo          as logo, 
+		b.status        as brandStatus,
+		(CASE WHEN b.status = 0 THEN '待审核' WHEN b.status = 1 THEN '审核通过' END) as brandStatusName,
+		p.name          as mainCategoryName
+		FROM
+		user_brand u
+		left join brand_dic b on b.id = u.brand_id
+		left join product_type p on p.id = u.main_category
+		WHERE u.user_id = 3
+		<if test="id != null">
+			and u.id = #{id}
+		</if>
+		<if test="brandId != null">
+			and u.brand_id = #{brandId}
+		</if>
+		<if test="status != null">
+			and u.status = #{status}
+		</if>
+		<if test="brandName != null and brandName != '' ">
+			and u.brand_name like concat("%",#{brandName},"%")
+		</if>
+		<if test="startDateStr!=null and startDateStr !=''">
+			and str_to_date(u.start_date,'%Y-%m-%d') &gt;= #{startDateStr}
+		</if>
+		<if test="endDateStr!=null and endDateStr !=''">
+			and str_to_date(u.end_date,'%Y-%m-%d') &lt;= #{endDateStr}
+		</if>
+		<if test="mainCategory != null and mainCategory != '' ">
+			and u.main_category = #{mainCategory}
+		</if>
+		<if test="manageLevel != null and manageLevel != '' ">
+			and u.manage_level = #{manageLevel}
+		</if>
+		order by u.sorting,u.update_date,u.create_date desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	<!-- 查询所有的记录 -->
+	<select id="findUserBrandNameByUserId" resultType="userBrandPojo" parameterType="java.util.Map">
+		SELECT
+		u.id            as id,
+		u.brand_name    as brandName,
+		(select s.name from sys_login s where s.id=u.user_id) as userName
+		FROM
+		user_brand u
+		WHERE
+		1 = 1
+		<if test="userId != null">
+			and u.user_id = #{userId}
+		</if>
+		<if test="status != null">
+			and u.status = #{status}
+		</if>
+		<if test="startDateStr!=null and startDateStr !=''">
+			and str_to_date(u.start_date,'%Y-%m-%d') &lt;= #{startDateStr}
+		</if>
+		<if test="endDateStr!=null and endDateStr !=''">
+			and str_to_date(u.end_date,'%Y-%m-%d') &gt; #{endDateStr}
+		</if>
+	</select>
+	<!-- 查询用户品牌记录 -->
+	<select id="findUserBrandByUserId" resultType="userBrandPojo" parameterType="java.util.Map">
+		SELECT
+		u.id,
+		u.user_id as userId,
+		(select s.name from sys_login s where s.id=u.user_id) as userName,
+		u.brand_id as brandId,
+		u.brand_disc as brandDisc,
+		u.grant_type as grantType,
+		u.start_date as startDate,
+		u.end_date as endDate,
+		u.main_category as mainCategory,
+		u.manage_level as manageLevel,
+		(CASE WHEN u.manage_level = 1 THEN '品牌' WHEN u.manage_level = 2 THEN '单品' END)  as manageLevelName,
+		u.image1,
+		u.image2,
+		u.image3,
+		u.sorting,
+		u.status,
+		(CASE WHEN u.status = 0 THEN '未审核' WHEN u.status = 1 THEN '已审核' END)  as statusName,
+		u.create_by as createBy,
+		u.create_date as createDate,
+		u.update_by as updateBy,
+		u.update_date as updateDate,
+		u.brand_name as brandName,
+		b.logo,
+		b.status as brandStatus,
+		(CASE WHEN b.status = 0 THEN '待审核' WHEN b.status = 1 THEN '审核通过' END) as brandStatusName,
+		p.name as mainCategoryName
+		FROM
+		user_brand u
+		left join brand_dic b on b.id = u.brand_id
+		left join product_type p on p.id = u.main_category
+		WHERE u.user_id = #{userId}
+		<if test="status != null">
+			and u.status = #{status}
+		</if>
+		order by u.sorting,u.update_date,u.create_date desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	<!-- 查询记录的数目 -->
+	<select id="findUserBrandCount" resultType="int" parameterType="java.util.Map">
+		SELECT
+		count(*)
+		FROM
+		user_brand u
+		WHERE u.user_id = 3
+		<if test="id != null">
+			and u.id = #{id}
+		</if>
+		<if test="brandId != null">
+			and u.brand_id = #{brandId}
+		</if>
+		<if test="status != null">
+			and u.status = #{status}
+		</if>
+		<if test="brandName != null and brandName != '' ">
+			and u.brand_name like concat("%",#{brandName},"%")
+		</if>
+		<if test="startDateStr!=null and startDateStr !=''">
+			and str_to_date(u.start_date,'%Y-%m-%d') &gt;= #{startDateStr}
+		</if>
+		<if test="endDateStr!=null and endDateStr !=''">
+			and str_to_date(u.end_date,'%Y-%m-%d') &lt;= #{endDateStr}
+		</if>
+		<if test="mainCategory != null and mainCategory != '' ">
+			and u.main_category = #{mainCategory}
+		</if>
+		<if test="manageLevel != null and manageLevel != '' ">
+			and u.manage_level = #{manageLevel}
+		</if>
+	</select>
+	
+	<!-- 查找单条 -->	
+	<select id="findUserBrandById" resultType="userBrandPojo" parameterType="Long">
+		select
+		u.id,
+		u.user_id       as userId,
+		(select s.name from sys_login s where s.id=u.user_id) as userName,
+		u.brand_id      as brandId,
+		u.brand_disc    as brandDisc,
+		u.grant_type    as grantType,
+		(CASE WHEN u.grant_type = 1 THEN '自主品牌' WHEN u.grant_type = 2 THEN '独家代理' 
+		WHEN u.grant_type = 3 THEN '一级代理'  WHEN u.grant_type = 4 THEN '二级代理'  WHEN u.grant_type = 5 THEN '三级代理'  END) as grantTypeName,
+		u.start_date    as startDate,
+		u.end_date      as endDate,
+		u.main_category as mainCategory,
+		u.manage_level  as manageLevel,
+		(CASE WHEN u.manage_level = 1 THEN '品牌' WHEN u.manage_level = 2 THEN '单品' END)  as manageLevelName,
+		u.image1        as image1,
+		u.image2        as image2,
+		u.image3        as image3,
+		u.sorting       as sorting,
+		u.status        as status,
+		(CASE WHEN u.status = 0 THEN '未审核' WHEN u.status = 1 THEN '已审核' END)  as statusName,
+		u.create_by     as createBy,
+		u.create_date   as createDate,
+		u.update_by     as updateBy,
+		u.update_date   as updateDate,
+		u.brand_name    as brandName,
+		b.logo          as logo,
+		u.product_commt as productCommt,
+		u.seller_commt as deliverCommt,
+		u.logistics_commt as logisticsCommt
+		FROM
+		user_brand u
+		left join brand_dic b on b.id = u.brand_id
+		WHERE
+		u.id = #{id}
+	</select>
+	
+	<!-- 审核单条 -->
+	<update id="checkUserBrand" parameterType="Long">
+		update user_brand set
+		status = 1,
+		update_date = now()
+		where
+		id = #{id}
+	</update>
+	<!-- 取审单条  -->
+	<update id="uncheckUserBrand" parameterType="Long">
+		update user_brand set
+		status = 0,
+		update_date = now()
+		where
+		id = #{id}
+	</update>
+	
+	<!-- 删除单条 -->
+	<delete id="delUserBrand" parameterType="Long">
+		delete from user_brand where id = #{id}
+	</delete>
+	
+	<!-- 插入单条  -->
+	<insert id="insertUserBrand" parameterType="userBrandPojo" useGeneratedKeys="true" keyProperty="id" >
+		insert into user_brand 
+		(user_id,brand_id,brand_disc,grant_type,
+		start_date,end_date,main_category,manage_level,
+		image1,image2,image3,sorting,
+		status,create_by,create_date,update_by,update_date,brand_name) 
+		values 
+		(#{userId},#{brandId},#{brandDisc},#{grantType},
+		str_to_date(#{startDateStr},'%Y-%m-%d'),str_to_date(#{endDateStr},'%Y-%m-%d'),#{mainCategory},#{manageLevel},
+		#{image1},#{image2},#{image3},#{sorting},
+		#{status},#{createBy},now(),#{updateBy},now(),#{brandName})
+	</insert>
+	
+	<!--更新单条-->
+	<update id="updateUserBrand" parameterType="userBrandPojo">
+		update user_brand set
+		<if test="userId != null">
+			user_id = #{userId},
+		</if>
+		<if test="brandId != null">
+		 	brand_id = #{brandId},
+		</if>
+		<if test="brandDisc != null and brandDisc != '' ">
+			brand_disc = #{brandDisc},
+		</if>
+		<if test="grantType != null">
+			grant_type = #{grantType},
+		</if>
+		<if test="startDateStr!=null and startDateStr !=''">
+			start_date = str_to_date(#{startDateStr},'%Y-%m-%d %H:%i:%s'),
+		</if>
+		<if test="endDateStr!=null and endDateStr !=''">
+			end_date = str_to_date(#{endDateStr},'%Y-%m-%d %H:%i:%s'),
+		</if>
+		<if test="mainCategory != null and mainCategory != '' ">
+			main_category = #{mainCategory},
+		</if>
+		<if test="manageLevel != null and manageLevel != '' ">
+			manage_level = #{manageLevel},
+		</if>
+		<if test="image1 != null and image1 != '' ">
+			image1 = #{image1},
+		</if>
+		<if test="image2 != null and image2 != '' ">
+			image2 = #{image2},
+		</if>
+		<if test="image3 != null and image3 != '' ">
+			image3 = #{image3},
+		</if>
+		<if test="sorting != null">
+			sorting = #{sorting},
+		</if>
+		<if test="status != null">
+			status = #{status},
+		</if>
+		<if test="updateBy != null and updateBy != '' ">
+			update_by = #{updateBy},
+		</if>
+		<if test="brandName != null and brandName != '' ">
+		    brand_name = #{brandName},
+		</if>
+		<if test="productCommt != null and productCommt != '' ">
+		    product_commt = #{productCommt},
+		</if>
+		<if test="deliverCommt != null and deliverCommt != '' ">
+		    seller_commt = #{deliverCommt},
+		</if>
+		<if test="logisticsCommt != null and logisticsCommt != '' ">
+		    logistics_commt = #{logisticsCommt},
+		</if>
+		update_date = now()
+		where id = #{id}
+	</update>
+	
+	<select id="findActiveBrandList" resultType="UserBrandPojo" parameterType="java.util.Map">
+		select 
+			u.id as id,
+			b.logo as logo,
+			b.brand as brandName
+		from  user_brand u 
+		left join (select 
+		distinct p.user_brand_id
+		from activity_goods ag  
+		left join special_show s on ag.time_id = s.activity_id
+		left join product p on ag.product_id = p.id
+		where 1=1 and p.status =1 and s.status = 4 and s.isdelete = 0 and ag.status = 1
+		<if test="currentTimeStr != null and currentTimeStr !='' ">
+			and str_to_date(s.begin_time,'%Y-%m-%d %H:%i:%s') &lt;= #{currentTimeStr} 
+			and str_to_date(s.end_time,'%Y-%m-%d %H:%i:%s') &gt; #{currentTimeStr} 
+		</if>
+		) s on u.id = s.user_brand_id 
+		left join brand_dic b on b.id = u.brand_id 
+		where u.status = 1 and b.status =1
+		order by b.sorting desc,b.create_date desc 
+		<if test="pageNo != null">
+			limit #{pageNo},#{pageSize}
+		</if>
+	</select>
+</mapper>

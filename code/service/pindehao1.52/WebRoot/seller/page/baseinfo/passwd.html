@@ -1,0 +1,78 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
+<%@ taglib prefix="s" uri="/struts-tags"%>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>商家中心</title>
+		<jsp:include page="../common_head.jsp"></jsp:include>
+		<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.10.1.js"></script>
+		<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-ui.js"></script>
+		<script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jquery.pagination.js"></script>
+		<script type="text/javascript" src="<%=request.getContextPath()%>/js/sys_util_web.js"></script>
+		<link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/js/testJSP/js/validate/css/validate.css" /> 
+		<script language="javascript" src="<%=request.getContextPath()%>/js/testJSP/js/validate/talent-validate-all.js" ></script>
+		<link rel="stylesheet" href="<%=request.getContextPath()%>/seller/css/pageSellerMartshowItems-9b61bc2a35m.css" type="text/css" media="all" />
+    </head>
+	<body>
+		<jsp:include page="../sellerHeader.jsp"></jsp:include>
+			<div id="content" class="wrapper">
+                <div class="pure-g admin-wrapper">
+                    <div class="pure-u-1 main">
+                        <h1 class="seller-title">
+                            修改密码
+                        </h1>
+                        <form action="#" method="" accept-charset="utf-8" id="seller-account-passwd" class="ui-form">
+                            <fieldset>
+                                <div class="ui-form-item">
+                                    <label for="" class="ui-label">
+                                        <span class="ui-form-required">
+                                            *
+                                        </span>
+                                        请输入旧密码
+                                    </label>
+                                    <input class="ui-input" name="old_passwd" type="password">
+                                    <span class="ui-form-other">
+                                        <a class="blue" href="#">
+                                            忘记密码
+                                        </a>
+                                    </span>
+                                </div>
+                                <div class="ui-form-item">
+                                    <label for="" class="ui-label">
+                                        <span class="ui-form-required">
+                                            *
+                                        </span>
+                                        请输入新密码
+                                    </label>
+                                    <input class="ui-input " name="new_passwd" type="password">
+                                </div>
+                                <div class="ui-form-item">
+                                    <label for="" class="ui-label">
+                                        <span class="ui-form-required">
+                                            *
+                                        </span>
+                                        请再次输入新密码
+                                    </label>
+                                    <input class="ui-input " name="new_passwd_repeat" type="password">
+                                </div>
+                                <div class="ui-form-item">
+                                    <input type="submit" class="ui-button ui-button-lred" value="保存">
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+		</div>
+		<div class="m-feedback J_feedback">
+		</div>
+		<div class="m-fb-shadow J_fb-shadow">
+		</div>
+		<jsp:include page="../sellerFooter.jsp"></jsp:include>
+	</body>
+</html>

@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tzmb2c.web.mapper.SpecialShowMapper">
+	<!-- 查询所有的记录 -->
+	<select id="findSpecialShowList" resultType="SpecialShowPojo" parameterType="java.util.Map">
+		select
+			s.id               as id,
+			s.user_id          as userId,
+			s.name             as name,
+			s.user_brand_id    as userBrandId,
+			s.banner           as banner,
+			s.discount_type    as discountType,
+			(CASE WHEN s.discount_type = 1 THEN '满减' WHEN s.discount_type = 2 THEN '满折' END)  as discountTypeName,
+			s.discount_context as discountContext,
+			s.age_range        as ageRange,
+			s.introduction     as introduction,
+			s.begin_time       as beginTime,
+			s.end_time         as endTime,
+			s.sorting          as sorting,
+			s.introduction     as introduction,
+			s.status           as status,
+			(CASE WHEN s.status = 0 THEN '待提交' WHEN s.status = 1 THEN '待审核' WHEN s.status = 2 THEN '待排期' WHEN s.status = 3 THEN '退回修改' WHEN s.status = 4 THEN '排期完成' WHEN s.status = 5 THEN '已结束' END)  as statusName,
+			s.create_by        as createBy,
+			s.create_date      as createDate,
+			s.update_by        as updateBy,
+			s.update_date      as updateDate,
+			s.remarks          as remarks,
+			s.version          as version,
+			s.activity_id      as activityId,
+			s.main_category1   as mainCategory1,
+			s.main_category2   as mainCategory2,
+			s.title            as title,
+			s.refund_addr_id   as refundAddrId,
+			s.discount         as discount
+	   	from special_show s 
+		where 1=1
+		<if test="checkstatus == null ">
+			and s.status != 0 
+			<if test="end != null">
+		    	and s.status = 5
+			</if>
+			<if test="end == null">
+			   and s.status != 5
+			</if>
+		</if>
+		<if test="isdelete != null and isdelete != '' ">
+			and s.isdelete = #{isdelete}
+		</if>
+		<if test="id != null">
+			and s.id = #{id}
+		</if>
+		<if test="activityId != null">
+			and s.activity_id = #{activityId}
+		</if>
+		<if test="userBrandId != null">
+			and s.user_brand_id = #{userBrandId}
+		</if>
+		<if test="title != null and title != '' ">
+			and s.title like CONCAT("%",#{title},"%")
+		</if>
+		<if test="name != null and name != '' ">
+			and s.name like CONCAT("%",#{name},"%")
+		</if>
+		<if test="channelName != null and channelName != '' ">
+			and c.name like CONCAT("%",#{channelName},"%")
+		</if>
+		<if test="currentTimeStr != null and currentTimeStr !='' ">
+			and str_to_date(s.begin_time,'%Y-%m-%d %H:%i:%s') &lt;= #{currentTimeStr}
+			and str_to_date(s.end_time,'%Y-%m-%d %H:%i:%s') &gt; #{currentTimeStr}
+		</if>
+		
+		<if test="beginTimeStr !=null and beginTimeStr !=''">
+			and str_to_date(s.begin_time,'%Y-%m-%d %H:%i:%s') &gt;= #{beginTimeStr}
+		</if>
+		<if test="endTimeStr !=null and endTimeStr !=''">
+			and str_to_date(s.end_time,'%Y-%m-%d %H:%i:%s') &lt;= #{endTimeStr}
+		</if>
+		
+		<if test="status != null">
+			and s.status = #{status}
+		</if>
+		<if test="mainCategory1 != null and mainCategory1 != ''">
+			and s.main_category1 = #{mainCategory1}
+		</if>
+		<if test="mainCategory2 != null and mainCategory2 != ''">
+			and s.main_category2 = #{mainCategory2}
+		</if>
+		<if test="userId != null">
+			and s.user_id = #{userId}
+		</if>
+		<if test="channelId != null and channelId != ''">
+			and LOCATE(CONCAT(':', #{channelId}, ':'), s.channel_id) > 0
+		</if>
+		<if test="houtai != null">
+			<if test="option != null and option == 1">
+				order by s.begin_time desc,s.update_date desc
+			</if>
+			<if test="option == null">
+				order by s.id desc
+			</if>
+		</if>
+		<if test="houtai == null">
+			order by s.sorting desc,s.update_date desc
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	<!-- 查询记录的数目 -->
+	<select id="findSpecialShowCount" resultType="int" parameterType="java.util.Map">
+		select count(*)
+	   	from   special_show s
+		where  1=1
+		<if test="checkstatus == null ">
+			and s.status != 0
+			<if test="end != null">
+		    	and s.status = 5
+			</if>
+			<if test="end == null">
+			   and s.status != 5
+			</if>
+		</if>
+		<if test="isdelete != null and isdelete != '' ">
+			and s.isdelete = #{isdelete}
+		</if>
+		<if test="userBrandId != null">
+			and s.user_brand_id = #{userBrandId}
+		</if>
+		<if test="title != null and title != '' ">
+			and s.title like CONCAT("%",#{title},"%")
+		</if>
+		<if test="name != null and name != '' ">
+			and s.name like CONCAT("%",#{name},"%")
+		</if>
+		<if test="beginTimeStr !=null and beginTimeStr !=''">
+			and str_to_date(s.begin_time,'%Y-%m-%d %H:%i:%s') &gt;= #{beginTimeStr}
+		</if>
+		<if test="endTimeStr !=null and endTimeStr !=''">
+			and str_to_date(s.end_time,'%Y-%m-%d %H:%i:%s') &lt;= #{endTimeStr}
+		</if>
+		<if test="status != null">
+			and s.status = #{status}
+		</if>
+		<if test="userId != null">
+			and s.user_id = #{userId}
+		</if>
+        <if test="id != null">
+			and s.id = #{id}
+		</if>
+		<if test="channelId != null and channelId != ''">
+			and LOCATE(CONCAT(':', #{channelId}, ':'), s.channel_id) > 0
+		</if>
+	</select>
+	<!-- 查找单条 -->	
+	<select id="findSpecialShowById" resultType="SpecialShowPojo" parameterType="Long">
+		select
+			s.id               as id,
+			s.user_id          as userId,
+			s.name             as name,
+			s.user_brand_id    as userBrandId,
+			s.banner           as banner,
+			s.discount_type    as discountType,
+			(CASE WHEN s.discount_type = 1 THEN '满减' WHEN s.discount_type = 2 THEN '满折' END)  as discountTypeName,
+			s.discount_context as discountContext,
+			s.age_range        as ageRange,
+			s.begin_time       as beginTime,
+			s.end_time         as endTime,
+			s.sorting          as sorting,
+			s.introduction     as introduction,
+			s.status           as status,
+			(CASE WHEN s.status = 0 THEN '待提交' WHEN s.status = 1 THEN '待审核' WHEN s.status = 2 THEN '待排期' WHEN s.status = 3 THEN '退回修改' WHEN s.status = 4 THEN '排期完成' WHEN s.status = 5 THEN '已结束' END)  as statusName,
+			s.activity_id      as activityId,
+			s.main_category1   as mainCategory1,
+			s.main_category2   as mainCategory2,
+			s.title            as title,
+			s.create_by        as createBy,
+			s.create_date      as createDate,
+			s.update_by        as updateBy,
+			s.update_date      as updateDate,
+			s.discount         as discount,
+			s.refund_addr_id   as refundAddrId,
+			s.channel_id       as channelId,
+			ua.address         as refundAddress,
+			ua.consignee_phone as consigneePhone,
+			(select QQ from user_info ui where ui.user_id=s.user_id )as QQ
+	   	from special_show s left join user_address ua on ua.id=s.refund_addr_id
+		where
+		s.id = #{id}
+	</select>
+		<!-- 根据用户查询退货地址 -->	
+	<select id="findSpecialShowByUid" resultType="SpecialShowPojo" parameterType="Long">
+		select
+		u.id as refundAddrId,
+		CONCAT((select s.name from sys_area s where s.id=u.province),(select s.name from sys_area s where s.id=u.city),(select s.name from sys_area s where s.id=u.area),u.address) as refundAddress
+	   	from user_address u
+		where
+		u.user_id = #{userId}
+		order by u.is_default desc
+	</select>
+	<!-- 查找单条（ACTIVITY_ID） -->	
+	<select id="findSpecialShowByActivityId" resultType="SpecialShowPojo" parameterType="Long">
+		select
+			s.id               as id,
+			s.user_id          as userId,
+			s.name             as name,
+			s.user_brand_id    as userBrandId,
+			s.banner           as banner,
+			s.discount_type    as discountType,
+			(CASE WHEN s.discount_type = 1 THEN '满减' WHEN s.discount_type = 2 THEN '满折' END)  as discountTypeName,
+			s.discount_context as discountContext,
+			s.age_range        as ageRange,
+			s.begin_time       as beginTime,
+			s.end_time         as endTime,
+			s.sorting          as sorting,
+			s.introduction     as introduction,
+			s.status           as status,
+			(CASE WHEN s.status = 0 THEN '待提交' WHEN s.status = 1 THEN '待审核' WHEN s.status = 2 THEN '待排期' WHEN s.status = 3 THEN '退回修改' WHEN s.status = 4 THEN '排期完成' WHEN s.status = 5 THEN '已结束' END)  as statusName,
+			s.activity_id      as activityId,
+			s.main_category1   as mainCategory1,
+			s.main_category2   as mainCategory2,
+			s.title            as title,
+			s.create_by        as createBy,
+			s.create_date      as createDate,
+			s.update_by        as updateBy,
+			s.update_date      as updateDate,
+			s.discount         as discount,
+			s.refund_addr_id   as refundAddrId
+	   	from special_show s
+		where
+		s.activity_id = #{activityId}
+	</select>
+	<!-- 插入单条 -->
+	<insert id="insertSpecialShow" parameterType="SpecialShowPojo">
+		insert into special_show
+		(name,user_brand_id,banner,discount_type,discount_context,age_range,begin_time,end_time,sorting,status,activity_id,main_category1,main_category2,create_date,update_date,title,user_id,introduction,refund_addr_id,channel_id) 
+		values(#{name},#{userBrandId},#{banner},#{discountType},#{discountContext},#{ageRange},str_to_date(#{beginTime},'%Y-%m-%d %H:%i:%s'),str_to_date(#{endTime},'%Y-%m-%d %H:%i:%s'),#{sorting},#{status},#{activityId},#{mainCategory1},#{mainCategory2},now(),now(),#{title},#{userId},#{introduction},#{refundAddrId},#{channelId})
+	</insert>	
+	<!-- 删除单条 -->
+	<delete id="delSpecialShow" parameterType="Long">
+		<!-- delete from special_show where id = #{id} -->
+		update special_show s 
+		set    s.isdelete = 1,
+		update_date = now()
+		where
+		s.id = #{id}
+	</delete>
+	<!-- 排期完成单条 -->
+	<update id="schedulingSpecialShow" parameterType="Long">
+		update special_show s 
+		set    s.status = 4,
+		update_date = now(),
+		update_by = 1
+		where
+		s.id = #{id}
+	</update>	
+	<!-- 退回修改单条 -->
+	<update id="modifySpecialShow" parameterType="Long">
+		update special_show s 
+		set    s.status = 3,
+		update_date = now(),
+		update_by = 1		
+		where
+		s.id = #{id}
+	</update>	
+    <!-- 审核单条 -->
+	<update id="checkSpecialShow" parameterType="Long">
+		update special_show s 
+		set    s.status = 2,
+		update_date = now(),
+		update_by = 1
+		where
+		s.id = #{id}
+	</update>
+	<!-- 取审单条 -->
+	<update id="uncheckSpecialShow" parameterType="Long">
+		update special_show s 
+		set    s.status = 1,
+		update_date = now(),
+		update_by = 1
+		where
+		s.id = #{id}
+	</update>	
+	<!--更新单条-->
+	<update id="updateSpecialShow" parameterType="SpecialShowPojo">
+		update special_show s set
+		<if test="userId != null">
+			s.user_id = #{userId},
+		</if>
+		<if test="name != null and name != '' ">
+			s.name = #{name},
+		</if>
+		<if test="banner != null and banner != '' ">
+			s.banner = #{banner},
+		</if>
+		<if test="discount != null ">
+			s.discount = #{discount},
+		</if>
+		<if test="discountType != null and discountType !=-1">
+			s.discount_type = #{discountType},
+		</if>
+		<if test="discountContext != null">
+			s.discount_context = #{discountContext},
+		</if>
+		<if test="ageRange != null">
+			s.age_range = #{ageRange},
+		</if>
+		<if test="introduction != null">
+			s.introduction = #{introduction},
+		</if>
+		<if test="beginTimeStr !=null and beginTimeStr !=''">
+			s.begin_time = str_to_date(#{beginTimeStr},'%Y-%m-%d %H:%i:%s'),
+		</if>
+		<if test="endTimeStr !=null and endTimeStr !=''">
+			s.end_time = str_to_date(#{endTimeStr},'%Y-%m-%d %H:%i:%s'),
+		</if>
+		<if test="sorting != null">
+			s.sorting = #{sorting},
+		</if>
+		<if test="status != null">
+			s.status = #{status},
+		</if>
+		<if test="mainCategory1 != null and mainCategory1 !=''">
+			s.main_category1 = #{mainCategory1},
+		</if>
+		<if test="mainCategory2 != null and mainCategory2 !=''">
+			s.main_category2 = #{mainCategory2},
+		</if>
+		<if test="title != null and title !=''">
+			s.title = #{title},
+		</if>
+		<if test="userBrandId != null">
+			s.user_brand_id = #{userBrandId},
+		</if>
+		<if test="refundAddrId != null and refundAddrId !=''">
+			s.refund_addr_id = #{refundAddrId},
+		</if>
+		s.channel_id = #{channelId},
+		update_date = now(),
+		update_by = 1
+		where
+		id = #{id}
+	</update>	
+	<update id="updateSpecialShowEnd">
+		update special_show s set
+		s.status = 5,
+		s.update_date = now(),
+		s.update_by = 1
+		where
+		s.status = 4
+		and date_format(now(),'%Y-%m-%d %T') &gt;= date_format(s.end_time,'%Y-%m-%d %T')
+	</update>	
+	<!--获取最新五条排期完成的专场-->
+	<select id="findSpecialShowByStatus" resultType="SpecialShowPojo" parameterType="Long">
+		select
+			s.id               as id,
+			s.user_id          as userId,
+			s.name             as name,
+			s.user_brand_id    as userBrandId,
+			s.banner           as banner,
+			s.discount_type    as discountType,
+			(CASE WHEN s.discount_type = 1 THEN '满减' WHEN s.discount_type = 2 THEN '满折' END)  as discountTypeName,
+			s.discount_context as discountContext,
+			s.age_range        as ageRange,
+			s.begin_time       as beginTime,
+			s.end_time         as endTime,
+			s.sorting          as sorting,
+			s.introduction     as introduction,
+			s.status           as status,
+			(CASE WHEN s.status = 0 THEN '待提交' WHEN s.status = 1 THEN '待审核' WHEN s.status = 2 THEN '待排期' WHEN s.status = 3 THEN '退回修改' WHEN s.status = 4 THEN '排期完成' WHEN s.status = 5 THEN '已结束' END)  as statusName,
+			s.activity_id      as activityId,
+			s.main_category1   as mainCategory1,
+			s.main_category2   as mainCategory2,
+			s.title            as title,
+			s.create_by        as createBy,
+			s.create_date      as createDate,
+			s.update_by        as updateBy,
+			s.update_date      as updateDate,
+			s.discount         as discount,
+			s.refund_addr_id   as refundAddrId
+	   	from special_show s
+		where
+		s.user_id = #{id} and s.status = 4 and s.isdelete=0
+		order by s.update_date desc 
+		limit 0 , 5
+	</select>
+</mapper>

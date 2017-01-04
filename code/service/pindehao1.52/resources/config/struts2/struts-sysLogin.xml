@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="sysLogin" extends="default">
+
+
+		<result-types>
+			<result-type name="json" class="org.apache.struts2.json.JSONResult" />
+		</result-types>
+
+
+		<action name="sysLogin" class="com.tzmb2c.web.action.SysLoginAction"
+			method="getSysLoginCount">
+			<result>/page/system/sys/sysLogin.jsp</result>
+		</action>
+		<action name="sysLoginMF" class="com.tzmb2c.web.action.SysLoginAction"
+			method="getSysLoginCount">
+			<result>/page/system/sys/sysLoginMF.jsp</result>
+		</action>
+		<action name="sysLoginCS" class="com.tzmb2c.web.action.SysLoginAction"
+			method="getSysLoginCount">
+			<result>/page/system/sys/sysLoginCS.jsp</result>
+		</action>
+		<action name="sysLoginAG" class="com.tzmb2c.web.action.SysLoginAction"
+			method="getSysLoginCount">
+			<result>/page/system/sys/sysLoginAG.jsp</result>
+		</action>
+		<action name="sysLoginWS" class="com.tzmb2c.web.action.SysLoginAction"
+			method="getSysLoginWS">
+			<result>/page/system/sys/sysLoginAG.jsp</result>
+		</action>
+		
+		<action name="SysLoginDeleteId" class="com.tzmb2c.web.action.SysLoginAction"
+			method="sysLoginDeleteId">
+
+		</action>
+		<action name="delSysLogin" class="com.tzmb2c.web.action.SysLoginAction"
+			method="delSysLogin">
+
+		</action>
+		
+		<action name="goFindSysLogin" class="com.tzmb2c.web.action.SysLoginAction"
+			method="goFindSysLogin">
+			<result>/page/system/sys/sysLoginupdate.jsp</result>
+		</action>
+		<action name="updateSysLogin" class="com.tzmb2c.web.action.SysLoginAction"
+			method="updateSysLogin">
+		</action>
+		<action name="addSysLogin" class="com.tzmb2c.web.action.SysLoginAction"
+			method="addSysLogin">
+			<result>/page/system/sys/sysLoginAdd.jsp</result>
+		</action>
+		<action name="insertSysLogin" class="com.tzmb2c.web.action.SysLoginAction"
+			method="insertSysLogin">
+		</action>
+		<action name="genExternalCode" class="com.tzmb2c.web.action.SysLoginAction"
+			method="genExternalCode">
+		</action>
+		<action name="genInvitationCode" class="com.tzmb2c.web.action.SysLoginAction"
+			method="genInvitationCode">
+		</action>
+		
+		<action name="updateStatus" class="com.tzmb2c.web.action.SysLoginAction"
+			method="updateStatus">
+		</action>
+
+		<action name="toUpdatePassword" class="com.tzmb2c.web.action.SysLoginAction"
+			method="toUpdatePassword">
+			<result>/page/system/user/updatePassword.jsp</result>
+		</action>
+		<action name="updatePassword" class="com.tzmb2c.web.action.SysLoginAction"
+			method="updatePassword">
+		</action>
+		
+		<action name="normalUserInfo" class="com.tzmb2c.web.action.SysLoginAction" method="userInfoAllCount2">
+			<result>/page/system/sys/sysLoginUserInfo.jsp</result>
+		</action>
+		<!-- 审核全部 -->
+		<action name="userInfocheckAll" class="com.tzmb2c.web.action.SysLoginAction" method="userInfocheckAll">
+		</action>
+		<action name="goFindUserInfo" class="com.tzmb2c.web.action.SysLoginAction" method="goFindUserInfo">
+			<result>/page/system/sys/sysLoginUserInfoUpdate.jsp</result>
+		</action>
+		<action name="userInfoUpdate" class="com.tzmb2c.web.action.SysLoginAction" method="userInfoUpdate">
+		</action>
+		
+				<!--导出产品EXCEL-->
+		<action name="getSysLoginExcel" class="com.tzmb2c.web.action.SysLoginAction" method="getSysLoginExcel">
+			<result name="success" type="stream">  
+				<param name="contentType">application/vnd.ms-excel</param>  
+				<param name="inputName">inputStream</param>  
+				<param name="contentDisposition">attachment;filename="${downloadFileName}"</param>  
+				<param name="bufferSize">4096</param>
+			</result>  
+		</action>
+	</package>
+	
+	<package name="SysLogin-json" extends="json-default">
+		<!--平台入口 -->
+		<action name="getSysLoginCount" class="com.tzmb2c.web.action.SysLoginAction"
+			method="getSysLoginCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		
+		<action name="sysLoginAllList" class="com.tzmb2c.web.action.SysLoginAction"
+			method="sysLoginAllList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<action name="sysLoginAGAllList" class="com.tzmb2c.web.action.SysLoginAction"
+			method="sysLoginAGAllList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<action name="deleSysLogin" class="com.tzmb2c.web.action.SysLoginAction"
+			method="deleSysLogin">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="updatePasswordlogin" class="com.tzmb2c.web.action.SysLoginAction"
+			method="updatePasswordlogin">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="validLoginRegiste" class="com.tzmb2c.web.action.SysLoginAction"
+			method="validLoginRegiste">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="userInfoAllCount2" class="com.tzmb2c.web.action.SysLoginAction" method="userInfoAllCount2">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		
+		<action name="userInfoAllList2" class="com.tzmb2c.web.action.SysLoginAction" method="userInfoAllList2">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="checkUserInfo" class="com.tzmb2c.web.action.SysLoginAction" method="checkUserInfo">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

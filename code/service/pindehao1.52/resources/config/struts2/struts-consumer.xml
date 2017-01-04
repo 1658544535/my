@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="consumer" extends="default">
+
+		<!-- 供应商个人信息 -->
+		<action name="consumer" class="com.tzmb2c.web.action.ConsumerAction" method="getConsumerCount">
+			<result>/page/system/user/consumer.jsp</result>
+		</action>
+		
+		<action name="consumerChecks" class="com.tzmb2c.web.action.ConsumerAction" method="consumerChecks">
+		
+		</action>
+		
+		<action name="goFindConsumer" class="com.tzmb2c.web.action.ConsumerAction" method="goFindConsumer">
+			<result>/page/system/user/consumerupdate.jsp</result>
+		</action>
+		<action name="updateConsumer" class="com.tzmb2c.web.action.ConsumerAction" method="updateConsumer">
+		</action>
+		<action name="delConsumer" class="com.tzmb2c.web.action.ConsumerAction" method="delConsumer">
+		</action>
+		
+	</package>
+	
+	<package name="consumer-json" extends="json-default">
+		<action name="checkConsumer" class="com.tzmb2c.web.action.ConsumerAction" method="checkConsumer">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		<!--平台入口-->
+		<action name="getConsumerCount" class="com.tzmb2c.web.action.ConsumerAction" method="getConsumerCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+			<action name="consumerAllList" class="com.tzmb2c.web.action.ConsumerAction" method="consumerAllList">
+			<result type="json">
+				<param name="root">page.result</param>.
+			</result>
+		</action>
+	</package>
+</struts>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.UserScoreLogMapper">
+	<!-- 查询所有的记录 -->
+	<select id="findUserScoreLogList" resultType="UserScoreLogPojo" parameterType="java.util.Map">
+		select
+			s.id as id,
+			s.user_id as userId,
+			s.name as name,
+			s.cur_score as curScore,
+			s.trade_score as tradeScore,
+			s.trade_source as tradeSource,
+			(CASE WHEN trade_source = 1 THEN '摇一摇' WHEN trade_source = 2 THEN '绑定微信' WHEN trade_source = 3 THEN '上传头像' WHEN trade_source = 4 THEN '完善资料' WHEN trade_source = 5 THEN '积分兑换' END) as tradeSourceName,
+			s.remark as remark,
+			s.create_by as createBy,
+			s.create_date as createDate,
+			s.update_by as updateBy,
+			s.update_date as updateDate
+	   	from user_score_log s
+		where 1=1
+		<if test="userId != null and userId != '' ">
+			and s.user_id = #{userId}
+		</if>
+		<if test="name != null and name != '' ">
+			and s.name like concat("%",#{name},"%")
+		</if>
+		<if test="tradeSource != null and tradeSource != '' ">
+		   and s.trade_source = #{tradeSource}
+		</if>
+		<if test="begandayStr !=null and begandayStr !=''">
+			and str_to_date(s.create_date,'%Y-%m-%d') &gt;= #{begandayStr}
+		</if>
+		<if test="enddayStr !=null and enddayStr !=''">
+			and str_to_date(s.create_date,'%Y-%m-%d') &lt;= #{enddayStr}
+		</if>
+		order by s.create_date desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<select id="findUserScoreLogCount" resultType="int" parameterType="java.util.Map">
+		select count(*)
+	   	from user_score_log s
+		where 1=1
+		<if test="userId != null and userId != '' ">
+			and s.user_id = #{userId}
+		</if>
+		<if test="name != null and name != '' ">
+			and s.name like concat("%",#{name},"%")
+		</if>
+		<if test="tradeSource != null and tradeSource != '' ">
+		   and s.trade_source = #{tradeSource}
+		</if>
+		<if test="begandayStr !=null and begandayStr !=''">
+			and str_to_date(s.create_date,'%Y-%m-%d') &gt;= #{begandayStr}
+		</if>
+		<if test="enddayStr !=null and enddayStr !=''">
+			and str_to_date(s.create_date,'%Y-%m-%d') &lt;= #{enddayStr}
+		</if>
+		<if test="createDate !=null and createDate !=''">
+			and str_to_date(s.create_date,'%Y-%m-%d') = #{createDate}
+		</if>
+	</select>
+	
+	<select id="findUserScoreLogById" resultType="UserScoreLogPojo" parameterType="Long">
+		select
+			s.id as id,
+			s.user_id as userId,
+			s.name as name,
+			s.cur_score as curScore,
+			s.trade_score as tradeScore,
+			s.trade_source as tradeSource,
+			s.remark as remark,
+			s.create_by as createBy,
+			s.create_date as createDate,
+			s.update_by as updateBy,
+			s.update_date as updateDate
+	   	from user_score_log s
+		where s.id = #{id}
+	</select>
+	<!-- 查询用户积分流水 -->
+	<select id="findUserScoreLogByUid" resultType="UserScoreLogPojo" parameterType="Long">
+		select
+			s.id as id,
+			s.user_id as userId,
+			s.name as name,
+			s.cur_score as curScore,
+			s.trade_score as tradeScore,
+			s.trade_source as tradeSource,
+			s.remark as remark,
+			s.create_by as createBy,
+			s.create_date as createDate,
+			s.update_by as updateBy,
+			s.update_date as updateDate
+	   	from user_score_log s
+		where s.user_id = #{userId}
+	</select>
+	
+	<!-- 插入单条 -->
+	<insert id="insertUserScoreLog" parameterType="UserScoreLogPojo">
+		insert into user_score_log 
+		(user_id,name,cur_score,trade_score,trade_source,remark,create_by,create_date,update_by,update_date) 
+		values (#{userId},#{name},#{curScore},#{tradeScore},#{tradeSource},#{remark},#{createBy},now(),#{updateBy},now())
+	</insert>
+	
+	<!-- 删除单条 -->
+	<delete id="delUserScoreLogById" parameterType="Long">
+		delete from user_score_log where id = #{id}
+	</delete>
+	<!-- 删除Uid的流水 -->
+	<delete id="delUserScoreLogByUid" parameterType="Long">
+		delete from user_score_log where user_id = #{userId}
+	</delete>
+	
+	<!--更新单条-->
+	<update id="updateUserScoreLogById" parameterType="UserScoreLogPojo">
+		update user_score_log set
+		<if test="name != null and name != ''">
+			name = #{name},
+		</if>
+		<if test="curScore != null">
+			cur_score = #{curScore},
+		</if>
+		<if test="tradeScore != null">
+			trade_score = #{tradeScore},
+		</if>
+		<if test="tradeSource != null and tradeSource != ''">
+			trade_source = #{tradeSource},
+		</if>
+		<if test="remark != null and remark != ''">
+			remark = #{remark},
+		</if>
+		<if test="updateBy != null and updateBy!='' ">
+			update_by = #{updateBy},
+		</if>
+		update_date = now()
+		where id = #{id}
+	</update>
+	
+</mapper>

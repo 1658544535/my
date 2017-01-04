@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.TemplatePageDataMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id as id,
+		type as type,
+		page_id as pageId,
+		data as data,
+		create_date as createDate,
+		create_by as createBy,
+		update_date as updateDate,
+		update_by as updateBy
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="TemplatePageDataPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			template_page_data
+		where
+			id = #{id}
+	</select>
+	
+	<select id="findByParams" parameterType="java.util.Map" resultType="TemplatePageDataPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			template_page_data
+		where
+			1=1
+		  <if test="id != null ">
+			and id = #{id}
+		  </if>
+		  <if test="type != null ">
+			and type = #{type}
+		  </if>
+		  <if test="pageId != null ">
+			and page_id = #{pageId}
+		  </if>
+		  <if test="data != null ">
+			and data = #{data}
+		  </if>
+		  <if test="createDate != null ">
+			and create_date = #{createDate}
+		  </if>
+		  <if test="createBy != null ">
+			and create_by = #{createBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and update_date = #{updateDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and update_by = #{updateBy}
+		  </if>
+		  limit 1
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from template_page_data
+		where 1=1
+		  <if test="id != null ">
+			and id = #{id}
+		  </if>
+		  <if test="type != null ">
+			and type = #{type}
+		  </if>
+		  <if test="pageId != null ">
+			and page_id = #{pageId}
+		  </if>
+		  <if test="data != null ">
+			and data = #{data}
+		  </if>
+		  <if test="createDate != null ">
+			and create_date = #{createDate}
+		  </if>
+		  <if test="createBy != null ">
+			and create_by = #{createBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and update_date = #{updateDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and update_by = #{updateBy}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="TemplatePageDataPojo">
+		select
+			<include refid="Base_Column_List" />
+		from template_page_data
+		where 1=1
+			<if test="id != null ">
+			  and id = #{id}
+			</if>
+			<if test="type != null ">
+			  and type = #{type}
+			</if>
+			<if test="pageId != null ">
+			  and page_id = #{pageId}
+			</if>
+			<if test="data != null ">
+			  and data = #{data}
+			</if>
+			<if test="createDate != null ">
+			  and create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and update_by = #{updateBy}
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="TemplatePageDataPojo">
+		update template_page_data
+		<set>
+			<if test="type != null">
+			  type = #{type},
+			</if>
+			<if test="pageId != null">
+			  page_id = #{pageId},
+			</if>
+			<if test="data != null">
+			  data = #{data},
+			</if>
+			  update_date = now(),
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from template_page_data 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="TemplatePageDataPojo">
+		insert into template_page_data
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="pageId != null">
+				page_id,
+			</if>
+			<if test="data != null">
+				data,
+			</if>
+				create_date,
+			<if test="createBy != null">
+				create_by,
+			</if>
+				update_date,
+			<if test="updateBy != null">
+				update_by,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="type != null">
+				#{type},
+			</if>
+			<if test="pageId != null">
+				#{pageId},
+			</if>
+			<if test="data != null">
+				#{data},
+			</if>
+				now(),
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+				now(),
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+		</trim>
+	</insert>
+	
+</mapper>

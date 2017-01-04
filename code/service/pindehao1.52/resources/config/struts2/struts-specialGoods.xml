@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="specialGoods" extends="default">
+		<!-- 进入列表页面 -->
+		<action name="goSpecialGoods" class="com.tzmb2c.web.action.SpecialGoodsAction" method="goSpecialGoods">
+			<result name="success">/page/system/specialModule/specialGoodsList.jsp</result>
+		</action>
+		<!-- 新增 -->
+		<action name="goAddSpecialGoods" class="com.tzmb2c.web.action.SpecialGoodsAction" method="goAddSpecialGoods">
+		    <result name="success">/page/system/specialModule/addSpecialGoods.jsp</result>
+		</action>
+		<!-- 新增提交 -->
+		<action name="addSpecialGoods" class="com.tzmb2c.web.action.SpecialGoodsAction" method="add">
+		</action>	
+		<!-- 编辑页面 -->
+		<action name="goEditSpecialGoods" class="com.tzmb2c.web.action.SpecialGoodsAction" method="goEditSpecialGoods">
+			<result name="success">/page/system/specialModule/updateSpecialGoods.jsp</result>
+		</action>
+		<!-- 编辑提交 -->
+		<action name="updateSpecialGoods" class="com.tzmb2c.web.action.SpecialGoodsAction" method="update">
+		</action>
+	</package>
+	<package name="specialGoods-json" extends="json-default">
+		<!-- 内容 -->
+		<action name="specialGoodsList" class="com.tzmb2c.web.action.SpecialGoodsAction" method="specialGoodsList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="specialGoodsCnt" class="com.tzmb2c.web.action.SpecialGoodsAction" method="goSpecialGoods">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+		<!-- 根据ID删除 -->
+		<action name="delSpecialGoods" class="com.tzmb2c.web.action.SpecialGoodsAction" method="delete">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+		<!-- 删除选中 -->
+		<action name="delSpecialGoodsAll" class="com.tzmb2c.web.action.SpecialGoodsAction" method="deleteAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 通过审核 -->
+		<action name="checkSpecialGoods" class="com.tzmb2c.web.action.SpecialGoodsAction" method="check">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 批量新增提交 -->
+		<action name="addAllSpecialGoods" class="com.tzmb2c.web.action.SpecialGoodsAction" method="addAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 取消审核 -->
+		<action name="uncheckSpecialGoods" class="com.tzmb2c.web.action.SpecialGoodsAction" method="uncheck">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中通过审核 -->
+		<action name="checkSpecialGoodsAll" class="com.tzmb2c.web.action.SpecialGoodsAction" method="checkAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中取消审核 -->
+		<action name="uncheckSpecialGoodsAll" class="com.tzmb2c.web.action.SpecialGoodsAction" method="uncheckAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>	
+		<!-- 编辑排序 -->
+		<action name="updateSpecialGoodsSorting" class="com.tzmb2c.web.action.SpecialGoodsAction"
+			method="updateSorting">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>			
+	</package>
+</struts>

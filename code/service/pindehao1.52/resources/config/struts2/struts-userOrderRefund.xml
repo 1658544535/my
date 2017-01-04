@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+	<package name="userOrderRefund" extends="default">
+
+		<action name="userOrderRefundManage" class="com.tzmb2c.web.action.UserOrderRefundAction"
+			method="getUserOrderRefundCount">
+			<result name="Apply">/page/system/userOderRefund/orderRefundApply.jsp
+			</result>
+			<result name="Progress">/page/system/userOderRefund/orderRefundProgress.jsp
+			</result>
+			<result name="success">/page/system/userOderRefund/userOrderRefundManage.jsp
+			</result>
+			<result name="Money">/page/system/userOderRefund/userOrderRefundMoney.jsp
+			</result>
+			<result name="Arbitration">/page/system/userOderRefund/userOrderRefundArbitration.jsp
+			</result>
+			<result name="Deal">/page/system/userOderRefund/userOrderRefundDeal.jsp
+			</result>
+		</action>
+
+		<!-- 删除单条 -->
+		<action name="delUserOrderRefund" class="com.tzmb2c.web.action.UserOrderRefundAction"
+			method="delUserOrderRefund">
+
+		</action>
+
+		<!-- 删除全部 -->
+		<action name="delAllUserOrderRefundById" class="com.tzmb2c.web.action.UserOrderRefundAction"
+			method="delAllUserOrderRefundById">
+		</action>
+
+		<!-- go审核(退货记录) -->
+		<action name="goCheckUserOrderRefund" class="com.tzmb2c.web.action.UserOrderRefundAction"
+			method="goCheckUserOrderRefund">
+			<result name="success">/page/system/userOderRefund/checkOrderRefund.jsp
+			</result>
+		</action>
+		<!-- 物流查询 -->
+		<action name="queryDeliverInfo" class="com.tzmb2c.web.action.UserOrderRefundAction" method="queryDeliverInfo">
+			<result name="success">/page/system/express/expressView.jsp</result>
+		</action>
+
+		<!-- go审核(退货进度) -->
+		<action name="goCheckUserOrderRefundProgress" class="com.tzmb2c.web.action.UserOrderRefundAction"
+			method="goCheckUserOrderRefundProgress">
+			<result name="success">/page/system/userOderRefund/checkOrderRefundProgress.jsp
+			</result>
+		</action>
+
+		<!-- go审核(退货申请) -->
+		<action name="goCheckUserOrderRefundApply" class="com.tzmb2c.web.action.UserOrderRefundAction"
+			method="goCheckUserOrderRefundApply">
+			<result name="success">/page/system/userOderRefund/checkOrderRefundApply.jsp
+			</result>
+		</action>
+
+		<!-- 审核单条 -->
+		<action name="checkUserOrderRefund" class="com.tzmb2c.web.action.UserOrderRefundAction"
+			method="checkUserOrderRefund">
+		</action>
+		
+		<!-- 批量审核 -->
+		<action name="checkAllUserOrderRefundById" class="com.tzmb2c.web.action.UserOrderRefundAction"
+			method="checkAllUserOrderRefundById">
+		</action>
+		<action name="checkOrderRefund" class="com.tzmb2c.web.action.UserOrderRefundAction"
+			method="checkOrderRefund">
+		</action>
+		<!-- 退货详情 -->
+		<action name="goFindRefundOrder" class="com.tzmb2c.web.action.UserOrderRefundAction"
+			method="goFindRefundOrder">
+				<result name="success">/page/system/userOderRefund/updateOrderRefund.jsp
+			</result>
+			<result name="Apply">/page/system/userOderRefund/updateOrderRefund2.jsp
+			</result>
+		</action>
+		<action name="updateOrderRefund" class="com.tzmb2c.web.action.UserOrderRefundAction" method="updateOrderRefund">
+		</action>
+		<!-- 根据类型修改状态 -->
+		<action name="updateStatusOfUserOrderRefundById" class="com.tzmb2c.web.action.UserOrderRefundAction"
+			method="updateStatusOfUserOrderRefundById">
+		</action>
+		<action name="getOrderRefundExcel" class="com.tzmb2c.web.action.UserOrderRefundAction" method="getOrderRefundExcel">
+		</action>
+
+	</package>
+	
+	<package name="UserOrderRefund-json" extends="json-default">
+		<!--平台入口 -->
+		<action name="getUserOrderRefundCount" class="com.tzmb2c.web.action.UserOrderRefundAction"
+			method="getUserOrderRefundCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+
+		<action name="getUserOrderRefundRowCount" class="com.tzmb2c.web.action.UserOrderRefundAction"
+			method="getUserOrderRefundRowCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+
+		<action name="userOrderRefundAllList" class="com.tzmb2c.web.action.UserOrderRefundAction"
+			method="userOrderRefundAllList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+
+		<action name="delUserOrderRefund" class="com.tzmb2c.web.action.UserOrderRefundAction"
+			method="delUserOrderRefund">
+			<result type="json">
+				<param name="root">result</param>
+				<param name="refundStatus">${refundStatus}</param>
+			</result>
+		</action>
+		
+		<!--单条审核申请-->
+		<action name="updateUserOrderRefund" class="com.tzmb2c.web.action.UserOrderRefundAction"
+			method="updateUserOrderRefund">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+				
+		<!--退款进钱包-->
+		<action name="refundMoney" class="com.tzmb2c.web.action.UserOrderRefundAction" method="refundMoney">
+				<result type="json">
+				<param name="root">message</param>
+			</result>
+		</action>
+	</package>
+</struts>

@@ -1,0 +1,15 @@
+#INDEXT_RB_AD {
+	clear: both;
+	width: 252px;
+	height: 198px;
+	z-index: 1000;
+	overflow: hidden;
+	bottom: 5px;
+	right: 5px;
+	position: fixed !important;
+	_position: absolute;
+	_top: expression(eval(document.documentElement.scrollTop +  
+		document.documentElement.clientHeight -  this.offsetHeight -  (
+		parseInt(this.currentStyle.marginTop, 10)||0)-  (parseInt(this.currentStyle.marginBottom, 10)||0))-
+		 (parseInt(this.currentStyle.bottom, 10)||0));
+}

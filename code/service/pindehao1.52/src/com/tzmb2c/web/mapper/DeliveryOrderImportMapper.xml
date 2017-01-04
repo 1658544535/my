@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.DeliveryOrderImportMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id as id,
+		user_id as userId,
+		batch_no as batchNo,
+		order_no as orderNo,
+		logistics_name as logisticsName,
+		(select name from sys_dict where name_en=logistics_name and type = 'logistics_type') as logisticsNameStr,
+		logistics_no as logisticsNo,
+		status as status,
+		(case when status=0 then "失败" when status=1 then "成功" end) as statusName,
+		remarks as remarks,
+		create_date as createDate,
+		create_by as createBy,
+		update_date as updateDate,
+		update_by as updateBy
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="DeliveryOrderImportPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			delivery_order_import
+		where
+			id = #{id}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from delivery_order_import
+		where 1=1
+		  <if test="id != null ">
+			and id &gt;= #{id}
+		  </if>
+		  <if test="userId != null ">
+			and user_id = #{userId}
+		  </if>
+		  <if test="batchNo != null and batchNo != '' ">
+			and batch_no = #{batchNo}
+		  </if>
+		  <if test="orderNo != null and orderNo != '' ">
+			  and order_no like concat("%",#{orderNo},"%" )
+			</if>
+		  <if test="orderNo != null and orderNo != '' and panduan==1">
+			  and order_no =#{orderNo}
+		  </if>
+		  <if test="logisticsName != null and logisticsName != '' ">
+			and logistics_name = #{logisticsName}
+		  </if>
+		  <if test="logisticsNo != null and logisticsNo != '' ">
+			and logistics_no = #{logisticsNo}
+		  </if>
+		  <if test="status != null ">
+			and status = #{status}
+		  </if>
+		  <if test="remarks != null and remarks != '' ">
+			and remarks = #{remarks}
+		  </if>
+		  <if test="createDate != null ">
+			and create_date = #{createDate}
+		  </if>
+		  <if test="createBy != null ">
+			and create_by = #{createBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and update_date = #{updateDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and update_by = #{updateBy}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="DeliveryOrderImportPojo">
+		select
+			<include refid="Base_Column_List" />
+		from delivery_order_import
+		where 1=1
+			<if test="id != null ">
+			  and id &gt;= #{id}
+			</if>
+			<if test="userId != null ">
+			  and user_id = #{userId}
+			</if>
+			<if test="batchNo != null and batchNo != '' ">
+			  and batch_no = #{batchNo}
+			</if>
+			<if test="orderNo != null and orderNo != '' ">
+			  and order_no like concat("%",#{orderNo},"%" )
+			</if>
+			<if test="orderNo != null and orderNo != '' and panduan==1">
+			  and order_no =#{orderNo}
+			</if>
+			<if test="logisticsName != null and logisticsName != '' ">
+			  and logistics_name = #{logisticsName}
+			</if>
+			<if test="logisticsNo != null and logisticsNo != '' ">
+			  and logistics_no = #{logisticsNo}
+			</if>
+			<if test="status != null ">
+			  and status = #{status}
+			</if>
+			<if test="remarks != null and remarks != '' ">
+			  and remarks = #{remarks}
+			</if>
+			<if test="createDate != null ">
+			  and create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and update_by = #{updateBy}
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="DeliveryOrderImportPojo">
+		update delivery_order_import
+		<set>
+			<if test="userId != null">
+			  user_id = #{userId},
+			</if>
+			<if test="batchNo != null">
+			  batch_no = #{batchNo},
+			</if>
+			<if test="orderNo != null">
+			  order_no = #{orderNo},
+			</if>
+			<if test="logisticsName != null">
+			  logistics_name = #{logisticsName},
+			</if>
+			<if test="logisticsNo != null">
+			  logistics_no = #{logisticsNo},
+			</if>
+			<if test="status != null">
+			  status = #{status},
+			</if>
+			<if test="remarks != null">
+			  remarks = #{remarks},
+			</if>
+			<if test="createDate != null">
+			  create_date = #{createDate},
+			</if>
+			<if test="createBy != null">
+			  create_by = #{createBy},
+			</if>
+			<if test="updateDate != null">
+			  update_date = #{updateDate},
+			</if>
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from delivery_order_import 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="DeliveryOrderImportPojo">
+		insert into delivery_order_import
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="batchNo != null">
+				batch_no,
+			</if>
+			<if test="orderNo != null">
+				order_no,
+			</if>
+			<if test="logisticsName != null">
+				logistics_name,
+			</if>
+			<if test="logisticsNo != null">
+				logistics_no,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="remarks != null">
+				remarks,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+			<if test="updateDate != null">
+				update_date,
+			</if>
+			<if test="updateBy != null">
+				update_by,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="userId != null">
+				#{userId},
+			</if>
+			<if test="batchNo != null">
+				#{batchNo},
+			</if>
+			<if test="orderNo != null">
+				#{orderNo},
+			</if>
+			<if test="logisticsName != null">
+				#{logisticsName},
+			</if>
+			<if test="logisticsNo != null">
+				#{logisticsNo},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+			<if test="remarks != null">
+				#{remarks},
+			</if>
+			<if test="createDate != null">
+				#{createDate},
+			</if>
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+			<if test="updateDate != null">
+				#{updateDate},
+			</if>
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+		</trim>
+	</insert>
+	
+</mapper>

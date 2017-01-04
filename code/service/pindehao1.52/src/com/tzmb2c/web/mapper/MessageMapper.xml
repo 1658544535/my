@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.MessageMapper">
+	
+	<select id="getfindByIdMessage" parameterType="Long" resultType="messagePojo" >
+		select t.id as id,
+		t.user_id as userId,
+		t.type as type,
+		t.status as status,
+		t.phone as phone,
+		t.title as title,
+		t.content as content,
+		t.create_date as createDate
+		from user_message t where
+		t.id = #{id} 
+	</select>
+	
+	<delete id="delMessage" parameterType="Long">
+		delete from user_message where id = #{id}
+	</delete>
+	
+	<update id="updateMessage" parameterType="messagePojo">
+		update user_message set
+		update_by = #{updateBy},
+		update_date = #{updateDate},
+		user_id = #{userId},
+		type =#{type},
+		status =#{status},
+		phone =#{phone},
+		title =#{title},
+		content =#{content}
+		where id = #{id}
+	</update>
+	
+	<update id="checkMessage" parameterType="Long">
+		update user_message set status = 1 where id = #{id}
+	</update>
+	
+	<select id="messageAllCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from user_message where
+		1=1
+		<if test="title!=null and title!=''">
+			and title like CONCAT("%",#{title},"%")
+		</if>
+		<if test="status!=null ">
+			and status = #{status}
+		</if>
+	</select>
+	
+	<select id="messageAllList" resultType="messagePojo" parameterType="java.util.Map">
+		select t.id as id,
+		t.user_id as userId,
+		t.type as type,
+		t.status as status,
+		t.phone as phone,
+		t.title as title,
+		t.content as content,
+		t.create_date as createDate,
+		(select name from sys_dict where value=t.type and type = 'type') typeName,
+		(select name from sys_dict where value=t.status and type = 'message_status') statusName,
+		(select name from sys_login where id=t.user_id ) userName
+		from user_message t where
+		1=1
+		<if test="title!=null and title!=''">
+			and title like CONCAT("%",#{title},"%")
+		</if>
+		<if test="status!=null">
+			and status = #{status}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+</mapper>

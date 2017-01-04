@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+	<package name="hotBrandRecommend" extends="default">
+	    <action name="goHotBrandRecommend" class="com.tzmb2c.web.action.HotBrandRecommendAction"
+			method="goHotBrandRecommend">
+			<result name="success">/page/system/hotBrandRecommend/hotBrandRecommend.jsp</result>
+		</action>
+		<!--跳转用户品牌列表-->
+		<action name="goSelectHotBrandRecommend" class="com.tzmb2c.web.action.UserBrandAction"
+			method="userBrandListCount">
+			<result name="success">/page/system/hotBrandRecommend/selectHotBrandRecommend.jsp</result>
+		</action>
+		
+		<!--添加推荐-->
+		<action name="selectHotBrandRecommend" class="com.tzmb2c.web.action.HotBrandRecommendAction"
+			method="selectHotBrandRecommend">
+		</action>
+		 <!-- 更新 -->
+		<action name="goUpdateHotBrandRecommend" class="com.tzmb2c.web.action.HotBrandRecommendAction"
+			method="goUpdateHotBrandRecommend">
+			<result>/page/system/hotBrandRecommend/updateHotBrandRecommend.jsp</result>
+		</action>
+
+		<!-- 更新 -->
+		<action name="updateHotBrandRecommend" class="com.tzmb2c.web.action.HotBrandRecommendAction"
+			method="updateHotBrandRecommend">
+		</action>
+	</package>
+	<package name="hotBrandRecommend-json" extends="json-default">
+		<!--平台入口 -->
+		<action name="getHotBrandRecommendCount" class="com.tzmb2c.web.action.HotBrandRecommendAction"
+			method="goHotBrandRecommend">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+
+		<action name="hotBrandRecommendAllList" class="com.tzmb2c.web.action.HotBrandRecommendAction"
+			method="hotBrandRecommendAllList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="delHotBrandRecommend" class="com.tzmb2c.web.action.HotBrandRecommendAction"
+			method="delHotBrandRecommend">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+	</package>
+
+</struts>

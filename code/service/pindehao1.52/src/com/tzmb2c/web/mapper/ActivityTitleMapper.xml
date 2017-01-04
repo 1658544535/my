@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.ActivityTitleMapper">
+	<!-- 查询所有的记录 -->
+	<select id="findActivityTitleList" resultType="ActivityTitlePojo" parameterType="java.util.Map">
+		select
+			t.id as id,
+			t.title as title,
+			t.banner as banner,
+			t.title_pic as titlePic,
+			t.title_picture as titlePicture,
+			t.title_photo as titlePhoto,
+			t.type as type,
+			t.status as status,
+			(select name from sys_dict where type='status' and value=t.status) as statusName,
+			t.create_by as createBy,
+			t.create_date as createDate,
+			t.update_by as updateBy,
+			t.update_date as updateDate
+	   	from activity_title t
+		where 1=1
+		<if test="status!=null">
+			and t.status = #{status}
+		</if>
+		<if test="title!=null and title!=''">
+			and t.title like CONCAT("%",#{title},"%" )
+		</if>
+		<if test="type!=null and type!=''">
+			and t.type = #{type}
+		</if>
+		    order by t.id desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<select id="findActivityTitleCount" resultType="int" parameterType="java.util.Map">
+		select count(*)
+	   	from activity_title t
+		where 1=1
+		<if test="status!=null">
+			and t.status = #{status}
+		</if>
+		<if test="title!=null and title!=''">
+			and t.title like CONCAT("%",#{title},"%" )
+		</if>
+		<if test="type !=null and type != ''">
+			and t.type = #{type}
+		</if>
+	</select>
+	
+	<select id="findActivityTitleById" resultType="ActivityTitlePojo" parameterType="Long">
+		select
+			t.id as id,
+			t.title as title,
+			t.banner as banner,
+			t.title_pic as titlePic,
+			t.title_picture as titlePicture,
+			t.title_photo as titlePhoto,
+			t.type as type,
+			t.status as status,
+			(select name from sys_dict where type='status' and value=t.status) as statusName,
+			t.create_by as createBy,
+			t.create_date as createDate,
+			t.update_by as updateBy,
+			t.update_date as updateDate
+	   	from activity_title t
+		where t.id = #{id}
+	</select>
+	
+	<select id="getActivityTitleById" resultType="ActivityTitlePojo" parameterType="java.util.Map">
+		select
+			t.id as id,
+			t.title as title,
+			t.banner as banner,
+			t.title_pic as titlePic,
+			t.title_picture as titlePicture,
+			t.title_photo as titlePhoto,
+			t.type as type,
+			t.status as status,
+			(select name from sys_dict where type='status' and value=t.status) as statusName,
+			t.create_by as createBy,
+			t.create_date as createDate,
+			t.update_by as updateBy,
+			t.update_date as updateDate
+	   	from activity_title t
+		where 1=1
+		and t.status = 1
+		<if test="id!=null and id!=''">
+			and  t.id = #{id}
+		</if>
+		<if test="type!=null and type!=''">
+			and t.type = #{type}
+		</if>
+	</select>
+	
+	<!-- 插入单条 -->
+	<insert id="insertActivityTitle" parameterType="ActivityTitlePojo">
+		insert into activity_title (title_picture,title_photo,title_pic,type,title,banner,status,create_by,create_date,update_by,update_date)
+		values(#{titlePicture},#{titlePhoto},#{titlePic},#{type},#{title},#{banner},#{status},#{createBy},now(),#{updateBy},now())
+	</insert>
+	
+	<!-- 删除单条 -->
+	<delete id="delActivityTitle" parameterType="Long">
+		delete from activity_title where id = #{id}
+	</delete>
+	
+	<!--更新单条-->
+	<update id="updateActivityTitle" parameterType="ActivityTitlePojo">
+		update activity_title set
+		status = #{status},
+		title = #{title},
+		<if test="banner!=null and banner!='' ">
+			banner = #{banner},
+		</if>
+	    <if test="titlePic!=null and titlePic!='' ">
+			title_pic = #{titlePic},
+		</if>
+		<if test="titlePicture!=null and titlePicture!='' ">
+			title_picture = #{titlePicture},
+		</if>
+		<if test="titlePhoto!=null and titlePhoto!='' ">
+			title_photo = #{titlePhoto},
+		</if>
+		<if test="updateBy!=null and updateBy!='' ">
+			update_by = #{updateBy},
+		</if>
+		update_date = now()
+		where id = #{id}
+	</update>
+	<!--审核通过-->
+	<update id="checkActivityTitle" parameterType="Long">
+		update activity_title set
+		status = 1,
+		update_date = now()
+		where id = #{id}
+	</update>
+	<!--取消审核-->
+	<update id="uncheckActivityTitle" parameterType="Long">
+		update activity_title set
+		status = 0,
+		update_date = now()
+		where id = #{id}
+	</update>
+	
+</mapper>

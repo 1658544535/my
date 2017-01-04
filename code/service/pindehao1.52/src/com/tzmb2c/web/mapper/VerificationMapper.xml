@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.VerificationMapper">
+ 
+	<select id="verificationAllList" resultType="VerificationPojo">
+		select v.id as id,v.loginname as loginname,v.captcha as captcha,v.create_by as create_by,
+		v.create_date as creatDateString,v.update_by as update_by,v.update_date as update_date,
+		v.remarks as remarks,v.version as version from user_verify as v 
+		where 1=1 
+		<if test="verificationPojo!=null">
+			<if test="verificationPojo.loginname != null and verificationPojo.loginname != ''">
+				and v.loginname like concat("%",#{verificationPojo.loginname},"%" )
+			</if>
+		</if>
+		order by v.id desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<select id="verificationAllListCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from
+		user_verify h  
+		where 1=1
+		<if test="verificationPojo!=null">
+			<if test="verificationPojo.loginname != null and verificationPojo.loginname != ''">
+				and h.loginname like concat("%",#{verificationPojo.loginname},"%")
+			</if>
+		</if>
+		
+	</select>
+
+</mapper>

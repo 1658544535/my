@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="brandDic" extends="default">
+		<!-- 页面（全部）  -->
+		<action name="brandDicList" class="com.tzmb2c.web.action.BrandDicAction" method="brandDicListCount">
+			<result name="success">/page/system/brandDic/brandDicList.jsp</result>
+		</action>	
+		<!-- 根据ID删除    -->
+		<action name="delBrandDic" class="com.tzmb2c.web.action.BrandDicAction" method="delBrandDic">
+		</action>
+		<!-- 页面（编辑） -->
+		<action name="goUpdateBrandDic" class="com.tzmb2c.web.action.BrandDicAction" method="goUpdateBrandDic">
+			<result name="success">/page/system/brandDic/updateBrandDic.jsp</result>
+		</action>
+		<!-- 编辑提交          -->
+		<action name="updateBrandDic" class="com.tzmb2c.web.action.BrandDicAction" method="updateBrandDic">
+		</action>
+		<!-- 通过审核         -->
+		<action name="checkBrandDic" class="com.tzmb2c.web.action.BrandDicAction" method="checkBrandDic">
+		</action>
+		<!-- 取消审核         -->
+		<action name="uncheckBrandDic" class="com.tzmb2c.web.action.BrandDicAction" method="uncheckBrandDic">
+		</action>
+		<!-- 新增                 -->
+		<action name="addBrandDic" class="com.tzmb2c.web.action.BrandDicAction" method="addBrandDic">
+		    <result name="success">/page/system/brandDic/addBrandDic.jsp</result>
+		</action>
+		<!-- 新增提交         -->
+		<action name="addBrandDicOK" class="com.tzmb2c.web.action.BrandDicAction" method="addBrandDicOK">
+		</action>
+	</package>
+	<package name="brandDic-json" extends="json-default">
+		<!-- 内容 -->
+		<action name="brandDicListAll" class="com.tzmb2c.web.action.BrandDicAction" method="brandDicListAll">
+			<result type="json">
+			<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="brandDicListCount" class="com.tzmb2c.web.action.BrandDicAction" method="brandDicListCount">
+			<result type="json">
+			<param name="root">page.rowCount</param>
+			</result>
+		</action>		
+	</package>
+</struts>

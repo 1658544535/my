@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tzmb2c.web.mapper.SpecialPushMapper">
+	<!-- 查询所有的记录 -->
+	<select id="findSpecialPushList" resultType="specialPushPojo" parameterType="java.util.Map">
+		SELECT
+		p.id               as id,
+		p.special_id       as specialId,
+		s.name             as specialName,
+		s.title            as specialTitle,
+		s.user_brand_id    as userBrandId,
+		s.banner           as banner,
+		s.discount_type    as discountType,
+		(CASE WHEN s.discount_type = 1 THEN '满减' WHEN s.discount_type = 2 THEN '满折' END)  as discountTypeName,
+		s.discount_context as discountContext,
+		s.age_range        as ageRange,
+		s.introduction     as introduction,
+		s.begin_time       as beginTime,
+		s.end_time         as endTime,
+		s.introduction     as introduction,
+		s.activity_id      as activityId,
+		s.main_category1   as mainCategory1,
+		s.main_category2   as mainCategory2,
+		s.discount         as discount,
+		p.sorting          as sorting,
+		p.status           as status,
+		(CASE WHEN p.status = 0 THEN '未审核' WHEN p.status = 1 THEN '已审核' END)  as statusName,
+		p.create_by        as createBy,
+		p.create_date      as createDate,
+		p.update_by        as updateBy,
+		p.update_date      as updateDate
+		FROM
+		special_push p left join special_show s
+		on p.special_id = s.id
+		WHERE s.status =4 and s.isdelete = 0
+		<if test="id != null">
+			and p.id = #{id}
+		</if>
+		<if test="specialName != null and specialName != '' ">
+			and s.name like CONCAT("%",#{specialName},"%")
+		</if>
+		<if test="status != null">
+			and p.status = #{status}
+		</if>
+		<if test="specialId != null">
+			and p.special_id = #{specialId}
+		</if>
+		<if test="currentTimeStr != null and currentTimeStr !='' ">
+			and str_to_date(s.begin_time,'%Y-%m-%d %H:%i:%s') &lt;= #{currentTimeStr}
+			and str_to_date(s.end_time,'%Y-%m-%d %H:%i:%s') &gt; #{currentTimeStr}
+		</if>
+		
+		<if test="beginTimeStr !=null and beginTimeStr !=''">
+			and str_to_date(s.begin_time,'%Y-%m-%d %H:%i:%s') &gt;= #{beginTimeStr}
+		</if>
+		<if test="endTimeStr !=null and endTimeStr !=''">
+			and str_to_date(s.end_time,'%Y-%m-%d %H:%i:%s') &lt;= #{endTimeStr}
+		</if>
+		order by 
+		<if test="sort !=null and sort ==1">
+			p.sorting desc,
+		</if>
+		p.update_date desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<!-- 查询所有的记录 -->
+	<select id="findSpecialPushCount" resultType="int" parameterType="java.util.Map">
+		SELECT
+		count(*)
+		FROM
+		special_push p left join special_show s
+		on p.special_id = s.id
+		WHERE s.status =4 and s.isdelete = 0
+		<if test="id != null">
+			and p.id = #{id}
+		</if>
+		<if test="specialName != null and specialName != '' ">
+			and s.name like CONCAT("%",#{specialName},"%")
+		</if>
+		<if test="status != null">
+			and p.status = #{status}
+		</if>
+		
+		<if test="currentTimeStr != null and currentTimeStr !='' ">
+			and str_to_date(s.begin_time,'%Y-%m-%d %H:%i:%s') &lt;= #{currentTimeStr}
+			and str_to_date(s.end_time,'%Y-%m-%d %H:%i:%s') &gt; #{currentTimeStr}
+		</if>
+		
+		<if test="beginTimeStr !=null and beginTimeStr !=''">
+			and str_to_date(s.begin_time,'%Y-%m-%d %H:%i:%s') &gt;= #{beginTimeStr}
+		</if>
+		<if test="endTimeStr !=null and endTimeStr !=''">
+			and str_to_date(s.end_time,'%Y-%m-%d %H:%i:%s') &lt;= #{endTimeStr}
+		</if>
+	</select>
+	
+	<!--审核某条-->
+	<update id="checkSpecialPush" parameterType="Long">
+		update special_push p set
+		status = 1,
+		update_date = now()
+		where 
+		p.id = #{id}
+	</update>	
+	<!--取审某条-->
+	<update id="uncheckSpecialPush" parameterType="Long">
+		update special_push p set
+		status = 0,
+		update_date = now()
+		where 
+		p.id = #{id}
+	</update>
+	
+	<!-- 插入单条 -->
+	<insert id="insertSpecialPush" parameterType="SpecialPushPojo">
+		insert into special_push
+		(special_id,sorting,status,create_by,create_date,update_by,update_date,remarks,version) 
+		values(#{specialId},#{sorting},#{status},#{createBy},now(),#{updateBy},now(),#{remarks},#{version})
+	</insert>	
+	
+	<!-- 删除单条(id) -->
+	<delete id="delSpecialPush" parameterType="Long">
+		delete from special_push where id = #{id}
+	</delete>
+	
+	<!-- 查找单条 -->
+	<select id="findSpecialPushById" resultType="SpecialPushPojo" parameterType="Long">
+		SELECT
+		p.id               as id,
+		p.special_id       as specialId,
+		p.sorting          as sorting,
+		p.status           as status,
+		(CASE WHEN p.status = 0 THEN '未审核' WHEN p.status = 1 THEN '已审核' END)  as statusName,
+		p.create_by        as createBy,
+		p.create_date      as createDate,
+		p.update_by        as updateBy,
+		p.update_date      as updateDate
+	    from special_push p
+		where
+		p.id=#{id}
+	</select>
+	
+	<!--编辑单条-->
+	<update id="updateSpecialPush" parameterType="SpecialPushPojo">
+		update special_push set
+        <if test="specialId != null">
+			special_id = #{specialId},
+		</if>
+		<if test="sorting != null">
+			sorting = #{sorting},
+		</if>
+		<if test="status != null">
+			status = #{status},
+		</if>
+		<if test="updateBy!=null and updateBy!='' ">
+			update_by = #{updateBy},
+		</if>
+		update_date = now()
+		where  id = #{id}			
+	</update>
+</mapper>

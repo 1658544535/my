@@ -1,0 +1,613 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>商家中心</title>
+		<link rel="stylesheet" href="../../css/default.css" media="all" />
+		<link rel="stylesheet" href="../../css/seller_common.css" type="text/css" media="all" />
+    </head>
+	<body>
+		<div id="head">
+			<div class="wrapper">
+				<div class="main-logo ">
+					<a class="main-logo-a" href="#" title="返回首页">
+						&nbsp;
+					</a>
+					<span class="sec-title">
+						<i class="b-inco">
+						</i>
+						<a href='../index.html'>
+							商家中心
+						</a>
+					</span>
+					<div id="st-nav">
+						<span id="login-status" class="op" data-status="1">
+							<a class="st-icons account" href="#">
+								yunyingbu@5315.cn
+							</a>
+							<a href="../login.html" rel="nofollow">
+								退出
+							</a>
+							|
+							<a href="../message.html">
+								消息
+							</a>
+						</span>
+						|
+						<a href="#" target="_blank">
+							商家咨询
+						</a>
+						|
+						<a class="bold" href="../help.html">
+							帮助中心
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="container">
+			<div class="ui-nav seller-nav">
+				<div class="ui-nav-main  seller-nav-bg">
+					<ul class="wrapper seller-nav-main" id="J_sellerNav">
+                        <li class="ui-nav-item">
+                            <a href="../index.html">
+                                首页
+                            </a>
+                        </li>
+                        <li class="ui-nav-item has-sub">
+                            <a href="../baseinfo/profile.html">
+                                基本信息
+                                <i class="iconfont">
+                                    &#xe601;
+                                </i>
+                            </a>
+                            <ul class="ui-nav-submain">
+                                <li class="ui-nav-subitem">
+                                    <a href="../baseinfo/profile.html">
+                                        基本信息
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="../baseinfo/pay_account.html">
+                                        收款银行账户
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="../baseinfo/invoice.html">
+                                        开票信息
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="../baseinfo/refund_address.html">
+                                        退货地址管理
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="../baseinfo/passwd.html">
+                                        修改密码
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="ui-nav-item has-sub">
+                            <a href="../productmng/plist.html">
+                                商品管理
+                                <i class="iconfont">
+                                    &#xe601;
+                                </i>
+                            </a>
+                            <ul class="ui-nav-submain">
+                                <li class="ui-nav-subitem">
+                                    <a href="../productmng/plist.html">
+                                        商品库
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="../productmng/select_v2.html">
+                                        添加商品
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="../productmng/brand.html">
+                                        品牌列表
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="../productmng/brand-add.html">
+                                        添加品牌
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="ui-nav-item has-sub">
+                            <a href="../martshow/martshow.html">
+                                品牌特卖
+                                <i class="iconfont">
+                                    &#xe601;
+                                </i>
+                            </a>
+                            <ul class="ui-nav-submain">
+                                <li class="ui-nav-subitem">
+                                    <a href="../martshow/martshow.html">
+                                        专场列表
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="../martshow/apply.html">
+                                        报名专场
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="ui-nav-item has-sub">
+                            <a href="../trademng/order.html" class="active">
+                                交易管理
+                                <i class="iconfont">
+                                    &#xe601;
+                                </i>
+                            </a>
+                            <ul class="ui-nav-submain">
+                                <li class="ui-nav-subitem">
+                                    <a href="../trademng/order.html">
+                                        我的订单
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem pageSellerOrderShipexportlist">
+                                    <a href="../trademng/ship.html">
+                                        发货
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="../trademng/refund.html">
+                                        售后管理
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+				</div>
+			</div>
+			<div id="content" class="wrapper">
+                <div class="pure-g admin-wrapper">
+                    <div class="pure-u-1 main">
+                        <style>
+                            .seller-search-form .ui-input{width:96px}.seller-search-form .ui-form-item{padding-left:0px}.seller-title-head-more{top:16px}.ui-form-item select{height:25px;line-height:25px;border:1px solid #D8D8D8;width:100px}.ui-btn-theme{background:#f5f5f5;padding:0 10px;border:1px solid #e6e6e6;color:#666;font-size:12px}.ui-btn-theme i{font-size:14px;margin-right:-2px;vertical-align:top}a.ui-btn-theme:hover{color:#ff4965;border:1px solid #ff4965;background:#FFF}.ui-input-theme:hover,.ui-select-theme:hover{border:1px solid #888!important}.ui-input-theme{height:25px!important;border:1px solid #D8D8D8;line-height:25px!important;padding:0 5px!important;margin-top:2px}.order-entry .order-head .u-icon-fenxiao{display:inline-block;*display:inline;*zoom:1;height:14px;line-height:14px;color:#fff;background:#ffae2e;border:1px solid #fa9a12;border-radius:2px;padding:0 3px}.seller-remark{position:absolute;height:30px}
+                        </style>
+                        <div class="seller-title">
+                            我的订单
+                        </div>
+                        <div class="p20">
+                            <div class="ui-box seller-search-form">
+                                <div class="ui-box-head">
+                                    <h3 class="ui-box-head-title">
+                                        订单查询
+                                    </h3>
+                                </div>
+                                <div class="ui-box-container">
+                                    <form action="#" method="" accept-charset="utf-8">
+                                        <div class="ui-box-content">
+                                            <div class="ui-form-item">
+                                                <label for="order_type" class="ui-label">
+                                                    订单来源
+                                                </label>
+                                                <select name="order_type" class="w-mart-select ui-select-theme">
+                                                    <option value="0">
+                                                        全部
+                                                    </option>
+                                                    <option value="1">
+                                                        特卖
+                                                    </option>
+                                                    <option value="2">
+                                                        圈儿
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="ui-form-item">
+                                                <label for="" class="ui-label">
+                                                    专场id
+                                                </label>
+                                                <input class="ui-input ui-input-theme" type="text" name="event_id" value="">
+                                            </div>
+                                            <div class="ui-form-item">
+                                                <label for="" class="ui-label">
+                                                    订单号
+                                                </label>
+                                                <input class="ui-input ui-input-theme" type="text" name="order_id" value="">
+                                            </div>
+                                            <div class="ui-form-item">
+                                                <label for="" class="ui-label">
+                                                    手机号
+                                                </label>
+                                                <input class="ui-input ui-input-theme" type="text" name="receiver_phone"
+                                                value="">
+                                            </div>
+                                            <div class="ui-form-item c-999">
+                                                <label for="" class="ui-label">
+                                                    下单时间
+                                                </label>
+                                                <input class="ui-input ui-input-theme ui-input-small" id="create-time-start-selector" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'create-time-end-selector\')}'})" type="text" name="create_time_start" value="">
+                                                <label for="" class="ul-label">
+                                                    -
+                                                </label>
+                                                <input class="ui-input ui-input-theme ui-input-small" id="create-time-end-selector" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'create-time-start-selector\')}'})" type="text" name="create_time_end" value="">
+                                            </div>
+                                            <div class="ui-form-item search-btn">
+                                                <a href="javascript:$('.seller-search-form form').submit();" class="ui-button ui-button-mwhite ui-btn-theme">
+                                                    <i class="iconfont">&#xf012c;</i>
+                                                    查询
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <table class="ui-table order-list">
+                                <thead>
+                                    <tr>
+                                        <th class="ol-order-items">
+                                            商品
+                                        </th>
+                                        <th class="ol-order-price">
+                                            单价
+                                        </th>
+                                        <th class="ol-order-number">
+                                            数量
+                                        </th>
+                                        <th class="ol-order-price">
+                                            维权售后
+                                        </th>
+                                        <th class="ol-order-price">
+                                            订单金额
+                                        </th>
+                                        <th class="ol-order-price">
+                                            成交价
+                                        </th>
+                                        <th class="ol-order-status">
+                                            <select id="order-status-selector">
+                                                <option value="">
+                                                    全部
+                                                </option>
+                                                <option value="2">
+                                                    待发货
+                                                </option>
+                                                <option value="3">
+                                                    已发货
+                                                </option>
+                                                <option value="4">
+                                                    已完成
+                                                </option>
+                                                <option value="-1">
+                                                    已关闭
+                                                </option>
+                                            </select>
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <div class="trade-entry mt-10">
+                                <div class="order-entry">
+                                    <div class="order-head">
+                                        <input type="checkbox">
+                                        <span>
+                                            订单号：
+                                            <a href="order-detail.html" target="_blank">
+                                                232331014435720069
+                                            </a>
+                                        </span>
+                                        <span>
+                                            下单时间：2015-11-19 08:36
+                                        </span>
+                                        <span>
+                                            专场ID：
+                                            <a href="../martshow/items.html" target="_blank">
+                                                159150
+                                            </a>
+                                        </span>
+                                        <span>
+                                            收件人：何芙蓉 / 13631328902
+                                        </span>
+                                    </div>
+                                    <table class="pure-table">
+                                        <tbody>
+                                            <tr class="order-item">
+                                                <td class="ol-b-item-info clearfix" style="width: 360px">
+                                                    <a class="image" href="http://www.beibei.com/detail/3887386.html#sid=26782894" target="_blank">
+                                                        <img src="http://b1.hucdn.com/upload/item/1509/24/63063942116827_800x800.jpg!60x60.jpg">
+                                                    </a>
+                                                    <a class="title c-666" target="_blank" href="http://www.beibei.com/detail/3887386.html#sid=26782894">
+                                                        荣泰新生儿礼物咬铃摇铃三件套603-6益智早教玩具
+                                                    </a>
+                                                    <span class="sku">
+                                                        颜色：花色&nbsp;&nbsp;&nbsp;
+                                                    </span>
+                                                </td>
+                                                <td class="ol-b-item-price">
+                                                    <p>
+                                                        ￥16.00
+                                                    </p>
+                                                    <p class="strike">
+                                                        ￥42.00
+                                                    </p>
+                                                </td>
+                                                <td class="ol-b-number" style="text-align: center;">
+                                                    1
+                                                </td>
+                                                <td class="ol-b-ops c-999">
+                                                    -
+                                                </td>
+                                                <td class="ol-b-subtotal" rowspan="1">
+                                                    <span class="price" style="color: #292929;">
+                                                        ￥16.00
+                                                    </span>
+                                                </td>
+                                                <td class="ol-b-subtotal" rowspan="1">
+                                                    <span class="price">
+                                                        ￥16.00
+                                                    </span>
+                                                </td>
+                                                <td class="ol-b-status c-999" rowspan="1">
+                                                    <span class="green">
+                                                        已发货
+                                                    </span>
+                                                    <br>
+                                                    <a href="order-detail.html" target="_blank">
+                                                        查看详情
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="trade-entry mt-10">
+                                <div class="order-entry">
+                                    <div class="order-head">
+                                        <input type="checkbox">
+                                        <span>
+                                            订单号：
+                                            <a href="order-detail.html" target="_blank">
+                                                232232790705063289
+                                            </a>
+                                        </span>
+                                        <span>
+                                            下单时间：2015-11-18 09:06
+                                        </span>
+                                        <span>
+                                            专场ID：
+                                            <a href="../martshow/items.html" target="_blank">
+                                                159150
+                                            </a>
+                                        </span>
+                                        <span>
+                                            收件人：郑春霞 / 15976275516
+                                        </span>
+                                    </div>
+                                    <table class="pure-table">
+                                        <tbody>
+                                            <tr class="order-item">
+                                                <td class="ol-b-item-info clearfix" style="width: 360px">
+                                                    <a class="image" href="http://www.beibei.com/detail/3887387.html#sid=26782089" target="_blank">
+                                                        <img src="http://b1.hucdn.com/upload/item/1509/24/61936313876827_800x800.jpg!60x60.jpg">
+                                                    </a>
+                                                    <a class="title c-666" target="_blank" href="http://www.beibei.com/detail/3887387.html#sid=26782089">
+                                                        荣泰奶瓶式手抓摇铃三件套603-1益智玩具
+                                                    </a>
+                                                    <span class="sku">
+                                                        颜色：花色&nbsp;&nbsp;&nbsp;
+                                                    </span>
+                                                </td>
+                                                <td class="ol-b-item-price">
+                                                    <p>
+                                                        ￥15.00
+                                                    </p>
+                                                    <p class="strike">
+                                                        ￥35.00
+                                                    </p>
+                                                </td>
+                                                <td class="ol-b-number" style="text-align: center;">
+                                                    1
+                                                </td>
+                                                <td class="ol-b-ops c-999">
+                                                    -
+                                                </td>
+                                                <td class="ol-b-subtotal" rowspan="1">
+                                                    <span class="price" style="color: #292929;">
+                                                        ￥15.00
+                                                    </span>
+                                                </td>
+                                                <td class="ol-b-subtotal" rowspan="1">
+                                                    <span class="price">
+                                                        ￥15.00
+                                                    </span>
+                                                </td>
+                                                <td class="ol-b-status c-999" rowspan="1">
+                                                    已签收
+                                                    <br>
+                                                    <a href="order-detail.html"
+                                                    target="_blank">
+                                                        查看详情
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="trade-entry mt-10">
+                                <div class="order-entry">
+                                    <div class="order-head">
+                                        <input type="checkbox">
+                                        <span>
+                                            订单号：
+                                            <a href="order-detail.html"
+                                            target="_blank">
+                                                232152480434542991
+                                            </a>
+                                        </span>
+                                        <span>
+                                            下单时间：2015-11-17 14:34
+                                        </span>
+                                        <span>
+                                            专场ID：
+                                            <a href="../martshow/items.html"
+                                            target="_blank">
+                                                159150
+                                            </a>
+                                        </span>
+                                        <span>
+                                            收件人：延倩 / 15709125234
+                                        </span>
+                                    </div>
+                                    <table class="pure-table">
+                                        <tbody>
+                                            <tr class="order-item">
+                                                <td class="ol-b-item-info clearfix" style="width: 360px">
+                                                    <a class="image" href="http://www.beibei.com/detail/3887368.html#sid=27036023"
+                                                    target="_blank">
+                                                        <img src="http://b1.hucdn.com/upload/item/1510/05/29159352046827_800x800.jpg!60x60.jpg">
+                                                    </a>
+                                                    <a class="title c-666" target="_blank" href="http://www.beibei.com/detail/3887368.html#sid=27036023">
+                                                        荣泰玩具婴幼儿套装礼盒宝宝益智婴儿摇铃 塑料新生手摇铃610-2
+                                                    </a>
+                                                    <span class="sku">
+                                                        颜色：花色&nbsp;&nbsp;&nbsp;
+                                                    </span>
+                                                </td>
+                                                <td class="ol-b-item-price">
+                                                    <p>
+                                                        ￥32.00
+                                                    </p>
+                                                    <p class="strike">
+                                                        ￥56.00
+                                                    </p>
+                                                </td>
+                                                <td class="ol-b-number" style="text-align: center;">
+                                                    1
+                                                </td>
+                                                <td class="ol-b-ops c-999">
+                                                    -
+                                                </td>
+                                                <td class="ol-b-subtotal" rowspan="1">
+                                                    <span class="price" style="color: #292929;">
+                                                        ￥32.00
+                                                    </span>
+                                                </td>
+                                                <td class="ol-b-subtotal" rowspan="1">
+                                                    <span class="price">
+                                                        ￥32.00
+                                                    </span>
+                                                </td>
+                                                <td class="ol-b-status c-999" rowspan="1">
+                                                    已关闭
+                                                    <br>
+                                                    <a href="order-detail.html" target="_blank">
+                                                        查看详情
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <div class="ui-paging">
+                                <span class="ui-paging-prev">
+                                    <i class="iconfont">&#xf016e;</i>
+                                    上一页
+                                </span>
+                                <a href="#" class="ui-paging-next">
+                                    下一页
+                                    <i class="iconfont">&#xf016d;</i>
+                                </a>
+                                <span class="ui-paging-info">
+                                    <span class="ui-paging-bold">
+                                        1/4
+                                    </span>
+                                    页（共106条）
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</div>
+		<div class="m-feedback J_feedback">
+		</div>
+		<div class="m-fb-shadow J_fb-shadow">
+		</div>
+		<div class="m-fb-dialog J_fb-dialog">
+            <form action="">
+                <div class="title">
+                    意见反馈
+                </div>
+                <div class="mnc">
+                    <p class="control-label">
+                        您的意见：
+                    </p>
+                    <textarea class="control-text J_fb-text" placeholder="请给我们提意见哟，么么哒！"></textarea>
+                </div>
+                <div class="footer">
+                    <button class="btn btn-sure">
+                        确定
+                    </button>
+                    <button class="btn btn-cancel">
+                        取消
+                    </button>
+                </div>
+            </form>
+		</div>
+		<div id="footer">
+			<div class="footer-nav">
+				<a rel="nofollow" href="../index.html">
+					首页
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="../help.html">
+					关于淘竹马
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="../help.html">
+					商家入驻
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="../help.html">
+					正品保证
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="../help.html">
+					人才招聘
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="../help.html">
+					联系我们
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="../help.html">
+					帮助中心
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="../help.html">
+					友情链接
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="#">
+					手机客户端
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="../help.html">
+					客服在线
+				</a>
+			</div>
+			<div class="footer-content">
+				<div class="wrapper">
+					<p>
+                    	广东群宇互动科技有限公司 Copyright © 2014 All Rights Reserved 版权所有 粤ICP备13081564号
+					</p>
+				</div>
+			</div>
+		</div>
+		<script src="../../js/jquery-1.11.2.min.js" type="text/javascript"></script>
+		<script src="../../js/base.js" type="text/javascript"></script>
+		<script src="../../js/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+	</body>
+</html>

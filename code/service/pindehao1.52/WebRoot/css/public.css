@@ -1,0 +1,77 @@
+@charset "utf-8";
+/* CSS Document */
+body,html,div,p,table,td,input,span,ul,li,a,h2,h3{ margin:0; padding:0; font-family:"微软雅黑",Arial, Helvetica, sans-serif;}
+body,html{ width:100%; height:100%}
+img{ border:0;}
+a{ text-decoration:none;}
+a:hover{ text-decoration:underline;}
+/* frame */
+.header{ background:#ea5504 url(../images/header_bg.jpg) right 0 no-repeat; height:80px; border-bottom:#545454 5px solid;}
+.logo_maowu{ margin:0; margin-left:10px; float:left;}
+.sys_name{ margin-left:150px;}
+.head_user_info{ float:right; color:#fff; padding-right:10px; padding-top:5px; text-align:right}
+.head_user_info div.img{ background:#fff; padding:2px; margin-left:5px;}
+.head_user_btn { margin-top:5px;font-size:12px;}
+.head_user_btn a{ color:#FFFFFF; padding-right:5px; }
+.footer{ height:28px; text-align:center; font-size:12px; line-height:28px; color:#666; background:#444444; border-bottom:#f14c03 2px solid;}
+.foot_text{}
+/* frame end*/
+
+/* left menu*/
+.menu_bg{background:#fdf0e8; }
+.leftmenu{ background:#fdf0e8;  border-right:1px #dfc3b2 solid; height:100%; padding:0 10px 0 9px; width:170px; }
+div.sdmenu {
+ font-family:"微软雅黑",Arial, sans-serif;
+ font-size: 12px;
+}
+div.sdmenu div {
+ overflow: hidden;
+ }
+div.sdmenu div.collapsed{
+ height:38px;
+}
+
+div.sdmenu div span {
+ margin:0;
+ display: block;
+ height:37px;
+ line-height:37px;
+ vertical-align:middle;
+ font-weight: bold;
+ background-image:url(../images/menu_arrow.png);
+ background-position: 155px 15px;
+ background-repeat:no-repeat; 
+ cursor: default;
+ font-size: 16px;
+ text-decoration:none;
+ font-weight:normal;
+ padding:0 0 0 10px;
+ white-space:nowrap;
+}
+div.sdmenu div.collapsed span {
+ background-image:url(../images/menu_arrow-r.png);
+ background-position: 155px 10px;
+ background-repeat:no-repeat; 
+}
+div.sdmenu div a {
+ height:30px;
+ line-height:30px;
+ vertical-align:middle; 
+ display: block;
+ text-decoration:none;
+ padding-left:35px;
+ color:#333;
+ white-space:nowrap;
+}
+div.sdmenu div a:hover {
+ text-decoration: none;cursor:pointer;
+}
+div.sdmenu div a.current { font-weight:bold;}
+
+div.sdmenu div { border-top:1px #fffbf6 solid;  }
+div.sdmenu div a{ border-bottom:1px #f4e6dd solid;}
+div.sdmenu div a.current { background:#f14c03; font-weight:bold; color:#fff;/*border-top:1px #f4e6dd dashed;*/}
+div.sdmenu div a:hover { background:#f14c03; color:#fff; /*border-top:1px #f4e6dd solid;*/}
+.Fmenu{ border-bottom:1px #f0ddd2 solid; color:#f14c03}
+.Fmenu img{ margin-right:5px; }
+/* left menu end*/

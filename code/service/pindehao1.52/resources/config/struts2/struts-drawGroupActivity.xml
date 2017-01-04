@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="drawGroupActivity" extends="default">
+		<!-- 进入0.1抽奖页面 -->
+		<action name="goDraw" class="com.tzmb2c.web.action.DrawGroupActivityAction" method="drawGroupActivityCount">
+			<result name="success">/page/system/drawGroupActivity/drawGroupActivityList.jsp</result>
+		</action>
+		<!-- 进入新增0.1抽奖页面 -->
+		<action name="goAddDrawGroupActivity" class="com.tzmb2c.web.action.DrawGroupActivityAction" method="goAddDrawGroupActivity">
+			<result name="success">/page/system/drawGroupActivity/addDrawGroupActivity.jsp</result>
+		</action>
+		<!-- 新增0.1抽奖 -->
+		<action name="addDrawGroupActivity" class="com.tzmb2c.web.action.DrawGroupActivityAction" method="addDrawGroupActivity">
+		</action>
+		<!-- 进入选择0.1抽奖商品页面 -->
+		<action name="goSelectDrawGroupProduct" class="com.tzmb2c.web.action.DrawGroupActivityAction" method="selectDrawGroupProductCount">
+			<result name="success">/page/system/drawGroupActivity/selectDrawGroupProduct.jsp</result>
+		</action>
+		<!-- 进入选择0.1抽奖编辑页面 -->
+		<action name="goUpdateDrawGroupActivity" class="com.tzmb2c.web.action.DrawGroupActivityAction" method="goUpdateDrawGroupActivity">
+			<result name="success">/page/system/drawGroupActivity/updateDrawGroupActivity.jsp</result>
+		</action>
+		<!-- 进入选择0.1抽奖编辑页面 -->
+		<action name="updateDrawGroupActivity" class="com.tzmb2c.web.action.DrawGroupActivityAction" method="updateDrawGroupActivity">
+		</action>
+		<!-- 参加0.1抽奖团列表 -->
+		<action name="goDrawGroupGroRec" class="com.tzmb2c.web.action.DrawGroupActivityAction" method="drawGroupGroRecCount">
+			<result name="success">/page/system/drawGroupActivity/drawGroupGroRecList.jsp</result>
+		</action>
+		<!-- 参加0.1抽奖人列表 -->
+		<action name="goDrawGroupGroUserRec" class="com.tzmb2c.web.action.DrawGroupActivityAction" method="drawGroupGroUserRecCount">
+			<result name="success">/page/system/drawGroupActivity/drawGroupGroUserRecList.jsp</result>
+		</action>
+	</package>
+	<package name="drawGroupActivity-json" extends="json-default">
+		<!-- 0.1抽奖count -->
+		<action name="drawGroupActivityCount" class="com.tzmb2c.web.action.DrawGroupActivityAction" method="drawGroupActivityCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>			
+		<!-- 0.1抽奖list -->
+		<action name="drawGroupActivityList" class="com.tzmb2c.web.action.DrawGroupActivityAction" method="drawGroupActivityList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>			
+		<!-- 选择0.1抽奖商品count -->
+		<action name="selectDrawGroupProductCount" class="com.tzmb2c.web.action.DrawGroupActivityAction" method="selectDrawGroupProductCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>			
+		<!-- 选择0.1抽奖商品list -->
+		<action name="selectDrawGroupProductList" class="com.tzmb2c.web.action.DrawGroupActivityAction" method="selectDrawGroupProductList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>			
+		<!-- 根据id查找替换商品 -->
+		<action name="findDrawGroupProductById" class="com.tzmb2c.web.action.DrawGroupActivityAction" method="findDrawGroupProductById">
+			<result type="json">
+				<param name="root">dataMap</param>
+			</result>
+		</action>		
+		<!-- 根据id删除活动 -->
+		<action name="delDrawGroupActivityById" class="com.tzmb2c.web.action.DrawGroupActivityAction" method="delDrawGroupActivityById">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>	
+		<!-- 根据ids删除活动 -->
+		<action name="delDrawGroupActivityByIds" class="com.tzmb2c.web.action.DrawGroupActivityAction" method="delDrawGroupActivityByIds">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>	
+		<!-- 选中审核 -->
+		<action name="checkAllDrawGroupActivity" class="com.tzmb2c.web.action.DrawGroupActivityAction" method="checkAllDrawGroupActivity">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>	
+		<!-- 选中取消审核 -->
+		<action name="uncheckAllDrawGroupActivity" class="com.tzmb2c.web.action.DrawGroupActivityAction" method="uncheckAllDrawGroupActivity">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 0.1抽奖开团列表count -->
+		<action name="drawGroupGroRecCount" class="com.tzmb2c.web.action.DrawGroupActivityAction" method="drawGroupGroRecCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>			
+		<!-- 0.1抽奖开团列表list -->
+		<action name="drawGroupGroRecList" class="com.tzmb2c.web.action.DrawGroupActivityAction" method="drawGroupGroRecList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<!-- 0.1抽奖参团人列表count -->
+		<action name="drawGroupGroUserRecCount" class="com.tzmb2c.web.action.DrawGroupActivityAction" method="drawGroupGroUserRecCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>			
+		<!-- 0.1抽奖参团人列表list -->
+		<action name="drawGroupGroUserRecList" class="com.tzmb2c.web.action.DrawGroupActivityAction" method="drawGroupGroUserRecList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+	</package>
+</struts>

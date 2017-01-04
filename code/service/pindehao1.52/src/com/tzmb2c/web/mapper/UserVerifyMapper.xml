@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.UserVerifyMapper">
+
+	
+	<!-- 查询信息 -->
+	<select id="userVerifyFind" parameterType="java.util.Map" resultType="userVerifyPojo">
+		select
+		h.id as id,
+		h.loginname as loginname,
+		h.captcha as captcha,
+		h.create_by as createBy,
+		h.create_date as createDate,
+		h.update_by as updateBy,
+		h.update_date as updateDate,
+		h.remarks as remarks,
+		h.version as version
+		from
+		user_verify h
+		where
+		h.loginname=#{loginname}
+		order by h.create_date desc
+	</select>
+
+	<!-- 插入单条信息 -->
+	<insert id="userVerifyAdd" parameterType="userVerifyPojo">
+		insert into
+		user_verify(loginname,captcha,
+		create_by,create_date,update_by,update_date,remarks,version)
+		values(#{loginname},#{captcha},
+		#{createBy},#{createDate},#{updateBy},#{updateDate},#{remarks},#{version})
+	</insert>
+	
+	<!-- 删除单条帮助信息-->
+	<delete id="userVerifyDelete" parameterType="userVerifyPojo">
+		delete from user_verify
+		where
+		id = #{id}
+	</delete>
+
+	<select id="findNewestByPhone" parameterType="UserVerifyPojo" resultType="UserVerifyPojo">
+		select
+		h.id as id,
+		h.loginname as loginname,
+		h.captcha as captcha,
+		h.create_date as createDate
+		from
+		user_verify h
+		where
+		h.loginname=#{loginname}  and
+		HOUR(TIMEDIFF(NOW(),h.create_date))=0
+		order by h.create_date desc
+		limit 1
+	</select>
+</mapper>

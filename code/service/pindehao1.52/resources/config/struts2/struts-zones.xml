@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="zones" extends="default">
+		<!-- 进入列表页面 -->
+		<action name="goZones" class="com.tzmb2c.web.action.ZonesAction" method="goZones">
+			<result name="success">/page/system/zones/zonesList.jsp</result>
+		</action>
+		<!-- 新增 -->
+		<action name="goAddZones" class="com.tzmb2c.web.action.ZonesAction" method="goAddZones">
+		    <result name="success">/page/system/zones/addZones.jsp</result>
+		</action>
+		<!-- 新增提交 -->
+		<action name="addZones" class="com.tzmb2c.web.action.ZonesAction" method="add">
+		</action>		
+		<!-- 编辑页面 -->
+		<action name="goEditZones" class="com.tzmb2c.web.action.ZonesAction" method="goEditZones">
+			<result name="success">/page/system/zones/updateZones.jsp</result>
+		</action>
+		<!-- 编辑提交 -->
+		<action name="updateZones" class="com.tzmb2c.web.action.ZonesAction" method="update">
+		</action>
+	</package>
+	<package name="zones-json" extends="json-default">
+		<!-- 内容 -->
+		<action name="zonesList" class="com.tzmb2c.web.action.ZonesAction" method="zonesList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="zonesCnt" class="com.tzmb2c.web.action.ZonesAction" method="goZones">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+		<!-- 根据ID删除 -->
+		<action name="delZones" class="com.tzmb2c.web.action.ZonesAction" method="delete">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+		<!-- 删除选中 -->
+		<action name="delZonesAll" class="com.tzmb2c.web.action.ZonesAction" method="deleteAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 通过审核 -->
+		<action name="checkZones" class="com.tzmb2c.web.action.ZonesAction" method="check">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 取消审核 -->
+		<action name="uncheckZones" class="com.tzmb2c.web.action.ZonesAction" method="uncheck">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中通过审核 -->
+		<action name="checkZonesAll" class="com.tzmb2c.web.action.ZonesAction" method="checkAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中取消审核 -->
+		<action name="uncheckZonesAll" class="com.tzmb2c.web.action.ZonesAction" method="uncheckAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+	</package>
+</struts>

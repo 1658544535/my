@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.UserPostCollectMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id as id,
+		user_id as userId,
+		type as type,
+		type_id as typeId,
+		author_id as authorId,
+		is_collect as isCollect,
+		create_date as createDate,
+		create_by as createBy,
+		update_date as updateDate,
+		update_by as updateBy
+	</sql>
+	
+	<select id="getUserPostCollectById" parameterType="int" resultType="UserPostCollectPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			user_post_collect
+		where
+			id = #{id}
+	</select>
+	
+	<select id="userPostCollectCount" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from user_post_collect c
+		<if test="type != null and type == 1">
+		left join user_maker_theme t on c.type_id = t.id
+		</if>
+		<if test="type != null and type == 2">
+		left join user_circle_post p on c.type_id = p.id
+		</if>
+		<if test="type != null and type == 3">
+		left join platform_special ps on c.type_id = ps.id
+		</if>
+		left join sys_login l on c.author_id = l.id
+		where 1=1
+		  <if test="id != null ">
+			and c.id = #{id}
+		  </if>
+		  <if test="userId != null ">
+			and c.user_id = #{userId}
+		  </if>
+		  <if test="type != null ">
+			and c.type = #{type}
+		  </if>
+		  <if test="typeId != null ">
+			and c.type_id = #{typeId}
+		  </if>
+		  <if test="authorId != null ">
+			and c.author_id = #{authorId}
+		  </if>
+		  <if test="isCollect != null ">
+			and c.is_collect = #{isCollect}
+		  </if>
+		  <if test="createDate != null ">
+			and c.create_date = #{createDate}
+		  </if>
+		  <if test="createBy != null ">
+			and c.create_by = #{createBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and c.update_date = #{updateDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and c.update_by = #{updateBy}
+		  </if>
+	</select>
+	
+	<select id="userPostCollectList" parameterType="java.util.Map" resultType="UserPostCollectPojo">
+		select
+			c.id as id,
+			c.user_id as userId,
+			c.type as type,
+			c.type_id as typeId,
+			c.author_id as authorId,
+			c.is_collect as isCollect,
+			c.create_date as createDate,
+			c.create_by as createBy,
+			c.update_date as updateDate,
+			c.update_by as updateBy,
+			<if test="type != null and type == 1">
+			t.special_name as title,
+			t.banner,
+			t.collect_num as collectNum,
+			</if>
+			<if test="type != null and type == 2">
+			p.title,
+			p.banner,
+			p.collect_num as collectNum,
+			</if>
+			<if test="type != null and type == 3">
+			ps.title,
+			ps.banner,
+			ps.collect_num as collectNum,
+			</if>
+			l.name as author,
+			l.name as userName,
+			l.image as userImage,
+			ui.sex as userSex
+		from user_post_collect c
+		<if test="type != null and type == 1">
+		left join user_maker_theme t on c.type_id = t.id
+		</if>
+		<if test="type != null and type == 2">
+		left join user_circle_post p on c.type_id = p.id
+		</if>
+		<if test="type != null and type == 3">
+		left join platform_special ps on c.type_id = ps.id
+		</if>
+		left join sys_login l on c.author_id = l.id
+		left join user_info ui on c.user_id = ui.user_id
+		where 1=1
+			<if test="id != null ">
+			  and c.id = #{id}
+			</if>
+			<if test="userId != null ">
+			  and c.user_id = #{userId}
+			</if>
+			<if test="type != null ">
+			  and c.type = #{type}
+			</if>
+			<if test="typeId != null ">
+			  and c.type_id = #{typeId}
+			</if>
+			<if test="authorId != null ">
+			  and c.author_id = #{authorId}
+			</if>
+			<if test="isCollect != null ">
+			  and c.is_collect = #{isCollect}
+			</if>
+			<if test="createDate != null ">
+			  and c.create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and c.create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and c.update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and c.update_by = #{updateBy}
+			</if>
+		order by c.update_date desc
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="updateUserPostCollect" parameterType="UserPostCollectPojo">
+		update user_post_collect
+		<set>
+			<if test="userId != null">
+			  user_id = #{userId},
+			</if>
+			<if test="type != null">
+			  type = #{type},
+			</if>
+			<if test="typeId != null">
+			  type_id = #{typeId},
+			</if>
+			<if test="authorId != null">
+			  author_id = #{authorId},
+			</if>
+			<if test="isCollect != null">
+			  is_collect = #{isCollect},
+			</if>
+			  update_date = now(),
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<delete id="deleteUserPostCollectById" parameterType="int">
+		delete from user_post_collect 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="addUserPostCollect" useGeneratedKeys="true" keyProperty="id" parameterType="UserPostCollectPojo">
+		insert into user_post_collect
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="typeId != null">
+				type_id,
+			</if>
+			<if test="authorId != null">
+				author_id,
+			</if>
+			<if test="isCollect != null">
+				is_collect,
+			</if>
+				create_date,
+			<if test="createBy != null">
+				create_by,
+			</if>
+				update_date,
+			<if test="updateBy != null">
+				update_by,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="userId != null">
+				#{userId},
+			</if>
+			<if test="type != null">
+				#{type},
+			</if>
+			<if test="typeId != null">
+				#{typeId},
+			</if>
+			<if test="authorId != null">
+				#{authorId},
+			</if>
+			<if test="isCollect != null">
+				#{isCollect},
+			</if>
+				now(),
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+				now(),
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+		</trim>
+	</insert>
+	<select id="userTopicCollectList" parameterType="java.util.Map" resultType="UserPostCollectPojo">
+		select * from 
+		((select
+			c.id as id,
+			c.user_id as userId,
+			c.type as type,
+			c.type_id as typeId,
+			c.author_id as authorId,
+			c.is_collect as isCollect,
+			c.create_date as createDate,
+			c.create_by as createBy,
+			c.update_date as updateDate,
+			c.update_by as updateBy,
+			t.special_name as title,
+			t.banner,
+			t.collect_num as collectNum,
+			3 as subType,
+			l.name as author,
+			l.name as userName,
+			l.image as userImage,
+			ui.sex as userSex
+		from user_post_collect c
+		left join user_maker_theme t on c.type_id = t.id
+		left join sys_login l on c.author_id = l.id
+		left join user_info ui on c.user_id = ui.user_id
+		where 1=1 and c.type = 1
+			<if test="userId != null ">
+			  and c.user_id = #{userId}
+			</if>
+			<if test="typeId != null ">
+			  and c.type_id = #{typeId}
+			</if>
+			<if test="authorId != null ">
+			  and c.author_id = #{authorId}
+			</if>
+			<if test="isCollect != null ">
+			  and c.is_collect = #{isCollect}
+			</if>
+			<if test="createDate != null ">
+			  and c.create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and c.create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and c.update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and c.update_by = #{updateBy}
+			</if>
+		) UNION ALL
+		(select
+			c.id as id,
+			c.user_id as userId,
+			c.type as type,
+			c.type_id as typeId,
+			c.author_id as authorId,
+			c.is_collect as isCollect,
+			c.create_date as createDate,
+			c.create_by as createBy,
+			c.update_date as updateDate,
+			c.update_by as updateBy,
+			t.title as title,
+			t.banner,
+			t.collect_num as collectNum,
+			t.special_categories as subType,
+			'' as author,
+			'' as userName,
+			'' as userImage,
+			0 as userSex
+		from user_post_collect c
+		left join platform_special t on c.type_id = t.id
+		where 1=1 and c.type = 3
+			<if test="userId != null ">
+			  and c.user_id = #{userId}
+			</if>
+			<if test="typeId != null ">
+			  and c.type_id = #{typeId}
+			</if>
+			<if test="authorId != null ">
+			  and c.author_id = #{authorId}
+			</if>
+			<if test="isCollect != null ">
+			  and c.is_collect = #{isCollect}
+			</if>
+			<if test="createDate != null ">
+			  and c.create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and c.create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and c.update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and c.update_by = #{updateBy}
+			</if>
+		)) t
+		order by t.updateDate desc
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+</mapper>

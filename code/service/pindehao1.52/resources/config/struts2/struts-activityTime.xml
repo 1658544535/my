@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="activityTime" extends="default">
+	<!-- 限时秒杀时间列表 -->
+	<action name="activityTimeManage" class="com.tzmb2c.web.action.ActivityTimeAction" method="findActivityTimeCount">
+			<result>/page/system/product/activityTimeList.jsp</result>
+		</action>
+	<action name="delActivityTimeAll" class="com.tzmb2c.web.action.ActivityTimeAction" method="delActivityTimeAll">
+		</action>
+	<action name="findActivityTimeById" class="com.tzmb2c.web.action.ActivityTimeAction" method="findActivityTimeById">
+			<result>/page/system/product/activityTimeUpdate.jsp</result>
+	    </action>
+	<action name="updateActivityTime" class="com.tzmb2c.web.action.ActivityTimeAction" method="updateActivityTime">
+			<result name="success">/page/system/product/activityTimeList.jsp</result>
+		</action>
+	<action name="activityTimeAdd" class="com.tzmb2c.web.action.ActivityTimeAction" method="activityTimeAdd">
+			<result>/page/system/product/activityTimeAdd.jsp</result>
+	    </action>
+	<action name="insertActivityTime" class="com.tzmb2c.web.action.ActivityTimeAction" method="insertActivityTime">
+			<result name="success">/page/system/product/activityTimeList.jsp</result>
+		</action>
+		<action name="thematicActivityManage" class="com.tzmb2c.web.action.ActivityTimeAction" method="thematicActivityManage">
+			<result name="success">/page/system/product/thematicActivityManage.jsp</result>
+	    </action>
+	</package>
+	
+	
+	
+	
+	
+	<package name="activityTime-json" extends="json-default">
+	    <action name="findActivityTimeList" class="com.tzmb2c.web.action.ActivityTimeAction" method="findActivityTimeList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="findActivityTimeCount" class="com.tzmb2c.web.action.ActivityTimeAction" method="findActivityTimeCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+	    <action name="delActivityTime" class="com.tzmb2c.web.action.ActivityTimeAction" method="delActivityTime">
+	    	<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		<action name="getActivityTimeById" class="com.tzmb2c.web.action.ActivityTimeAction" method="getActivityTimeById">
+			<result type="json">
+	       		 <param name="root">ws</param>
+			</result>
+	    </action>
+	</package>
+</struts>

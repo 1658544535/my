@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="messagesCenterWeb" extends="sellerweb-default">
+	    <!-- 已读-->
+		<action name="readMessagesCenterWeb" class="com.tzmb2c.web.action.MessagesCenterAction" method="readMessagesCenterWeb">			
+		</action> 
+		<!-- 批量删除 -->
+		<action name="delMessagesCenterWebAll" class="com.tzmb2c.web.action.MessagesCenterAction" method="delMessagesCenterWebAll">			
+		</action>
+		<!-- 批量已读 -->
+		<action name="readMessagesCenterWebAll" class="com.tzmb2c.web.action.MessagesCenterAction" method="readMessagesCenterWebAll">			
+		</action>
+	</package>
+	<package name="messagesCenter" extends="default">
+		<!-- APP导航 -->
+		<action name="messagesCenter" class="com.tzmb2c.web.action.MessagesCenterAction" method="messagesCenterListCount">
+			<result name="success">/page/system/messagesCenter/messagesCenter.jsp</result>
+		</action>		
+		<!-- 根据ID删除 -->
+		<action name="delMessagesCenter" class="com.tzmb2c.web.action.MessagesCenterAction" method="delMessagesCenter">
+		</action>
+		<!-- 根据ID批量删除 -->
+		<action name="delMessagesCenterAll" class="com.tzmb2c.web.action.MessagesCenterAction" method="delMessagesCenterAll">
+		</action>
+		<!-- 编辑(跳转) -->
+		<action name="goUpdateMessagesCenter" class="com.tzmb2c.web.action.MessagesCenterAction" method="goUpdateMessagesCenter">
+			<result name="success">/page/system/messagesCenter/updateMessagesCenter.jsp</result>
+		</action>
+	    <!-- 提交编辑 -->
+		<action name="updateMessagesCenter" class="com.tzmb2c.web.action.MessagesCenterAction" method="updateMessagesCenter">
+		</action>
+		<!-- 批量通过审核 -->
+		<action name="checkMessagesCenterAll" class="com.tzmb2c.web.action.MessagesCenterAction" method="checkMessagesCenterAll">
+		</action>
+		<!-- 通过审核 -->
+		<action name="checkMessagesCenter" class="com.tzmb2c.web.action.MessagesCenterAction" method="checkMessagesCenter">
+		</action>
+		<!-- 取消审核 -->
+		<action name="uncheckMessagesCenter" class="com.tzmb2c.web.action.MessagesCenterAction" method="uncheckMessagesCenter">
+		</action>
+		<!-- （跳转）新增 -->
+		<action name="goAddMessagesCenter" class="com.tzmb2c.web.action.MessagesCenterAction" method="goAddMessagesCenter">
+			<result name="success">/page/system/messagesCenter/addMessagesCenter.jsp</result>
+		</action>	
+		<!-- 提交新增 -->
+		<action name="addMessagesCenter" class="com.tzmb2c.web.action.MessagesCenterAction" method="addMessagesCenter">			
+		</action>	
+		
+	</package>
+	<package name="messagesCenter-json" extends="json-default">
+		<!-- 列表内容 -->
+		<action name="messagesCenterListAll" class="com.tzmb2c.web.action.MessagesCenterAction" method="messagesCenterListAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>		
+		<!-- 列表条数 -->
+		<action name="messagesCenterListCount" class="com.tzmb2c.web.action.MessagesCenterAction" method="messagesCenterListCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		 <!-- 已读 -->
+		<action name="messageCount" class="com.tzmb2c.web.action.MessagesCenterAction" method="readMessagesCenterWeb">	
+			<result type="json">
+				<param name="root">messageCount</param>
+			</result>		
+		</action>
+	</package>
+</struts>

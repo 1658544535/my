@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.ProductSellMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id as id,
+		product_id as productId,
+		product_name as productName,
+		product_image as productImage,
+		price as price,
+		sell_number as sellNumber,
+		day_sell as daySell,
+		create_date as createDate,
+		create_by as createBy,
+		update_date as updateDate,
+		update_by as updateBy
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="ProductSellPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			product_sell
+		where
+			product_id = #{productId}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from product_sell
+		where 1=1
+		  <if test="id != null ">
+			and id = #{id}
+		  </if>
+		  <if test="productId != null ">
+			and product_id = #{productId}
+		  </if>
+		  <if test="productName != null and productName != '' ">
+			and product_name = #{productName}
+		  </if>
+		  <if test="productImage != null and productImage != '' ">
+			and product_image = #{productImage}
+		  </if>
+		  <if test="price != null ">
+			and price = #{price}
+		  </if>
+		  <if test="sellNumber != null ">
+			and sell_number = #{sellNumber}
+		  </if>
+		  <if test="daySell != null ">
+			and day_sell = #{daySell}
+		  </if>
+		  <if test="createDate != null ">
+			and create_date = #{createDate}
+		  </if>
+		  <if test="createBy != null ">
+			and create_by = #{createBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and update_date = #{updateDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and update_by = #{updateBy}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="ProductSellPojo">
+		select
+			<include refid="Base_Column_List" />
+		from product_sell
+		where 1=1
+			<if test="id != null ">
+			  and id = #{id}
+			</if>
+			<if test="productId != null ">
+			  and product_id = #{productId}
+			</if>
+			<if test="productName != null and productName != '' ">
+			  and product_name = #{productName}
+			</if>
+			<if test="productImage != null and productImage != '' ">
+			  and product_image = #{productImage}
+			</if>
+			<if test="price != null ">
+			  and price = #{price}
+			</if>
+			<if test="sellNumber != null ">
+			  and sell_number = #{sellNumber}
+			</if>
+			<if test="daySell != null ">
+			  and day_sell = #{daySell}
+			</if>
+			<if test="createDate != null ">
+			  and create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and update_by = #{updateBy}
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="ProductSellPojo">
+		update product_sell
+		<set>
+			<if test="productId != null">
+			  product_id = #{productId},
+			</if>
+			<if test="productName != null">
+			  product_name = #{productName},
+			</if>
+			<if test="productImage != null">
+			  product_image = #{productImage},
+			</if>
+			<if test="price != null">
+			  price = #{price},
+			</if>
+			<if test="sellNumber != null">
+			  sell_number = #{sellNumber},
+			</if>
+			<if test="daySell != null">
+			  day_sell = #{daySell},
+			</if>
+			<if test="createDate != null">
+			  create_date = #{createDate},
+			</if>
+			<if test="createBy != null">
+			  create_by = #{createBy},
+			</if>
+			<if test="updateDate != null">
+			  update_date = #{updateDate},
+			</if>
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+			<if test="productType1 != null">
+			   product_type1=#{productType1},
+			</if>
+			<if test="productTypeIds != null">
+			   product_type_ids=#{productTypeIds},
+			</if>
+			<if test="status != null">
+			   status=#{status},
+			</if>
+		</set>
+		where product_id = #{productId}
+	</update>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from product_sell 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="ProductSellPojo">
+		insert into product_sell
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="productId != null">
+				product_id,
+			</if>
+			<if test="productName != null">
+				product_name,
+			</if>
+			<if test="productImage != null">
+				product_image,
+			</if>
+			<if test="price != null">
+				price,
+			</if>
+			<if test="sellNumber != null">
+				sell_number,
+			</if>
+			<if test="daySell != null">
+				day_sell,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+			<if test="updateDate != null">
+				update_date,
+			</if>
+			<if test="updateBy != null">
+				update_by,
+			</if>
+			<if test="productType1 != null">
+				product_type1,
+			</if>
+			<if test="productTypeIds != null">
+				product_type_ids,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="productId != null">
+				#{productId},
+			</if>
+			<if test="productName != null">
+				#{productName},
+			</if>
+			<if test="productImage != null">
+				#{productImage},
+			</if>
+			<if test="price != null">
+				#{price},
+			</if>
+			<if test="sellNumber != null">
+				#{sellNumber},
+			</if>
+			<if test="daySell != null">
+				#{daySell},
+			</if>
+			<if test="createDate != null">
+				#{createDate},
+			</if>
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+			<if test="updateDate != null">
+				#{updateDate},
+			</if>
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+			<if test="productType1 != null">
+				#{productType1},
+			</if>
+			<if test="productTypeIds != null">
+				#{productTypeIds},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+		</trim>
+	</insert>
+	
+	
+	<update id="updateDaySell" parameterType="ProductSellPojo">
+		update product_sell set
+		day_sell = 0,
+		update_date = now()
+	 </update>
+</mapper>

@@ -1,0 +1,77 @@
+﻿@charset "utf-8";
+/* CSS Document */
+
+
+.os-ope-twoDim .twoDimCode,.os-ope-twoDim .twoDimCode span,.paySec-con p i,.paySec-head em{ background:url(../../images/ordSecIcon.png) no-repeat;}
+.OrderSec{ width:1000px; height:auto;}
+.osBox{ width:845px; height:auto; padding:0px 75px 40px 0px;}
+
+.os-tit{ height:56px; padding-left:45px; background:url(../../images/ordersecIcon.png) no-repeat left top;}
+.os-tit .os-tit-pro{ color:#333; font-size:18px; font-family:"微软雅黑"; line-height:36px;}
+.os-tit .os-tit-pro2{ color:#cc0000; line-height:24px;}
+.os-tit .os-tit-tim{ line-height:24px;}
+.os-tit .os-tit-tim span{ color:#cc0000; padding:0 2px;}
+.os-num{ padding:20px 0 0 45px;}
+.os-num p{ line-height:26px;}
+.os-num span{ font-family:"微软雅黑";}
+.os-num span a:hover{ color:#666;}
+.os-num em{ font-style:normal; color:#cc0000; font-size:16px; font-family:"微软雅黑";}
+.os-num font{ font-style:normal; font-size:12px;}
+/*立即支付*/
+.os-pay{ padding:10px 0 0 0px; }
+.os-pay-con{ padding:5px 0px 20px 0; }
+.os-pay-con p{ height:20px; line-height:20px; font-size:14px;}
+.os-pay-con .osp-ment{ padding:10px 0;}
+.os-pay-con .osp-ment b{ background:url(../images/bank.png) no-repeat 0 0; width:126px; height:30px; display:inline-block; border:1px solid #e4e4e4; vertical-align:middle;}
+.os-pay-con .osp-ment a{ color:#1078C1; padding-left:12px; line-height:30px; }
+.os-pay-con .osp-ment a:hover{ color:#1078C1;}
+.osp-pay{ padding:15px 0 15px; text-align:right;}
+.osp-pay a{ display:inline-block; color:#fff; background:#cc0000; border-radius:2px; }
+.osp-pay .payBut{ height:34px; line-height:34px; padding:0 22px; font-size:14px; font-weight:bold;}
+.osp-pay .osp-subBut{ height:28px; line-height:28px; padding:0 12px;}
+.osp-pay a:hover{ color:#fff; text-decoration:none;}
+/*修改支付方式*/
+.os-ment-alter{ display:none;}
+.oma-tit{ height:39px; border-bottom:1px solid #e4e4e4; border-left:1px solid #e4e4e4;}
+.oma-tit span{ display:inline-block; height:38px; width:140px; line-height:38px; font-size:14px; text-align:center; border:1px solid #e4e4e4; border-left:0px; margin-bottom:-1px; color:#999; position:relative; cursor:pointer;}
+.oma-tit span.otsOn{ color:#333; border-bottom:1px solid #fff;}
+.oma-con{ border:1px solid #e4e4e4; border-top:0px;}
+.oma-con-list{ padding:20px 0px 20px 35px;}
+.oma-con-list .payment{ display:none;}
+.oma-con-list .payment .title{ padding-left:10px; border-left:5px solid #cc0000; height:20px; line-height:20px; font-weight:bold;}
+.oma-con-list .payment .title span{color:#cc0000;}
+.oma-con-list li{ float:left; width:158px; border:1px solid #ddd; margin:10px 30px 0 0; display:inline; height:30px; padding:0; background:#fff;}
+.oma-con-list li label{ width:158px; height:30px;}
+.oma-con-list li label input{ float:left; display:inline-block; margin:8px 0 0 10px; width:12px; height:12px; overflow:hidden;}
+.oma-con-list li label b{ background:url(../images/bank.png) no-repeat 0 0; width:126px; height:30px; display:inline-block; float:right;}
+.oma-con-list .payment_1 label b{ background-position:0 -36px;}
+.oma-con-list .payment_2 label b{ background-position:0 -72px;}
+.oma-con-list .payment_3 label b{ background-position:0 -112px;}
+.oma-con-list .payment_4 label b{ background-position:0 -151px;}
+.oma-con-list .payment_5 label b{ background-position:0 -231px;}
+.oma-con-list .payment_6 label b{ background-position:0 -272px;}
+.oma-con-list .payment_7 label b{ background-position:0 -311px;}
+.oma-con-list .payment_8 label b{ background-position:0 -352px;}
+.oma-con-list .payment_9 label b{ background-position:0 -391px;}
+.oma-con-list .payment_10 label b{ background-position:0 -432px;}
+.oma-con-list .payment_11 label b{ background-position:0 -472px;}
+.oma-con-list .payment_12 label b{ background-position:0 -512px;}
+.oma-con-list .payment_13 label b{ background-position:0 -552px;}
+.oma-con-list .payment_14 label b{ background-position:0 -585px;}
+.oma-con-list .payment_15 label b{ background-position:0 -624px;}
+.oma-con-list .payment_16 label b{ background-position:0 -663px;}
+.oma-con-list .payment_17 label b{ background-position:0 -704px;}
+.oma-con-list .payment_18 label b{ background-position:0 -744px;}
+.oma-con-list .payment_19 label b{ background-position:0 -780px;}
+.oma-con-list .payment_20 label b{ background-position:0 -811px;}
+.oma-con-list .payment_21 label b{ background-position:0 -844px;}
+.oma-con-list .payment_22 label b{ background-position:0 -879px;}
+.oma-con-list .payment_23 label b{ background-position:0 -913px;}
+.oma-con-list .payment_24 label b{ background-position:0 -947px;}
+.oma-con-list .payment_25 label b{ background-position:0 -980px;}
+.oma-con-list .payment_26 label b{ background-position:0 -1015px;}
+.oma-con-list .payment_27 label b{ background-position:0 -1049px;}
+.oma-con-list .payment_28 label b{ background-position:0 -1083px;}
+.oma-con-list .payment_29 label b{ background-position:0 -1184px;}
+.osp-payBox{padding:0px 35px 30px;}
+

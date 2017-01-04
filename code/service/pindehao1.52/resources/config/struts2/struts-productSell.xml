@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="productSell" extends="default">
+		<!-- 进入列表页面 -->
+		<action name="goProductSell" class="com.tzmb2c.web.action.ProductSellAction" method="goProductSell">
+			<result name="success">/page/system/productSell/productSellList.jsp</result>
+		</action>
+		<!-- 新增 -->
+		<action name="goAddProductSell" class="com.tzmb2c.web.action.ProductSellAction" method="goAddProductSell">
+		    <result name="success">/page/system/productSell/addProductSell.jsp</result>
+		</action>
+		<!-- 新增提交 -->
+		<action name="addProductSell" class="com.tzmb2c.web.action.ProductSellAction" method="add">
+		</action>		
+		<!-- 编辑页面 -->
+		<action name="goEditProductSell" class="com.tzmb2c.web.action.ProductSellAction" method="goEditProductSell">
+			<result name="success">/page/system/productSell/updateProductSell.jsp</result>
+		</action>
+		<!-- 编辑提交 -->
+		<action name="updateProductSell" class="com.tzmb2c.web.action.ProductSellAction" method="update">
+		</action>
+	</package>
+	<package name="productSell-json" extends="json-default">
+		<!-- 内容 -->
+		<action name="productSellList" class="com.tzmb2c.web.action.ProductSellAction" method="productSellList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="productSellCnt" class="com.tzmb2c.web.action.ProductSellAction" method="productSellRowCnt">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+		<!-- 根据ID删除 -->
+		<action name="delProductSell" class="com.tzmb2c.web.action.ProductSellAction" method="delete">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+		<!-- 删除选中 -->
+		<action name="delProductSellAll" class="com.tzmb2c.web.action.ProductSellAction" method="deleteAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 通过审核 -->
+		<action name="checkProductSell" class="com.tzmb2c.web.action.ProductSellAction" method="check">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 取消审核 -->
+		<action name="uncheckProductSell" class="com.tzmb2c.web.action.ProductSellAction" method="uncheck">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中通过审核 -->
+		<action name="checkProductSellAll" class="com.tzmb2c.web.action.ProductSellAction" method="checkAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中取消审核 -->
+		<action name="uncheckProductSellAll" class="com.tzmb2c.web.action.ProductSellAction" method="uncheckAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+	</package>
+</struts>

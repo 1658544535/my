@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+	<package name="userOrderDetail" extends="default">
+
+		<!-- 入口 -->
+		<action name="userOrderDetailManage" class="com.tzmb2c.web.action.UserOrderDetailAction"
+			method="getUserOrderDetailCount">
+			<result name="success">/page/system/recordcount/productSaleRecord.jsp
+			</result>
+		</action>
+		<!-- go审核 -->
+		<action name="findOneUserOrderDetailById" class="com.tzmb2c.web.action.UserOrderDetailAction"
+			method="findOneUserOrderDetailById">
+			<result name="success">/page/system/recordcount/checkSaleRecord.jsp
+			</result>
+		</action>
+		<!-- 审核单条 -->
+		<action name="checkUserOrderDetail" class="com.tzmb2c.web.action.UserOrderDetailAction"
+			method="checkUserOrderDetail">
+		</action>
+		<!-- 批量审核 -->
+		<action name="checkAllUserOrderDetailById" class="com.tzmb2c.web.action.UserOrderDetailAction"
+			method="checkAllUserOrderDetailById">
+		</action>
+		
+		<!-- 商品销售统计入口 -->
+		<action name="productSaleCountManage" class="com.tzmb2c.web.action.UserOrderDetailAction"
+			method="getProductSaleCount">
+			<result name="success">/page/system/recordcount/productSaleCount.jsp
+			</result>
+		</action>
+
+		<!-- 商家销售统计二级页面入口 -->
+		<action name="shopSaleListCount" class="com.tzmb2c.web.action.UserOrderDetailAction"
+			method="shopSaleListCount">
+			<result name="success">/page/system/recordcount/shoSaleCount.jsp
+			</result>
+		</action>
+		<!-- 商家销售统计导出EXCEL -->
+		<action name="getSellExcel" class="com.tzmb2c.web.action.UserOrderDetailAction" method="getSellExcel">
+		</action>
+	</package>
+
+	<package name="userOrderDetail-json" extends="json-default">
+		<!--平台入口 -->
+		<action name="getUserOrderDetailCount" class="com.tzmb2c.web.action.UserOrderDetailAction"
+			method="getUserOrderDetailCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		<action name="userOrderDetailAllList" class="com.tzmb2c.web.action.UserOrderDetailAction"
+			method="userOrderDetailAllList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<!-- 销售统计 -->
+		<action name="getProductSaleCount" class="com.tzmb2c.web.action.UserOrderDetailAction"
+			method="getProductSaleCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		<action name="getShopSaleCount" class="com.tzmb2c.web.action.UserOrderDetailAction"
+			method="shopSaleListCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		<action name="productSaleAllList" class="com.tzmb2c.web.action.UserOrderDetailAction"
+			method="productSaleAllList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="shopSaleList" class="com.tzmb2c.web.action.UserOrderDetailAction"
+			method="shopSaleList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+	</package>
+
+</struts>

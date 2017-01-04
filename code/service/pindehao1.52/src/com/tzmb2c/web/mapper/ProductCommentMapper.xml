@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.ProductCommentMapper">
+
+
+	<!-- 查询记录根据登录id -->
+	<select id="productCommentListByUid" resultType="ProductCommentPojo"
+		parameterType="java.util.Map">
+		select 
+		uc.id as id,
+		uc.order_id as orderId,
+		uc.order_no as orderNo,
+		uc.product_id as productId,
+		uc.score as score,
+		(select name from sys_dict where value=uc.score and type="product_score") as scoreName,
+		uc.user_id as userId,
+		uc.user_name as userName,
+		uc.comment as comment,
+		uc.create_by as createBy,
+		uc.create_date as createDate,
+		uc.update_by as updateBy,
+		uc.update_date as updateDate,
+		uc.remarks as remarks,
+		uc.version as version,
+		pt.product_name as productName,
+		pt.image as productImage,
+		uc.status as status,
+		(select name from sys_dict where value=uc.status and type = 'status') as statusName 
+		from user_comment uc left join product pt on uc.product_id = pt.id
+		where pt.status=1 and pt.user_id=#{userId}
+		<if test="userName !=null and userName !='' ">
+			and uc.user_name like concat("%",#{userName},"%" )
+		</if>
+		<if test="productId !=null and productId !='' ">
+			and uc.product_id like concat("%",#{productId},"%" )
+		</if>
+		<if test="productName !=null and productName !='' ">
+			and pt.product_name like concat("%",#{productName},"%" )
+		</if>
+		<if test="proName !=null and proName !='' ">
+			and pt.product_name like concat("%",#{proName},"%" )
+		</if>
+		<if test="status != null">
+			and uc.status = #{status}
+		</if>
+		<if test="pageSize != null">
+			order by uc.create_date desc limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+
+	<!-- 返回信息记录的数目count -->
+	<select id="productCommentCountByUid" resultType="int"
+		parameterType="java.util.Map">
+		select count(uc.id)
+		from user_comment uc left join product pt on uc.product_id = pt.id
+		where pt.status=1 and pt.user_id=#{userId}
+		<if test="userName!=null and userName !='' ">
+			and uc.user_name like concat("%",#{userName},"%" )
+		</if>
+		<if test="productId!=null and productId !='' ">
+			and uc.product_id like concat("%",#{productId},"%" )
+		</if>
+		<if test="productName !=null and productName !='' ">
+			and pt.product_name like concat("%",#{productName},"%" )
+		</if>
+		<if test="status != null">
+			and uc.status = #{status}
+		</if>
+	</select>
+
+	
+	<!-- 查找单条评价记录 -->
+	<select id="findProductCommentById" resultType="ProductCommentPojo"
+		parameterType="Long">
+		select 
+		uc.id as id,
+		uc.order_id as orderId,
+		uc.order_no as orderNo,
+		uc.product_id as productId,
+		uc.score as score,
+		(select name from sys_dict where value=uc.score and type="product_score") as scoreName,
+		uc.user_id as userId,
+		uc.user_name as userName,
+		uc.comment as comment,
+		uc.create_by as createBy,
+		uc.create_date as createDate,
+		uc.update_by as updateBy,
+		uc.update_date as updateDate,
+		uc.remarks as remarks,
+		uc.version as version,
+		pt.product_name as productName,
+		uc.status as status,
+		(select name from sys_dict where value=uc.status and type = 'status') as statusName 
+		from user_comment uc left join product pt on uc.product_id = pt.id
+		where
+		uc.id = #{id}
+	</select>
+	
+	<!-- 审核单条评价记录  -->
+	<update id="checkProductComment" parameterType="Long">
+		update user_comment uc
+		set
+		uc.status=1
+		where
+		uc.id = #{id}
+	</update>
+
+	<!-- 审核全部评价记录  -->
+	<update id="checkAllProductCommentByIds" parameterType="java.util.Map">
+		update user_comment uc 
+		set
+		uc.status=1
+		where
+		<!-- uc.id = #{id} -->
+		uc.id in (
+		<if test="tids !=null and tids !=''">
+			<foreach collection="tids" item="tid" index="index" open="" separator="," close="">
+				#{tid}
+			</foreach>
+		</if>
+		)
+	</update>
+	<!-- 取消审核单条评价记录  -->
+	<update id="uncheckProductComment" parameterType="Long">
+		update user_comment uc
+		set
+		uc.status=0
+		where
+		uc.id = #{id}
+	</update>
+
+	<!-- 取消审核全部评价记录  -->
+	<update id="uncheckAllProductCommentByIds" parameterType="java.util.Map">
+		update user_comment uc 
+		set
+		uc.status=0
+		where
+		<!-- uc.id = #{id} -->
+		uc.id in (
+		<if test="tids !=null and tids !=''">
+			<foreach collection="tids" item="tid" index="index" open="" separator="," close="">
+				#{tid}
+			</foreach>
+		</if>
+		)
+	</update>
+
+	<!-- 删除全部 -->
+	<delete id="delAllCommentByIds" parameterType="java.util.Map">
+		delete from
+		user_comment
+		where 1=1
+		and id in (
+		<if test="tids !=null and tids !=''">
+			<foreach collection="tids" item="tid" index="index" open="" separator="," close="">
+				#{tid}
+			</foreach>
+		</if>
+		)
+	</delete>
+
+	<!-- 删除单个 -->
+	<delete id="delComment" parameterType="ProductCommentPojo">
+		delete from user_comment
+		where
+		id =
+		#{id}
+	</delete>
+
+	<select id="productNameAllList" resultType="ProductPojo"
+		parameterType="java.util.Map">
+		select t.id as id,t.user_id as userId,t.product_no as productNo,t.product_type_id as productTypeId,substring_index(substring_index(t.product_type_ids,':',2),':',-1) as productTypeIds,
+		t.product_name as productName,t.product_name_en as productNameEn,t.distribution_price as distributionPrice,t.selling_price as sellingPrice,t.lowest_price as lowestPrice,t.minimum as minimum,
+		t.ladder_price as ladderPrice,t.sorting as sorting,t.status as status,t.create_by as createBy,t.create_date as createDate,update_by as updateBy,
+		t.update_date as updateDate,t.remarks as remarks,t.version as version from product t where 1=1
+	</select>
+
+
+	<!-- 查询所有的记录 -->
+	<select id="productCommentAllList" resultType="ProductCommentPojo"
+		parameterType="java.util.Map">
+		select 
+		uc.id as id,
+		uc.order_id as orderId,
+		uc.order_no as orderNo,
+		uc.product_id as productId,
+		uc.score as score,
+		(select name from sys_dict where value=uc.score and type="product_score") as scoreName,
+		uc.user_id as userId,
+		uc.user_name as userName,
+		uc.comment as comment,
+		uc.create_by as createBy,
+		uc.create_date as createDate,
+		uc.update_by as updateBy,
+		uc.update_date as updateDate,
+		uc.remarks as remarks,
+		uc.version as version,
+		pt.product_name as productName,
+		pt.image as productImage,
+		uc.status as status,
+		(select name from sys_dict where value=uc.status and type = 'status') as statusName 
+		from user_comment uc left join product pt on uc.product_id = pt.id
+		where
+		1=1 
+		<if test="userName !=null and userName !='' ">
+			and uc.user_name like concat("%",#{userName},"%" )
+		</if>
+		<if test="productId !=null and productId !='' ">
+			and uc.product_id like concat("%",#{productId},"%" )
+		</if>
+		<if test="productName !=null and productName !='' ">
+			and pt.product_name like concat("%",#{productName},"%" )
+		</if>
+		<if test="proName !=null and proName !='' ">
+			and pt.product_name like concat("%",#{proName},"%" )
+		</if>
+		<if test="orderNo !=null and orderNo !='' ">
+			and uc.order_no like concat("%",#{orderNo},"%" )
+		</if>
+		<if test="beginTimeStr !=null and beginTimeStr !='' ">
+			and str_to_date(uc.create_date,'%Y-%m-%d') &gt;= #{beginTimeStr}
+		</if>
+		<if test="endTimeStr !=null and endTimeStr !='' ">
+			and str_to_date(uc.create_date,'%Y-%m-%d') &lt;= #{endTimeStr}
+		</if>
+		<if test="status != null">
+			and uc.status = #{status}
+		</if>
+		order by  uc.create_date desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+		
+	</select>
+
+	<!-- 返回信息记录的数目count -->
+	<select id="productCommentAllCount" resultType="int"
+		parameterType="java.util.Map">
+		select count(uc.id)
+		from user_comment uc left join product pt on uc.product_id = pt.id
+		where 1=1
+		<if test="userName!=null and userName !='' ">
+			and uc.user_name like concat("%",#{userName},"%" )
+		</if>
+		<if test="productId!=null and productId !='' ">
+			and uc.product_id like concat("%",#{productId},"%" )
+		</if>
+		<if test="productName !=null and productName !='' ">
+			and pt.product_name like concat("%",#{productName},"%" )
+		</if>
+		<if test="status != null">
+			and uc.status = #{status}
+		</if>
+		<if test="orderNo !=null and orderNo !='' ">
+			and uc.order_no like concat("%",#{orderNo},"%" )
+		</if>
+		<if test="beginTimeStr !=null and beginTimeStr !='' ">
+			and str_to_date(uc.create_date,'%Y-%m-%d') &gt;= #{beginTimeStr}
+		</if>
+		<if test="endTimeStr !=null and endTimeStr !='' ">
+			and str_to_date(uc.create_date,'%Y-%m-%d') &lt;= #{endTimeStr}
+		</if>
+	</select>
+	
+	<!-- /////////////////////////分割线/////////////////////////////////// -->
+	
+	<select id="productCommentAllListWe" resultType="ProductCommentPojo"
+		parameterType="java.util.Map">
+		select 
+		uc.id,
+		uc.order_id as orderId,
+		uc.order_no as orderNo,
+		uc.product_id as productId,
+		uc.score,
+		(select name from sys_dict where value=uc.score and type="product_score") as scoreName,
+		uc.user_id as userId,
+		uc.user_name as userName,
+		uc.comment,
+		uc.score_total as scoreTotal,
+		uc.score_product as scoreProduct,
+		uc.score_service as scoreService,
+		uc.score_sspeed as scoreSspeed,
+		uc.score_espeed as scoreEspeed,
+		uc.score_eservice as scoreEservice,
+		
+		uc.create_by as createBy,
+		uc.create_date as createDate,
+		uc.update_by as updateBy,
+		uc.update_date as updateDate,
+		uc.remarks,
+		uc.version,
+		pt.product_name as productName,
+		uc.status as status,
+		(select name from sys_dict where value=uc.status and type = 'status') as statusName 
+		from user_comment uc left join product pt on uc.product_id = pt.id
+		where
+		1=1 
+		<if test="userName!=null and userName !='' ">
+			and uc.user_name like CONCAT("%",#{userName},"%" )
+		</if>
+		<if test="orderNo!=null and orderNo !='' ">
+			and uc.order_no like CONCAT("%",#{orderNo},"%" )
+		</if>
+		<if test="productId!=null and productId !='' ">
+			and uc.product_id = #{productId}
+		</if>
+		<if test="status != null">
+			and uc.status = #{status}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+
+	<select id="productCommentAllCountWe" resultType="int"
+		parameterType="java.util.Map">
+		select count(uc.id)
+		from user_comment uc left join product pt on uc.product_id = pt.id
+		where 1=1
+		<if test="userName!=null and userName !='' ">
+			and user_name like CONCAT("%",#{userName},"%" )
+		</if>
+		<if test="orderNo!=null and orderNo !='' ">
+			and uc.order_no like CONCAT("%",#{orderNo},"%" )
+		</if>
+		<if test="productId!=null and productId !='' ">
+			and uc.product_id = #{productId}
+		</if>
+		<if test="status != null">
+			and uc.status = #{status}
+		</if>
+	</select>
+	
+	<select id="productCommentAllListHg" resultType="ProductCommentPojo"
+		parameterType="java.util.Map">
+		select 
+		sum(uc.score_total) as scoreTotal,
+		sum(uc.score_product) as scoreProduct,
+		sum(uc.score_service) as scoreService,
+		sum(uc.score_sspeed) as scoreSspeed,
+		sum(uc.score_espeed) as scoreEspeed,
+		sum(uc.score_eservice) as scoreEservice,
+		
+		pt.product_name as productName
+		from user_comment uc left join product pt on uc.product_id = pt.id
+		where
+		1=1
+		<if test="beganday!=null and beganday !='' ">
+			and UNIX_TIMESTAMP(uc.create_date) >= UNIX_TIMESTAMP(CONCAT(#{beganday},' 00:00:00'))
+		</if>
+		<if test="endday!=null and endday !='' ">
+			and UNIX_TIMESTAMP(CONCAT(#{endday},' 00:00:00')) >= UNIX_TIMESTAMP(uc.create_date)
+		</if>
+		<if test="userName!=null and userName !='' ">
+			and pt.product_name = #{userName}
+		</if>
+		<if test="status != null">
+			and uc.status = #{status}
+		</if>
+		group by product_id order by product_id desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+
+	<!-- 前端调用 -->
+	<!-- 查询所有的记录 -->
+	<select id="productCommentAllListWeb" resultType="ProductCommentPojo"
+		parameterType="java.util.Map">
+		select 
+		uc.id as id,
+		uc.order_id as orderId,
+		uc.order_no as orderNo,
+		uc.product_id as productId,
+		uc.score as score,
+		(select name from sys_dict where value=uc.score and type="product_score") as scoreName,
+		uc.user_id as userId,
+		(select company from user_consumer where user_id=uc.user_id ) as companyName,
+		uc.user_name as userName,
+		(select loginname from sys_login where id = uc.user_id) as loginName,
+		uc.comment as comment,
+		uc.create_by as createBy,
+		uc.create_date as createDate,
+		uc.update_by as updateBy,
+		uc.update_date as updateDate,
+		uc.remarks as remarks,
+		uc.version as version,
+		ps.size as size,
+		ps.color as color,
+		pt.product_name as productName,
+		uc.status as status,
+		(select name from sys_dict where value=uc.status and type = 'status') as statusName ,
+		uc.sku_link_id as skuLinkId,
+		uc.score_product as scoreProduct,
+		uc.score_service as scoreService,
+		uc.score_sspeed as scoreSspeed
+		from user_comment uc left join product pt on uc.product_id = pt.id left join product_stock ps on uc.stock_id = ps.id
+		where
+		1=1
+		<if test="userName !=null and userName !='' ">
+			and uc.user_name like concat("%",#{userName},"%" )
+		</if>
+		<if test="productId !=null and productId !='' ">
+			and uc.product_id = #{productId}
+		</if>
+		<if test="proName !=null and proName !='' ">
+			and pt.product_name like concat("%",#{proName},"%" )
+		</if>
+		<if test="status != null">
+			and uc.status = #{status}
+		</if>
+		<if test="userId != null">
+			and uc.user_id = #{userId}
+		</if>
+		<if test="score != null and score != 0">
+			and uc.score = #{score}
+		</if>
+			order by uc.create_date desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<!-- 订单交易成功之后:查询所有商品评价记录 -->
+	<select id="userCommentAllListWeb" resultType="ProductCommentPojo"
+		parameterType="java.util.Map">
+		select 
+		uc.id as id,
+		uc.order_id as orderId,
+		uc.order_no as orderNo,
+		uc.product_id as productId,
+		uc.score as score,
+		(select name from sys_dict where value=uc.score and type="product_score") as scoreName,
+		uc.user_id as userId,
+		uc.user_name as userName,
+		uc.comment as comment,
+		uc.create_by as createBy,
+		uc.create_date as createDate,
+		uc.update_by as updateBy,
+		uc.update_date as updateDate,
+		uc.remarks as remarks,
+		uc.version as version,
+		pt.product_name as productName,
+		uc.status as status,
+		(select name from sys_dict where value=uc.status and type = 'status') as statusName 
+		from user_comment uc left join product pt on uc.product_id = pt.id
+		where uc.user_id=#{userId}
+		<if test="status != null">
+			and uc.status = #{status}
+		</if>
+	</select>
+	
+	<!-- 插入单条评价信息 -->
+	<insert id="addUserComment" parameterType="ProductCommentPojo">
+		insert into user_comment
+		(id,order_id,order_no,product_id,score,user_id,user_name,comment,create_by,create_date,update_by,update_date,remarks,version,status,score_product,score_service,score_sspeed,sku_link_id)
+		values
+		(#{id},#{orderId},#{orderNo},#{productId},#{score},#{userId},#{userName},#{comment},#{createBy},
+		#{createDate},#{updateBy},#{updateDate},#{version},#{remarks},#{status},#{scoreProduct},#{scoreService},#{scoreSspeed},#{skuLinkId})
+	</insert>
+
+	<select id="returnproductCommtByBid" parameterType="Long" resultType="UserBrandPojo">
+		select sum(uc.score_product)/count(ub.id) as productCommt,
+		sum(uc.score_service)/count(ub.id) as deliverCommt,
+		sum(uc.score_sspeed)/count(ub.id) as logisticsCommt 
+		from user_comment uc
+		left join product p on p.id = uc.product_id
+		left join user_brand ub on ub.id = p.user_brand_id
+		where 
+		uc.status = 1 and 
+		p.status = 1 and 
+		ub.status = 1 and 
+		ub.id = #{id}
+		group by ub.id
+	</select>
+	
+	
+</mapper>

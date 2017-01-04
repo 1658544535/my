@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+	<package name="userAttestation" extends="default">
+
+
+		<!-- 入口 -->
+		<action name="userAttestationManage" class="com.tzmb2c.web.action.UserAttestationAction"
+			method="getUserAttestationCount">
+			<result name="success">/page/system/userattestation/manageAttestation.jsp
+			</result>
+		</action>
+
+		<!-- go更新 -->
+		<action name="goUpdateUserAttestation" class="com.tzmb2c.web.action.UserAttestationAction"
+			method="goFindUserAttestation">
+			<result>/page/system/userattestation/updateAttestation.jsp</result>
+		</action>
+
+		<!-- 更新 -->
+		<action name="updateUserAttestation" class="com.tzmb2c.web.action.UserAttestationAction"
+			method="updateUserAttestation">
+		</action>
+
+		<!--go审核 -->
+		<action name="goCheckUserAttestation" class="com.tzmb2c.web.action.UserAttestationAction"
+			method="goFindUserAttestation">
+			<result>/page/system/userattestation/checkAttestation.jsp</result>
+		</action>
+
+		<!-- 审核单条 -->
+		<action name="verifyUserAttestation" class="com.tzmb2c.web.action.UserAttestationAction"
+			method="verifyUserAttestation">
+		</action>
+
+		<!-- 审核全部 -->
+		<action name="verifyAllUserAttestation" class="com.tzmb2c.web.action.UserAttestationAction"
+			method="verifyAllUserAttestation">
+		</action>
+
+		<!-- 删除单条 -->
+		<action name="delUserAttestation" class="com.tzmb2c.web.action.UserAttestationAction"
+			method="delUserAttestation">
+		</action>
+
+		<!-- 删除全部 -->
+		<action name="userAttestationDeleteId" class="com.tzmb2c.web.action.UserAttestationAction"
+			method="delAllUserAttestationById">
+		</action>
+
+	</package>
+
+	<package name="userAttestation-json" extends="json-default">
+		<!--平台入口 -->
+		<action name="getUserAttestationCount" class="com.tzmb2c.web.action.UserAttestationAction"
+			method="getUserAttestationCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+
+		<action name="userAttestationAllList" class="com.tzmb2c.web.action.UserAttestationAction"
+			method="userAttestationAllList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+
+		<action name="delUserAttestation" class="com.tzmb2c.web.action.UserAttestationAction"
+			method="delUserAttestation">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+
+		<action name="verifyUserAttestation" class="com.tzmb2c.web.action.UserAttestationAction"
+			method="verifyUserAttestation">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+	</package>
+
+</struts>

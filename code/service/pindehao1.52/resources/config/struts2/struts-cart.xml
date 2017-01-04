@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="cart" extends="default">
+
+		<!-- 用户购物车页 -->
+		<action name="cart" class="com.tzmb2c.web.action.CartAction" method="getCartCount">
+			<result>/page/system/user/cart.jsp</result>
+		</action>
+		
+		<action name="CartDeleteId" class="com.tzmb2c.web.action.CartAction" method="cartDeleteId">
+		
+		</action>
+		
+		<action name="goFindCart" class="com.tzmb2c.web.action.CartAction" method="goFindCart">
+			<result>/page/system/user/cartupdate.jsp</result>
+		</action>
+		<action name="updateCart" class="com.tzmb2c.web.action.CartAction" method="updateCart">
+		</action>
+		
+	</package>
+	
+	<package name="cart-json" extends="json-default">
+		<action name="deleCart" class="com.tzmb2c.web.action.CartAction" method="deleCart">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		<!--平台入口-->
+		<action name="getCartCount" class="com.tzmb2c.web.action.CartAction" method="getCartCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+			<action name="cartAllList" class="com.tzmb2c.web.action.CartAction" method="cartAllList">
+			<result type="json">
+				<param name="root">page.result</param>.
+			</result>
+		</action>
+	</package>
+</struts>

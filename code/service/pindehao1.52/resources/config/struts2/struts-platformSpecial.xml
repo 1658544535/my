@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="platformSpecial" extends="default">
+		<!-- 任务专题 -->
+		<action name="platformSpecialList" class="com.tzmb2c.web.action.PlatformSpecialAction" method="platformSpecialListCount">
+			<result name="success">/page/system/platformSpecial/platformSpecialList.jsp</result>
+		</action>	
+		
+		<!-- 审核 -->
+		<action name="updateOnePlatformSpecial" class="com.tzmb2c.web.action.PlatformSpecialAction" method="updateOnePlatformSpecial">
+		</action>
+			
+		<!-- 取消审核 -->
+		<action name="delPlatformSpecial" class="com.tzmb2c.web.action.PlatformSpecialAction" method="delPlatformSpecial">
+		</action>
+		
+		<!-- 删除 -->
+		<action name="delPlatformSpecial2" class="com.tzmb2c.web.action.PlatformSpecialAction" method="delPlatformSpecial2">
+		</action>
+		
+		<!-- 编辑(跳转) -->
+		<action name="goUpdatePlatformSpecial" class="com.tzmb2c.web.action.PlatformSpecialAction" method="goUpdatePlatformSpecial">
+			<result name="success">/page/system/platformSpecial/updatePlatformSpecial.jsp</result>
+			<result name="oldVersion">/page/system/platformSpecial/oldUpdatePlatformSpecial.jsp</result>
+		</action>
+		
+		<!-- （跳转）新增专题 -->
+		<action name="goAddPlatformSpecialList" class="com.tzmb2c.web.action.PlatformSpecialAction" method="goAddPlatformSpecialList">
+			<result name="success">/page/system/platformSpecial/addPlatformSpecial.jsp</result>
+		</action>	
+		
+		<!-- 设置商品(跳转) -->
+		<action name="goSettingPlatformSpecialPorduct" class="com.tzmb2c.web.action.ActivityProductAction" method="getActivityPlaceCount">
+			<result name="success">/page/system/platformSpecial/platformSpecialPorduct.jsp</result>
+		</action>	
+		
+		<!-- 添加商品的列表(跳转) -->
+		<action name="goAddPlatformSpecialPorduct" class="com.tzmb2c.web.action.ProductAction" method="getActProBucketCount">
+			<result name="success">/page/system/platformSpecial/addPlatformSpecialProduct.jsp</result>
+		</action>	
+		
+		<!-- 添加商品 -->
+		<action name="addPlatformSpecialPorduct" class="com.tzmb2c.web.action.PlatformSpecialAction" method="addPlatformSpecialPorduct">
+		</action>
+		
+		<!-- 添加商品（ALL） -->
+		<action name="addPlatformSpecialPorductAll" class="com.tzmb2c.web.action.PlatformSpecialAction" method="addPlatformSpecialPorductAll">
+		</action>
+		<!-- 设置是否上首页 -->
+		<action name="setPSIsHomePage" class="com.tzmb2c.web.action.PlatformSpecialAction" method="setPSIsHomePage">
+		</action>
+	</package>
+	<package name="platformSpecial-json" extends="json-default">
+		<!-- 专题列表 -->
+		<action name="platformSpecialListAll" class="com.tzmb2c.web.action.PlatformSpecialAction" method="platformSpecialListAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>		
+		<!-- 专题条数 -->
+		<action name="platformSpecialListCount" class="com.tzmb2c.web.action.PlatformSpecialAction" method="platformSpecialListCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>		
+		<!-- 专场活动商品库条数 -->
+		<action name="getActProBucketCount" class="com.tzmb2c.web.action.ProductAction" method="getActProBucketCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>		
+		<!-- 专场活动商品库 -->
+		<action name="getActProBucket" class="com.tzmb2c.web.action.ProductAction" method="getActProBucket">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<!-- 提交新增专题 -->
+		<action name="addPlatformSpecialList" class="com.tzmb2c.web.action.PlatformSpecialAction" method="addPlatformSpecialList">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 编辑 -->
+		<action name="updatePlatformSpecial" class="com.tzmb2c.web.action.PlatformSpecialAction" method="updatePlatformSpecial">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 添加笔记自定义详情 -->
+		<action name="addSpecialTemplatePageDataTarento" class="com.tzmb2c.web.action.PlatformSpecialAction" method="addSpecialTemplatePageDataTarento">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 添加笔记自定义详情 -->
+		<action name="addSpecialTemplatePageDataGeek" class="com.tzmb2c.web.action.PlatformSpecialAction" method="addSpecialTemplatePageDataGeek">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 添加专题自定义详情 -->
+		<action name="addSpecialTemplatePageData" class="com.tzmb2c.web.action.PlatformSpecialAction" method="addSpecialTemplatePageData">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 编辑专题自定义详情 -->
+		<action name="updateSpecialTemplatePageData" class="com.tzmb2c.web.action.PlatformSpecialAction" method="updateSpecialTemplatePageData">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>	
+		
+		<!-- 编辑笔记自定义详情 -->
+		<action name="updateSpecialTemplatePageDataGeek" class="com.tzmb2c.web.action.PlatformSpecialAction" method="updateSpecialTemplatePageDataGeek">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>	
+		<!-- 编辑笔记自定义详情 -->
+		<action name="updateSpecialTemplatePageDataTarento" class="com.tzmb2c.web.action.PlatformSpecialAction" method="updateSpecialTemplatePageDataTarento">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>	
+		<!-- 图片上传 -->
+		<action name="specialImgUpfile" class="com.tzmb2c.web.action.PlatformSpecialAction" method="specialImgUpfile">
+			<result type="json">
+				<param name="root">dataMap</param>
+			</result>
+		</action>	
+		<!-- 删除图片 -->	
+		<action name="delSpecialImgUpfile" class="com.tzmb2c.web.action.PlatformSpecialAction" method="delSpecialImgUpfile">
+			<result type="json">
+				<param name="root">dataMap</param>
+			</result>
+		</action>
+		<!-- 查询商品 -->		
+		<action name="findActProBucket" class="com.tzmb2c.web.action.PlatformSpecialAction" method="findActProBucket">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 查询优惠劵 -->		
+		<action name="findcouponListAll" class="com.tzmb2c.web.action.PlatformSpecialAction" method="findcouponListAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+		<!-- 查询有你喜欢 -->		
+		<action name="getYourFavouritesLable" class="com.tzmb2c.web.action.PlatformSpecialAction" method="getYourFavouritesLable">
+			<result type="json">
+				<param name="root">dataMap</param>
+			</result>
+		</action>			
+	</package>
+</struts>

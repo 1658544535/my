@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="video" extends="default">
+	<!-- 视频列表 -->
+	<action name="video" class="com.tzmb2c.web.action.VideoAction" method="findVideoCount">
+			<result name="success">/page/system/video/videoList.jsp</result>
+			<result name="pass">/page/system/video/videoPassList.jsp</result>
+			<result name="waitEdit">/page/system/video/videoWaitEditList.jsp</result>
+		</action>
+	<action name="videoPass" class="com.tzmb2c.web.action.VideoAction" method="findVideoCount">
+			<result>/page/system/video/videoPassList.jsp</result>
+	</action>
+	<action name="findVideoById" class="com.tzmb2c.web.action.VideoAction" method="findVideoById">
+			<result>/page/system/video/videoSet.jsp</result>
+		</action>
+	<!--跳转指编辑页面-->
+	<action name="updateVideoList" class="com.tzmb2c.web.action.VideoAction" method="updateVideoList">
+			<result>/page/system/video/updateVideoList.jsp</result>
+        </action>	
+    <!--提交编辑-->
+	<action name="updateVideo" class="com.tzmb2c.web.action.VideoAction" method="updateVideo">
+	    </action>
+	<action name="checkVideoAll" class="com.tzmb2c.web.action.VideoAction" method="checkVideoAll">
+		</action>
+	<action name="delVideoAll" class="com.tzmb2c.web.action.VideoAction" method="delVideoAll">
+	    </action>
+	<action name="addVideo" class="com.tzmb2c.web.action.VideoAction" method="addVideo">
+			<result>/page/system/video/addVideo.jsp</result>
+	    </action>
+	<action name="insertVideo" class="com.tzmb2c.web.action.VideoAction" method="insertVideo">
+	    </action>
+	<!-- 设置视频为待编辑模式 -->
+	<action name="setVideoWaitEdit" class="com.tzmb2c.web.action.VideoAction" method="setVideoWaitEdit">
+	    </action>
+	</package>
+	
+	
+	<package name="video-json" extends="json-default">
+	 <action name="findVideoList" class="com.tzmb2c.web.action.VideoAction" method="findVideoList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="findVideoCount" class="com.tzmb2c.web.action.VideoAction" method="findVideoCount2">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+	 <action name="checkVideo" class="com.tzmb2c.web.action.VideoAction" method="checkVideo">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+	 <action name="uncheckVideo" class="com.tzmb2c.web.action.VideoAction" method="uncheckVideo">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+	<action name="delVideo" class="com.tzmb2c.web.action.VideoAction" method="delVideo">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

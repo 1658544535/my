@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="sysRole" extends="default">
+
+		<action name="sysRole" class="com.tzmb2c.web.action.SysRoleAction" method="getSysRoleCount">
+			<result>/page/system/sys/sysRole.jsp</result>
+		</action>
+		
+		<action name="SysRoleDeleteId" class="com.tzmb2c.web.action.SysRoleAction" method="sysRoleDeleteId">
+		
+		</action>
+		
+		<action name="goFindSysRole" class="com.tzmb2c.web.action.SysRoleAction" method="goFindSysRole">
+			<result>/page/system/sys/sysRoleupdate.jsp</result>
+		</action>
+		<action name="updateSysRole" class="com.tzmb2c.web.action.SysRoleAction" method="updateSysRole">
+		</action>
+		<action name="addSysRole" class="com.tzmb2c.web.action.SysRoleAction" method="addSysRole">
+			<result>/page/system/sys/sysRoleAdd.jsp</result>
+		</action>
+		<action name="insertSysRole" class="com.tzmb2c.web.action.SysRoleAction" method="insertSysRole">
+		</action>
+		
+	</package>
+	
+	<package name="SysRoleCount-json" extends="json-default">
+		<!--平台入口-->
+		<action name="getSysRoleCount" class="com.tzmb2c.web.action.SysRoleAction" method="getSysRoleCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+			<action name="sysRoleAllList" class="com.tzmb2c.web.action.SysRoleAction" method="sysRoleAllList">
+			<result type="json">
+				<param name="root">page.result</param>.
+			</result>
+		</action>
+		<action name="deleSysRole" class="com.tzmb2c.web.action.SysRoleAction" method="deleSysRole">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		
+	</package>
+</struts>

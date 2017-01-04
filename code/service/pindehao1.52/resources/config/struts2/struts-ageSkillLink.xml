@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="ageSkillLink" extends="default">
+		<!-- 四级联动列表 -->
+		<action name="ageSkillLinkList" class="com.tzmb2c.web.action.AgeSkillLinkAction"
+			method="ageSkillLinkListCount">
+			<result name="success">/page/system/ageSkillLink/ageSkillLinkList.jsp
+			</result>
+		</action>
+
+		<!-- 删除 -->
+		<action name="delAgeSkillLink" class="com.tzmb2c.web.action.AgeSkillLinkAction"
+			method="delAgeSkillLink">
+		</action>
+
+		<!-- 跳转新增联动 -->
+		<action name="goAddAgeSkillLink" class="com.tzmb2c.web.action.AgeSkillLinkAction"
+			method="goAddAgeSkillLink">
+			<result name="success">/page/system/ageSkillLink/addAgeSkillLink.jsp
+			</result>
+		</action>
+
+		<!-- 新增联动 -->
+		<action name="addAgeSkillLink" class="com.tzmb2c.web.action.AgeSkillLinkAction"
+			method="addAgeSkillLink">
+		</action>
+		
+		<!-- 编辑(跳转) -->
+		<action name="goUpdateAgeSkillLink" class="com.tzmb2c.web.action.AgeSkillLinkAction" method="goUpdateAgeSkillLink">
+			<result name="success">/page/system/ageSkillLink/updateAgeSkillLink.jsp</result>
+		</action>
+		
+		<!-- 编辑 -->
+		<action name="updateAgeSkillLink" class="com.tzmb2c.web.action.AgeSkillLinkAction" method="updateAgeSkillLink">
+		</action>
+
+	</package>
+
+
+	<package name="ageSkillLink-json" extends="json-default">
+
+
+		<!-- 根据父类查找对应类型 -->
+		<action name="getSkillTypes" class="com.tzmb2c.web.action.AgeSkillLinkAction"
+			method="getSkillTypes">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+
+		<!-- 根据能力查询相对应次能力 -->
+		<action name="getSecondSkillTypes" class="com.tzmb2c.web.action.AgeSkillLinkAction"
+			method="getSecondSkillTypes">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+
+		<!-- 根据次能力查询相对应商品类型 -->
+		<action name="getProductTypes" class="com.tzmb2c.web.action.AgeSkillLinkAction"
+			method="getProductTypes">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+
+		<!-- 四级联动列表 -->
+		<action name="ageSkillLinkListAll" class="com.tzmb2c.web.action.AgeSkillLinkAction"
+			method="ageSkillLinkListAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<!-- 四级联动条数 -->
+		<action name="ageSkillLinkListCount" class="com.tzmb2c.web.action.AgeSkillLinkAction"
+			method="ageSkillLinkListCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+	</package>
+</struts>

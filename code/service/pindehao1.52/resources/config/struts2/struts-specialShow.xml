@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="specialShow" extends="default">
+		<!-- 专场管理 -->
+		<action name="specialShowList" class="com.tzmb2c.web.action.SpecialShowAction" method="specialShowListCount">
+			<result name="success">/page/system/special/specialShowList.jsp</result>
+		</action>		
+		<!-- 删除 -->
+		<action name="delSpecialShow" class="com.tzmb2c.web.action.SpecialShowAction" method="delSpecialShow">
+		</action>
+		<!-- 批量删除 -->
+		<action name="delSpecialShowAll" class="com.tzmb2c.web.action.SpecialShowAction" method="delSpecialShowAll">
+		</action>
+		<!-- 编辑(跳转) -->
+		<action name="goUpdateSpecialShow" class="com.tzmb2c.web.action.SpecialShowAction" method="goUpdateSpecialShow">
+			<result name="success">/page/system/special/updateSpecialShowList.jsp</result>
+		</action>
+	    <!-- 编辑 -->
+		<action name="updateSpecialShow" class="com.tzmb2c.web.action.SpecialShowAction" method="updateSpecialShow">
+		</action>
+		<!-- 批量通过审核 -->
+		<action name="checkSpecialShowAll" class="com.tzmb2c.web.action.SpecialShowAction" method="checkSpecialShowAll">
+		</action>
+		<!-- 批量通过审核（产品） -->
+		<action name="checkSpecialShowProductAll" class="com.tzmb2c.web.action.SpecialShowAction" method="checkSpecialShowProductAll">
+		</action>
+		<!-- 通过审核 -->
+		<action name="checkSpecialShow" class="com.tzmb2c.web.action.SpecialShowAction" method="checkSpecialShow">
+		</action>
+		<!-- 取消审核 -->
+		<action name="uncheckSpecialShow" class="com.tzmb2c.web.action.SpecialShowAction" method="uncheckSpecialShow">
+		</action>
+		<!-- 退回修改 -->
+		<action name="modifySpecialShow" class="com.tzmb2c.web.action.SpecialShowAction" method="modifySpecialShow">
+		</action>
+		<!-- （跳转）新增专场 -->
+		<action name="goAddSpecialShowList" class="com.tzmb2c.web.action.SpecialShowAction" method="goAddSpecialShowList">
+			<result name="success">/page/system/special/addSpecialShowList.jsp</result>
+		</action>	
+		<!-- 提交新增专场 -->
+		<action name="addSpecialShowListOk" class="com.tzmb2c.web.action.SpecialShowAction" method="addSpecialShowListOk">			
+		</action>		
+	</package>
+	<package name="specialShow-json" extends="json-default">
+		<!-- 场景列表 -->
+		<action name="specialShowListAll" class="com.tzmb2c.web.action.SpecialShowAction" method="specialShowListAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>		
+		<!-- 场景条数 -->
+		<action name="specialShowListCount" class="com.tzmb2c.web.action.SpecialShowAction" method="specialShowListCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>		
+	</package>
+</struts>

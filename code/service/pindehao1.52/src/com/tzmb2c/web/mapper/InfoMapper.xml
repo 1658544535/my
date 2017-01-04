@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.InfoMapper">
+
+	<!-- 随机查找 -->
+	<select id="getRandomList" resultType="InfoPojo">
+		select 
+		io.id as id,
+		io.status as status,
+		(select name from sys_dict where value=io.status and type="status") as statusName,
+		io.display_order as displayOrder,
+		io.type as type,
+		(select name from sys_dict where value=io.type and type="info_type") as typeName,
+		io.title as title,
+		io.content as content,
+		io.image as image,
+		io.author as author,
+		io.create_by as createBy,
+		io.create_date as createDate,
+		io.update_by as updateBy,
+		io.update_date as updateDate,
+		io.remarks as remarks,
+		io.version as version
+		from info io
+		where io.status = 1 and io.type &lt;&gt;3 
+		order BY RAND() LIMIT 5
+	</select>
+
+	<!-- 插入单条 -->
+	<insert id="addInfo" parameterType="InfoPojo">
+		insert into info
+		(id,status,display_order,type,title,content,image,author,create_by,create_date,update_by,update_date,remarks,version)
+		values
+		(#{id}, #{status},#{displayOrder},
+		#{type},#{title},#{content},#{image},#{author},#{createBy},
+		#{createDate},#{updateBy},#{updateDate},#{version},#{remarks})
+	</insert>
+
+	<!-- 查找单条 -->
+	<select id="findInfoById" resultType="InfoPojo" parameterType="Long">
+		select 
+		io.id as id,
+		io.status as status,
+		(select name from sys_dict where value=io.status and type="status") as statusName,
+		io.display_order as displayOrder,
+		io.type as type,
+		(select name from sys_dict where value=io.type and type="info_type") as typeName,
+		io.title as title,
+		io.content as content,
+		io.image as image,
+		io.author as author,
+		io.create_by as createBy,
+		io.create_date as createDate,
+		io.update_by as updateBy,
+		io.update_date as updateDate,
+		io.remarks as remarks,
+		io.version as version
+		from info io
+		where
+		io.id=#{id}
+	</select>
+
+	<!--更新 单条-->
+	<update id="updateInfo" parameterType="InfoPojo">
+		update info io set
+		id=#{id}, status=#{status},display_order=#{displayOrder},
+		type=#{type},title=#{title},content=#{content},image=#{image},author=#{author},
+		update_by=#{updateBy},update_date=#{updateDate},version=#{version},remarks=#{remarks}
+		where
+		io.id = #{id}
+	</update>
+
+	<!-- 审核单条-->
+	<update id="verifyInfo" parameterType="InfoPojo">
+		update info io set
+		io.status=1
+		where
+		io.id = #{id}
+	</update>
+
+	<!-- 审核全部 -->
+	<update id="checkAllInfoById" parameterType="String">
+		update info io set
+		io.status=1
+		where
+		io.id = #{id}
+	</update>
+
+	<!-- 未审核单条.fu-->
+	<update id="uncheckinfo" parameterType="InfoPojo">
+		update info io set
+		io.status=0
+		where
+		io.id = #{id}
+	</update>
+
+	<!--全部设为未审核 .fu-->
+	<update id="uncheckAllInfoById" parameterType="String">
+		update info io set
+		io.status=0
+		where
+		io.id = #{id}
+	</update>
+
+	<!-- 删除全部 -->
+	<delete id="delAllInfoById" parameterType="String">
+		delete from info
+		where
+		id = #{id}
+	</delete>
+
+	<!-- 删除单个 -->
+	<delete id="delInfo" parameterType="InfoPojo">
+		delete from info
+		where
+		id =
+		#{id} 
+	</delete>
+
+	<!-- 查询所有的记录 -->
+	<select id="infoAllList" resultType="InfoPojo" parameterType="java.util.Map">
+		select 
+		io.id as id,
+		io.status as status,
+		(select name from sys_dict where value=io.status and type="status") as statusName,
+		io.display_order as displayOrder,
+		io.type as type,
+		(select name from sys_dict where value=io.type and type="info_type") as typeName,
+		io.title as title,
+		io.content as content,
+		io.image as image,
+		io.author as author,
+		io.create_by as createBy,
+		io.create_date as createDate,
+		io.update_by as updateBy,
+		io.update_date as updateDate,
+		io.remarks as remarks,
+		io.create_date as create_date,
+		io.version as version
+		from info io
+		where
+		1=1
+		<if test="infoTitle!=null and infoTitle !='' ">
+			and title like concat("%",#{infoTitle},"%" )
+		</if>
+		<if test="infoType !=null and infoType !='' ">
+			and type=#{infoType}
+		</if>
+		<if test="status !=null and status !='' ">
+			and status=#{status}
+		</if>
+		order by create_date desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+		
+	</select>
+
+	<!-- 返回信息记录的数目count -->
+	<select id="infoAllCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from info
+		where 1=1
+		<if test="infoTitle!=null and infoTitle !='' ">
+			and title like concat("%",#{infoTitle},"%" )
+		</if>
+		<if test="status !=null and status !='' ">
+			and status=#{status}
+		</if>
+		<if test="infoType !=null and infoType !='' ">
+			and type=#{infoType}
+		</if>
+	</select>
+	
+	<!-- 前端页面调用 -->
+	<!-- 查询所有的记录 -->
+	<select id="infoPageList" resultType="InfoPojo" parameterType="java.util.Map">
+		select 
+		io.id as id,
+		io.status as status,
+		(select name from sys_dict where value=io.status and type="status") as statusName,
+		io.display_order as displayOrder,
+		io.type as type,
+		(select name from sys_dict where value=io.type and type="info_type") as typeName,
+		io.title as title,
+		io.content as content,
+		io.image as image,
+		io.author as author,
+		io.create_by as createBy,
+		io.create_date as createDate,
+		io.update_by as updateBy,
+		io.update_date as updateDate,
+		io.remarks as remarks,
+		io.version as version
+		from info io
+		where 1=1 and io.status = 1
+		<if test="type != null">
+			and io.type=#{type}
+		</if>
+		<if test="marketTitleKeyWord != null and marketTitleKeyWord !='' ">
+			and io.title like concat("%",#{marketTitleKeyWord},"%" )
+		</if>
+		<if test="tradeTitleKeyWord !=null and tradeTitleKeyWord !='' ">
+			and io.title like concat("%",#{tradeTitleKeyWord},"%" )
+		</if>
+		<if test="tittle !=null and tittle !='' ">
+			and io.title like concat("%",#{tittle},"%" )
+		</if>
+		order by io.create_date desc
+		<if test="size !=null and size !='' ">
+			limit #{size}
+		</if>	
+	</select>
+	<!-- 返回未读消息数目 -->
+	<select id="infoTypeCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from user_message_state
+		where 1=1
+		<if test="is_reader !=null and is_reader !='' ">
+			and is_reader=#{is_reader} 
+		</if>
+		<if test="user_id !=null and user_id !='' ">
+			and user_id=#{user_id} 
+		</if>
+	</select>
+</mapper>

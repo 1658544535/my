@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.ConsumerMapper">
+
+	<select id="getConsumerAll" resultType="consumerPojo">
+		select 
+		t.create_by as createBy,
+		t.create_date as createDate,
+		t.update_by as updateBy,
+		t.update_date as updateDate,
+		t.remarks as remarks,
+		t.version as version,
+		t.id as id,
+		t.corporate_image as corporateImage,
+		t.user_id as userId, t.contact as contact,t.tel as tel,t.phone as
+		phone,t.fax as fax,t.address as address,t.web_site as webSite,t.QQ as
+		QQ, t.email as email,t.company as company ,t.duty as duty,
+		t.groups ,t.platform as platform,
+		t.main_category as mainCategory,t.sales_area as salesArea,
+		t.channel as channel,t.isread
+		as isread,t.status as status
+		from user_consumer t order by
+		t.create_date desc
+	</select>
+
+	<select id="getfindByIdConsumer" parameterType="Long"
+		resultType="consumerPojo">
+		select 
+		t.create_by as createBy,
+		t.create_date as createDate,
+		t.update_by as updateBy,
+		t.update_date as updateDate,
+		t.remarks as remarks,
+		t.corporate_image as corporateImage,
+		t.version as version,
+		t.id as id,
+		t.user_id as userId, t.contact as contact,t.tel as tel,t.phone as
+		phone,t.fax as fax,t.address as address,t.web_site as webSite,t.QQ as
+		QQ, t.email as email,t.company as company ,t.duty as duty,
+		t.groups ,t.platform as platform,
+		t.main_category as mainCategory,t.sales_area as salesArea,
+		t.channel as channel,t.isread
+		as isread,t.status as status,
+		(select name from sys_dict where value=t.status and type = 'status') statusName
+		from user_consumer t
+		where
+		t.id = #{id}
+	</select>
+	<select id="getfindByUserIdConsumer" parameterType="Long"
+		resultType="consumerPojo">
+		select 
+		t.create_by as createBy,
+		t.create_date as createDate,
+		t.update_by as updateBy,
+		t.update_date as updateDate,
+		t.remarks as remarks,
+		t.version as version,
+		t.corporate_image as corporateImage,
+		t.id as id,
+		t.user_id as userId, t.contact as contact,t.tel as tel,t.phone as
+		phone,t.fax as fax,t.address as address,t.web_site as webSite,t.QQ as
+		QQ, t.email as email,t.company as company ,t.duty as duty,
+		t.groups ,t.platform as platform,
+		t.main_category as mainCategory,t.sales_area as salesArea,
+		t.channel as channel,t.isread
+		as isread,t.status as status,
+		(select name from sys_dict where value=t.status and type = 'status') statusName
+		from user_consumer t
+		where
+		t.user_id = #{id}
+	</select>
+	
+	<insert id="insertConsumer" parameterType="consumerPojo">
+		insert into
+		user_consumer(corporate_image,user_id,contact,tel,phone,fax,address,web_site,QQ,email,company,duty,groups,platform,main_category,sales_area,channel,isread,status,create_by,create_date,update_by,update_date,remarks,version)
+		values(#{corporateImage},#{userId},#{contact},#{tel},#{phone},#{fax},#{address},#{webSite},#{QQ},#{email},#{company},#{duty},#{groups},#{platform},#{mainCategory},#{salesArea},#{channel},#{isread},#{status},#{createBy},#{createDate},#{updateBy},#{updateDate},#{remarks},#{version})
+	</insert>
+	
+	<delete id="delCart" parameterType="Long">
+		delete from user_consumer where id = #{id}
+	</delete>
+	
+	<delete id="deleteConsumer" parameterType="Long">
+		delete from user_consumer where user_id = #{id}
+	</delete>
+	
+	<update id="updateConsumer" parameterType="consumerPojo">
+		update user_consumer set
+		update_by = #{updateBy},
+		update_date = #{updateDate},
+		user_id = #{userId},
+		contact = #{contact},
+		tel = #{tel},
+		phone =#{phone},
+		corporate_image =#{corporateImage},
+		fax =#{fax},
+		address = #{address},
+		web_site = #{webSite},
+		QQ =#{QQ},
+		email =#{email},
+		company = #{company},
+		duty =#{duty},
+		groups = #{groups},
+		platform =#{platform},
+		main_category =#{mainCategory},
+		sales_area =#{salesArea},
+		channel =#{channel},
+		isread =#{isread},
+		status =#{status}
+		where id = #{id}
+	</update>
+
+	<update id="checkConsumer" parameterType="Long">
+		update user_consumer
+		set status = 1 where id = #{id}
+	</update>
+
+	<select id="consumerAllCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from user_consumer t left join sys_login a on a.id=t.user_id
+		where 1=1
+		<if test="company!=null and company!=''">
+			and t.company like CONCAT("%",#{company},"%")
+		</if>
+		<if test="address!=null and address!=''">
+			and t.address like CONCAT("%",#{address},"%")
+		</if>
+		<if test="platform!=null and platform!=''">
+			and t.platform like CONCAT("%",#{platform},"%")
+		</if>
+		<if test="mainCategory!=null and mainCategory!=''">
+			and t.main_category like CONCAT("%",#{mainCategory},"%")
+		</if>
+		<if test="salesArea!=null and salesArea!=''">
+			and t.sales_area like CONCAT("%",#{salesArea},"%")
+		</if>
+		<if test="phone!=null and phone!=''">
+			and t.phone like CONCAT("%",#{phone},"%")
+		</if>
+		<if test="QQ!=null and QQ!=''">
+			and t.QQ like CONCAT("%",#{QQ},"%")
+		</if>
+		<if test="loginname!=null and loginname!=''">
+			and a.loginname=#{loginname} 
+		</if>
+	</select>
+
+	<select id="consumerAllList" resultType="consumerPojo"
+		parameterType="java.util.Map">
+		select 
+		t.create_by as createBy,
+		t.create_date as createDate,
+		t.update_by as updateBy,
+		t.update_date as updateDate,
+		t.remarks as remarks,
+		t.version as version,
+		t.id as id,
+		t.user_id as userId, 
+		t.contact as contact,
+		t.tel as tel,
+		t.phone as phone,
+		t.fax as fax,
+		t.corporate_image as corporateImage,
+		t.address as address,
+		t.web_site as webSite,
+		t.QQ as QQ, 
+		t.email as email,
+		t.company as company ,
+		t.duty as duty,
+		t.groups ,
+		t.platform as platform,
+		t.main_category as mainCategory,
+		(select name from sys_dict  where value=t.main_category and type = 'main_category') as mainCategoryName,
+		t.sales_area as salesArea,
+		t.channel as channel,
+		t.isread as isread,
+		t.status as status,
+		a.loginname as loginname,
+		(select name from sys_dict where value=t.groups and type = 'groups') groupsName,
+		(select name from sys_dict where value=t.status and type = 'status') statusName,
+		(select name from sys_login where id=t.user_id ) userName,
+		t.create_date as createDateStr
+		from user_consumer t left join sys_login a on a.id=t.user_id
+		where
+		1=1 
+		<if test="loginname!=null and loginname!=''">
+			and a.loginname=#{loginname} 
+		</if>
+		<if test="company!=null and company!=''">
+			and t.company like CONCAT("%",#{company},"%")
+		</if>
+		<if test="address!=null and address!=''">
+			and t.address like CONCAT("%",#{address},"%")
+		</if>
+		<if test="platform!=null and platform!=''">
+			and t.platform like CONCAT("%",#{platform},"%")
+		</if>
+		<if test="mainCategory!=null and mainCategory!=''">
+			and t.main_category like CONCAT("%",#{mainCategory},"%")
+		</if>
+		<if test="salesArea!=null and salesArea!=''">
+			and t.sales_area like CONCAT("%",#{salesArea},"%")
+		</if>
+		<if test="phone!=null and phone!=''">
+			and t.phone like CONCAT("%",#{phone},"%")
+		</if>
+		<if test="QQ!=null and QQ!=''">
+			and t.QQ like CONCAT("%",#{QQ},"%")
+		</if>
+		<if test="userId!=null and userId!=''">
+			and t.user_id=#{userId}
+		</if>
+		order by t.id desc 
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+
+	</select>
+	
+	<!-- 前台:修改采购商个人信息 -->
+	<update id="updateConsumerWeb" parameterType="consumerPojo">
+		update user_consumer 
+			set
+				update_by = #{updateBy},
+				update_date = #{updateDate},
+				contact = #{contact},
+				tel = #{tel},
+				phone =#{phone},
+				fax =#{fax},
+				address = #{address},
+				corporate_image = #{corporateImage},
+				web_site = #{webSite},
+				QQ =#{QQ},
+				email =#{email},
+				company = #{company},
+				duty =#{duty},
+				groups = #{groups},
+				platform =#{platform},
+				main_category =#{mainCategory},
+				sales_area =#{salesArea},
+				channel =#{channel},
+				isread =#{isread},
+				status =#{status}
+			where user_id = #{userId}
+	</update>
+
+</mapper>

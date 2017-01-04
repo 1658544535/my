@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.FeedbackMapper">
+	
+
+	<!-- 插入单条信息 -->
+	<insert id="feedBackAdd" parameterType="feedBackPojo">
+		insert into
+		feedback(id,type,status,user_id,content,content_en,name,email,area,telephone,
+		create_by,create_date,update_by,update_date,remarks,version)
+		values(#{id},#{type},#{status},#{userId},#{content},#{contentEn},#{name},#{email},#{area},#{telephone},
+		#{createBy},now(),#{updateBy},now(),#{remarks},#{version})
+	</insert>
+	
+	<!--后台获取所有意见反馈-->
+	<select id="getFeedBackAll" resultType="FeedBackPojo">
+		select f.id as id,s.name as name,f.type as type,f.user_id as userId,f.content as content,
+		f.content_en as contentEn,f.create_by as create_by,f.create_date as createDate,
+		f.update_by as update_by,f.update_date as update_date,f.remarks as remarks,
+		f.version as version,f.email as email,f.area as area,
+		f.telephone as telephone from feedback f 
+		left join sys_login s on s.id = f.user_id
+		where 1=1 
+		<if test="feedBackPojo!=null">
+			<if test="feedBackPojo.type != null and feedBackPojo.type != ''">
+				and f.type=#{feedBackPojo.type}
+			</if>
+		</if>
+		<if test="feedBackPojo!=null">
+			<if test="feedBackPojo.name != null and feedBackPojo.name != ''">
+				and s.name like concat("%",#{feedBackPojo.name},"%")
+			</if>
+		</if>
+		order by f.id desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	<!--后台意见反馈分页-->
+	<select id="FeedBackListCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from feedback f 
+		left join sys_login s on s.id = f.user_id
+		where 1=1
+		<if test="feedBackPojo!=null">
+			<if test="feedBackPojo.type != null and feedBackPojo.type != ''">
+				and f.type=#{feedBackPojo.type}
+			</if>
+		</if>
+		<if test="feedBackPojo!=null">
+			<if test="feedBackPojo.name != null and feedBackPojo.name != ''">
+				and s.name like concat("%",#{feedBackPojo.name},"%")
+			</if>
+		</if>
+		
+	</select>
+	<!--根据ID查出对应信息-->
+		<select id="findFeedBackById" resultType="FeedBackPojo" parameterType="Long">
+		select f.id as id,f.status as status,s.name as name,f.type as type,f.user_id as userId,f.content as content,
+		f.content_en as contentEn,f.create_by as create_by,f.create_date as createDate,
+		f.update_by as update_by,f.update_date as update_date,f.remarks as remarks,
+		f.version as version,f.email as email,f.area as area,
+		f.telephone as telephone from feedback f 
+		left join sys_login s on s.id = f.user_id
+		where f.id=#{id}
+		
+	</select>
+	<!--编辑处理结果-->
+	<update id="updateFeedBackOk" parameterType="FeedBackPojo">
+		update feedback set
+		<if test="remarks !=null and remarks !=''">
+		remarks = #{remarks},
+		</if>
+		<if test="status != null">
+		status = #{status}
+		</if>
+		where id = #{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.SysUserRoleMapper">
+ 
+	<!-- <cache/>  -->
+
+	<select id="getSysUserRoleAll" resultType="sysUserRolePojo">
+		select t.id as id,t.role_id as roleId, t.user_id as userId 
+		from sys_user_role t order by t.create_date desc
+	</select>
+	
+	<select id="getfindByIdSysUserRole" parameterType="Long" resultType="sysUserRolePojo" >
+		select t.id as id,t.role_id as roleId, t.user_id as userId 
+		from sys_user_role t where
+		t.id= #{id} 
+	</select>
+	
+	<select id="getSysUserRoleByUid" parameterType="Long" resultType="sysUserRolePojo" >
+		select t.id as id,t.role_id as roleId, t.user_id as userId 
+		from sys_user_role t where
+		t.user_id= #{userId} 
+	</select>
+
+	<insert id="insertSysUserRole" parameterType="sysUserRolePojo">
+		insert into
+		sys_user_role(user_id,role_id)
+		values(#{userId},#{roleId})
+	</insert>
+	
+	<delete id="delSysUserRole" parameterType="Long">
+		delete from sys_user_role where id = #{id}
+	</delete>
+	
+	<delete id="deleteSysUserRole"  parameterType="Long">
+		delete from sys_user_role where id = #{id}
+	</delete>
+	
+	<update id="updateSysUserRole" parameterType="sysUserRolePojo">
+	
+		update sys_user_role set
+		role_id = #{roleId},
+		user_id =#{userId}
+		where id = #{id}
+	</update>
+	
+	<select id="sysUserRoleAllCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from sys_user_role where
+		1=1
+		<if test="name!=null">
+			and name like CONCAT("%",#{name},"%")
+		</if>
+	</select>
+	
+	<select id="sysUserRoleAllList" resultType="sysUserRolePojo"
+		parameterType="java.util.Map">
+
+		select t.id as id,
+		t.role_id as roleId, 
+		t.user_id as userId,
+		(select name from sys_role where id=t.role_id ) roleName,
+		(select name from sys_login where id=t.user_id ) userName  
+		from sys_user_role as t
+		where
+		1=1
+
+		<if test="name!=null">
+			and name like CONCAT("%",#{name},"%")
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+		
+	</select>
+	
+</mapper>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.SysLoginLogMapper">
+	
+	<select id="sysLoginLogAllCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from sys_login_log as t left join sys_login s on t.user_id = s.id
+		where
+		1=1
+		<if test="loginIp!=null  and loginIp != '' ">
+			and s.name like CONCAT("%",#{loginIp},"%")
+		</if>
+		<if test="beganday!=null and beganday !='' ">
+			and UNIX_TIMESTAMP(login_date) >= UNIX_TIMESTAMP(CONCAT(#{beganday},' 00:00:00'))
+		</if>
+		<if test="endday!=null and endday !='' ">
+			and UNIX_TIMESTAMP(CONCAT(#{endday},' 00:00:00')) >= UNIX_TIMESTAMP(login_date)
+		</if>
+	</select>
+	
+	<select id="sysLoginLogAllList" resultType="sysLoginLogPojo"
+		parameterType="java.util.Map">
+		select 
+		t.id as id, 
+		t.user_id as userId, 
+		t.login_ip as loginIp,
+		t.login_date as loginDate,  
+		(select name from sys_login where id=t.user_id ) userName
+		from sys_login_log as t left join sys_login s on t.user_id = s.id
+		where
+		1=1
+		<if test="loginIp!=null  and loginIp != '' ">
+			and s.name like CONCAT("%",#{loginIp},"%")
+		</if>
+		<if test="beganday!=null and beganday !='' ">
+			and UNIX_TIMESTAMP(t.login_date) >= UNIX_TIMESTAMP(CONCAT(#{beganday},' 00:00:00'))
+		</if>
+		<if test="endday!=null and endday !='' ">
+			and UNIX_TIMESTAMP(CONCAT(#{endday},' 00:00:00')) >= UNIX_TIMESTAMP(t.login_date)
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+		
+	</select>
+	
+	
+	<select id="sysLoginLogAllListHot" resultType="sysLoginLogPojo"
+		parameterType="java.util.Map">
+		select 
+		count(t.user_id) as nums,
+		t.user_id as userId, 
+		(select name from sys_login where id=t.user_id ) userName
+		from sys_login_log as t
+		where
+		1=1
+		<if test="beganday!=null and beganday !='' ">
+			and UNIX_TIMESTAMP(login_date) >= UNIX_TIMESTAMP(CONCAT(#{beganday},' 00:00:00'))
+		</if>
+		<if test="endday!=null and endday !='' ">
+			and UNIX_TIMESTAMP(CONCAT(#{endday},' 00:00:00')) >= UNIX_TIMESTAMP(login_date)
+		</if>
+		group by userId		
+		<if test="nums  != null ">
+			having count(t.user_id) &gt;= #{nums}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+		
+	</select>
+</mapper>

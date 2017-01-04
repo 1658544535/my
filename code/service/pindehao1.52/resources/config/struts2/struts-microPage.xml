@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="microPageShow" extends="default">
+		<!-- 跳转微页面列表 -->
+		<action name="microPageList" class="com.tzmb2c.web.action.MicroPageAction" method="microPageListCount">
+			<result name="success">/page/system/microPage/microPageList.jsp</result>
+		</action>		
+		<!-- 跳转微页面编辑 -->
+		<action name="goUpdateMicroPage" class="com.tzmb2c.web.action.MicroPageAction" method="goUpdateMicroPage">
+			<result name="success">/page/system/microPage/updateMicroPage.jsp</result>
+		</action>		
+		<!-- 跳转微页面编辑 -->
+		<action name="goAddMicroPage" class="com.tzmb2c.web.action.MicroPageAction" method="goAddMicroPage">
+			<result name="success">/page/system/microPage/addMicroPage.jsp</result>
+		</action>		
+		<!-- 删除微页面 -->
+		<action name="delMicroPage" class="com.tzmb2c.web.action.MicroPageAction" method="delMicroPage">
+		</action>		
+	</package>
+	<package name="microPage-json" extends="json-default">
+		<!-- 微页面列表 -->
+		<action name="microPageListAll" class="com.tzmb2c.web.action.MicroPageAction" method="microPageListAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>		
+		<!-- 微页面条数 -->
+		<action name="microPageListCount" class="com.tzmb2c.web.action.MicroPageAction" method="microPageListCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+		<!-- 微页面新增-->
+		<action name="addMicroPage" class="com.tzmb2c.web.action.MicroPageAction" method="addMicroPage">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>	
+		<!-- 微页面编辑-->
+		<action name="updateMicroPage" class="com.tzmb2c.web.action.MicroPageAction" method="updateMicroPage">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>	
+		<!-- 微页面自定义详情添加-->
+		<action name="addMicroPageTemplatePageData" class="com.tzmb2c.web.action.MicroPageAction" method="addMicroPageTemplatePageData">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>	
+		<!-- 微页面自定义详情编辑-->
+		<action name="updateMicroPageTemplatePageData" class="com.tzmb2c.web.action.MicroPageAction" method="updateMicroPageTemplatePageData">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 图片上传 -->
+		<action name="microPageImgUpfile" class="com.tzmb2c.web.action.MicroPageAction" method="microPageImgUpfile">
+			<result type="json">
+				<param name="root">dataMap</param>
+			</result>
+		</action>		
+	</package>
+</struts>

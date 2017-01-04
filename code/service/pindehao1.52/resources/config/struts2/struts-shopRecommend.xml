@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+	<package name="shopRecommend" extends="default">
+	    <action name="goShopRecommend" class="com.tzmb2c.web.action.ShopRecommendAction"
+			method="goShopRecommend">
+			<result name="success">/page/system/shopRecommend/shopRecommend.jsp</result>
+		</action>
+		<!--添加店铺推荐-->
+		<action name="selectUserMakerShop" class="com.tzmb2c.web.action.ShopRecommendAction"
+			method="selectUserMakerShop">
+		</action>
+		 <!-- 更新 -->
+		<action name="goUpdateShopRecommend" class="com.tzmb2c.web.action.ShopRecommendAction"
+			method="goUpdateShopRecommend">
+			<result>/page/system/shopRecommend/updateShopRecommend.jsp</result>
+		</action>
+
+		<!-- 更新 -->
+		<action name="updateShopRecommend" class="com.tzmb2c.web.action.ShopRecommendAction"
+			method="updateShopRecommend">
+		</action>
+	</package>
+	<package name="shopRecommend-json" extends="json-default">
+		<!--平台入口 -->
+		<action name="getShopRecommendCount" class="com.tzmb2c.web.action.ShopRecommendAction"
+			method="goShopRecommend">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+
+		<action name="shopRecommendAllList" class="com.tzmb2c.web.action.ShopRecommendAction"
+			method="shopRecommendAllList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="delShopRecommend" class="com.tzmb2c.web.action.ShopRecommendAction"
+			method="delShopRecommend">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+	</package>
+
+</struts>

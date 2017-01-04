@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="manufacturer" extends="default">
+
+		<!-- 供应商个人信息 -->
+		<action name="manufacturer" class="com.tzmb2c.web.action.ManufacturerAction" method="getManufacturerCount">
+			<result>/page/system/user/manufacturer.jsp</result>
+		</action>
+		
+		<action name="manufacturerChecks" class="com.tzmb2c.web.action.ManufacturerAction" method="manufacturerChecks">
+		
+		</action>
+		
+		<action name="goFindManufacturer" class="com.tzmb2c.web.action.ManufacturerAction" method="goFindManufacturer">
+			<result>/page/system/user/manufacturerupdate.jsp</result>
+		</action>
+		<action name="updateManufacturer" class="com.tzmb2c.web.action.ManufacturerAction" method="updateManufacturer">
+		</action>
+		<action name="delManufacturer" class="com.tzmb2c.web.action.ManufacturerAction" method="delManufacturer">
+		</action>
+		<action name="addManufacturerInfoAndShop" class="com.tzmb2c.web.action.ManufacturerAction" method="addManufacturerInfoAndShop">
+			<result>/page/system/user/manufacturerShopAdd.jsp</result>
+		</action>
+		<action name="insertManufacturerInfoAndShop" class="com.tzmb2c.web.action.ManufacturerAction" method="insertManufacturerInfoAndShop">
+		</action>
+	</package>
+	
+	<package name="manufacturer-json" extends="json-default">
+		<action name="checkManufacturer" class="com.tzmb2c.web.action.ManufacturerAction" method="checkManufacturer">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		<!--平台入口-->
+		<action name="getManufacturerCount" class="com.tzmb2c.web.action.ManufacturerAction" method="getManufacturerCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+			<action name="manufacturerAllList" class="com.tzmb2c.web.action.ManufacturerAction" method="manufacturerAllList">
+			<result type="json">
+				<param name="root">page.result</param>.
+			</result>
+		</action>
+	</package>
+</struts>

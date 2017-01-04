@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tzmb2c.web.mapper.LabelMapper">
+<select id="findLabelList" resultType="LabelPojo" parameterType="java.util.Map">
+		select
+			l.id          as id,
+		    l.name        as name
+        from label_bucket l 
+	    where 1=1
+	    and is_delete = 0
+	    <if test="name != null and name != '' ">
+			and l.name like concat("%",#{name},"%")
+		</if>
+        order by l.id desc 
+		<if test="pageNo != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+</select>
+
+<select id="findLabelCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from label_bucket l 
+		where 1=1
+		and is_delete = 0
+		<if test="name != null and name != '' ">
+			and l.name like concat("%",#{name},"%")
+		</if>
+		<if test="names != null and names != '' ">
+			and l.name = #{names}
+		</if>
+</select>
+<!-- 查找单条(id) -->
+<select id="findLabelById" resultType="LabelPojo" parameterType="Long">
+		select
+		    l.id          as id,
+		    l.name        as name
+        from label_bucket l
+		where
+		l.id=#{id}
+</select>
+<!--加入某条-->
+<insert id="insertLabel" parameterType="LabelPojo">
+		insert into label_bucket  (name,is_delete)
+		values(#{name},0)
+</insert>
+<!-- 逻辑删除单条(id) -->
+<update id="delLabel" parameterType="Long">
+		update  label_bucket set is_delete = 1 where id = #{id}
+</update>
+<!-- 审核单条(id) -->
+<update id="checkLabel" parameterType="Long">
+		update label_bucket  set
+		status = 1
+		where 
+		id = #{id}
+<!-- 取审单条(id) -->
+</update>
+<update id="uncheckLabel" parameterType="Long">
+		update label_bucket b set
+		status = 0
+		where 
+		id = #{id}
+</update>
+<!--编辑单条-->
+<update id="updateLabel" parameterType="LabelPojo">
+		update label_bucket set
+		<if test="name != null and name !=''">
+			name = #{name}
+		</if>
+		where
+		id=#{id}
+</update>
+</mapper>

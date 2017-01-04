@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="special" extends="default">
+		<!-- 进入列表页面 -->
+		<action name="goSpecial" class="com.tzmb2c.web.action.SpecialAction" method="goSpecial">
+			<result name="success">/page/system/specialModule/specialList.jsp</result>
+		</action>
+		<!-- 新增 -->
+		<action name="goAddSpecial" class="com.tzmb2c.web.action.SpecialAction" method="goAddSpecial">
+		    <result name="success">/page/system/specialModule/addSpecial.jsp</result>
+		</action>
+		<!-- 新增提交 -->
+		<action name="addSpecial" class="com.tzmb2c.web.action.SpecialAction" method="add">
+		</action>		
+		<!-- 编辑页面 -->
+		<action name="goEditSpecial" class="com.tzmb2c.web.action.SpecialAction" method="goEditSpecial">
+			<result name="success">/page/system/specialModule/updateSpecial.jsp</result>
+		</action>
+		<!-- 编辑提交 -->
+		<action name="updateSpecial" class="com.tzmb2c.web.action.SpecialAction" method="update">
+		</action>
+	</package>
+	<package name="special-json" extends="json-default">
+		<!-- 内容 -->
+		<action name="specialList" class="com.tzmb2c.web.action.SpecialAction" method="specialList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="specialCnt" class="com.tzmb2c.web.action.SpecialAction" method="goSpecial">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+		<!-- 根据ID删除 -->
+		<action name="delSpecial" class="com.tzmb2c.web.action.SpecialAction" method="delete">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+		<!-- 删除选中 -->
+		<action name="delSpecialAll" class="com.tzmb2c.web.action.SpecialAction" method="deleteAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 通过审核 -->
+		<action name="checkSpecial" class="com.tzmb2c.web.action.SpecialAction" method="check">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 取消审核 -->
+		<action name="uncheckSpecial" class="com.tzmb2c.web.action.SpecialAction" method="uncheck">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中通过审核 -->
+		<action name="checkSpecialAll" class="com.tzmb2c.web.action.SpecialAction" method="checkAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中取消审核 -->
+		<action name="uncheckSpecialAll" class="com.tzmb2c.web.action.SpecialAction" method="uncheckAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+	</package>
+</struts>

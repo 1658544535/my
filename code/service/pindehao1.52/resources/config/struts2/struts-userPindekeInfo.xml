@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="userPindekeInfo" extends="default">
+		<!-- 进入列表页面 -->
+		<action name="goUserPindekeInfo" class="com.tzmb2c.web.action.UserPindekeInfoAction" method="goUserPindekeInfo">
+			<result name="success">/page/system/userPindekeInfo/userPindekeInfoList.jsp</result>
+		</action>
+		<!-- 新增 -->
+		<action name="goAddUserPindekeInfo" class="com.tzmb2c.web.action.UserPindekeInfoAction" method="goAddUserPindekeInfo">
+		    <result name="success">/page/system/userPindekeInfo/addUserPindekeInfo.jsp</result>
+		</action>
+		<!-- 新增提交 -->
+		<action name="addUserPindekeInfo" class="com.tzmb2c.web.action.UserPindekeInfoAction" method="add">
+		</action>		
+		<!-- 查看页面 -->
+		<action name="goCheckUserPindekeInfo" class="com.tzmb2c.web.action.UserPindekeInfoAction" method="goCheckUserPindekeInfo">
+			<result name="success">/page/system/userPindekeInfo/checkUserPindekeInfo.jsp</result>
+		</action>
+		<!-- 编辑页面 -->
+		<action name="goUpdateUserPindekeInfo" class="com.tzmb2c.web.action.UserPindekeInfoAction" method="goCheckUserPindekeInfo">
+			<result name="success">/page/system/userPindekeInfo/updateUserPindekeInfo.jsp</result>
+		</action>
+		<!-- 编辑提交 -->
+		<action name="updateUserPindekeInfo" class="com.tzmb2c.web.action.UserPindekeInfoAction" method="update">
+		</action>
+	</package>
+	<package name="userPindekeInfo-json" extends="json-default">
+		<!-- 内容 -->
+		<action name="userPindekeInfoList" class="com.tzmb2c.web.action.UserPindekeInfoAction" method="userPindekeInfoList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="userPindekeInfoCnt" class="com.tzmb2c.web.action.UserPindekeInfoAction" method="userPindekeInfoRowCnt">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+		<!-- 根据ID删除 -->
+		<action name="delUserPindekeInfo" class="com.tzmb2c.web.action.UserPindekeInfoAction" method="delete">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+		<!-- 删除选中 -->
+		<action name="delUserPindekeInfoAll" class="com.tzmb2c.web.action.UserPindekeInfoAction" method="deleteAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 通过审核 -->
+		<action name="checkUserPindekeInfo" class="com.tzmb2c.web.action.UserPindekeInfoAction" method="check">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 取消审核 -->
+		<action name="uncheckUserPindekeInfo" class="com.tzmb2c.web.action.UserPindekeInfoAction" method="uncheck">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="goUserPindekeInfoReturnMsg" class="com.tzmb2c.web.action.UserPindekeInfoAction" method="UserPindekeInfoReturnMsg">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 冻结 -->
+		<action name="frozenUserPindekeInfo" class="com.tzmb2c.web.action.UserPindekeInfoAction" method="frozen">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中通过审核 -->
+		<action name="checkUserPindekeInfoAll" class="com.tzmb2c.web.action.UserPindekeInfoAction" method="checkAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中取消审核 -->
+		<action name="uncheckUserPindekeInfoAll" class="com.tzmb2c.web.action.UserPindekeInfoAction" method="uncheckAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+	</package>
+</struts>

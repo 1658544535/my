@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="agency" extends="default">
+	
+		<action name="agency" class="com.tzmb2c.web.action.AgencyAction" method="agencyCount">
+			<result name="success">/page/system/user/agency.jsp</result>
+		</action>
+		<action name="goFindAgency" class="com.tzmb2c.web.action.AgencyAction" method="goFindAgency">
+			<result>/page/system/user/agencyupdate.jsp</result>
+		</action>
+		
+		<action name="updateAgency" class="com.tzmb2c.web.action.AgencyAction" method="updateAgency">
+		</action>
+	
+		<action name="delAgency" class="com.tzmb2c.web.action.AgencyAction" method="delAgency">
+		</action>
+		
+		<action name="agencyChecks" class="com.tzmb2c.web.action.AgencyAction" method="agencyChecks">
+		
+		</action>
+		
+		<action name="agencyApplication" class="com.tzmb2c.web.action.AgencyApplyAction" method="agencyApplyCount">
+			<result name="success">/page/system/user/agencyApply.jsp</result>
+		</action>
+		
+		<action name="delAgencyApply" class="com.tzmb2c.web.action.AgencyApplyAction" method="delAgencyApply">
+		</action>
+		
+		<action name="checkAgencyApply" class="com.tzmb2c.web.action.AgencyApplyAction" method="checkAgencyApply">
+			
+		</action>
+		
+		<action name="uncheckAgencyApply" class="com.tzmb2c.web.action.AgencyApplyAction" method="uncheckAgencyApply">
+			
+		</action>
+		
+		<action name="AgencyApplyDeleteAll" class="com.tzmb2c.web.action.AgencyApplyAction" method="AgencyApplyDeleteAll">
+			
+		</action>
+		
+		<action name="AgencyApplyCheckAll" class="com.tzmb2c.web.action.AgencyApplyAction" method="AgencyApplyCheckAll">
+			
+		</action>
+		
+		<action name="AgencyApplyAdd" class="com.tzmb2c.web.action.AgencyApplyAction" method="AgencyApplyAdd">
+			<result name="success">/page/system/user/agencyApplyAdd.jsp</result>
+		</action>
+		
+		<action name="AgencyApplyAddOk" class="com.tzmb2c.web.action.AgencyApplyAction" method="AgencyApplyAddOk">
+			
+		</action>
+		
+		<action name="updateAgencyApply" class="com.tzmb2c.web.action.AgencyApplyAction" method="updateAgencyApply">
+			<result name="success">/page/system/user/agencyApplyAdd.jsp</result>
+		</action>
+		
+		<action name="updateAgencyApplyOk" class="com.tzmb2c.web.action.AgencyApplyAction" method="updateAgencyApplyOk">
+			
+		</action>
+		<action name="agencyPushOrder" class="com.tzmb2c.web.action.AgencyPushAction" method="goFindPushCount">
+			<result>/page/system/user/agencypushorder.jsp</result>
+		</action>
+		<action name="goFindAgencyCollect" class="com.tzmb2c.web.action.AgencyAction" method="agencyCollectCount">
+			<result>/page/system/user/agencyProductList.jsp</result>
+		</action>
+		
+		<action name="delAgencyCollectAll" class="com.tzmb2c.web.action.AgencyAction" method="delAgencyCollectAll">
+		</action>
+		
+		<action name="addAgencyCollect" class="com.tzmb2c.web.action.AgencyAction" method="addAgencyCollect">
+			<result name="success">/page/system/user/agencyCollectAdd.jsp</result>
+		</action>
+		
+		<action name="agencyCollectAddOne" class="com.tzmb2c.web.action.AgencyAction" method="agencyCollectAdd">
+		</action>
+		
+		<action name="agencyCollectAddAll" class="com.tzmb2c.web.action.AgencyAction" method="agencyCollectAddAll">
+		</action>
+		
+		
+	</package>
+	
+	<package name="agency-json" extends="json-default">
+		<action name="agencyAllList" class="com.tzmb2c.web.action.AgencyAction"
+			method="agencyAllList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="agencyCount" class="com.tzmb2c.web.action.AgencyAction" method="agencyCount">
+				<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		<action name="checkAgency" class="com.tzmb2c.web.action.AgencyAction" method="checkAgency">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- <action name="checkAgencyApply" class="com.tzmb2c.web.action.AgencyApplyAction" method="checkAgencyApply">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		
+		<action name="uncheckAgencyApply" class="com.tzmb2c.web.action.AgencyApplyAction" method="uncheckAgencyApply">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action> -->
+		
+		<action name="agencyApplyAllList" class="com.tzmb2c.web.action.AgencyApplyAction"
+			method="agencyApplyAllList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<action name="validAgencyApplyAdd" class="com.tzmb2c.web.action.AgencyApplyAction"
+			method="validAgencyApplyAdd">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<action name="goFindPushOrder" class="com.tzmb2c.web.action.AgencyPushAction" method="goFindPushOrder">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="goFindPushCount" class="com.tzmb2c.web.action.AgencyPushAction" method="goFindPushCount">
+				<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		<action name="agencyCollectList" class="com.tzmb2c.web.action.AgencyAction" method="agencyCollectList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="agencyCollectCount" class="com.tzmb2c.web.action.AgencyAction" method="agencyCollectCount">
+				<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		<action name="delAgencyCollect" class="com.tzmb2c.web.action.AgencyAction" method="delAgencyCollect">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		<action name="updAgencyCollectStock" class="com.tzmb2c.web.action.AgencyAction" method="updAgencyCollectStock">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 根据条件查找对应产品 -->
+		<action name="agencyCollectAddManage" class="com.tzmb2c.web.action.AgencyAction"
+			method="agencyCollectAddManage">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<!-- 根据条件查找对应产品 -->
+		<action name="addAgencyCollectCount" class="com.tzmb2c.web.action.AgencyAction"
+			method="addAgencyCollect">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+	</package>
+</struts>

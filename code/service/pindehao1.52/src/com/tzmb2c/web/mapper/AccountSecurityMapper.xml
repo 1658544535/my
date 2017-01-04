@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.AccountSecurityMapper">
+   
+	<!-- 审核 -->
+	<update id="verifySecurityQuesion" parameterType="AccountSecurityPojo">
+		update
+		user_quesion uq
+		set
+		uq.status=1
+		where
+		uq.user_id = #{userId}
+	</update>
+
+	<!-- 审核全部 -->
+	<update id="checkAllQuesionById" parameterType="String">
+		update
+		user_quesion uq set
+		uq.status=1
+		where
+		uq.user_id = #{userId}
+	</update>
+
+	<!-- 删除全部 -->
+	<delete id="delAllQuesionById" parameterType="String">
+		delete from
+		user_quesion
+		where
+		user_id = #{userId}
+	</delete>
+
+	<!-- 删除单个 -->
+	<delete id="delQuesion" parameterType="AccountSecurityPojo">
+		delete from user_quesion
+		where
+		user_id =
+		#{userId}
+	</delete>
+
+	<!-- 查询所有的记录 -->
+	<select id="securityQuesionAllList" resultType="AccountSecurityPojo"
+		parameterType="java.util.Map">
+		select user_id as userId,
+		uq.quesion as quesion,
+		uq.answer as answer,
+		uq.status as status,
+		(select name from sys_dict where value=uq.status and type="status") as statusName,
+		uq.create_by as createBy,
+		uq.create_date as createDate,
+		uq.update_by as updateBy,
+		uq.update_date as updateDate,
+		uq.remarks as remarks,
+		uq.version as version,
+		sl.name as userName
+		from user_quesion uq left join sys_login sl on uq.user_id = sl.id
+		where
+		1=1
+		<if test="type == 1">
+			and uq.type=1
+		</if>
+		<if test="type == 2">
+			and uq.type=2
+		</if>
+		<if test="userId!=null and userId !='' ">
+			and uq.user_id like concat("%",#{userId},"%" )
+		</if>
+		<if test="quesionKeyWord!=null and quesionKeyWord !='' ">
+			and uq.quesion like concat("%",#{quesionKeyWord},"%" )
+		</if>
+		<if test="userName!=null and userName !='' ">
+			and sl.name like concat("%",#{userName},"%" )
+		</if>
+		<if test="quesionStatus !=null">
+			and uq.status=#{quesionStatus}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+
+	<!-- 返回信息记录的数目count -->
+	<select id="securityQuesionAllCount" resultType="int"
+		parameterType="java.util.Map">
+		select count(uq.user_id)
+		from user_quesion uq left join sys_login sl on uq.user_id = sl.id 
+		where 1=1
+		<if test="type == 1">
+			and uq.type=1
+		</if>
+		<if test="type == 2">
+			and uq.type=2
+		</if>
+		<if test="userId!=null and userId !='' ">
+			and uq.user_id like concat("%",#{userId},"%" )
+		</if>
+		<if test="quesionKeyWord!=null and quesionKeyWord !='' ">
+			and uq.quesion like concat("%",#{quesionKeyWord},"%" )
+		</if>
+		<if test="userName!=null and userName !='' ">
+			and sl.name like concat("%",#{userName},"%" )
+		</if>
+		<if test="quesionStatus !=null">
+			and uq.status=#{quesionStatus}
+		</if>
+	</select>
+	
+	<!-- 前端页面调用 -->
+	<!-- 查询所有的记录 -->
+	<select id="securityQuesionListWeb" resultType="AccountSecurityPojo"
+		parameterType="java.util.Map">
+		select user_id as userId,
+		uq.quesion as quesion,
+		uq.answer as answer,
+		uq.status as status,
+		(select name from sys_dict where value=uq.status and type="status") as statusName,
+		uq.create_by as createBy,
+		uq.create_date as createDate,
+		uq.update_by as updateBy,
+		uq.update_date as updateDate,
+		uq.remarks as remarks,
+		uq.version as version,
+		sl.name as userName
+		from user_quesion uq left join sys_login sl on uq.user_id = sl.id
+		where
+		1=1
+		<if test="type == 1">
+			and uq.type=1
+		</if>
+		<if test="type == 2">
+			and uq.type=2
+		</if>
+	</select>
+	
+	<!-- 批量插入-->
+	<insert id="insertUserQuestion" parameterType="java.util.List">  
+	    insert into user_quesion (user_id,type,quesion,answer,status,create_by,create_date,version)   
+	    values   
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	        (
+	         #{item.userId}, 
+	         #{item.type}, 
+	         #{item.quesion}, 
+	         #{item.answer}, 
+	         #{item.status}, 
+	         #{item.createBy},
+	         #{item.createDate}, 
+	         #{item.version} 
+	        )
+	    </foreach>  
+	</insert> 
+	<!-- 查询所有的记录 -->
+	<select id="securityQuesionbyUserId" resultType="AccountSecurityPojo"
+		parameterType="java.util.Map">
+		select * from user_quesion where user_id=#{userId}
+	</select>
+</mapper>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.SkuAttributeMapper">
+
+    <select id="getSkuAttributeByAttribute" parameterType="java.util.Map" resultType="skuAttributePojo">
+		select 
+		t.id as id, 
+		t.attribute as attribute, 
+		t.value as value ,
+		t.image as image, 
+		t.sorting as sorting,
+		t.remarks as remarks,
+		t.status as status,
+		(select name from sys_dict where value=t.status and type = 'sys_dict_status') statusName
+		<if test="productId!=null and productId!=''">
+		from (select distinct sku_color_id  as skuColorId,product_id as productId from product_sku_link where product_id=#{productId})p
+    	left join sku_attribute t on p.skuColorId =t.id 
+		</if>
+		<if test="productId1!=null and productId1!=''">
+		from(select distinct sku_format_id  as skuFomatId,product_id as productId from product_sku_link where product_id=#{productId1})l    
+        left join sku_attribute t on l.skuFomatId =t.id 
+		</if>
+		where
+		t.attribute = #{attribute} 
+		and t.status=1
+		order by t.sorting
+    </select>
+    <insert id="insertSkuAttribute" parameterType="skuAttributePojo" useGeneratedKeys="true" keyProperty="id">
+       insert into sku_attribute (attribute,value,image,sorting,status,create_by,create_date,update_by,update_date,remarks,version,product_id,dict_value)
+       values(#{attribute},#{value},#{image},#{sorting},#{status},#{createBy},now(),#{updateBy},now(),#{remarks},#{version},#{productId},#{dictValue}) 
+        <selectKey keyProperty="id" resultType="Long">
+            select LAST_INSERT_ID()
+        </selectKey>
+    </insert>	
+	
+    <delete id="deleSkuAttribute" parameterType="Long">
+		delete from sku_attribute where 
+	    id=#{id}
+	</delete>
+    <select id="getSkuAttributeById" parameterType="Long" resultType="skuAttributePojo">
+		select 
+		t.id as id, 
+		t.attribute as attribute, 
+		t.value as value ,
+		t.image as image, 
+		t.sorting as sorting,
+		t.remarks as remarks,
+		t.status as status,
+		(select name from sys_dict where value=t.status and type = 'sys_dict_status') statusName
+		from sku_attribute t where
+		t.id = #{id} 
+		order by t.sorting
+	</select>
+
+	<update id="skuAttributeUpdateById" parameterType="skuAttributePojo" >
+		update sku_attribute set
+		<if test="value != null and value != ''">
+		value=#{value},
+		</if>
+		<if test="image != null and image != ''">
+		image=#{image}, 
+		</if>
+		<if test="sorting != null">
+		sorting=#{sorting},
+		</if>
+		<if test="status != null">
+		status=#{status},
+		</if>
+		update_date=now()
+		where
+		id = #{id} 
+	</update>
+	
+	 <select id="getSkuAttribute" parameterType="java.util.Map" resultType="skuAttributePojo">
+		select 
+		t.id as id, 
+		t.attribute as attribute, 
+		t.value as value,
+		t.image as image, 
+		t.sorting as sorting,
+		t.remarks as remarks,
+		t.status as status,
+		t.product_id as productId,
+		(select name from sys_dict where value=t.status and type = 'sys_dict_status') statusName
+		from sku_attribute t where
+		t.product_id = #{productId} 
+		<if test="value != null and value != ''">
+		and t.value = #{value}
+		</if>
+		<if test="attribute != null and attribute != ''">
+		and t.attribute = #{attribute}
+		</if>
+		<if test="dictValue != null and dictValue != ''">
+		and t.dict_value = #{dictValue}
+		</if>
+		order by t.sorting
+	</select>		
+</mapper>

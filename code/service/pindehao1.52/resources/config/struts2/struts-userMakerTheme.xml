@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="userMakerTheme" extends="default">
+		<!-- 任务专题 -->
+		<action name="userMakerThemeList" class="com.tzmb2c.web.action.UserMakerThemeAction" method="userMakerThemeListCount">
+			<result name="success">/page/system/userMarkTheme/userMarkThemeList.jsp</result>
+		</action>
+		
+		<!-- 状态修改 -->
+		<action name="updateUserMakerThemeById" class="com.tzmb2c.web.action.UserMakerThemeAction" method="updateUserMakerThemeById">
+		</action>
+		
+		<!-- 编辑(跳转) -->
+		<action name="goUpdateUserMakerTheme" class="com.tzmb2c.web.action.UserMakerThemeAction" method="goUpdateUserMakerTheme">
+			<result name="success">/page/system/userMarkTheme/updateUserMarkTheme.jsp</result>
+		</action>
+		
+	    <!-- 编辑 -->
+		<action name="updateUserMakerTheme" class="com.tzmb2c.web.action.UserMakerThemeAction" method="updateUserMakerTheme">
+		</action>
+		<!-- 设置是否上首页 -->
+		<action name="setUMTIsHomePage" class="com.tzmb2c.web.action.UserMakerThemeAction" method="setUMTIsHomePage">
+		</action>
+	    <!-- 跳转专题内容编辑-->
+		<action name="goUpdateUserMakerThemeContent" class="com.tzmb2c.web.action.UserMakerThemeAction" method="goUpdateUserMakerThemeContent">
+			<result name="newTheme">/page/system/userMarkTheme/updateUserMakerThemeContent.jsp</result>
+			<result name="oldTheme">/page/system/userMarkTheme/updateUserMakerThemeContent2.jsp</result>
+		</action>
+	</package>
+	<package name="userMakerTheme-json" extends="json-default">
+		<!-- 专题列表 -->
+		<action name="userMakerThemeListAll" class="com.tzmb2c.web.action.UserMakerThemeAction" method="userMakerThemeListAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>		
+		<!-- 专题条数 -->
+		<action name="userMakerThemeListCount" class="com.tzmb2c.web.action.UserMakerThemeAction" method="userMakerThemeListCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		<!-- 修改自定义内容-->
+		<action name="updateMakerThemeTemplatePageData" class="com.tzmb2c.web.action.UserMakerThemeAction" method="updateMakerThemeTemplatePageData">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 图片上传 -->
+		<action name="themeImgUpfile" class="com.tzmb2c.web.action.UserMakerThemeAction" method="themeImgUpfile">
+			<result type="json">
+				<param name="root">dataMap</param>
+			</result>
+		</action>			
+	</package>
+</struts>

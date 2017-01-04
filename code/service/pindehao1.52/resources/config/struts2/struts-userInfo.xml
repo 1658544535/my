@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="userInfo" extends="default">
+
+		<!-- 供应商个人信息 -->
+		<action name="userInfo" class="com.tzmb2c.web.action.UserInfoAction" method="getUserInfoCount">
+			<result>/page/system/user/userInfo.jsp</result>
+		</action>
+		
+		<action name="userInfoChecks" class="com.tzmb2c.web.action.UserInfoAction" method="userInfoChecks">
+		
+		</action>
+		
+		<action name="goFindUserInfo" class="com.tzmb2c.web.action.UserInfoAction" method="goFindUserInfo">
+			<result>/page/system/user/userInfoupdate.jsp</result>
+		</action>
+		<action name="updateUserInfo" class="com.tzmb2c.web.action.UserInfoAction" method="updateUserInfo">
+		</action>
+		<action name="delUserInfo" class="com.tzmb2c.web.action.UserInfoAction" method="delUserInfo">
+		</action>
+		<action name="jinwanhao" class="com.tzmb2c.web.action.UserInfoAction" method="getJinWanHaoCount">
+			<result>/page/system/user/jinwanhao.jsp</result>
+		</action>
+	</package>
+	<package name="UserInfo-json" extends="json-default">
+		<!--平台入口-->
+		<action name="getUserInfoCount" class="com.tzmb2c.web.action.UserInfoAction" method="getUserInfoCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+			<action name="userInfoAllList" class="com.tzmb2c.web.action.UserInfoAction" method="userInfoAllList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="checkUserInfo" class="com.tzmb2c.web.action.UserInfoAction" method="checkUserInfo">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+				<action name="getJinWanHaoCount" class="com.tzmb2c.web.action.UserInfoAction" method="getJinWanHaoCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+			<action name="jinWanHaoAllList" class="com.tzmb2c.web.action.UserInfoAction" method="jinWanHaoAllList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+	</package>
+</struts>

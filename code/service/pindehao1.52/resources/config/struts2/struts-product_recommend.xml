@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="productRecommend" extends="default">
+		<!-- 每日上新/销量排行-页面（全部）  -->
+		<action name="goNewDaily" class="com.tzmb2c.web.action.ProductRecommendAction" method="goNewDaily">
+			<result name="success">/page/system/productRecommend/newDaily.jsp</result>
+		</action>	
+		<!-- 每日上新/销量排行-商品列表添加页面 -->
+		<action name="goNewDailyAdd" class="com.tzmb2c.web.action.ProductAction" method="getActProBucketCount">
+			<result>/page/system/productRecommend/newDailyAdd.jsp</result>
+		</action>
+		<!-- 每日上新/销量排行-商品列表添加 -->
+		<action name="doNewDailyAdd" class="com.tzmb2c.web.action.ProductRecommendAction" method="doNewDailyAdd">
+		</action>
+	</package>
+	<package name="productRecommend-json" extends="json-default">
+		<!-- 条数 -->
+		<action name="goNewDailyCount" class="com.tzmb2c.web.action.ProductRecommendAction" method="goNewDaily">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>		
+		<!-- 列表 -->
+		<action name="goNewDailyList" class="com.tzmb2c.web.action.ProductRecommendAction" method="goNewDailyList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 根据ID删除记录  -->
+		<action name="delNewDailyOne" class="com.tzmb2c.web.action.ProductRecommendAction" method="delNewDailyOne">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 每日上新-修改序号 -->
+		<action name="doNewDailyUpdateSorting" class="com.tzmb2c.web.action.ProductRecommendAction" method="doNewDailyUpdateSorting">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

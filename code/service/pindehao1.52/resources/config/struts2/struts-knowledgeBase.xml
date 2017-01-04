@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="knowledgeBase" extends="default">
+	<!-- 知识库列表 -->
+	<action name="knowledgeBase" class="com.tzmb2c.web.action.KnowledgeBaseAction" method="findKnowledgeBaseCount">
+			<result>/page/system/knowledgeBase/knowledgeBaseList.jsp</result>
+		</action>
+	<action name="findKnowledgeBaseById" class="com.tzmb2c.web.action.KnowledgeBaseAction" method="findKnowledgeBaseById">
+			<result>/page/system/knowledgeBase/knowledgeBaseSet.jsp</result>
+		</action>
+	<!--跳转指编辑页面-->
+	<action name="updateKnowledgeBaseList" class="com.tzmb2c.web.action.KnowledgeBaseAction" method="updateKnowledgeBaseList">
+			<result>/page/system/knowledgeBase/updateKnowledgeBaseList.jsp</result>
+        </action>	
+    <!--提交编辑-->
+	<action name="updateKnowledgeBase" class="com.tzmb2c.web.action.KnowledgeBaseAction" method="updateKnowledgeBase">
+	    </action>
+	<action name="checkKnowledgeBaseAll" class="com.tzmb2c.web.action.KnowledgeBaseAction" method="checkKnowledgeBaseAll">
+		</action>
+	<action name="delKnowledgeBaseAll" class="com.tzmb2c.web.action.KnowledgeBaseAction" method="delKnowledgeBaseAll">
+	    </action>
+	<action name="addKnowledgeBase" class="com.tzmb2c.web.action.KnowledgeBaseAction" method="addKnowledgeBase">
+			<result>/page/system/knowledgeBase/addKnowledgeBase.jsp</result>
+	    </action>
+	<action name="insertKnowledgeBase" class="com.tzmb2c.web.action.KnowledgeBaseAction" method="insertKnowledgeBase">
+	    </action>
+	</package>
+	
+	
+	<package name="knowledgeBase-json" extends="json-default">
+	 <action name="findKnowledgeBaseList" class="com.tzmb2c.web.action.KnowledgeBaseAction" method="findKnowledgeBaseList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="findKnowledgeBaseCount" class="com.tzmb2c.web.action.KnowledgeBaseAction" method="findKnowledgeBaseCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+	 <action name="checkKnowledgeBase" class="com.tzmb2c.web.action.KnowledgeBaseAction" method="checkKnowledgeBase">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+	 <action name="uncheckKnowledgeBase" class="com.tzmb2c.web.action.KnowledgeBaseAction" method="uncheckKnowledgeBase">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+	<action name="delKnowledgeBase" class="com.tzmb2c.web.action.KnowledgeBaseAction" method="delKnowledgeBase">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+	<action name="getYourFavouritesInfo" class="com.tzmb2c.web.action.KnowledgeBaseAction" method="getYourFavouritesInfo">
+		<result type="json">
+       		 <param name="root">dataMap</param>
+		</result>
+	</action>
+	</package>
+</struts>

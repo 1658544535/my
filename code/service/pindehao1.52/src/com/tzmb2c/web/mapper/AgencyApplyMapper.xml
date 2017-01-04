@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.AgencyApplyMapper">
+
+	<!--前台调用，默认审核状态为1-->
+	<select id="getAgencyApplyCount" parameterType="java.util.Map" resultType="int">
+		SELECT
+		    count(*)
+		FROM user_agency_apply a
+		WHERE 1=1
+		<if test="contact != null and contact != ''">
+			and a.contact like CONCAT("%",#{contact},"%" )
+		</if>
+		<if test="mainProduct != null and mainProduct != ''">
+			and a.main_product like CONCAT("%",#{mainProduct},"%" )
+		</if>
+		<if test="status!=null">
+			and a.status = #{status}
+		</if>
+		order by a.create_date desc
+	</select>
+	
+	<select id="getAgencyApplyList" parameterType="java.util.Map" resultType="agencyApplyPojo">
+		SELECT
+		    a.id as id,
+			a.contact as contact,
+			a.tel as tel,
+			a.phone as phone,
+			a.fax as fax,
+			a.QQ as QQ,
+			a.province as provinceId,
+			(select name from sys_area where id=a.province) as province,
+			a.city as cityId,
+			(select name from sys_area where id=a.city) as city,
+			a.area as areaId,
+			(select name from sys_area where id=a.area) as area,
+			a.address as address,
+			a.main_product as mainProduct,
+			a.status as status,
+			(select name from sys_dict where value=a.status and type = 'status') statusName,
+			a.create_by as createBy,
+			a.create_date as createDate,
+			a.update_by as updateBy,
+			a.update_date as updateDate
+		FROM user_agency_apply a
+		WHERE 1=1
+		<if test="contact != null and contact != ''">
+			and a.contact like CONCAT("%",#{contact},"%" )
+		</if>
+		<if test="mainProduct != null and mainProduct != ''">
+			and a.main_product like CONCAT("%",#{mainProduct},"%" )
+		</if>
+		<if test="status!=null">
+			and a.status = #{status}
+		</if>
+		order by a.create_date desc
+	    <if test="pageSize!=null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<select id="getAgencyApplyById" parameterType="java.util.Map" resultType="agencyApplyPojo">
+		SELECT
+		    a.id as id,
+			a.contact as contact,
+			a.tel as tel,
+			a.phone as phone,
+			a.fax as fax,
+			a.QQ as QQ,
+			a.province as provinceId,
+			(select name from sys_area where id=a.province) as province,
+			a.city as cityId,
+			(select name from sys_area where id=a.city) as city,
+			a.area as areaId,
+			(select name from sys_area where id=a.area) as area,
+			a.address as address,
+			a.main_product as mainProduct,
+			a.status as status,
+			a.create_by as createBy,
+			a.create_date as createDate,
+			a.update_by as updateBy,
+			a.update_date as updateDate
+		FROM user_agency_apply a
+		WHERE 1=1
+		<if test="id!=null">
+			and a.id = #{id}
+		</if>
+	</select>
+	
+	<insert id="insertAgencyApply" parameterType="agencyApplyPojo">
+		insert into user_agency_apply(contact,tel,phone,fax,QQ,province,city,area,address,main_product,status,create_by,create_date,update_by,update_date)
+		values(#{contact},#{tel},#{phone},#{fax},#{QQ},#{provinceId},#{cityId},#{areaId},#{address},#{mainProduct},#{status},#{createBy},now(),#{updateBy},now())
+	</insert>
+	
+	<update id="checkAgencyApply" parameterType="Long">
+		update user_agency_apply t set
+		t.status = 1,
+		t.update_date = now()
+		where
+		t.id = #{id}
+	</update>
+	
+	<update id="uncheckAgencyApply" parameterType="Long">
+		update user_agency_apply t set
+		t.status = 0,
+		t.update_date = now()
+		where
+		t.id = #{id}
+	</update>
+	
+	<update id="updateAgencyApply" parameterType="agencyApplyPojo">
+		update user_agency_apply t set
+		t.status = #{status},
+		t.contact = #{contact},
+		t.tel = #{tel},
+		t.phone = #{phone},
+		t.fax = #{fax},
+		t.QQ = #{QQ},
+		t.province = #{provinceId},
+		t.city = #{cityId},
+		t.area = #{areaId},
+		t.address = #{address},
+		t.main_product = #{mainProduct},
+		<if test="updateBy!=null">
+		t.update_by = #{updateBy},
+		</if>
+		t.update_date = now()
+		where
+		t.id = #{id}
+	</update>
+	
+	<delete id="delAgencyApply" parameterType="Long">
+		delete from user_agency_apply where id=#{id}
+	</delete>
+</mapper>

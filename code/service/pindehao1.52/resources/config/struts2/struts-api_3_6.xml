@@ -1,0 +1,1236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="struts-pindekeApi" extends="struts-default" namespace="/v3.6">
+		<!-- 根据orderId获取退货的商家信息 -->
+		<action name="getRefSellerInfoByOrderId" class="com.tzmb2c.web.action.AppApiWalletAction" method="getRefSellerInfoByOrderId">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 提交邀请码接口 -->
+		<action name="submitInviteCode" class="com.tzmb2c.web.action.AppApiWalletAction" method="submitInviteCode">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 邀请验证接口 -->
+		<action name="checkInviteCode" class="com.tzmb2c.web.action.AppApiWalletAction" method="checkInviteCode">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		
+		<!-- 活动闪屏接口 -->
+		<action name="activitySplashScreen" class="com.tzmb2c.web.action.AppApiWalletAction" method="activitySplashScreen">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+	
+		<!-- 专场列表 -->
+		<action name="getSpecialShowListApi" class="com.tzmb2c.web.action.AppApiHomePageAction" method="getSpecialShowListApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 专场产品列表 -->
+		<action name="getSpecialProductListApi" class="com.tzmb2c.web.action.AppApiChildrenChannelAction" method="getSpecialProductListApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 首页专场列表 -->
+		<action name="getHomepgSpecialShowList" class="com.tzmb2c.web.action.AppApiHomePageAction" method="getHomepgSpecialShowList">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 首页专场列表 -->
+		<action name="getHomepgSpecialShowList2" class="com.tzmb2c.web.action.AppApiSellerAction" method="getHomepgSpecialShowList2">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 钱包明细 -->
+		<action name="userWelletDetail" class="com.tzmb2c.web.action.AppApiWalletAction" method="userWelletDetail">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 导航分类列表 -->
+		<action name="getNavigationListApi" class="com.tzmb2c.web.action.AppApiSellerAction" method="getNavigationListApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+
+		<!--发送自自定义短信验证码接口 -->
+		<action name="sendSMS" class="com.tzmb2c.web.action.LoginAction"
+			method="sendSMS">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 发送短信验证码接口-->
+		<action name="captcha" class="com.tzmb2c.web.action.AppApiAction"
+			method="captcha">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 注册检查 -->
+		<action name="checkRegister" class="com.tzmb2c.web.action.AppApiAction" method="checkRegister">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<action name="password" class="com.tzmb2c.web.action.AppApiAction" method="password">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 活动-->
+		<action name="activity" class="com.tzmb2c.web.action.AppApiSellerAction" method="activity">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 产品焦点图详情-->
+		<action name="productDetailFocusImg" class="com.tzmb2c.web.action.AppApiAction" method="productDetailFocusImg">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 产品分类-->
+		<action name="productType" class="com.tzmb2c.web.action.AppApiAction" method="productType">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 产品评价详情-->
+		<action name="productDetailComment" class="com.tzmb2c.web.action.AppApiSceneAction" method="productDetailComment">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 产品评价-->
+		<action name="comment" class="com.tzmb2c.web.action.AppApiSceneAction" method="comment">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 添加收藏 -->
+		<action name="addFavorite" class="com.tzmb2c.web.action.AppApiGrouponAction" method="addFavorite">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 收藏判断 -->
+		<action name="isFavorite" class="com.tzmb2c.web.action.AppApiSellerAction" method="isFavorite">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 取消收藏 -->
+		<action name="delFavorite" class="com.tzmb2c.web.action.AppApiGrouponAction" method="delFavorite">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 取消单个收藏 -->
+		<action name="delSingleFavorite" class="com.tzmb2c.web.action.AppApiSellerAction" method="delSingleFavorite">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 添加地址 -->
+		<action name="addAddress" class="com.tzmb2c.web.action.AppApiAction" method="addAddress">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 默认地址 -->
+		<action name="selectAddress" class="com.tzmb2c.web.action.AppApiAction" method="selectAddress">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 详细地址 -->
+		<action name="addressDetail" class="com.tzmb2c.web.action.AppApiAction" method="addressDetail">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 修改地址 -->
+		<action name="eidtAddress" class="com.tzmb2c.web.action.AppApiAction" method="eidtAddress">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 删除地址 -->
+		<action name="deleteAddress" class="com.tzmb2c.web.action.AppApiAction" method="deleteAddress">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 问题反馈 -->
+		<action name="feedback" class="com.tzmb2c.web.action.AppApiAction" method="feedback">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+
+		<!-- 用户基本信息 -->
+		<action name="myInfo" class="com.tzmb2c.web.action.AppApiWalletAction" method="myInfo">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--查看物流 -->
+		<action name="express" class="com.tzmb2c.web.action.AppApiAction" method="express">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--修改B2C购物车数量 -->
+		<action name="toEditCart" class="com.tzmb2c.web.action.AppApiAction" method="toEditCart">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--删除购物车产品 -->
+		<action name="delCart" class="com.tzmb2c.web.action.AppApiAction" method="delCart">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--我的收货地址 -->
+		<action name="myaddress" class="com.tzmb2c.web.action.AppApiAction" method="myaddress">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--帮助中心-帮助类型 -->
+		<action name="helpCenter" class="com.tzmb2c.web.action.AppApiAction" method="helpCenter">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--帮助中心-帮助类型 -->
+		<action name="helpCenterPid" class="com.tzmb2c.web.action.AppApiAction" method="helpCenterPid">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--帮助中心-帮助类型 -->
+		<action name="helpCenterList" class="com.tzmb2c.web.action.AppApiAction" method="helpCenterList">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--帮助中心-常见问题详情 -->
+		<action name="helpCenterDetail" class="com.tzmb2c.web.action.AppApiAction" method="helpCenterDetail">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--首页焦点图 -->
+		<action name="focus" class="com.tzmb2c.web.action.AppApiBaByMakerAction" method="focus">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--淘竹马注册用户数量-->
+		<action name="allUserNum" class="com.tzmb2c.web.action.AppApiAction" method="allUserNum">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--今日成交量-->
+		<action name="todayBargainNum" class="com.tzmb2c.web.action.AppApiAction" method="todayBargainNum">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--今日订单量-->
+		<action name="todayOrderNum" class="com.tzmb2c.web.action.AppApiAction" method="todayOrderNum">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+
+		<!--今日访问IP列表-->
+		<action name="todaysVisitList" class="com.tzmb2c.web.action.AppApiAction" method="todaysVisitList">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--今日访问IP总数-->
+		<action name="todayVisitNum" class="com.tzmb2c.web.action.AppApiAction" method="todayVisitNum">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--总成交额-->
+		<action name="transactionPriceSum" class="com.tzmb2c.web.action.AppApiAction" method="transactionPriceSum">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--查询省市区名称-->
+		<action name="province" class="com.tzmb2c.web.action.AppApiAction" method="province">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--查询所有物流公司表-->
+		<action name="logistics" class="com.tzmb2c.web.action.AppApiAction" method="logistics">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--订单单个产品详情-->
+		<action name="orderDetailInfo" class="com.tzmb2c.web.action.AppApiAction" method="orderDetailInfo">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--修改密码-->
+		<action name="reSetPassWord" class="com.tzmb2c.web.action.AppApiAction" method="reSetPassWord">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 退货列表-->
+		<action name="myRefund" class="com.tzmb2c.web.action.AppApiAction" method="myRefund">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--评价返回未申请退货退款售后订单详情数据-->
+		<action name="evaluation" class="com.tzmb2c.web.action.AppApiAction" method="evaluation">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--返回购物车数量 -->
+		<action name="myCartNum" class="com.tzmb2c.web.action.AppApiAction" method="myCartNum">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--返回用户的默认地址-->
+		<action name="defaultAddress" class="com.tzmb2c.web.action.AppApiAction" method="defaultAddress">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--产品详情-->
+		<action name="productDetailHtml" class="com.tzmb2c.web.action.AppApiAction" method="productDetailHtml">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--首页顶部推送图获取-->
+		<action name="homePageTop4List" class="com.tzmb2c.web.action.AppApiHomePageAction" method="homePageTop4List">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--活动产品获取-->
+		<action name="getActivityProductByType" class="com.tzmb2c.web.action.AppApiSellerAction" method="getActivityProductByType">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--查询登录用户信息-->
+		<action name="getUserInfo" class="com.tzmb2c.web.action.AppApiAction" method="getUserInfo">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--限时秒杀时间列表-->
+		<action name="activityTimeList" class="com.tzmb2c.web.action.AppApiHomePageAction" method="activityTimeList">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--限时秒杀产品列表-->
+		<action name="activityGoods" class="com.tzmb2c.web.action.AppApiHomePageAction" method="activityGoods">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--限时秒杀产品列表库存返回-->
+		<action name="activityGoodsStock" class="com.tzmb2c.web.action.AppApiAction" method="activityGoodsStock">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--焦点图返回列表接口-->
+		<action name="getFocusActivityProduct" class="com.tzmb2c.web.action.AppApiSellerAction" method="getFocusActivityProduct">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<action name="deleteBaiduUid" class="com.tzmb2c.web.action.AppApiAction" method="deleteBaiduUid">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--订单支付-->
+		<action name="payOrder" class="com.tzmb2c.web.action.AppApiPinDeKeAction" method="payOrder">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--单个产品查询活动时间-->
+		<action name="getProductActivityTime" class="com.tzmb2c.web.action.AppApiHomePageAction" method="getProductActivityTime">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--用户优惠券列表-->
+		<action name="getUserCouponList" class="com.tzmb2c.web.action.AppApiGrouponAction" method="getUserCouponList">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--绑定优惠券-->
+		<action name="addUserCoupon" class="com.tzmb2c.web.action.AppApiGrouponAction" method="addUserCoupon">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<action name="addBaseNumber" class="com.tzmb2c.web.action.AppApiAction" method="addBaseNumber">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 获取用户购物车数量 -->
+		<action name="getUserCartNum" class="com.tzmb2c.web.action.AppApiAction" method="getUserCartNum">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 获取商品SKU信息 -->
+		<action name="getProductSkuLink" class="com.tzmb2c.web.action.AppApiAction" method="getProductSkuLink">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 获取商品颜色/规格 -->
+		<action name="getProductSkuList" class="com.tzmb2c.web.action.AppApiAction" method="getProductSkuList">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 微信摇一摇活动 -->
+		<action name="shakeActivity" class="com.tzmb2c.web.action.AppApiSellerAction" method="shakeActivity">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 用户积分任务列表 -->
+		<action name="userScoreTasksList" class="com.tzmb2c.web.action.AppApiAction" method="userScoreTasksList">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 用户积分明细查询 -->
+		<action name="userScoreDetailed" class="com.tzmb2c.web.action.AppApiAction" method="userScoreDetailed">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 场景/套餐活动查询 -->
+		<action name="scenesList" class="com.tzmb2c.web.action.AppApiAction" method="scenesList">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 生成优惠券 -->
+		<action name="genCouponTest" class="com.tzmb2c.web.action.AppApiAction" method="genCouponTest">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 套餐直接购买 -->
+		<action name="addPkgPurchase" class="com.tzmb2c.web.action.AppApiAction" method="addPkgPurchase">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 套餐直接购买提交订单 -->
+		<action name="addPkgOrderByPurchase" class="com.tzmb2c.web.action.AppApiAction" method="addPkgOrderByPurchase">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 退货单个商品详情 -->
+		<action name="refundOneDetails" class="com.tzmb2c.web.action.AppApiAction" method="refundOneDetails">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 退货物流详情 -->
+		<action name="refundExpress" class="com.tzmb2c.web.action.AppApiGrouponAction" method="refundExpress">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 钱包专区列表 -->
+		<action name="walletActivity" class="com.tzmb2c.web.action.AppApiWalletActivityAction" method="walletActivity">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 大牌驾到列表 -->
+		<action name="brandActivityList" class="com.tzmb2c.web.action.AppApiHomePageAction" method="brandActivityList">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 场景活动列表查询 -->
+		<action name="getSceneList" class="com.tzmb2c.web.action.AppApiHomePageAction" method="getSceneList">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 儿童频道专场列表 -->
+		<action name="childrenChannelSpecialListApi" class="com.tzmb2c.web.action.AppApiChildrenChannelAction" method="childrenChannelSpecialListApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- tv视频列表 -->
+		<action name="tvVideoListApi" class="com.tzmb2c.web.action.AppApiChildrenChannelAction" method="tvVideoListApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- tv视频浏览记录 -->
+		<action name="tvVideoHistoryApi" class="com.tzmb2c.web.action.AppApiChildrenChannelAction" method="tvVideoHistoryApi">
+		</action>
+		<!-- 商品sku -->
+		<action name="getValidProductSkuList" class="com.tzmb2c.web.action.AppApiVisualGoodAction" method="getValidProductSkuList">
+		</action>
+		<!-- 获取融云token -->
+		<action name="getRongyunTokenApi" class="com.tzmb2c.web.action.AppApiVisualGoodAction" method="getRongyunTokenApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		
+		<!-- ##################################### API v3.0 ####################################### -->
+		<!-- 测试样例 -->
+		<action name="getAdd" class="com.tzmb2c.web.action.AppApiMakerAction" method="getAdd">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 知识库-年龄能力标签列表 -->
+		<action name="getAgeSkillLabelListApi" class="com.tzmb2c.web.action.AppApiMakerAction" method="getAgeSkillLabelListApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- ########## 首页 ########## -->
+		<!-- 知识库-标签列表（4个标签） -->
+		<action name="getKnowledgeBaseLabelListApi" class="com.tzmb2c.web.action.AppApiMakerAction" method="getKnowledgeBaseLabelListApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 知识库-年龄标签列表 -->
+		<action name="getAgeLabelListApi" class="com.tzmb2c.web.action.AppApiMakerAction" method="getAgeLabelListApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 知识库-能力标签列表 -->
+		<action name="getSkillLabelListApi" class="com.tzmb2c.web.action.AppApiMakerAction" method="getSkillLabelListApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 能力标签对应的帖子列表 -->
+		<action name="getSkillLabelPostListApi" class="com.tzmb2c.web.action.AppApiPushGoodsAction" method="getSkillLabelPostListApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 创客专题详情-帖子点赞 -->
+		<action name="getUserMakerPostLikeApi" class="com.tzmb2c.web.action.AppApiMakerAction" method="getUserMakerPostLikeApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 创客首页-创阁-品牌专题列表 -->
+		<action name="makerBannerSpecialsApi" class="com.tzmb2c.web.action.AppApiMakerAction" method="makerBannerSpecialsApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 创客首页-创阁列表 -->
+		<action name="getUserMakerSquashListApi" class="com.tzmb2c.web.action.AppApiMakerAction" method="getUserMakerSquashListApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 首页-每日知识 -->
+		<action name="getDailyKnowledgeApi" class="com.tzmb2c.web.action.AppApiBaByMakerAction" method="getDailyKnowledgeApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 首页-Banner -->
+		<action name="getHomePageBannerApi" class="com.tzmb2c.web.action.AppApiMakerAction" method="getHomePageBannerApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 首页-专题活动 -->
+		<action name="getPlatformSpecialApi" class="com.tzmb2c.web.action.AppApiPushGoodsAction" method="getPlatformSpecialApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 首页-创客品牌/主题（主页） -->
+		<action name="getUserMakerBrandApi" class="com.tzmb2c.web.action.AppApiPushGoodsAction" method="getUserMakerBrandApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 创阁-店铺信息 -->
+		<action name="MakerShopInfoApi" class="com.tzmb2c.web.action.AppApiMakerAction" method="MakerShopInfoApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 首页专题 -->
+		<action name="homeSpecial" class="com.tzmb2c.web.action.AppApiPushGoodsAction" method="homeSpecial">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 专题详情 -->
+		<action name="SpecialDetailsApi" class="com.tzmb2c.web.action.AppApiMakerAction" method="SpecialDetailsApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 首页时间轴 -->
+		<action name="userAgeList" class="com.tzmb2c.web.action.AppApiMakerAction" method="userAgeList">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- ########## 日迹 ########## -->
+		<!-- 当月任务日历 -->
+		<action name="curMonTasksCal" class="com.tzmb2c.web.action.AppApiMakerAction" method="curMonTasksCal">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<action name="curMonthTasksCal" class="com.tzmb2c.web.action.AppApiPushGoodsAction" method="curMonthTasksCal">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 历史任务列表 -->
+		<action name="taskHistory" class="com.tzmb2c.web.action.AppApiBaByMakerAction" method="taskHistory">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 当日任务列表 -->
+		<action name="todoTasks" class="com.tzmb2c.web.action.AppApiPushGoodsAction" method="todoTasks">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 开启任务 -->
+		<action name="doTask" class="com.tzmb2c.web.action.AppApiBaByMakerAction" method="doTask">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 开启任务 -->
+		<action name="doneTask" class="com.tzmb2c.web.action.AppApiBaByMakerAction" method="doneTask">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- ########## 社圈 ########## -->
+		<!-- 获取分享内容 -->
+		<action name="getShareContentApi" class="com.tzmb2c.web.action.AppApiBaByMakerAction" method="getShareContentApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 编辑帖子 -->
+		<action name="getUpdateUserCirclePostApi" class="com.tzmb2c.web.action.AppApiMakerAction" method="getUpdateUserCirclePostApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 编辑帖子-获取帖子信息 -->
+		<action name="getUserCirclePostInfoApi" class="com.tzmb2c.web.action.AppApiMakerAction" method="getUserCirclePostInfoApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 发帖 -->
+		<action name="getAddUserCirclePostApi" class="com.tzmb2c.web.action.AppApiMakerAction" method="getAddUserCirclePostApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 社圈列表 -->
+		<action name="socialCircleList" class="com.tzmb2c.web.action.AppApiPushGoodsAction" method="socialCircleList">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 社圈分类列表 -->
+		<action name="socialCircleCategory" class="com.tzmb2c.web.action.AppApiMakerAction" method="socialCircleCategory">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 社圈详情 -->
+		<action name="socialCircleDetailsApi" class="com.tzmb2c.web.action.AppApiMakerAction" method="socialCircleDetailsApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 社圈-详情 -->
+		<action name="circleDetailApi" class="com.tzmb2c.web.action.AppApiPushGoodsAction" method="circleDetailApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--社圈详情-笔记列表 -->
+		<action name="circleNotesApi" class="com.tzmb2c.web.action.AppApiPushGoodsAction" method="circleNotesApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 圈子达人精选 -->
+		<action name="talentSiftApi" class="com.tzmb2c.web.action.AppApiPushGoodsAction" method="talentSiftApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--我的圈-关注的人列表-->
+		<action name="myToFocusApi" class="com.tzmb2c.web.action.AppApiMakerAction" method="myToFocusApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--社圈-达人精选（能力标签）－笔记列表-->
+		<action name="talentSiftAbilityNotesApi" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="talentSiftAbilityNotesApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--社圈-昵称—参与的圈组－圈子列表-->
+		<action name="talentSocialCirclesApi" class="com.tzmb2c.web.action.AppApiPushGoodsAction" method="talentSocialCirclesApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--社圈-热门玩家-昵称-图片集-->
+		<action name="talentUserPhotos" class="com.tzmb2c.web.action.AppApiMakerAction" method="talentUserPhotos">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--社圈-猜你收藏（随机返回4条用户没有关注的数据）-->
+		<action name="guessSocialCirclesApi" class="com.tzmb2c.web.action.AppApiPushGoodsAction" method="guessSocialCirclesApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--社圈分类和社圈列表-->
+		<action name="socialCircleAndTypeApi" class="com.tzmb2c.web.action.AppApiMakerAction" method="socialCircleAndTypeApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--用户关注的圈子-->
+		<action name="userFocusSocialCircleApi" class="com.tzmb2c.web.action.AppApiMakerAction" method="userFocusSocialCircleApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- ########## 我的 ########## -->
+
+		<!-- 个人资料 -->
+		<action name="getProfile" class="com.tzmb2c.web.action.AppApiBaByMakerAction" method="getProfile">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 个人资料编辑 -->
+		<action name="editProfile" class="com.tzmb2c.web.action.AppApiGrouponAction" method="editProfile">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 历史浏览笔记列表 -->
+		<action name="postViewHistory" class="com.tzmb2c.web.action.AppApiMakerAction" method="postViewHistory">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 历史浏览笔记移除 -->
+		<action name="rmPostViewHist" class="com.tzmb2c.web.action.AppApiMakerAction" method="rmPostViewHist">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 发布的笔记列表 -->
+		<action name="publishedPosts" class="com.tzmb2c.web.action.AppApiMakerAction" method="publishedPosts">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 发布的笔记移除 -->
+		<action name="rmPost" class="com.tzmb2c.web.action.AppApiMakerAction" method="rmPost">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 回复的笔记列表 -->
+		<action name="commentedPosts" class="com.tzmb2c.web.action.AppApiPushGoodsAction" method="commentedPosts">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 收藏的笔记列表 -->
+		<action name="collectedPosts" class="com.tzmb2c.web.action.AppApiMakerAction" method="collectedPosts">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 删除收藏笔记 -->
+		<action name="delCommentedPostApi" class="com.tzmb2c.web.action.AppApiMakerAction" method="delCommentedPostApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 删除收藏笔记 -->
+		<action name="delCollectedPostApi" class="com.tzmb2c.web.action.AppApiMakerAction" method="delCollectedPostApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 达人认证申请 -->
+		<action name="masterAuthApply" class="com.tzmb2c.web.action.AppApiMakerAction" method="masterAuthApply">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 达人认证申请提交 -->
+		<action name="masterAuthApplySubmit" class="com.tzmb2c.web.action.AppApiMakerAction" method="masterAuthApplySubmit">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 注册验证 -->
+		<action name="registerCheckApi" class="com.tzmb2c.web.action.AppApiMakerAction" method="registerCheckApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 平台专专题列表-商品 -->
+		<action name="platformSpecialGoods" class="com.tzmb2c.web.action.AppApiMakerAction" method="platformSpecialGoods">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- ##################################### API v3.0 ####################################### -->
+		
+		<!-- ##################################### API v3.1 ####################################### -->
+		<!-- 首页宝典搜索 -->
+		<action name="getHomePageCanonSearch" class="com.tzmb2c.web.action.AppApiPushGoodsAction" method="getHomePageCanonSearch">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 首页专题搜索 -->
+		<action name="getHomePageSpecialSearch" class="com.tzmb2c.web.action.AppApiPushGoodsAction" method="getHomePageSpecialSearch">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 首页达人搜索 -->
+		<action name="getHomePageMasterSearch" class="com.tzmb2c.web.action.AppApiPushGoodsAction" method="getHomePageMasterSearch">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 首页banner -->
+		<action name="homeBannerApi" class="com.tzmb2c.web.action.AppApiBaByMakerAction" method="homeBannerApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		
+		<!-- ##################################### API v3.1 ####################################### -->
+		
+		<!-- 添加宝宝个人资料 -->
+		<action name="addUserBabyInfoApi" class="com.tzmb2c.web.action.AppApiBaByMakerAction" method="addUserBabyInfoApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 编辑宝宝个人资料 -->
+		<action name="updateUserBabyInfoApi" class="com.tzmb2c.web.action.AppApiBaByMakerAction" method="updateUserBabyInfoApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 查看宝宝个人资料 -->
+		<action name="userBabyInfoApi" class="com.tzmb2c.web.action.AppApiBaByMakerAction" method="userBabyInfoApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 查看宝宝个人资料 -->
+		<action name="getTaskDetail" class="com.tzmb2c.web.action.AppApiBaByMakerAction" method="getTaskDetail">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- ##################################### API v3.2 ####################################### -->
+		<!-- 首页竹马头条 -->
+		<action name="headlineApi" class="com.tzmb2c.web.action.AppApiPushGoodsAction" method="headlineApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 首页推送商品 -->
+		<action name="pushGoodsApi" class="com.tzmb2c.web.action.AppApiPushGoodsAction" method="pushGoodsApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 今日特卖商品 -->
+		<action name="toDaySaleApi" class="com.tzmb2c.web.action.AppApiPushGoodsAction" method="toDaySaleApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 精选宝典 -->
+		<action name="siftPostApi" class="com.tzmb2c.web.action.AppApiPushGoodsAction" method="siftPostApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 首页创客主题 -->
+		<action name="getHomeUserMakerBrandApi" class="com.tzmb2c.web.action.AppApiPushGoodsAction" method="getHomeUserMakerBrandApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 首页-专题活动 -->
+		<action name="getHomePlatformSpecialApi" class="com.tzmb2c.web.action.AppApiPushGoodsAction" method="getHomePlatformSpecialApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		
+		<!-- ##################################### API v3.3 ####################################### -->
+		<!-- 首页-banner接口 -->
+		<action name="homeBanners" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="homeBanners">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 首页-有你喜欢列表接口 -->
+		<action name="favouriteList" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="favouriteList">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 首页-有你喜欢笔记列表接口 -->
+		<action name="favouritePosts" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="favouritePosts">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 首页-有你喜欢商品列表接口 -->
+		<action name="favouriteGoods" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="favouriteGoods">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 首页-热门话题接口 -->
+		<action name="hotTopics" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="hotTopics">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 话题列表接口 -->
+		<action name="topicList" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="topicList">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 品牌推荐接口 -->
+		<action name="brandsRecommend" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="brandsRecommend">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 品类推荐接口 -->
+		<action name="productTypesRecommend" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="productTypesRecommend">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 每日上新接口 -->
+		<action name="newEveryDay" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="newEveryDay">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 销量排行接口 -->
+		<action name="hotSellRank" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="hotSellRank">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 热门达人接口 -->
+		<action name="hotPlayerApi" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="hotPlayerApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 达人品牌接口 -->
+		<action name="geekBrands" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="geekBrands">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 达人店铺接口 -->
+		<action name="geekShops" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="geekShops">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 达人店铺-更多 接口 -->
+		<action name="geekShopsMore" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="geekShopsMore">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 知识库列表 接口 -->
+		<action name="knowledgeBase" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="knowledgeBase">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 用户关注达人列表 接口 -->
+		<action name="followPlayers" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="followPlayers">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 收藏的话题列表 接口 -->
+		<action name="collectedTopics" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="collectedTopics">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 删除收藏话题 接口 -->
+		<action name="delCollectedTopic" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="delCollectedTopic">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 社圈详情-最热笔记列表 接口 -->
+		<action name="hotCircleNotesApi" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="hotCircleNotesApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 社圈详情-精品笔记列表 接口 -->
+		<action name="qualityCircleNotesApi" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="qualityCircleNotesApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 创客店铺商品列表 接口 -->
+		<action name="geekGoods" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="geekGoods">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 产品品类/年龄列表 接口 -->
+		<action name="categoryList" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="categoryList">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 判断是否收藏 接口 -->
+		<action name="isCollected" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="isCollected">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 更多分类-品牌 接口 -->
+		<action name="brandList" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="brandList">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 领取优惠券 接口 -->
+		<action name="getCoupon" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="getCoupon">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		
+		<!-- 老接口修改 -->
+		<!-- 首页-玩家宝典 -->
+		<action name="homePostApi" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="homePostApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 创客专题详情-主题/帖子收藏（取消收藏） -->
+		<action name="getUserMakerPostCollectApi" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="getUserMakerPostCollectApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 创客专题详情-主题/帖子评论回复 -->
+		<action name="getUserMakerPostReplyApi" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="getUserMakerPostReplyApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 创客专题详情-主题/帖子评论列表 -->
+		<action name="getUserMakerPostCommetListApi" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="getUserMakerPostCommetListApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 社圈-用户信息 -->
+		<action name="circleUserInfoApi" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="circleUserInfoApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--社圈-昵称-发布的笔记-笔记列表-->
+		<action name="userCircleNotesApi" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="userCircleNotesApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 关注用户/圈子 -->
+		<action name="addConcernApi" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="addConcernApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 取消关注用户/圈子 -->
+		<action name="delConcernApi" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="delConcernApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 知识库-玩家宝典列表 -->
+		<action name="getKnowledgeBaseCanonListApi" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="getKnowledgeBaseCanonListApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--我的圈-圈组热帖列表-->
+		<action name="hotPostApi" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="hotPostApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--产品描述图-->
+		<action name="productDetailApp" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="productDetailApp">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 年龄标签对应的帖子列表 -->
+		<action name="getAgeLabelPostListApi" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="getAgeLabelPostListApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 平台专题详情-相关宝典 -->
+		<action name="getPlatformSpecialCanonListApi" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="getPlatformSpecialCanonListApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 首页-创客品牌-创客圈 -->
+		<action name="getUserMakerCircleApi" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="getUserMakerCircleApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 首页-玩家宝典-详情 -->
+		<action name="homePostDetail" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="homePostDetail">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 个人信息中心 -->
+		<action name="infoCenter" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="infoCenter">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--我的圈-我的粉丝-->
+		<action name="focusToMyApi" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="focusToMyApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 首页-创客品牌-品牌详情 -->
+		<action name="getUserMakerBrandDetailApi" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="getUserMakerBrandDetailApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 首页-创客主题-主题活动 -->
+		<action name="getUserMakerThemeActivityApi" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="getUserMakerThemeActivityApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 创阁（店铺）-笔记列表/专题列表 -->
+		<action name="getUserMakerSquashDetailListApi" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="getUserMakerSquashDetailListApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		
+		<!-- ##################################### API v3.4 ####################################### -->
+		<!-- 产品详情-->
+		<action name="productDetailApi" class="com.tzmb2c.web.action.AppApiNormalShopAction" method="productDetailApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 店铺详情-->
+		<action name="shopDetail" class="com.tzmb2c.web.action.AppApiNormalShopAction" method="shopDetail">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--选中提交购物车 -->
+		<action name="orderProduct" class="com.tzmb2c.web.action.AppApiNormalShopAction" method="orderProduct">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--添加b2c购物车 -->
+		<action name="toAddcart" class="com.tzmb2c.web.action.AppApiNormalShopAction" method="toAddcart">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--查看b2c购物车 -->
+		<action name="tomycart" class="com.tzmb2c.web.action.AppApiNormalShopAction" method="tomycart">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--提交订单 -->
+		<action name="addorder" class="com.tzmb2c.web.action.AppApiNormalShopAction" method="addorder">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--直接购买-->
+		<action name="addPurchase" class="com.tzmb2c.web.action.AppApiPinDeKeAction" method="addPurchase">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--直接购买提交订单-->
+		<action name="addOrderByPurchase" class="com.tzmb2c.web.action.AppApiPinDeKeAction" method="addOrderByPurchase">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 产品列表-->
+		<action name="product" class="com.tzmb2c.web.action.AppApiNormalShopAction" method="product">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--b2c我的足迹-->
+		<action name="footNew" class="com.tzmb2c.web.action.AppApiNormalShopAction" method="footNew">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 查询用户最近浏览的4只产品 -->
+		<action name="getUserFootByProduct" class="com.tzmb2c.web.action.AppApiNormalShopAction" method="getUserFootByProduct">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 我的收藏列表 -->
+		<action name="favorites" class="com.tzmb2c.web.action.AppApiNormalShopAction" method="favorites">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- ##################################### API v3.4 ####################################### -->
+		<!-- ##################################### API v3.5 ####################################### -->
+		<!-- 退款详情 -->
+		<action name="refundDetails" class="com.tzmb2c.web.action.AppApiGrouponAction" method="refundDetails">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 申请退货/退款 -->
+		<action name="applyRefund" class="com.tzmb2c.web.action.AppApiGrouponAction" method="applyRefund">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 填写物流信息 -->
+		<action name="submitLogistics" class="com.tzmb2c.web.action.AppApiGrouponAction" method="submitLogistics">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 售后列表 -->
+		<action name="refundListApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="refundListApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 我的-基本信息 -->
+		<action name="myInfoApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="myInfoApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 我的-收藏列表 -->
+		<action name="myCollectListApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="myCollectListApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 我的-拼团列表 -->
+		<action name="myGroupListApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="myGroupListApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 猜价-顶部图片 -->
+		<action name="guessBannerApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="guessBannerApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 猜价-活动列表 -->
+		<action name="guessActivityApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="guessActivityApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 猜价-参与情况 -->
+		<action name="readyJoinApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="readyJoinApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 猜价-参与用户列表 -->
+		<action name="userJoinInfoApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="userJoinInfoApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 猜价-商品轮播图 -->
+		<action name="productFocusImagsApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="productFocusImagsApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 首页-二级分类导航 -->
+		<action name="productTypeNav" class="com.tzmb2c.web.action.AppApiGrouponAction" method="productTypeNav">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 首页-平台广告轮播图 -->
+		<action name="groupHomeApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="groupHomeApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 首页-推荐拼团列表 -->
+		<action name="homeGroupProductsApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="homeGroupProductsApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 首页-根据分类查询拼团列表-->
+		<action name="findGroupByTypeId" class="com.tzmb2c.web.action.AppApiGrouponAction" method="findGroupByTypeId">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 团免-检查团免券-->
+		<action name="checkGroupFreeApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="checkGroupFreeApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 团免列表-->
+		<action name="groupFreeListApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="groupFreeListApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 拼团-参团页面 -->
+		<action name="groupDetailApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="groupDetailApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 拼团-开团页面 -->
+		<action name="openGroupActivityApi" class="com.tzmb2c.web.action.AppApiPinDeKeAction" method="openGroupActivityApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 拼团-同一拼团(待组团) -->
+		<action name="waitGroupListApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="waitGroupListApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 猜价-估价 -->
+		<action name="guessPriceApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="guessPriceApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 猜价-更多得奖人列表 -->
+		<action name="winListApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="winListApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 猜价-详情得奖人列表 -->
+		<action name="guessWinListApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="guessWinListApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 我的-猜价列表 -->
+		<action name="myGuessListApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="myGuessListApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--搜索全部（普通拼团）-->
+		<action name="searchAll" class="com.tzmb2c.web.action.AppApiGrouponAction" method="searchAll">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--取消订单-->
+		<action name="cancelOrder" class="com.tzmb2c.web.action.AppApiGrouponAction" method="cancelOrder">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--我的订单 -->
+		<action name="myorder" class="com.tzmb2c.web.action.AppApiPinDeKeAction" method="myorder">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--确认收货 -->
+		<action name="editOrderStatus" class="com.tzmb2c.web.action.AppApiPinDeKeAction" method="editOrderStatus">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--会员注册-->
+		<action name="register" class="com.tzmb2c.web.action.AppApiGrouponAction" method="register">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--订单可用优惠券列表-->
+		<action name="getValidUserCoupon" class="com.tzmb2c.web.action.AppApiGrouponAction" method="getValidUserCoupon">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--订单详情 -->
+		<action name="orderdetail" class="com.tzmb2c.web.action.AppApiPinDeKeAction" method="orderdetail">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--用户登录-->
+		<action name="agentlogin" class="com.tzmb2c.web.action.AppApiGrouponAction" method="agentlogin">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--用户登录-->
+		<action name="userlogin" class="com.tzmb2c.web.action.AppApiGrouponAction" method="userlogin">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--修改密码-->
+		<!--更新登录用户信息-->
+		<action name="editUserInfo" class="com.tzmb2c.web.action.AppApiGrouponAction" method="editUserInfo">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--用户绑定微信或新浪-->
+		<action name="bundling" class="com.tzmb2c.web.action.AppApiGrouponAction" method="bundling">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--商品SKU-->
+		<action name="getProductSkus" class="com.tzmb2c.web.action.AppApiPinDeKeAction" method="getProductSkus">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--领取团免券-->
+		<action name="getFreeCouponApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="getFreeCouponApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--猜你喜欢-->
+		<action name="guessYourLikeApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="guessYourLikeApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--修改猜价优惠卷为已弹窗-->
+		<action name="callGuessCouponAlertApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="callGuessCouponAlertApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--拼得客申请-->
+		<action name="pdkApplyApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="pdkApplyApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--修改拼得客-->
+		<action name="pdkUpdateApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="pdkUpdateApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--拼得客信息-->
+		<action name="pdkApplyInfoApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="pdkApplyInfoApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--拼得客交易记录列表-->
+		<action name="pdkTranRecListApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="pdkTranRecListApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--拼得客交易记录详情-->
+		<action name="tranDetailApi" class="com.tzmb2c.web.action.AppApiPinDeKeAction" method="tranDetailApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--拼得客提现申请-->
+		<action name="wdApplyApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="wdApplyApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--拼得客信息-->
+		<action name="pindekeUserInfo" class="com.tzmb2c.web.action.AppApiPinDeKeAction" method="pindekeUserInfo">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--拼团专题顶部图片-->
+		<action name="specialImageApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="specialImageApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--拼团专题分类-->
+		<action name="specialTypeApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="specialTypeApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--下家激活团免券-->
+		<action name="activeFreeCoupon" class="com.tzmb2c.web.action.AppApiGrouponAction" method="activeFreeCoupon">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--拼团专题列表-->
+		<action name="specialListApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="specialListApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--拼团专题详情-->
+		<action name="specialDetailApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="specialDetailApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--7.7专区-->
+		<action name="zoneProductsApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="zoneProductsApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--7.7顶部图片-->
+		<action name="zoneApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="zoneApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--领取优惠券-->
+		<action name="getCouponApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="getCouponApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--查询单条优惠券信息-->
+		<action name="aCouponInfoApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="aCouponInfoApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 支付宝/微信交易查询 -->
+		<action name="queryPayStatus" class="com.tzmb2c.web.action.AppApiGrouponAction" method="queryPayStatus">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 首页图标接口-->
+		<action name="homePageIcon" class="com.tzmb2c.web.action.AppApiGrouponAction" method="homePageIcon">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--限时秒杀列表-->
+		<action name="secKillListApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="secKillListApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 今日售罄商品 -->
+		<action name="sellOutListApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="sellOutListApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- ##################################### API v3.5 ####################################### -->
+		<!--0.1抽奖列表-->
+		<action name="getDrawListApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="getDrawListApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--0.1抽奖评论详情-->
+		<action name="getDrawCommentDetailsApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="getDrawCommentDetailsApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--我的抽奖-->
+		<action name="getDrawApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="getDrawApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--抽奖banner-->
+		<action name="prizeBannerApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="prizeBannerApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--我要晒图提交-->
+		<action name="actProductComment" class="com.tzmb2c.web.action.AppApiGrouponAction" method="actProductComment">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--中奖信息详情-->
+		<action name="prizeDetail" class="com.tzmb2c.web.action.AppApiGrouponAction" method="prizeDetail">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--上传拼得客图片-->
+		<action name="upUserpindekeImage" class="com.tzmb2c.web.action.AppApiGrouponAction" method="upUserpindekeImage">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--往期猜价-活动列表-->
+		<action name="guessBeforeActivityApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="guessBeforeActivityApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 开团推送 -->
+		<action name="getGrouponPushApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="getGrouponPushApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- ########################################## V 1.3 ################################################ -->
+		<!-- 免费抽奖列表 -->
+		<action name="freeDrawListApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="freeDrawListApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 新品专区 -->
+		<action name="newSpecialApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="newSpecialApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 新品专区顶部图片 -->
+		<action name="newSpecialImageApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="newSpecialImageApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 商品分类 -->
+		<action name="productCategoryApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="productCategoryApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 产品列表 -->
+		<action name="findProductListApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="findProductListApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 活动顶部图片 -->
+		<action name="activityBannerApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="activityBannerApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 首页秒杀商品 -->
+		<action name="homeSecKillListApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="homeSecKillListApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 我的消息 -->
+		<action name="myNoticeApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="myNoticeApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 订单消息 -->
+		<action name="userOrderNoticeApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="userOrderNoticeApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--版本控制-->
+		<action name="versionControlApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="versionControlApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 领取优惠券 -->
+		<action name="gainCouponApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="gainCouponApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 极验开关判断 -->
+		<action name="geekValid" class="com.tzmb2c.web.action.AppApiAction" method="getGeekValid">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--0.1抽奖列表PHP专用-->
+		<action name="getDrawListPhpApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="getDrawListPhpApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 拼得客任务清单-->
+		<action name="userGroupTaskApi" class="com.tzmb2c.web.action.AppApiPinDeKeAction" method="userGroupTaskApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 充值券兑换 -->
+		<action name="userCodeRedeemApi" class="com.tzmb2c.web.action.AppApiPinDeKeAction" method="userCodeRedeemApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 用户钱包余额 -->
+		<action name="userWelletBalance" class="com.tzmb2c.web.action.AppApiPinDeKeAction" method="userWelletBalance">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+	</package>
+	<package name="pindekeApi-pkg" extends="struts-default" namespace="/v3.6">
+		<!-- 极验验证码 -->
+		<action name="getValidCode" class="com.tzmb2c.web.action.AppApiWalletAction" method="getValidCode">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 极验开关 -->
+		<action name="openGeekValid" class="com.tzmb2c.web.action.AppApiAction" method="setGeekValid">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 0.1抽奖极验开关 -->
+		<action name="openDrawValid" class="com.tzmb2c.web.action.AppApiAction" method="setDrawValid">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+	</package>
+</struts>

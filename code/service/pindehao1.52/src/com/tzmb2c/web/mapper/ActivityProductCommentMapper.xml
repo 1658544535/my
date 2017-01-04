@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.ActivityProductCommentMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id as id,
+		user_id as userId,
+		type as type,
+		activity_id as activityId,
+		product_id as productId,
+		attend_id as attendId,
+		content as content,
+		img1 as img1,
+		img2 as img2,
+		img3 as img3,
+		img4 as img4,
+		img5 as img5,
+		img6 as img6,
+		img7 as img7,
+		img8 as img8,
+		img9 as img9,
+		status as status,
+		sorting as sorting,
+		create_date as createDate,
+		create_by as createBy,
+		update_date as updateDate,
+		update_by as updateBy,
+		(select name from sys_login where id = user_id) as userName
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="ActivityProductCommentPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			activity_product_comment
+		where
+			id = #{id}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from activity_product_comment
+		where 1=1
+		  <if test="id != null ">
+			and id = #{id}
+		  </if>
+		  <if test="keywords != null and keywords != ''">
+			and
+				(
+					sl.name LIKE CONCAT(CONCAT('%', #{keywords}),'%')
+					 or 
+					sl.id LIKE CONCAT(CONCAT('%', #{keywords}),'%') 
+				)
+		  </if>
+		  <if test="userId != null ">
+			and user_id = #{userId}
+		  </if>
+		  <if test="type != null ">
+			and type = #{type}
+		  </if>
+		  <if test="activityId != null ">
+			and activity_id = #{activityId}
+		  </if>
+		  <if test="attendId != null ">
+			and attend_id = #{attendId}
+		  </if>
+		  <if test="productId != null ">
+			and product_id = #{productId}
+		  </if>
+		  <if test="content != null and content != '' ">
+			and content = #{content}
+		  </if>
+		  <if test="img1 != null and img1 != '' ">
+			and img1 = #{img1}
+		  </if>
+		  <if test="img2 != null and img2 != '' ">
+			and img2 = #{img2}
+		  </if>
+		  <if test="img3 != null and img3 != '' ">
+			and img3 = #{img3}
+		  </if>
+		  <if test="img4 != null and img4 != '' ">
+			and img4 = #{img4}
+		  </if>
+		  <if test="img5 != null and img5 != '' ">
+			and img5 = #{img5}
+		  </if>
+		  <if test="img6 != null and img6 != '' ">
+			and img6 = #{img6}
+		  </if>
+		  <if test="img7 != null and img7 != '' ">
+			and img7 = #{img7}
+		  </if>
+		  <if test="img8 != null and img8 != '' ">
+			and img8 = #{img8}
+		  </if>
+		  <if test="img9 != null and img9 != '' ">
+			and img9 = #{img9}
+		  </if>
+		  <if test="status != null ">
+			and status = #{status}
+		  </if>
+		  <if test="sorting != null ">
+			and sorting = #{sorting}
+		  </if>
+		  <if test="createDate != null ">
+			and create_date = #{createDate}
+		  </if>
+		  <if test="createBy != null ">
+			and create_by = #{createBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and update_date = #{updateDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and update_by = #{updateBy}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="ActivityProductCommentPojo">
+		select
+			apc.id as id,
+			apc.user_id as userId,
+			apc.type as type,
+			apc.activity_id as activityId,
+			apc.product_id as productId,
+			apc.attend_id as attendId,
+			apc.content as content,
+			apc.img1 as img1,
+			apc.img2 as img2,
+			apc.img3 as img3,
+			apc.img4 as img4,
+			apc.img5 as img5,
+			apc.img6 as img6,
+			apc.img7 as img7,
+			apc.img8 as img8,
+			apc.img9 as img9,
+			apc.status as status,
+			apc.sorting as sorting,
+			apc.create_date as createDate,
+			apc.create_by as createBy,
+			apc.update_date as updateDate,
+			apc.update_by as updateBy,
+			sl.image as userImage,
+			sl.name as userName,
+			sl.loginname as loginname,
+			p.product_name as productName,
+			p.image as productImage
+		from activity_product_comment apc
+			left join sys_login sl on sl.id = apc.user_id
+			left join product p on p.id = apc.product_id
+		where 1=1
+			<if test="id != null ">
+			  and apc.id = #{id}
+			</if>
+			<if test="userId != null ">
+			  and apc.user_id = #{userId}
+			</if>
+			<if test="type != null ">
+			  and apc.type = #{type}
+			</if>
+			<if test="keywords != null and keywords != ''">
+			and
+				(
+					sl.name LIKE CONCAT(CONCAT('%', #{keywords}),'%')
+					 or 
+					sl.id LIKE CONCAT(CONCAT('%', #{keywords}),'%') 
+				)
+		  </if>
+			<if test="activityId != null ">
+			  and apc.activity_id = #{activityId}
+			</if>
+			<if test="attendId != null ">
+			  and attend_id = #{attendId}
+		    </if>
+			<if test="productId != null ">
+			  and apc.product_id = #{productId}
+			</if>
+			<if test="content != null and content != '' ">
+			  and apc.content = #{content}
+			</if>
+			<if test="img1 != null and img1 != '' ">
+			  and apc.img1 = #{img1}
+			</if>
+			<if test="img2 != null and img2 != '' ">
+			  and apc.img2 = #{img2}
+			</if>
+			<if test="img3 != null and img3 != '' ">
+			  and apc.img3 = #{img3}
+			</if>
+			<if test="img4 != null and img4 != '' ">
+			  and apc.img4 = #{img4}
+			</if>
+			<if test="img5 != null and img5 != '' ">
+			  and apc.img5 = #{img5}
+			</if>
+			<if test="img6 != null and img6 != '' ">
+			  and apc.img6 = #{img6}
+			</if>
+			<if test="img7 != null and img7 != '' ">
+			  and apc.img7 = #{img7}
+			</if>
+			<if test="img8 != null and img8 != '' ">
+			  and apc.img8 = #{img8}
+			</if>
+			<if test="img9 != null and img9 != '' ">
+			  and apc.img9 = #{img9}
+			</if>
+			<if test="status != null ">
+			  and apc.status = #{status}
+			</if>
+			<if test="sorting != null ">
+			  and apc.sorting = #{sorting}
+			</if>
+			<if test="createDate != null ">
+			  and apc.create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and apc.create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and apc.update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and apc.update_by = #{updateBy}
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="ActivityProductCommentPojo">
+		update activity_product_comment
+		<set>
+			<if test="userId != null">
+			  user_id = #{userId},
+			</if>
+			<if test="type != null">
+			  type = #{type},
+			</if>
+			<if test="activityId != null">
+			  activity_id = #{activityId},
+			</if>
+			<if test="attendId != null">
+			  attend_id = #{attendId},
+			</if>
+			<if test="productId != null">
+			  product_id = #{productId},
+			</if>
+			<if test="content != null">
+			  content = #{content},
+			</if>
+			<if test="img1 != null">
+			  img1 = #{img1},
+			</if>
+			<if test="img2 != null">
+			  img2 = #{img2},
+			</if>
+			<if test="img3 != null">
+			  img3 = #{img3},
+			</if>
+			<if test="img4 != null">
+			  img4 = #{img4},
+			</if>
+			<if test="img5 != null">
+			  img5 = #{img5},
+			</if>
+			<if test="img6 != null">
+			  img6 = #{img6},
+			</if>
+			<if test="img7 != null">
+			  img7 = #{img7},
+			</if>
+			<if test="img8 != null">
+			  img8 = #{img8},
+			</if>
+			<if test="img9 != null">
+			  img9 = #{img9},
+			</if>
+			<if test="status != null">
+			  status = #{status},
+			</if>
+			<if test="sorting != null">
+			  sorting = #{sorting},
+			</if>
+			  update_date = now(),
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from activity_product_comment 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="ActivityProductCommentPojo">
+		insert into activity_product_comment
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="activityId != null">
+				activity_id,
+			</if>
+			<if test="attendId != null">
+			    attend_id,
+			</if>
+			<if test="productId != null">
+				product_id,
+			</if>
+			<if test="content != null">
+				content,
+			</if>
+			<if test="img1 != null">
+				img1,
+			</if>
+			<if test="img2 != null">
+				img2,
+			</if>
+			<if test="img3 != null">
+				img3,
+			</if>
+			<if test="img4 != null">
+				img4,
+			</if>
+			<if test="img5 != null">
+				img5,
+			</if>
+			<if test="img6 != null">
+				img6,
+			</if>
+			<if test="img7 != null">
+				img7,
+			</if>
+			<if test="img8 != null">
+				img8,
+			</if>
+			<if test="img9 != null">
+				img9,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="sorting != null">
+				sorting,
+			</if>
+				create_date,
+			<if test="createBy != null">
+				create_by,
+			</if>
+				update_date,
+			<if test="updateBy != null">
+				update_by,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="userId != null">
+				#{userId},
+			</if>
+			<if test="type != null">
+				#{type},
+			</if>
+			<if test="activityId != null">
+				#{activityId},
+			</if>
+			<if test="attendId != null">
+			    #{attendId},
+			</if>
+			<if test="productId != null">
+				#{productId},
+			</if>
+			<if test="content != null">
+				#{content},
+			</if>
+			<if test="img1 != null">
+				#{img1},
+			</if>
+			<if test="img2 != null">
+				#{img2},
+			</if>
+			<if test="img3 != null">
+				#{img3},
+			</if>
+			<if test="img4 != null">
+				#{img4},
+			</if>
+			<if test="img5 != null">
+				#{img5},
+			</if>
+			<if test="img6 != null">
+				#{img6},
+			</if>
+			<if test="img7 != null">
+				#{img7},
+			</if>
+			<if test="img8 != null">
+				#{img8},
+			</if>
+			<if test="img9 != null">
+				#{img9},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+			<if test="sorting != null">
+				#{sorting},
+			</if>
+				now(),
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+				now(),
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+		</trim>
+	</insert>
+	
+</mapper>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.UserVisitMapper">
+ 
+ 	<select id="getTodayVisitPojos" resultType="userVisitPojo">
+ 		select id as id,visit_time as visitTime,ip as ip,ip_desc as ipDesc from user_visit  where  date_format(from_unixtime(visit_time),'%Y-%m-%d') = date_format(now(),'%Y-%m-%d')  
+ 	</select>
+ 	
+ 	<select id="getTodayVisitNum" resultType="int">
+ 		select count(*) from user_visit  where  date_format(from_unixtime(visit_time),'%Y-%m-%d') = date_format(now(),'%Y-%m-%d')  
+ 	</select>
+</mapper>

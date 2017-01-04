@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.AgencyMapper">
+	<!-- 代理商 -->
+	<select id="getSysLoginAG" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from sys_login as t left join user_agency u on u.user_id=t.id where 1=1 
+				
+	<if test="id!=null and id!=''">
+		and t.id=#{id}
+	</if>
+	<if test="name!=null and name!=''">
+		and t.name like CONCAT("%",#{name},"%")
+	</if>   
+	<if test="QQ!=null and QQ!=''">
+		and u.QQ like CONCAT("%",#{QQ},"%")
+	</if>
+	<if test="loginname!=null and loginname!=''">
+		and t.loginname=#{loginname} 
+	</if>
+		<if test="os!=null and os!='' ">
+			and t.type = #{os}
+		</if>
+	</select>
+	
+	  <select id="sysLoginAGAllList" resultType="agencyPojo"
+		parameterType="java.util.Map">
+		select 
+		    a.agency_id as agencyId,
+	        a.user_id as userId,
+	        a.contact as contact,
+	        a.tel as tel,
+	        a.phone as phone,
+	        a.fax as fax,
+	        a.address_home as addressHome,
+	        a.address_company as addressCompany,
+	        a.corporation as corporation,
+	        a.proxy_market as proxyMarket,
+	        a.manufacturer_id as manufacturerId,
+	        a.province as province,
+	        a.city as city,
+	        a.area as area,
+	        a.company as company,
+	        a.bus_licence as busLicence,
+	        a.email as email,
+	        a.main_category as mainCategory,
+	        a.main_product as mainProduct,
+	        a.credit_level as creditLevel,
+	        a.qq as QQ,
+	        a.channel as channel,
+	        a.isread as isread,
+	        a.status as status,
+	        a.create_by as createBy,
+	        a.create_date as createDate,
+	        a.update_by as updateBy,
+	        a.remarks as remarks,
+	        a.update_date as updateDate,
+	        a.version as version,
+	        a.lat as lat,
+	        a.lng as lng,
+		t.id as id,
+		t.loginname as loginname,
+		t.password as password,
+		t.name as name,
+		t.openid as openid,
+		t.sorting as sorting,
+		t.type as type,
+		t.taobao_user_id as taobaoUserId,
+		t.qq_openid as qqOpenid,
+		t.baidu_uid as BaiduUid,
+		t.create_date as agencydate,
+		(select name from sys_dict where value=t.type and type = 'sys_login_type') typeName,
+		(select name from sys_dict where value=t.status and type = 'status') statusName 
+		from sys_login as t 
+		left join user_agency a on a.user_id=t.id
+		 where 1=1 
+		<if test="loginname!=null and loginname!=''">
+			and t.loginname like CONCAT("%",#{loginname},"%")
+		</if>
+		<if test="id!=null and id!=''">
+			and t.id=#{id}
+		</if>
+		<if test="os!=null and os!='' ">
+			and t.type = #{os}
+		</if>
+		<if test="QQ!=null and QQ!=''">	
+		    and a.qq like CONCAT("%",#{QQ},"%")
+	    </if>	
+		<if test="name!=null and name!=''">
+			and t.name like CONCAT("%",#{name},"%")
+		</if>    
+		order by t.create_date desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+
+	</select>
+	
+	<select id="findagencyByUserId" parameterType="Long" resultType="agencyPojo" >
+	select 
+    t.agency_id as agencyId,
+    t.user_id as userId,
+    t.contact as contact,
+    t.tel as tel,
+    t.phone as phone,
+    t.fax as fax,
+    t.address_home as addressHome,
+    t.address_company as addressCompany,
+    t.corporation as corporation,
+    t.proxy_market as proxyMarket,
+    t.manufacturer_id as manufacturerId,
+    t.province as province,
+    t.city as city,
+    t.area as area,
+    t.company as company,
+    t.bus_licence as busLicence,
+    t.email as email,
+    t.main_category as mainCategory,
+    t.main_product as mainProduct,
+    t.credit_level as creditLevel,
+    t.qq as QQ,
+    t.channel as channel,
+    t.isread as isread,
+    t.status as status,
+    t.create_by as createBy,
+    t.create_date as createDate,
+    t.update_by as updateBy,
+    t.update_date as updateDate,
+    t.remarks as remarks,
+    t.version as version,
+    t.lat as lat,
+    t.lng as lng,
+	(select name from sys_dict where value=t.status and type = 'status') statusName
+	from user_agency t  where
+	t.user_id = #{userId} 
+</select>
+
+<select id="findagencyStatusByUserId" parameterType="Long" resultType="agencyPojo" >
+	select 
+    t.status as status
+	from user_agency t  where
+	t.user_id = #{userId} 
+</select>
+
+	
+	<delete id="deleteAgency" parameterType="Long">
+		delete from user_agency where user_id = #{id}
+	</delete>
+	
+	<update id="updateAgency" parameterType="agencyPojo">
+		update user_agency a left join user_shop s on a.manufacturer_id=s.id set
+		a.update_by = #{updateBy},
+		a.update_date = #{updateDate},
+		a.user_id = #{userId},
+		a.contact = #{contact},
+		a.tel = #{tel},
+		a.phone =#{phone},
+		a.corporation =#{corporation},
+		a.fax =#{fax},
+		a.address_home = #{addressHome},
+		a.address_company = #{addressCompany},
+		a.qq =#{QQ},
+		a.email =#{email},
+		a.company = #{company},
+		a.address = #{address},
+		<if test="province != null" >
+		a.province =#{province},
+		</if>
+		<if test="city != null" >
+		a.city =#{city},
+		</if>
+		<if test="area != null" >
+		a.area =#{area},
+		</if>
+		<if test="busLicence!=null and busLicence!=''" >
+		a.bus_licence =#{busLicence},
+		</if>
+		a.lat = #{lat},
+		a.lng =#{lng},
+		a.manufacturer_id = #{manufacturerId},
+		a.credit_level = #{creditLevel},
+		a.main_category =#{mainCategory},
+		a.channel =#{channel},
+		a.isread =#{isread},
+		a.status =#{status}
+		where a.agency_id = #{agencyId}
+	</update>
+
+
+
+<!--查找批发商（代理商）信息表 -->	
+<select id="getfindByUserIdAgency" parameterType="Long" resultType="agencyPojo" >
+		    select 
+		    a.agency_id as agencyId,
+	        a.user_id as userId,
+	        a.contact as contact,
+	        a.tel as tel,
+	        a.phone as phone,
+	        a.fax as fax,
+	        a.address_home as addressHome,
+	        a.address_company as addressCompany,
+	        a.corporation as corporation,
+	        a.proxy_market as proxyMarket,
+	        a.address as address,
+	        a.manufacturer_id as manufacturerId,
+	        a.province as province,
+	        a.city as city,
+	        a.area as area,
+	        a.company as company,
+	        a.bus_licence as busLicence,
+	        a.email as email,
+	        a.main_category as mainCategory,
+	        a.main_product as mainProduct,
+	        a.credit_level as creditLevel,
+	        a.qq as QQ,
+	        a.channel as channel,
+	        a.isread as isread,
+	        a.status as status,
+	        a.create_by as createBy,
+	        a.create_date as createDate,
+	        a.update_by as updateBy,
+	        a.update_date as updateDate,
+	        a.remarks as remarks,
+	        a.version as version,
+	        a.lat as lat,
+	        a.lng as lng,
+		    (select name from sys_dict where value=a.status and type = 'status') statusName
+		    from user_agency a  where 
+		    a.agency_id = #{agencyId} 
+	</select>
+
+<!--查找批发商（代理商）信息表 -->	
+      <select id="getfindByAgencyId" parameterType="Long" resultType="agencyPojo" >
+		select
+		    a.agency_id as agencyId,
+	        a.user_id as userId,
+	        a.contact as contact,
+	        a.tel as tel,
+	        a.phone as phone,
+	        a.fax as fax,
+	        a.address_home as addressHome,
+	        a.address_company as addressCompany,
+	        a.corporation as corporation,
+	        a.proxy_market as proxyMarket,
+	        a.manufacturer_id as manufacturerId,
+	        a.province as province,
+	        a.city as city,
+	        a.area as area,
+	        a.company as company,
+	        a.bus_licence as busLicence,
+	        a.email as email,
+	        a.main_category as mainCategory,
+	        a.main_product as mainProduct,
+	        a.credit_level as creditLevel,
+	        a.qq as QQ,
+	        a.channel as channel,
+	        a.isread as isread,
+	        a.status as status,
+	        a.create_by as createBy,
+	        a.create_date as createDate,
+	        a.update_by as updateBy,
+	        a.update_date as updateDate,
+	        a.remarks as remarks,
+	        a.version as version,
+	        a.lat as lat,
+	        a.lng as lng,
+		    s.baidu_uid as baiduUid,
+		   (select name from sys_dict where value=a.status and type = 'status') statusName
+		   from user_agency a  left join sys_login as s on a.user_id=s.id
+		   where a.agency_id = #{agencyId}
+	</select>
+	
+<!-- 插入批发商（代理商）信息表 -->	
+<insert id="insertAgency" parameterType="agencyPojo">
+		insert into
+		user_agency(user_id,contact,tel,phone,fax,address_home,address_company,corporation,proxy_market,province,city,area,lat,lng,manufacturer_id,company,bus_licence,email,
+		main_category,main_product,credit_level,qq,channel,isread,status,create_by,create_date,update_by,update_date,remarks,version)
+		values(#{userId},#{contact},#{tel},#{phone},#{fax},#{addressHome},#{addressCompany},#{corporation},#{proxyMarket},#{province},#{city},#{area},#{lat},#{lng},#{manufacturerId},#{company},#{busLicence},#{email},
+		#{mainCategory},#{mainProduct},#{creditLevel},#{QQ},#{channel},#{isread},#{status},#{createBy},now(),#{updateBy},now(),#{remarks},#{version})
+	</insert>
+	
+
+<select id="agencyAllList" resultType="agencyPojo" parameterType="java.util.Map">
+		select 
+		    u.agency_id as agencyId,
+	        u.user_id as userId,
+	        u.contact as contact,
+	        u.tel as tel,
+	        u.phone as phone,
+	        u.fax as fax,
+	        u.address_home as addressHome,
+	        u.address_company as addressCompany,
+	        u.corporation as corporation,
+	        u.proxy_market as proxyMarket,
+	        u.manufacturer_id as manufacturerId,
+	        u.province as province,
+	        u.city as city,
+	        u.area as area,
+	        u.company as company,
+	        u.bus_licence as busLicence,
+	        u.email as email,
+	        u.main_category as mainCategory,
+	        u.main_product as mainProduct,
+	        u.credit_level as creditLevel,
+	        u.qq as QQ,
+	        u.channel as channel,
+	        u.isread as isread,
+	        u.status as status,
+	        u.create_by as createBy,
+	        u.create_date as createDate,
+	        u.update_by as updateBy,
+	        u.update_date as updateDate,
+	        u.remarks as remarks,
+	        u.version as version,
+	        u.lat as lat,
+	        u.lng as lng,
+	    s.loginname as loginname,
+		s.name as name,
+		us.name as shopName,
+		(select name from sys_dict where value=u.status and type = 'status')as statusName
+		from user_agency u left join sys_login s on u.user_id=s.id 
+		left join user_shop us on u.manufacturer_id=us.id
+		where
+		1=1
+				<if test="company!=null and company!=''">
+					and u.company like CONCAT("%",#{company},"%")
+				</if>
+				<if test="addressCompany!=null and addressCompany!=''">
+					and u.address_company like CONCAT("%",#{addressCompany},"%")
+				</if>
+				<if test="phone!=null and phone!=''">
+					and u.phone like CONCAT("%",#{phone},"%")
+				</if>
+				<if test="QQ!=null and QQ!=''">
+					and u.QQ like CONCAT("%",#{QQ},"%")
+				</if>
+				<if test="loginname!=null and loginname!=''">
+				and s.loginname like CONCAT("%",#{loginname},"%") 
+				</if>
+				<if test="name!=null and name!=''">
+				and s.name like CONCAT("%",#{name},"%") 
+				</if>
+				order by s.id desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+</select>
+<select id="agencyCount" resultType="int" parameterType="java.util.Map">
+		select count(*)
+		from user_agency u left join sys_login s on u.user_id=s.id 
+				where 1=1
+			<if test="company!=null and company!=''">
+				and u.company like CONCAT("%",#{company},"%")
+			</if>
+			<if test="addressCompany!=null and addressCompany!=''">
+				and u.address_company like CONCAT("%",#{addressCompany},"%")
+			</if>
+			<if test="phone!=null and phone!=''">
+				and u.phone like CONCAT("%",#{phone},"%")
+			</if>
+			<if test="QQ!=null and QQ!=''">
+				and u.QQ like CONCAT("%",#{QQ},"%")
+			</if>
+			<if test="loginname!=null and loginname!=''">
+				and s.loginname like CONCAT("%",#{loginname},"%") 
+			</if>
+			<if test="name!=null and name!=''">
+				and s.name like CONCAT("%",#{name},"%") 
+			</if>
+</select>
+
+<!-- for push -->
+<select id="agencyAllListForPush" resultType="agencyPojo" parameterType="java.util.Map">
+		select 
+	    a.agency_id as agencyId,
+        a.user_id as userId,
+        a.contact as contact,
+        a.tel as tel,
+        a.phone as phone,
+        a.fax as fax,
+        a.address_home as addressHome,
+        a.address_company as addressCompany,
+        a.corporation as corporation,
+        a.proxy_market as proxyMarket,
+        a.manufacturer_id as manufacturerId,
+        a.province as province,
+        a.city as city,
+        a.area as area,
+        a.company as company,
+        a.bus_licence as busLicence,
+        a.email as email,
+        a.main_category as mainCategory,
+        a.main_product as mainProduct,
+        a.credit_level as creditLevel,
+        a.qq as QQ,
+        a.channel as channel,
+        a.isread as isread,
+        a.status as status,
+        a.create_by as createBy,
+        a.create_date as createDate,
+        a.update_by as updateBy,
+        a.remarks as remarks,
+        a.update_date as updateDate,
+        a.version as version,
+        a.lat as lat,
+        a.lng as lng,
+        t.id as id,
+		t.loginname as loginname,
+		t.password as password,
+		t.name as name,
+		t.openid as openid,
+		t.sorting as sorting,
+		t.type as type,
+		t.taobao_user_id as taobaoUserId,
+		t.qq_openid as qqOpenid,
+		t.baidu_uid as BaiduUid,
+		t.create_date as agencydate,
+		(select name from sys_dict where value=t.type and type = 'sys_login_type') typeName,
+		(select name from sys_dict where value=t.type and type = 'push_status') pushStatusName,
+		(select name from sys_dict where value=t.status and type = 'status') statusName, 
+		(select name from user_shop where id=a.manufacturer_id) shopName 
+		from user_agency as a  
+		left join sys_login as t on a.user_id=t.id
+		where 1=1 and t.baidu_uid &lt;&gt; '' 
+	<if test="company!=null and company!=''">
+		and a.company like CONCAT("%",#{company},"%")
+	</if>
+	<if test="addressCompany!=null and addressCompany!=''">
+		and a.address_company like CONCAT("%",#{addressCompany},"%")
+	</if>
+	<if test="phone!=null and phone!=''">
+		and a.phone like CONCAT("%",#{phone},"%")
+	</if>
+	<if test="QQ!=null and QQ!=''">
+		and a.QQ like CONCAT("%",#{QQ},"%")
+	</if>
+	<if test="loginname!=null and loginname!=''">
+		and t.loginname=#{loginname} 
+	</if>
+	<if test="userIdAgency !=null and userIdAgency !=''">
+		and a.user_id=#{userIdAgency}
+	</if>
+	<if test="city !=null">
+		and a.city=#{city}
+	</if>
+	<if test="shopId !=null">
+		and a.manufacturer_id=#{shopId}
+	</if>
+	<if test="pageSize != null">
+		limit #{pageNo} , #{pageSize}
+	</if>
+</select>
+<select id="agencyCountForPush" resultType="int" parameterType="java.util.Map">
+		select count(*)
+		from user_agency as a  
+		left join sys_login as t on a.user_id=t.id
+		where 1=1 and t.baidu_uid &lt;&gt; '' 
+	<if test="company!=null and company!=''">
+		and a.company like CONCAT("%",#{company},"%")
+	</if>
+	<if test="addressCompany!=null and addressCompany!=''">
+		and a.address_company like CONCAT("%",#{addressCompany},"%")
+	</if>
+	<if test="phone!=null and phone!=''">
+		and a.phone like CONCAT("%",#{phone},"%")
+	</if>
+	<if test="QQ!=null and QQ!=''">
+		and a.QQ like CONCAT("%",#{QQ},"%")
+	</if>
+	<if test="loginname!=null and loginname!=''">
+		and t.loginname=#{loginname} 
+	</if>
+	<if test="userIdAgency !=null and userIdAgency !=''">
+		and a.user_id=#{userIdAgency}
+	</if>
+	<if test="shopId !=null">
+		and a.manufacturer_id=#{shopId}
+	</if>
+	<if test="city !=null">
+		and a.city=#{city}
+	</if>
+</select>
+
+<update id="updatePushName" parameterType="Long">
+update user_order
+set agency_user_id = '1' where id = #{orderId}
+</update>
+
+<update id="checkAgency" parameterType="Long">
+update user_agency
+set status = 1 where agency_id = #{agencyId}
+</update>
+
+<select id="getfindByIdAgency" parameterType="Long"
+resultType="agencyPojo">
+select 
+t.agency_id as agencyId,
+t.user_id as userId,
+t.contact as contact,
+t.tel as tel,
+t.phone as phone,
+t.fax as fax,
+t.address_home as addressHome,
+t.address_company as addressCompany,
+t.corporation as corporation,
+t.proxy_market as proxyMarket,
+t.manufacturer_id as manufacturerId,
+t.province as province,
+t.city as city,
+t.area as area,
+t.company as company,
+t.bus_licence as busLicence,
+t.email as email,
+t.main_category as mainCategory,
+t.main_product as mainProduct,
+t.credit_level as creditLevel,
+t.qq as QQ,
+t.channel as channel,
+t.isread as isread,
+t.status as status,
+t.create_by as createBy,
+t.create_date as createDate,
+t.update_by as updateBy,
+t.update_date as updateDate,
+t.remarks as remarks,
+t.version as version,
+t.lat as lat,
+t.lng as lng,
+(select name from sys_dict where value=t.status and type = 'status') statusName
+from user_agency t  where
+t.agency_id = #{agencyId}
+</select>
+<delete id="delAgency" parameterType="Long">
+delete from user_agency where agency_id = #{agencyId}
+</delete>
+</mapper>

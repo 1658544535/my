@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="sysDict" extends="default">
+
+		<action name="sysDict" class="com.tzmb2c.web.action.SysDictAction" method="getSysDictCount">
+			<result>/page/system/sys/sysDict.jsp</result>
+		</action>
+		
+		<action name="SysDictDeleteId" class="com.tzmb2c.web.action.SysDictAction" method="sysDictDeleteId">
+		
+		</action>
+		
+		<action name="goFindSysDict" class="com.tzmb2c.web.action.SysDictAction" method="goFindSysDict">
+			<result>/page/system/sys/sysDictupdate.jsp</result>
+		</action>
+		<action name="updateSysDict" class="com.tzmb2c.web.action.SysDictAction" method="updateSysDict">
+		</action>
+		<action name="addSysDict" class="com.tzmb2c.web.action.SysDictAction" method="addSysDict">
+			<result>/page/system/sys/sysDictAdd.jsp</result>
+		</action>
+		<action name="insertSysDict" class="com.tzmb2c.web.action.SysDictAction" method="insertSysDict">
+		</action>
+		
+	</package>
+	<package name="sysDict-json" extends="json-default">
+		<action name="deleSysDict" class="com.tzmb2c.web.action.SysDictAction" method="deleSysDict">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		<!--平台入口-->
+		<action name="getSysDictCount" class="com.tzmb2c.web.action.SysDictAction" method="getSysDictCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+			<action name="sysDictAllList" class="com.tzmb2c.web.action.SysDictAction" method="sysDictAllList">
+			<result type="json">
+				<param name="root">page.result</param>.
+			</result>
+		</action>
+		<action name="getSysDictListByType" class="com.tzmb2c.web.action.SysDictAction" method="getSysDictListByType">
+			<result type="json">
+				<param name="root">page.result</param>.
+			</result>
+		</action>
+	</package>
+</struts>

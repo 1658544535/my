@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="sysLoginLog" extends="default">
+
+		<action name="sysLoginLog" class="com.tzmb2c.web.action.SysLoginLogAction" method="getSysLoginLogCount">
+			<result>/page/system/sys/sysLoginLog.jsp</result>
+		</action>
+		
+		<!-- 统计 -->
+		<action name="sysLoginLogHot" class="com.tzmb2c.web.action.SysLoginLogAction" method="getSysLoginLogCountHot">
+			<result>/page/system/sys/sysLoginLogHot.jsp</result>
+		</action>
+		
+		
+	</package>
+	<package name="sysLoginLog-json" extends="json-default">
+		<action name="getSysLoginLogCount" class="com.tzmb2c.web.action.SysLoginLogAction" method="getSysLoginLogCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+			<action name="sysLoginLogAllList" class="com.tzmb2c.web.action.SysLoginLogAction" method="sysLoginLogAllList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="getSysLoginLogCountHot" class="com.tzmb2c.web.action.SysLoginLogAction" method="getSysLoginLogCountHot">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		<action name="sysLoginLogAllListHot" class="com.tzmb2c.web.action.SysLoginLogAction" method="sysLoginLogAllListHot">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="sysLoginLogAllActiveUser" class="com.tzmb2c.web.action.SysLoginLogAction" method="sysLoginLogAllActiveUser">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

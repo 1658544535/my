@@ -1,0 +1,21 @@
+/*reset css*/
+*{margin:0;padding:0;list-style:none;border:none;}
+/*main css*/
+/*a.btn-qq:visited*/
+.izl-rmenu{position:fixed; right:0%; margin-left:0px; bottom:10px; padding-bottom:0px;}
+.izl-rmenu .btn{width:47px; height:49px; margin-bottom:1px; cursor:pointer; position:relative;}
+.izl-rmenu .btn-qq{background:url(../image/r_qq.png) 0px 0px no-repeat; background-color:#FF6347;}
+.izl-rmenu .btn-qq:hover{background-color:#FF0000;}
+.izl-rmenu .btn-qq .qq{background-color:#FF0000; position:absolute; width:120px; left:-120px; top:0px; line-height:49px; color:#FFF; font-size:16px; text-align:center; display:none;}
+.izl-rmenu a.btn-qq,.izl-rmenu a.btn-qq{background:url(../image/r_qq.png) 0px 0px no-repeat; background-color:#FF6347; text-decoration:none; display:block;}
+
+.izl-rmenu .btn-wx{background:url(../image/r_wx.png) 0px 0px no-repeat; background-color:#78c340;}
+.izl-rmenu .btn-wx:hover{background-color:#58a81c;}
+.izl-rmenu .btn-wx .pic{position:absolute; left:-160px; top:-53px; display:none;width:160px;height:160px;}
+
+.izl-rmenu .btn-message{background:url(../image/r_message.png) 0px 0px no-repeat; background-color:#58a8c6;}
+.izl-rmenu .btn-message:hover{background-color:#2a9fc2;}
+.izl-rmenu .btn-message .message{background-color:#2a9fc2; position:absolute; width:160px; left:-160px; top:0px; line-height:49px; color:#FFF; font-size:16px; text-align:center; display:none;}
+
+.izl-rmenu .btn-top{background:url(../image/r_top.png) 0px 0px no-repeat; background-color:#FFFFFF; display:none;}
+.izl-rmenu .btn-top:hover{background-color:#FFFFFF;}

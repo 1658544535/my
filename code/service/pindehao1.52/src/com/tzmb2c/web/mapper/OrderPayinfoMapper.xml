@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.OrderPayinfoMapper">
+	<!-- 查询全部 -->
+	<select id="orderPayInfoAllList" resultType="orderPayinfoPojo">
+		select 
+		*
+		from order_payinfo
+		where
+		1=1
+	</select>
+	<!-- 插入单条 -->
+	<insert id="addOrderPayInfo" parameterType="orderPayinfoPojo">
+		insert into order_payinfo
+		(id,channel,out_trade_no,charge_id,transaction_no,amount,fee_type,time_paid,trade_status,
+		failure_code,failure_msg,create_by,create_date,update_by,update_date,remarks,version,cmb_trade_no)
+		values
+		(#{id}, #{channel},#{outTradeNo},#{chargeId},#{transactionNo},#{amount},#{feeType},#{timePaid},#{tradeStatus},
+		#{failureCode},#{failureMsg},#{createBy},#{createDate},#{updateBy},#{updateDate},#{remarks},#{version},#{cmbTradeNo})
+	</insert>
+	
+	<!-- 查找单条 -->
+	<select id="findOrderPayInfoById" resultType="orderPayinfoPojo" parameterType="Long">
+		select 
+		op.channel as channel,
+		op.out_trade_no as outTradeNo,
+		op.cmd_trade_no as cmbTradeNo,
+		op.charge_id as chargeId,
+		op.amount,
+		op.fee_type as feeType,
+		op.time_paid as timePaid,
+		op.trade_status as tradeStatus,
+		op.failure_code as failureCode,
+		op.failure_msg as failureMsg,
+		op.create_by as createBy,
+		op.create_date as createDate,
+		op.update_by as updateBy,
+		op.update_date as updateDate,
+		op.remarks,
+		op.version
+		from order_payinfo op
+		where
+		op.id=#{id}
+	</select>
+	
+	<!-- 根据outTradeNo查找 -->
+	<select id="findOrderPayInfoByOrderNo" resultType="orderPayinfoPojo" parameterType="String">
+		select 
+		op.channel as channel,
+		op.out_trade_no as outTradeNo,
+		op.cmd_trade_no as cmbTradeNo,
+		op.charge_id as chargeId,
+		op.amount,
+		op.fee_type as feeType,
+		op.time_paid as timePaid,
+		op.trade_status as tradeStatus,
+		op.failure_code as failureCode,
+		op.failure_msg as failureMsg,
+		op.create_by as createBy,
+		op.create_date as createDate,
+		op.update_by as updateBy,
+		op.update_date as updateDate,
+		op.remarks,
+		op.version
+		from order_payinfo op
+		where
+		op.out_trade_no=#{outTradeNo}
+	</select>
+	
+	<!--更新 单条-->
+	<update id="updateOrderPayInfo" parameterType="orderPayinfoPojo">
+		update order_payinfo op
+		<set>
+			<if test="channel != null">
+			  op.channel=#{channel},
+			</if>
+			<if test="outTradeNo != null">
+			  op.out_trade_no=#{outTradeNo},
+			</if>
+			<if test="cmbTradeNo != null">
+			  op.cmd_trade_no=#{cmbTradeNo},
+			</if>
+			<if test="chargeId != null">
+			  op.charge_id=#{chargeId},
+			</if>
+			<if test="amount != null">
+			  op.amount=#{amount},
+			</if>
+			<if test="feeType != null">
+			  op.fee_type=#{feeType},
+			</if>
+			<if test="timePaid != null">
+			  op.time_paid=#{timePaid},
+			</if>
+			<if test="tradeStatus != null">
+			  op.trade_status=#{tradeStatus},
+			</if>
+			<if test="failureCode != null">
+			  op.failure_code=#{failureCode},
+			</if>
+			<if test="failureMsg != null">
+			  op.failure_msg=#{failureMsg},
+			</if>
+			<if test="createBy != null">
+			  op.create_by=#{createBy},
+			</if>
+			<if test="createDate != null">
+			  op.create_date=#{createDate},
+			</if>
+			<if test="updateBy != null">
+			  op.update_by=#{updateBy},
+			</if>
+			<if test="updateDate != null">
+			  op.update_date=#{updateDate},
+			</if>
+			<if test="remarks != null">
+			  op.remarks=#{remarks},
+			</if>
+			<if test="remarks != null">
+			  op.version=#{version}
+			</if>
+		</set>
+		where
+		op.transaction_no = #{transactionNo}
+	</update>
+	
+	<!-- 删除单个 -->
+	<delete id="delOrderPayInfoById" parameterType="orderPayinfoPojo">
+		delete from order_payinfo
+		where
+		id =
+		#{id} 
+	</delete>
+	
+	<!-- 返回信息记录的数目count -->
+	<select id="orderPayInfoAllCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from order_payinfo
+		where 1=1
+	</select>
+	
+	<!-- 根据CmbTradeNo查找 -->
+	<select id="findOrderPayInfoByCmbTradeNo" resultType="orderPayinfoPojo" parameterType="String">
+		select 
+		op.channel as channel,
+		op.out_trade_no as outTradeNo,
+		op.cmd_trade_no as cmbTradeNo,
+		op.charge_id as chargeId,
+		op.amount,
+		op.fee_type as feeType,
+		op.time_paid as timePaid,
+		op.trade_status as tradeStatus,
+		op.failure_code as failureCode,
+		op.failure_msg as failureMsg,
+		op.create_by as createBy,
+		op.create_date as createDate,
+		op.update_by as updateBy,
+		op.update_date as updateDate,
+		op.remarks,
+		op.version
+		from order_payinfo op
+		where
+		op.cmd_trade_no=#{cmbTradeNo}
+	</select>
+</mapper>

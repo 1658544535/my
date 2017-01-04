@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="adspread-web" extends="struts-default">
+		<!-- youmi 注册接口 -->
+		<action name="youmiad" 
+			class="com.tzmb2c.web.action.AdSpreadAction" method="youmiad">
+		</action>
+	</package>
+	<package name="adspread" extends="default">
+	    <!-- 页面（全部）  -->
+		<action name="adSpread" class="com.tzmb2c.web.action.AdSpreadAction" method="findAdSpreadCount">
+			<result name="success">/page/system/adSpread/adSpread.jsp</result>
+		</action>
+	</package>
+	<package name="adspread-json" extends="json-default">
+         <!-- 内容 -->
+		<action name="findAdSpreadList" class="com.tzmb2c.web.action.AdSpreadAction" method="findAdSpreadList">
+			<result type="json">
+			<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="findAdSpreadCount" class="com.tzmb2c.web.action.AdSpreadAction" method="findAdSpreadCount">
+			<result type="json">
+			<param name="root">page.rowCount</param>
+			</result>
+		</action>		
+	</package>
+</struts>

@@ -1,0 +1,634 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.YourFavouritesDetailMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id as id,
+		fav_id as favId,
+		type as type,
+		post_id as postId,
+		product_id as productId,
+		activity_id as activityId,
+		product_type_id as productTypeId,
+		sorting as sorting,
+		create_date as createDate,
+		create_by as createBy,
+		update_date as updateDate,
+		update_by as updateBy
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="YourFavouritesDetailPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			your_favourites_detail
+		where
+			id = #{id}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from your_favourites_detail
+		where 1=1
+		  <if test="id != null ">
+			and id = #{id}
+		  </if>
+		  <if test="favId != null ">
+			and fav_id = #{favId}
+		  </if>
+		  <if test="type != null ">
+			and type = #{type}
+		  </if>
+		  <if test="postId != null ">
+			and post_id = #{postId}
+		  </if>
+		  <if test="productId != null ">
+			and product_id = #{productId}
+		  </if>
+		  <if test="activityId != null ">
+			and activity_id = #{activityId}
+		  </if>
+		  <if test="sorting != null ">
+			and sorting = #{sorting}
+		  </if>
+		  <if test="createDate != null ">
+			and create_date = #{createDate}
+		  </if>
+		  <if test="createBy != null ">
+			and create_by = #{createBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and update_date = #{updateDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and update_by = #{updateBy}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="YourFavouritesDetailPojo">
+		select
+			<include refid="Base_Column_List" />
+		from your_favourites_detail
+		where 1=1
+			<if test="id != null ">
+			  and id = #{id}
+			</if>
+			<if test="favId != null ">
+			  and fav_id = #{favId}
+			</if>
+			<if test="type != null ">
+			  and type = #{type}
+			</if>
+			<if test="postId != null ">
+			  and post_id = #{postId}
+			</if>
+			<if test="productId != null ">
+			  and product_id = #{productId}
+			</if>
+			<if test="activityId != null ">
+			  and activity_id = #{activityId}
+			</if>
+			<if test="sorting != null ">
+			  and sorting = #{sorting}
+			</if>
+			<if test="createDate != null ">
+			  and create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and update_by = #{updateBy}
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<select id="getProductFavouritesCount" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from your_favourites_detail yfd
+			left join product p on p.id = yfd.product_id
+			left join sys_login s on p.user_id = s.id
+			left join product_type pt on p.product_type_id = pt.id 
+		where 1 = 1
+			
+			
+			<if test="id != null ">
+			  and yfd.id = #{id}
+			</if>
+			<if test="favId != null ">
+			  and yfd.fav_id = #{favId}
+			</if>
+			<if test="type != null ">
+			  and yfd.type = #{type}
+			</if>
+			<if test="postId != null ">
+			  and yfd.post_id = #{postId}
+			</if>
+			<if test="productId != null ">
+			  and yfd.product_id = #{productId}
+			</if>
+			<if test="activityId != null ">
+			  and yfd.activity_id = #{activityId}
+			</if>
+			<if test="sorting != null ">
+			  and yfd.sorting = #{sorting}
+			</if>
+			<if test="createDate != null ">
+			  and yfd.create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and yfd.create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and yfd.update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and yfd.update_by = #{updateBy}
+			</if>
+	</select>
+	
+	<select id="getProductFavouritesList" parameterType="java.util.Map" resultType="ProductPojo">
+		select
+			yfd.id as favId,
+			yfd.activity_id as activityId,
+			p.product_name as productName,
+			p.id as id,
+			s.name as name,
+			p.product_num as productNum,
+			p.image as image,
+			p.selling_price as sellingPrice,
+			p.distribution_price as distributionPrice,
+			<if test=" activity != null">
+			ag.active_price as activePrice,
+			</if>
+			pt.name productTypeName,
+			yfd.sorting as sorting,
+			yfd.create_date as createDate
+		from your_favourites_detail yfd
+			left join product p on p.id = yfd.product_id
+			left join sys_login s on p.user_id = s.id
+			left join product_type pt on p.product_type_id = pt.id 
+			<if test=" activity != null">
+			left join activity_goods ag on ag.product_id = yfd.product_id and ag.time_id = yfd.activity_id
+			</if>
+		where 1 = 1
+			<if test="id != null ">
+			  and yfd.id = #{id}
+			</if>
+			<if test="favId != null ">
+			  and yfd.fav_id = #{favId}
+			</if>
+			<if test="type != null ">
+			  and yfd.type = #{type}
+			</if>
+			<if test="postId != null ">
+			  and yfd.post_id = #{postId}
+			</if>
+			<if test="productId != null ">
+			  and yfd.product_id = #{productId}
+			</if>
+			<if test="activityId != null ">
+			  and yfd.activity_id = #{activityId}
+			</if>
+			<if test="sorting != null ">
+			  and yfd.sorting = #{sorting}
+			</if>
+			<if test="createDate != null ">
+			  and yfd.create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and yfd.create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and yfd.update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and yfd.update_by = #{updateBy}
+			</if>
+			<if test="agStatus != null ">
+			  and ag.status = #{agStatus}
+			</if>
+			<if test="proStatus != null ">
+			  and p.status = #{proStatus}
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<select id="getProductTypeFavouritesCount" parameterType="java.util.Map" resultType="int">
+		select
+			count(*)
+		from your_favourites_detail yfd
+			left join product_type pt on yfd.product_type_id = pt.id 
+		where 1=1
+			<if test="id != null ">
+			  and yfd.id = #{id}
+			</if>
+			<if test="favId != null ">
+			  and yfd.fav_id = #{favId}
+			</if>
+			<if test="type != null ">
+			  and yfd.type = #{type}
+			</if>
+			<if test="postId != null ">
+			  and yfd.post_id = #{postId}
+			</if>
+			<if test="productId != null ">
+			  and yfd.product_id = #{productId}
+			</if>
+			<if test="activityId != null ">
+			  and yfd.activity_id = #{activityId}
+			</if>
+			<if test="sorting != null ">
+			  and yfd.sorting = #{sorting}
+			</if>
+			<if test="createDate != null ">
+			  and yfd.create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and yfd.create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and yfd.update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and yfd.update_by = #{updateBy}
+			</if>
+			<if test="agStatus != null ">
+			  and ag.status = #{agStatus}
+			</if>
+			<if test="proStatus != null ">
+			  and p.status = #{proStatus}
+			</if>
+	</select>
+	
+	<select id="getProductTypeFavouritesList" parameterType="java.util.Map" resultType="ProductPojo">
+		select
+			yfd.id as favId,
+			pt.name productTypeName,
+			pt.id productTypeId,
+			yfd.sorting as sorting,
+			yfd.create_date as createDate
+		from your_favourites_detail yfd
+			left join product_type pt on yfd.product_type_id = pt.id 
+		where 1=1
+			<if test="id != null ">
+			  and yfd.id = #{id}
+			</if>
+			<if test="favId != null ">
+			  and yfd.fav_id = #{favId}
+			</if>
+			<if test="type != null ">
+			  and yfd.type = #{type}
+			</if>
+			<if test="postId != null ">
+			  and yfd.post_id = #{postId}
+			</if>
+			<if test="productId != null ">
+			  and yfd.product_id = #{productId}
+			</if>
+			<if test="activityId != null ">
+			  and yfd.activity_id = #{activityId}
+			</if>
+			<if test="sorting != null ">
+			  and yfd.sorting = #{sorting}
+			</if>
+			<if test="createDate != null ">
+			  and yfd.create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and yfd.create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and yfd.update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and yfd.update_by = #{updateBy}
+			</if>
+			<if test="agStatus != null ">
+			  and ag.status = #{agStatus}
+			</if>
+			<if test="proStatus != null ">
+			  and p.status = #{proStatus}
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<select id="getUserCirclePostFavouritesCount" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from your_favourites_detail yfd
+			left join user_circle_post u on u.id = yfd.post_id
+			left join sys_login s on u.user_id = s.id
+			left join social_circle sc on u.circle_id = sc.id
+		where 1=1
+		    	and u.is_delete=0
+			<if test="title != null and title != '' ">
+				and u.title like concat("%",#{title},"%")
+		  	</if>
+		  	<if test="status != null ">
+		  		and u.status = #{status}
+			  <!-- <choose>
+		  		<when test="status == 3">
+		  			and u.is_delete = 1
+		  		</when>
+		  		<otherwise>
+		  			and u.status = #{status}
+		  			and u.is_delete = 0
+		  		</otherwise>
+		  		</choose> -->
+			</if>
+			<if test="ageType != null ">
+			  and u.age_type = #{ageType}
+			</if>
+			<if test="skillType != null ">
+			  and u.skill_type = #{skillType}
+			</if>
+			<if test="productType != null ">
+			  and u.product_type = #{productType}
+			</if>
+			<if test="createDateStartStr !=null and createDateStartStr !=''">
+				and UNIX_TIMESTAMP(u.create_date) >= UNIX_TIMESTAMP(CONCAT(#{createDateStartStr}))
+		    </if>
+		    <if test="createDateEndStr !=null and createDateEndStr !=''">
+				and UNIX_TIMESTAMP(CONCAT(#{createDateEndStr})) > UNIX_TIMESTAMP(u.create_date)
+		    </if>
+		    <if test="userName != null and userName != '' ">
+				and s.name like concat("%",#{userName},"%")
+		    </if>
+			
+			<if test="id != null ">
+			  and yfd.id = #{id}
+			</if>
+			<if test="favId != null ">
+			  and yfd.fav_id = #{favId}
+			</if>
+			<if test="type != null ">
+			  and yfd.type = #{type}
+			</if>
+			<if test="postId != null ">
+			  and yfd.post_id = #{postId}
+			</if>
+			<if test="productId != null ">
+			  and yfd.product_id = #{productId}
+			</if>
+			<if test="activityId != null ">
+			  and yfd.activity_id = #{activityId}
+			</if>
+			<if test="sorting != null ">
+			  and yfd.sorting = #{sorting}
+			</if>
+			<if test="createDate != null ">
+			  and yfd.create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and yfd.create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and yfd.update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and yfd.update_by = #{updateBy}
+			</if>
+	</select>
+	
+	<select id="getUserCirclePostFavouritesList" parameterType="java.util.Map" resultType="UserCirclePostPojo">
+		select
+			yfd.id as favId,
+			u.id as id,
+			u.title as title,
+			u.user_id as userId,
+			u.banner as banner,
+			u.sketch as sketch,
+			s.name as userName,
+			s.image as userImage,
+			ui.sex as userSex,
+			u.collect_num as collectNum,
+			u.create_date as createDate,
+			(select name from sys_dict where value = u.age_type and type="user_age") as ageTypeName, 
+			(select name from sys_dict where value = u.skill_type and type="ability") as skillTypeName,
+			(select name from sys_dict where value = u.sec_skill_type and type="second_ability") as secSkillTypeName,
+			(select name from product_type t where t.id = u.product_type) as productTypeName,	
+			(select name from label_bucket where id = u.option_type) as optionTypeName,
+			sc.title as circleName,
+			(CASE WHEN u.is_delete = 1 THEN '删除' WHEN u.status = 0 THEN '审核中' WHEN u.status = 1 THEN '审核成功' WHEN u.status = 2 THEN '审核失败' END) as statusName,
+			yfd.sorting as sorting
+		from your_favourites_detail yfd
+			left join user_circle_post u on u.id = yfd.post_id
+			left join sys_login s on u.user_id = s.id
+			left join user_info ui on s.id = ui.user_id
+			left join social_circle sc on u.circle_id = sc.id
+		where 1=1
+		    	and u.is_delete=0
+			<if test="title != null and title != '' ">
+				and u.title like concat("%",#{title},"%")
+		  	</if>
+		  	<if test="status != null ">
+		  		and u.status = #{status}
+			  <!-- <choose>
+		  		<when test="status == 3">
+		  			and u.is_delete = 1
+		  		</when>
+		  		<otherwise>
+		  			and u.status = #{status}
+		  			and u.is_delete = 0
+		  		</otherwise>
+		  		</choose> -->
+			</if>
+			<if test="ageType != null ">
+			  and u.age_type = #{ageType}
+			</if>
+			<if test="skillType != null ">
+			  and u.skill_type = #{skillType}
+			</if>
+			<if test="productType != null ">
+			  and u.product_type = #{productType}
+			</if>
+			<if test="createDateStartStr !=null and createDateStartStr !=''">
+				and UNIX_TIMESTAMP(u.create_date) >= UNIX_TIMESTAMP(CONCAT(#{createDateStartStr}))
+		    </if>
+		    <if test="createDateEndStr !=null and createDateEndStr !=''">
+				and UNIX_TIMESTAMP(CONCAT(#{createDateEndStr})) > UNIX_TIMESTAMP(u.create_date)
+		    </if>
+		    <if test="userName != null and userName != '' ">
+				and s.name like concat("%",#{userName},"%")
+		    </if>
+			
+			<if test="id != null ">
+			  and yfd.id = #{id}
+			</if>
+			<if test="favId != null ">
+			  and yfd.fav_id = #{favId}
+			</if>
+			<if test="type != null ">
+			  and yfd.type = #{type}
+			</if>
+			<if test="postId != null ">
+			  and yfd.post_id = #{postId}
+			</if>
+			<if test="productId != null ">
+			  and yfd.product_id = #{productId}
+			</if>
+			<if test="activityId != null ">
+			  and yfd.activity_id = #{activityId}
+			</if>
+			<if test="sorting != null ">
+			  and yfd.sorting = #{sorting}
+			</if>
+			<if test="createDate != null ">
+			  and yfd.create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and yfd.create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and yfd.update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and yfd.update_by = #{updateBy}
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="YourFavouritesDetailPojo">
+		update your_favourites_detail
+		<set>
+			<if test="favId != null">
+			  fav_id = #{favId},
+			</if>
+			<if test="type != null">
+			  type = #{type},
+			</if>
+			<if test="postId != null">
+			  post_id = #{postId},
+			</if>
+			<if test="productId != null">
+			  product_id = #{productId},
+			</if>
+			<if test="activityId != null">
+			  activity_id = #{activityId},
+			</if>
+			<if test="productTypeId != null">
+			  product_type_id = #{productTypeId},
+			</if>
+			<if test="sorting != null">
+			  sorting = #{sorting},
+			</if>
+			<if test="createDate != null">
+			  create_date = #{createDate},
+			</if>
+			<if test="createBy != null">
+			  create_by = #{createBy},
+			</if>
+			<if test="updateDate != null">
+			  update_date = #{updateDate},
+			</if>
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from your_favourites_detail 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="YourFavouritesDetailPojo">
+		insert into your_favourites_detail
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="favId != null">
+				fav_id,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="postId != null">
+				post_id,
+			</if>
+			<if test="productId != null">
+				product_id,
+			</if>
+			<if test="activityId != null">
+				activity_id,
+			</if>
+			<if test="productTypeId != null">
+				product_type_id,
+			</if>
+			<if test="sorting != null">
+				sorting,
+			</if>
+				create_date,
+			<if test="createBy != null">
+				create_by,
+			</if>
+				update_date,
+			<if test="updateBy != null">
+				update_by,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="favId != null">
+				#{favId},
+			</if>
+			<if test="type != null">
+				#{type},
+			</if>
+			<if test="postId != null">
+				#{postId},
+			</if>
+			<if test="productId != null">
+				#{productId},
+			</if>
+			<if test="activityId != null">
+				#{activityId},
+			</if>
+			<if test="productTypeId != null">
+				#{productTypeId},
+			</if>
+			<if test="sorting != null">
+				#{sorting},
+			</if>
+				now(),
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+				now(),
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+		</trim>
+	</insert>
+	
+</mapper>

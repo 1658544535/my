@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="gameFactoryToy" extends="default">
+	<!-- 游戏工厂玩具列表 -->
+	<action name="gameFactoryToy" class="com.tzmb2c.web.action.GameFactoryToyAction" method="findGameFactoryToyCount">
+			<result>/page/system/gameFactoryToy/gameFactoryToyList.jsp</result>
+		</action>
+	<action name="findGameFactoryToyById" class="com.tzmb2c.web.action.GameFactoryToyAction" method="findGameFactoryToyById">
+			<result>/page/system/gameFactoryToy/gameFactoryToySet.jsp</result>
+		</action>
+	<!--跳转指编辑页面-->
+	<action name="updateGameFactoryToyList" class="com.tzmb2c.web.action.GameFactoryToyAction" method="updateGameFactoryToyList">
+			<result>/page/system/gameFactoryToy/updateGameFactoryToyList.jsp</result>
+        </action>	
+    <!--提交编辑-->
+	<action name="updateGameFactoryToy" class="com.tzmb2c.web.action.GameFactoryToyAction" method="updateGameFactoryToy">
+	    </action>
+	<action name="checkGameFactoryToyAll" class="com.tzmb2c.web.action.GameFactoryToyAction" method="checkGameFactoryToyAll">
+		</action>
+	<action name="delGameFactoryToyAll" class="com.tzmb2c.web.action.GameFactoryToyAction" method="delGameFactoryToyAll">
+	    </action>
+	<action name="addGameFactoryToy" class="com.tzmb2c.web.action.GameFactoryToyAction" method="addGameFactoryToy">
+			<result>/page/system/gameFactoryToy/addGameFactoryToy.jsp</result>
+	    </action>
+	<action name="insertGameFactoryToy" class="com.tzmb2c.web.action.GameFactoryToyAction" method="insertGameFactoryToy">
+	    </action>
+	</package>
+	
+	
+	<package name="gameFactoryToy-json" extends="json-default">
+	 <action name="findGameFactoryToyList" class="com.tzmb2c.web.action.GameFactoryToyAction" method="findGameFactoryToyList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="findGameFactoryToyCount" class="com.tzmb2c.web.action.GameFactoryToyAction" method="findGameFactoryToyCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+	 <action name="checkGameFactoryToy" class="com.tzmb2c.web.action.GameFactoryToyAction" method="checkGameFactoryToy">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+	 <action name="uncheckGameFactoryToy" class="com.tzmb2c.web.action.GameFactoryToyAction" method="uncheckGameFactoryToy">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+	<action name="delGameFactoryToy" class="com.tzmb2c.web.action.GameFactoryToyAction" method="delGameFactoryToy">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

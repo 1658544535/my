@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.SyntheticalDictMapper">
+	
+	<!--前台调用，状态审核才显示-->
+	<select id="getSyntheticalDictListByTypeStatus" parameterType="String" resultType="syntheticalDictPojo">
+		select 
+		t.id as id, 
+		t.type as type, 
+		t.name as name ,
+		t.name_en as nameEn, 
+		t.value as value,
+		t.sorting as sorting,
+		t.status as status,
+		(select name from synthetical_dict where value=t.status and type = 'synthetical_dict_status') statusName
+		from synthetical_dict t where
+		t.status=1 and
+		t.type = #{type} order by t.sorting
+	</select>
+
+	<select id="getSyntheticalDictListByType" parameterType="Map" resultType="syntheticalDictPojo">
+		select 
+		t.id as id, 
+		t.type as type, 
+		t.name as name,
+		t.name_en as nameEn, 
+		t.value as value,
+		t.sorting as sorting,
+		t.status as status,
+		(select name from synthetical_dict where value=t.status and type = 'synthetical_dict_status') statusName
+		from synthetical_dict t where
+		t.type = #{type} 
+		<if test="text != null and text != '' ">
+			and t.name like CONCAT("%",#{text},"%")
+		</if>
+		order by t.sorting asc
+	</select>
+	<select id="getSyntheticalDictByTypeAndValue" resultType="syntheticalDictPojo" parameterType="syntheticalDictPojo">
+		select 
+		t.id as id, 
+		t.type as type, 
+		t.name as name ,
+		t.name_en as nameEn, 
+		t.value as value,
+		t.sorting as sorting,
+		t.status as status,
+		(select name from synthetical_dict where value=t.status and type = 'synthetical_dict_status') statusName
+		from synthetical_dict t where t.type = #{type} and t.value = #{value}
+	</select>
+	
+	<select id="getSyntheticalDictAll" resultType="syntheticalDictPojo">
+		select 
+		t.id as id, 
+		t.type as type, 
+		t.name as name ,
+		t.name_en as nameEn, 
+		t.value as value,
+		t.sorting as sorting,
+		t.status as status,
+		(select name from synthetical_dict where value=t.status and type = 'synthetical_dict_status') statusName
+		from synthetical_dict t order by t.create_date desc
+	</select>
+
+	<select id="getfindByIdSyntheticalDict" parameterType="Long" resultType="syntheticalDictPojo">
+		select 
+		t.id as id, 
+		t.type as type, 
+		t.name as name ,
+		t.name_en as nameEn, 
+		t.value as value,
+		t.sorting as sorting,
+		t.status as status,
+		(select name from synthetical_dict where value=t.status and type = 'synthetical_dict_status') statusName
+		from synthetical_dict t where
+		t.id = #{id}
+	</select>
+
+	<insert id="insertSyntheticalDict" parameterType="syntheticalDictPojo">
+		insert into
+		synthetical_dict(type,name,name_en,value,sorting,status,create_by,create_date,update_by,update_date,remarks,version)
+		values(#{type},#{name},#{nameEn},#{value},#{sorting},#{status},#{createBy},#{createDate},#{updateBy},#{updateDate},#{remarks},#{version})
+	</insert>
+
+	<delete id="delSyntheticalDict" parameterType="Long">
+		delete from synthetical_dict where
+		id = #{id}
+	</delete>
+
+	<delete id="deleteSyntheticalDict" parameterType="Long">
+		delete from synthetical_dict
+		where id = #{id}
+	</delete>
+
+	<update id="updateSyntheticalDict" parameterType="syntheticalDictPojo">
+
+		update synthetical_dict set
+		update_by = #{updateBy},
+		update_date = #{updateDate},
+		type = #{type},
+		name =#{name},
+		name_en =#{nameEn},
+		value =#{value},
+		sorting =#{sorting},
+		status =#{status}
+		where id = #{id}
+	</update>
+
+	<select id="syntheticalDictAllCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from synthetical_dict where
+		1=1
+		<if test="name!=null and name!=''">
+			and name like CONCAT("%",#{name},"%")
+		</if>
+		<if test="nameEn!=null and nameEn!=''">
+			and name_en like CONCAT("%",#{nameEn},"%")
+		</if>
+		<if test="type!=null and type!=''">
+			and type like CONCAT("%",#{type},"%")
+		</if>
+	</select>
+
+	<select id="syntheticalDictAllList" resultType="syntheticalDictPojo"
+		parameterType="java.util.Map">
+
+		select 
+		t.id as id, 
+		t.type as type, 
+		t.name as name ,
+		t.name_en as nameEn, 
+		t.value as value,
+		t.sorting as sorting,
+		t.status as status,
+		(select name from sys_dict where value=t.status and type = 'synthetical_dict_status') statusName
+		from synthetical_dict as t
+		where
+		1=1
+
+		<if test="name!=null and name!=''">
+			and name like CONCAT("%",#{name},"%")
+		</if>
+		<if test="nameEn!=null and nameEn!=''">
+			and name_en like CONCAT("%",#{nameEn},"%")
+		</if>
+		<if test="type!=null and type!=''">
+			and type like CONCAT("%",#{type},"%")
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+
+	</select>
+	
+	<!-- 审核全部 -->
+	<update id="checkAllById" parameterType="String">
+		update synthetical_dict io set
+		io.status=1
+		where
+		io.id = #{id}
+	</update>
+	
+	<!-- 审核单条-->
+	<update id="verifyInfo" parameterType="syntheticalDictPojo">
+		update synthetical_dict io set
+		io.status=1
+		where
+		io.id = #{id}
+	</update>
+
+</mapper>

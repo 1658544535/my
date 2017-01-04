@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.ProductImagesMapper">
+
+	<!-- <cache/>  -->
+
+
+	<select id="getProductImagesAll" parameterType="java.util.Map" resultType="productImagesPojo">
+		select t.id as id,t.product_id as productId,p.product_name as productName,p.product_num as productNum,t.user_id as userId,t.images as images,t.sorting as sorting,t.status as status,(select name from sys_dict where value=t.status and type = 'status') as statusName,t.create_by as createBy,t.create_date as createDate,t.update_by as updateBy,
+		t.update_date as updateDate,t.remarks as remarks,t.version as version from product_images t left join product p on t.product_id = p.id where 1=1
+		<if test="productId != null and productId != ''">
+			and t.product_id=#{productId} 
+		</if>
+		<if test="productName != null and productName != ''">
+			and p.product_name like CONCAT("%",#{productName},"%" )
+		</if>
+		<if test="productNum != null and productNum != ''">
+			and p.product_num=#{productNum}
+		</if>
+		<if test="images != null and images != ''">
+			and t.images like CONCAT("%",#{images},"%" )
+		</if>
+		<if test="cids != null and cids !='' ">
+			and t.id not in 
+			<foreach collection="cids" item="cids" index="index" open="(" separator="," close=")">
+				#{cids}
+			</foreach>
+		</if>
+	    order by t.sorting
+	    <if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<select id="getCount" parameterType="java.util.Map" resultType="int">
+		select count(*) from product_images t left join product p on t.product_id=p.id where 1=1 
+		<if test="productId != null and productId != ''">
+			and t.product_id=#{productId} 
+		</if>
+		<if test="productName != null and productName != ''">
+			and p.product_name like CONCAT("%",#{productName},"%" ) 
+		</if>
+		<if test="productNum != null and productNum != ''">
+			and p.product_num=#{productNum}
+		</if>
+		<if test="images != null and images != ''">
+			and t.images like CONCAT("%",#{images},"%" )
+		</if>
+	</select>
+	
+	<select id="findProductImages" parameterType="productImagesPojo" resultType="productImagesPojo">
+		select t.id as id,t.product_id as productId,t.user_id as userId,t.images as images,t.sorting as sorting,t.status as status,(select name from sys_dict where value=t.status and type = 'status') as statusName,t.create_by as createBy,t.create_date as createDate,update_by as updateBy,
+		t.update_date as updateDate,t.remarks as remarks,t.version as version,t.alts as alts from product_images t where t.id=#{id}
+	</select>
+	
+	<insert id="addProductImages" parameterType="productImagesPojo">
+		insert into product_images(product_id,user_id,images,sorting,status,create_by,create_date,update_by,update_date,remarks,version,alts)
+		values(#{productId},#{userId},#{images},#{sorting},#{status},#{createBy},sysdate(),#{updateBy},sysdate(),#{remarks},#{version},#{alts})
+	</insert>
+	
+	<update id="productImagesUpdate" parameterType="productImagesPojo">
+		update product_images t 
+		<set>
+		<if test="productId != null ">
+		t.product_id=#{productId},
+		</if>
+		<if test="images != null and images != ''">
+		t.images=#{images},
+		</if>
+		<if test="status != null ">
+		t.status=#{status},
+		</if>
+		<if test="alts != null and alts != ''">
+		t.alts=#{alts},
+		</if>
+		<if test="sorting != null ">
+		t.sorting=#{sorting}		
+		</if>
+		</set>
+		where
+		t.id = #{id}
+	</update>
+	
+	<delete id="deleProductImages" parameterType="Long">
+		delete from product_images where id=#{id}
+	</delete>
+	
+	<update id="checkProductImages" parameterType="Long">
+		update product_images set status = 1 where id = #{id}
+	</update>
+	
+	<update id="unCheckProductImages" parameterType="Long">
+		update product_images set status = 0 where id = #{id}
+	</update>
+	
+	<select id="productForId" parameterType="Long" resultType="productImagesPojo">
+		select t.id as id,t.product_id as productId,t.user_id as userId,t.images as images,t.sorting as sorting,
+		t.status as status,t.version as version 
+		from product_images t where t.product_id = #{id} and t.status = 1 order by t.sorting asc
+	</select>
+</mapper>

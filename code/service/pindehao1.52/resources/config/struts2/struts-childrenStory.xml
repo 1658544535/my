@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="childrenStory" extends="default">
+		<!-- 页面 -->
+		<action name="childrenStory" class="com.tzmb2c.web.action.ChildrenStoryAction" method="childrenStoryListCount">
+			<result name="success">/page/system/childrensChannel/childrenStory.jsp</result>
+		</action>	
+		<!-- 根据ID删除 -->
+		<action name="delChildrenStory" class="com.tzmb2c.web.action.ChildrenStoryAction" method="delChildrenStory">
+		</action>
+		<!-- 根据ID审核-->
+		<action name="checkChildrenStory" class="com.tzmb2c.web.action.ChildrenStoryAction" method="checkChildrenStory">
+		</action>
+		<!-- 根据ID取审 -->
+		<action name="uncheckChildrenStory" class="com.tzmb2c.web.action.ChildrenStoryAction" method="uncheckChildrenStory">
+		</action>
+		<!-- 跳转新增页面 -->
+		<action name="goAddChildrenStory" class="com.tzmb2c.web.action.ChildrenStoryAction" method="goAddChildrenStory">
+			<result name="success">/page/system/childrensChannel/addChildrenStory.jsp</result>
+		</action>
+		<!-- 提交新增 -->
+		<action name="addChildrenStory" class="com.tzmb2c.web.action.ChildrenStoryAction" method="addChildrenStory">
+		</action>
+		<!-- 跳转编辑页面 -->
+		<action name="goUpdateChildrenStory" class="com.tzmb2c.web.action.ChildrenStoryAction" method="goUpdateChildrenStory">
+			<result name="success">/page/system/childrensChannel/updateChildrenStory.jsp</result>
+		</action>
+		<!-- 提交编辑 -->
+		<action name="updateChildrenStory" class="com.tzmb2c.web.action.ChildrenStoryAction" method="updateChildrenStory">
+		</action>
+		<!-- 批量删除 -->
+		<action name="delAllChildrenStory" class="com.tzmb2c.web.action.ChildrenStoryAction" method="delAllChildrenStory">
+		</action>
+		<!-- 批量审核 -->
+		<action name="checkAllChildrenStory" class="com.tzmb2c.web.action.ChildrenStoryAction" method="checkAllChildrenStory">
+		</action>
+	</package>
+	<package name="childrenStory-json" extends="json-default">
+		<!-- 明细列表 -->
+		<action name="childrenStoryListAll" class="com.tzmb2c.web.action.ChildrenStoryAction" method="childrenStoryListAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="childrenStoryListCount" class="com.tzmb2c.web.action.ChildrenStoryAction" method="childrenStoryListCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>		
+	</package>
+</struts>

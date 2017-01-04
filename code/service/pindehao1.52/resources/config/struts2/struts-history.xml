@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+	<package name="history" extends="default">
+
+
+		<!--入口 -->
+		<action name="historyManage" class="com.tzmb2c.web.action.HistoryAction"
+			method="getHistoryCount">
+			<result name="success">/page/system/history/historyManage.jsp
+			</result>
+		</action>
+
+		<!--go审核 -->
+		<action name="findOneHistoryById" class="com.tzmb2c.web.action.HistoryAction"
+			method="findOneHistoryById">
+		</action>
+
+		<!-- 审核 -->
+		<action name="checkOneHistoryById" class="com.tzmb2c.web.action.HistoryAction"
+			method="checkOneHistoryById">
+		</action>
+
+		<!-- 批量审核 -->
+		<action name="checkAllHistoryById" class="com.tzmb2c.web.action.HistoryAction"
+			method="checkAllHistoryById">
+		</action>
+
+	</package>
+
+	<package name="history-json" extends="json-default">
+		<!--平台入口 -->
+		<action name="getHistoryCount" class="com.tzmb2c.web.action.HistoryAction"
+			method="getHistoryCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+
+		<action name="historyAllList" class="com.tzmb2c.web.action.HistoryAction"
+			method="historyAllList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+	</package>
+</struts>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="messageReport" extends="default">
+
+		<!-- 用户购物车页 -->
+		<action name="messageReport" class="com.tzmb2c.web.action.MessageReportAction" method="getMessageReportCount">
+			<result>/page/system/user/messageReport.jsp</result>
+		</action>
+		
+		<action name="MessageReportDeleteId" class="com.tzmb2c.web.action.MessageReportAction" method="messageReportDeleteId">
+		
+		</action>
+		
+		<action name="goFindMessageReport" class="com.tzmb2c.web.action.MessageReportAction" method="goFindMessageReport">
+			<result>/page/system/user/messageReportupdate.jsp</result>
+		</action>
+		<action name="updateMessageReport" class="com.tzmb2c.web.action.MessageReportAction" method="updateMessageReport">
+		</action>
+		<action name="addMessageReport" class="com.tzmb2c.web.action.MessageReportAction" method="addMessageReport">
+		</action>
+		
+	</package>
+	
+	<package name="messageReport-json" extends="json-default">
+		<action name="deleMessageReport" class="com.tzmb2c.web.action.MessageReportAction" method="deleMessageReport">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		
+		<!--平台入口-->
+		<action name="getMessageReportCount" class="com.tzmb2c.web.action.MessageReportAction" method="getMessageReportCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+			<action name="messageReportAllList" class="com.tzmb2c.web.action.MessageReportAction" method="messageReportAllList">
+			<result type="json">
+				<param name="root">page.result</param>.
+			</result>
+		</action>
+	</package>
+</struts>

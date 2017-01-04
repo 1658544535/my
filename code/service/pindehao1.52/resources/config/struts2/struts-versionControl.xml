@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="versionControl" extends="default">
+		<!-- 进入列表页面 -->
+		<action name="goVersionControl" class="com.tzmb2c.web.action.VersionControlAction" method="goVersionControl">
+			<result name="success">/page/system/versionControl/versionControlList.jsp</result>
+		</action>
+		<!-- 新增 -->
+		<action name="goAddVersionControl" class="com.tzmb2c.web.action.VersionControlAction" method="goAddVersionControl">
+		    <result name="success">/page/system/versionControl/addVersionControl.jsp</result>
+		</action>
+		<!-- 新增提交 -->
+		<action name="addVersionControl" class="com.tzmb2c.web.action.VersionControlAction" method="add">
+		</action>		
+		<!-- 编辑页面 -->
+		<action name="goEditVersionControl" class="com.tzmb2c.web.action.VersionControlAction" method="goEditVersionControl">
+			<result name="success">/page/system/versionControl/updateVersionControl.jsp</result>
+		</action>
+		<!-- 编辑提交 -->
+		<action name="updateVersionControl" class="com.tzmb2c.web.action.VersionControlAction" method="update">
+		</action>
+	</package>
+	<package name="versionControl-json" extends="json-default">
+		<!-- 内容 -->
+		<action name="versionControlList" class="com.tzmb2c.web.action.VersionControlAction" method="versionControlList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="versionControlCnt" class="com.tzmb2c.web.action.VersionControlAction" method="versionControlRowCnt">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+		<!-- 根据ID删除 -->
+		<action name="delVersionControl" class="com.tzmb2c.web.action.VersionControlAction" method="delete">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+		<!-- 删除选中 -->
+		<action name="delVersionControlAll" class="com.tzmb2c.web.action.VersionControlAction" method="deleteAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 通过审核 -->
+		<action name="checkVersionControl" class="com.tzmb2c.web.action.VersionControlAction" method="check">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 取消审核 -->
+		<action name="uncheckVersionControl" class="com.tzmb2c.web.action.VersionControlAction" method="uncheck">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中通过审核 -->
+		<action name="checkVersionControlAll" class="com.tzmb2c.web.action.VersionControlAction" method="checkAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中取消审核 -->
+		<action name="uncheckVersionControlAll" class="com.tzmb2c.web.action.VersionControlAction" method="uncheckAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+	</package>
+</struts>

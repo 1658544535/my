@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.GameFactoryToyMapper">
+	<!-- 查询所有的记录 -->
+	<select id="findGameFactoryToyList" resultType="GameFactoryToyPojo" parameterType="java.util.Map">
+		select
+		t.id as id,
+		t.name as name,
+		t.images  as images ,
+        t.status as status,
+		(select name from sys_dict where value = t.status and type="status") as statusName,
+		t.sorting  as sorting ,
+		t.create_by as createBy,
+		t.create_date as createDate,
+		t.update_by as updateBy,
+		t.update_date as updateDate
+		from game_factory_toy t
+		where 1=1
+		<if test="id != null">
+			and t.id = #{id}
+		</if>
+		<if test="name!=null and name!='' and panduan == 1 ">
+			and t.name =#{name}
+		</if>
+		<if test="name!=null and name!='' and panduan != 1 ">
+			and t.name like concat("%",#{name},"%")
+		</if> 
+		<if test="status!=null">
+			and t.status = #{status}
+		</if>
+        order by t.sorting
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<select id="findGameFactoryToyCount" resultType="int" parameterType="java.util.Map">
+		select count(*)
+	   	from game_factory_toy t	   	
+	   	where 1=1
+		<if test="name!=null and name!='' ">
+			and t.name like concat("%",#{name},"%")
+		</if>
+		<if test="status!=null">
+			and t.status = #{status}
+		</if>
+	</select>
+	
+	<select id="findGameFactoryToyById" resultType="GameFactoryToyPojo" parameterType="java.util.Map">
+		select
+		t.id as id,
+		t.name as name,
+		t.images  as images ,
+        t.status as status,
+		(select name from sys_dict where value = t.status and type="status") as statusName,
+		t.sorting  as sorting ,
+		t.create_by as createBy,
+		t.create_date as createDate,
+		t.update_by as updateBy,
+		t.update_date as updateDate
+		from game_factory_toy t
+		where t.id = #{id}
+	</select>
+	
+	<!-- 插入单条 -->
+	<insert id="insertGameFactoryToy" parameterType="GameFactoryToyPojo" useGeneratedKeys="true" keyProperty="id">
+		insert into game_factory_toy 
+		(id,name,images,status,sorting,create_by,create_date,update_by,update_date)
+		values(#{id},#{name},#{images},#{status},#{sorting},#{createBy},now(),#{updateBy},now())
+	</insert>
+	
+	<!-- 删除单条 -->
+	<delete id="delGameFactoryToy" parameterType="Long">
+		delete from game_factory_toy where id = #{id}
+	</delete>
+	
+	<!--更新单条-->
+	<update id="updateGameFactoryToy" parameterType="GameFactoryToyPojo">
+		update game_factory_toy set
+		<if test="name!=null and name!='' ">
+		name=#{name},
+		</if>
+		<if test="images!=null and images!='' ">
+		images=#{images},
+		</if>
+		<if test="sorting!=null">
+		sorting = #{sorting},
+		</if>
+		<if test="status!=null">
+		status = #{status},
+		</if>
+		<if test="updateBy!=null and updateBy!='' ">
+		update_by = #{updateBy},
+		</if>
+		update_date = now()
+		where id = #{id}
+	</update>
+	
+	<!--更新单条状态-->
+	<update id="checkGameFactoryToy" parameterType="Long">
+		update game_factory_toy set status = 1,update_date = now() where id = #{id}
+	</update>
+	<!--更新单条状态-->
+	<update id="uncheckGameFactoryToy" parameterType="Long">
+		update game_factory_toy set status = 0,update_date = now() where id = #{id}
+	</update>
+</mapper>

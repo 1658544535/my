@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.HelpTypeMapper">
+
+	<select id="getHelpTypeByPid" parameterType="Long" resultType="helpTypePojo">
+		select 
+		h.id as id,
+		h.name as name,
+		h.name_en as nameEn,
+		h.pid as pid,
+		h.sorting as sorting,
+		h.status as status,
+		(select name from sys_dict where value=h.status and type = 'status') as statusName,
+		h.create_by as createBy,
+		h.create_date as createDate,
+		h.update_by as updateBy,
+		h.update_date as updateDate,
+		h.remarks as remarks,
+		h.version as version 
+		from help_type h  
+		where h.pid=#{pid} order by h.sorting
+	</select>
+	
+	<select id="getHelpTypeByPidAndStatus" parameterType="helpTypePojo" resultType="helpTypePojo">
+		select 
+		h.id as id,
+		h.name as name,
+		h.name_en as nameEn,
+		h.pid as pid,
+		h.sorting as sorting,
+		h.status as status,
+		(select name from sys_dict where value=h.status and type = 'status') as statusName,
+		h.create_by as createBy,
+		h.create_date as createDate,
+		h.update_by as updateBy,
+		h.update_date as updateDate,
+		h.remarks as remarks,
+		h.version as version 
+		from help_type h  
+		where 1=1 
+		<if test="pid != null">
+			and h.pid=#{pid} 
+		</if>
+		<if test="status != null">
+			and h.status=#{status} 
+		</if>
+		order by h.sorting
+	</select>
+	
+	<select id="getHelpTypeCount" parameterType="Long" resultType="int">
+		select count(*) from help_type h where h.pid=#{pid}
+	</select>
+	
+	<select id="findHelpType" parameterType="HelpTypePojo" resultType="HelpTypePojo">
+		select 
+		h.id as id,
+		h.name as name,
+		h.name_en as nameEn,
+		h.pid as pid,
+		h.sorting as sorting,
+		h.status as status,
+		(select name from sys_dict where value=h.status and type = 'status') as statusName,
+		h.create_by as createBy,
+		h.create_date as createDate,
+		h.update_by as updateBy,
+		h.update_date as updateDate,
+		h.remarks as remarks,
+		h.version as version 
+		from help_type h 
+		left join help_type t on t.id=h.pid
+		where 1=1 
+		<if test="id != null">
+			and h.id=#{id}
+		</if>
+		<if test="status != null">
+			and h.status=#{status}
+		</if>
+		<if test="name!=null and name!=''">
+			and h.name = #{name}
+		</if>
+		<if test="pname!=null and pname!=''">
+			and t.name = #{pname}
+		</if>
+		limit 1
+	</select>
+	
+	<insert id="addHelpType" parameterType="helpTypePojo">
+		insert into help_type
+			(
+				pid,
+				name,
+				name_en,
+				status,
+				sorting
+			)
+		values(#{pid},#{name},#{nameEn},#{status},#{sorting})
+	</insert>
+	
+	<update id="helpTypeUpdate" parameterType="helpTypePojo">
+		update help_type h set
+		h.name=#{name},
+		h.sorting=#{sorting}
+		where
+		h.id = #{id}
+	</update>
+	
+	<delete id="deleHelpType" parameterType="Long">
+		delete from help_type where id=#{id}
+	</delete>
+	
+	<update id="checkHelpType" parameterType="Long">
+		update help_type set status = 1 where id = #{id}
+	</update>
+	
+	<!-- 审核全部 -->
+	<update id="checkAllById" parameterType="String">
+		update help_type io set
+		io.status=1
+		where
+		io.id = #{id}
+	</update>
+</mapper>

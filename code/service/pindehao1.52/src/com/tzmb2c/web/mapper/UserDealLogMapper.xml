@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.UserDealLogMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id as id,
+		user_id as userId,
+		deal_date as dealDate,
+		deal_amount as dealAmount,
+		deal_type as dealType,
+		status as status,
+		group_id as groupId,
+		name as name,
+		type as type,
+		type_no as typeNo,
+		order_no as orderNo,
+		return_msg as returnMsg,
+		over_time as overTime,
+		create_by as createBy,
+		create_date as createDate,
+		update_by as updateBy,
+		update_date as updateDate,
+		remark as remark,
+		surplus_price as surplusPrice,
+		false_date as falseDate
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="UserDealLogPojo">
+		select
+			udl.id as id,
+			udl.user_id as userId,
+			udl.deal_date as dealDate,
+			udl.deal_amount as dealAmount,
+			udl.deal_type as dealType,
+			udl.status as status,
+			udl.group_id as groupId,
+			udl.name as name,
+			udl.type as type,
+			udl.type_no as typeNo,
+			udl.order_no as orderNo,
+			udl.return_msg as returnMsg,
+			udl.over_time as overTime,
+			udl.create_by as createBy,
+			udl.create_date as createDate,
+			udl.update_by as updateBy,
+			udl.update_date as updateDate,
+			udl.remark as remark,
+			udl.surplus_price as surplusPrice,
+			udl.false_date as falseDate,
+			upi.id as pdkId
+		from
+			user_deal_log udl
+			left join user_pindeke_info upi on upi.user_id = udl.user_id and upi.status = 1
+		where
+			udl.id = #{id}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from user_deal_log
+		where 1=1
+		  <if test="id != null ">
+			and id = #{id}
+		  </if>
+		  <if test="userId != null ">
+			and user_id = #{userId}
+		  </if>
+		  <if test="dealDate != null ">
+			and deal_date = #{dealDate}
+		  </if>
+		  <if test="dealAmount != null ">
+			and deal_amount = #{dealAmount}
+		  </if>
+		  <if test="dealType != null ">
+			and deal_type = #{dealType}
+		  </if>
+		  <if test="status != null ">
+			and status = #{status}
+		  </if>
+		  <if test="groupId != null ">
+			and group_id = #{groupId}
+		  </if>
+		  <if test="name != null and name != '' ">
+			and name = #{name}
+		  </if>
+		  <if test="nameAndTypeNo != null and nameAndTypeNo != '' ">
+		    and (name like concat('%',#{nameAndTypeNo},'%') or type_no like concat('%',#{nameAndTypeNo},'%'))
+		  </if>
+		  <if test="dealDateStr != null and dealDateStr != '' and dealDateEndStr != null and dealDateEndStr != '' ">
+		    and deal_date between #{dealDateStr} and #{dealDateEndStr}
+		  </if>
+		  <if test="type != null and type != '' ">
+			and type = #{type}
+		  </if>
+		  <if test="typeNo != null and typeNo != '' ">
+			and type_no = #{typeNo}
+		  </if>
+		  <if test="orderNo != null and orderNo != '' ">
+			and order_no like concat('%',#{orderNo},'%')
+		  </if>
+		  <if test="returnMsg != null ">
+			and return_msg = #{returnMsg}
+		  </if>
+		  <if test="overTime != null ">
+			and over_time = #{overTime}
+		  </if>
+		  <if test="createBy != null ">
+			and create_by = #{createBy}
+		  </if>
+		  <if test="createDate != null ">
+			and create_date = #{createDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and update_by = #{updateBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and update_date = #{updateDate}
+		  </if>
+		  <if test="remark != null ">
+			and remark = #{remark}
+		  </if>
+		  <if test="surplusPrice != null ">
+			and surplus_price = #{surplusPrice}
+		  </if>
+		  <if test="falseDate != null ">
+			and false_date = #{falseDate}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="UserDealLogPojo">
+		select
+			udl.id as id,
+			udl.user_id as userId,
+			udl.deal_date as dealDate,
+			udl.deal_amount as dealAmount,
+			udl.deal_type as dealType,
+			udl.status as status,
+			udl.group_id as groupId,
+			udl.name as name,
+			udl.type as type,
+			udl.type_no as typeNo,
+			udl.order_no as orderNo,
+			udl.return_msg as returnMsg,
+			udl.over_time as overTime,
+			udl.create_by as createBy,
+			udl.create_date as createDate,
+			udl.update_by as updateBy,
+			udl.update_date as updateDate,
+			udl.remark as remark,
+			udl.surplus_price as surplusPrice,
+			udl.false_date as falseDate
+		from user_deal_log udl
+			left join user_pindeke_info upi on upi.user_id = udl.user_id
+		where 1=1
+			<if test="id != null ">
+			  and udl.id = #{id}
+			</if>
+			<if test="userId != null ">
+			  and udl.user_id = #{userId}
+			</if>
+			<if test="dealDate != null ">
+			  and udl.deal_date = #{dealDate}
+			</if>
+			<if test="dealAmount != null ">
+			  and udl.deal_amount = #{dealAmount}
+			</if>
+			<if test="dealType != null ">
+			  and udl.deal_type = #{dealType}
+			</if>
+			<if test="status != null ">
+			  and udl.status = #{status}
+			</if>
+			<if test="statusStr != null ">
+			  and ${statusStr}
+			</if>
+			<if test="groupId != null ">
+			  and udl.group_id = #{groupId}
+			</if>
+			<if test="name != null and name != '' ">
+			  and udl.name = #{name}
+			</if>
+			<if test="nameAndTypeNo != null and nameAndTypeNo != '' ">
+			  and (udl.name like concat('%',#{nameAndTypeNo},'%') or udl.type_no like concat('%',#{nameAndTypeNo},'%'))
+			</if>
+			<if test="dealDateStr != null and dealDateStr != '' and dealDateEndStr != null and dealDateEndStr != '' ">
+			  and udl.deal_date between #{dealDateStr} and #{dealDateEndStr}
+			</if>
+			<if test="type != null and type != '' ">
+			  and udl.type = #{type}
+			</if>
+			<if test="typeNo != null and typeNo != '' ">
+			  and udl.type_no = #{typeNo}
+			</if>
+			<if test="orderNo != null and orderNo != '' ">
+			  and udl.order_no = #{orderNo}
+			</if>
+			<if test="returnMsg != null ">
+			  and udl.return_msg = #{returnMsg}
+			</if>
+			<if test="overTime != null ">
+			  and udl.over_time = #{overTime}
+			</if>
+			<if test="createBy != null ">
+			  and udl.create_by = #{createBy}
+			</if>
+			<if test="createDate != null ">
+			  and udl.create_date = #{createDate}
+			</if>
+			<if test="updateBy != null ">
+			  and udl.update_by = #{updateBy}
+			</if>
+			<if test="updateDate != null ">
+			  and udl.update_date = #{updateDate}
+			</if>
+			<if test="remark != null ">
+			  and udl.remark = #{remark}
+			</if>
+			<if test="beginTime != null ">
+			  and udl.deal_date &gt;= str_to_date(#{beginTime},'%Y-%m-%d %H:%i:%s')
+			</if>
+			<if test="endTime != null ">
+			  and udl.deal_date &lt;= str_to_date(#{endTime},'%Y-%m-%d %H:%i:%s') 
+			</if>
+			<if test="surplusPrice != null ">
+			  and surplus_price = surplusPrice
+			</if>
+			<if test="falseDate != null ">
+			  and false_date = falseDate
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="UserDealLogPojo">
+		update user_deal_log
+		<set>
+			<if test="userId != null">
+			  user_id = #{userId},
+			</if>
+			<if test="dealDate != null">
+			  deal_date = #{dealDate},
+			</if>
+			<if test="dealAmount != null">
+			  deal_amount = #{dealAmount},
+			</if>
+			<if test="dealType != null">
+			  deal_type = #{dealType},
+			</if>
+			<if test="status != null">
+			  status = #{status},
+			</if>
+			<if test="groupId != null">
+			  group_id = #{groupId},
+			</if>
+			<if test="name != null">
+			  name = #{name},
+			</if>
+			<if test="type != null">
+			  type = #{type},
+			</if>
+			<if test="typeNo != null">
+			  type_no = #{typeNo},
+			</if>
+			<if test="orderNo != null">
+			  order_no = #{orderNo},
+			</if>
+			<if test="returnMsg != null">
+			  return_msg = #{returnMsg},
+			</if>
+			<if test="overTime != null">
+			  over_time = #{overTime},
+			</if>
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+			  update_date = now(),
+			<if test="remark != null">
+			  remark = #{remark},
+			</if>
+			<if test="surplusPrice != null">
+			  surplus_price = #{surplusPrice},
+			</if>
+			<if test="falseDate != null">
+			  false_date = #{falseDate},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from user_deal_log 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="UserDealLogPojo">
+		insert into user_deal_log
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="dealDate != null">
+				deal_date,
+			</if>
+			<if test="dealAmount != null">
+				deal_amount,
+			</if>
+			<if test="dealType != null">
+				deal_type,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="groupId != null">
+				group_id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="typeNo != null">
+				type_no,
+			</if>
+			<if test="orderNo != null">
+				order_no,
+			</if>
+			<if test="returnMsg != null">
+				return_msg,
+			</if>
+			<if test="overTime != null">
+				over_time,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+				create_date,
+			<if test="updateBy != null">
+				update_by,
+			</if>
+				update_date,
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="surplusPrice != null">
+				surplus_price,
+			</if>
+			<if test="falseDate != null">
+				false_date,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="userId != null">
+				#{userId},
+			</if>
+			<if test="dealDate != null">
+				#{dealDate},
+			</if>
+			<if test="dealAmount != null">
+				#{dealAmount},
+			</if>
+			<if test="dealType != null">
+				#{dealType},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+			<if test="groupId != null">
+				#{groupId},
+			</if>
+			<if test="name != null">
+				#{name},
+			</if>
+			<if test="type != null">
+				#{type},
+			</if>
+			<if test="typeNo != null">
+				#{typeNo},
+			</if>
+			<if test="orderNo != null">
+				#{orderNo},
+			</if>
+			<if test="returnMsg != null">
+				#{returnMsg},
+			</if>
+			<if test="overTime != null">
+				#{overTime},
+			</if>
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+				now(),
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+				now(),
+			<if test="remark != null">
+				#{remark},
+			</if>
+			<if test="surplusPrice != null">
+				#{surplusPrice},
+			</if>
+			<if test="falseDate != null">
+				#{falseDate},
+			</if>
+		</trim>
+	</insert>
+	
+</mapper>

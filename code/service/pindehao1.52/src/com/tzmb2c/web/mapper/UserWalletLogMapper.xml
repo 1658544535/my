@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tzmb2c.web.mapper.UserWalletLogMapper">
+<select id="findUserWalletLogList" resultType="UserWalletLogPojo" parameterType="java.util.Map">
+		select
+			ul.id           as id,
+			ul.user_id      as userId,
+			s.loginname     as loginName,
+			ul.cur_bal      as curBal,
+			ul.type         as type,
+			(CASE WHEN ul.type = 0 THEN '收入' WHEN ul.type = 1 THEN '支出' END)  as typeName,
+			ul.trade_amt    as tradeAmt,
+			ul.source       as source,
+			ss.loginname    as sourceName,
+			ul.order_id     as orderId,
+			uo.order_no     as orderNo,
+			ul.out_trade_no as outTradeNo,
+			b.baidu_id      as machineCode,
+			ul.create_date  as createDate,
+			ul.remarks      as remarks
+        from user_wallet_log ul left join sys_login s on s.id=ul.user_id
+        left join sys_login ss on ss.id=ul.source
+        left join user_order uo on uo.id=ul.order_id
+        left join baidu_login b on b.user_id=ss.id and b.type = 1
+	    where 1=1
+		<if test="loginName!=null and loginName!=''">
+			and s.loginname like CONCAT("%",#{loginName},"%")
+		</if>	
+		<if test="curBal!=null">
+			and ul.cur_bal = #{curBal}
+		</if>
+		<if test="sourceName!=null and sourceName!=''">
+			and ss.loginname like CONCAT("%",#{sourceName},"%")
+		</if>
+		<if test="orderNo!=null and orderNo!=''">
+			and uo.order_no like CONCAT("%",#{orderNo},"%")
+		</if>
+		<if test="type!=null">
+			and ul.type  = #{type}
+		</if>
+		<if test="createDateStartStr!=null and createDateStartStr!=''">
+			and str_to_date(ul.create_date,'%Y-%m-%d %H:%i:%s') &gt;= #{createDateStartStr}
+		</if>
+		<if test="createDateEndStr!=null and createDateEndStr!=''">
+			and str_to_date(ul.create_date,'%Y-%m-%d %H:%i:%s') &lt;= #{createDateEndStr}
+		</if>
+		<if test="userId!=null">
+			and ul.user_id = #{userId}
+		</if>
+		<if test="machineCode!=null and machineCode!=''">
+			and b.baidu_id = #{machineCode}
+		</if>
+        order by ul.create_date desc 
+		<if test="pageNo != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+</select>
+<select id="findUserWalletLogCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from user_wallet_log ul left join sys_login s on s.id=ul.user_id
+        left join sys_login ss on ss.id=ul.source
+        left join user_order uo on uo.id=ul.order_id 
+        left join baidu_login b on b.user_id=ss.id and b.type = 1
+		where 1=1
+		<if test="loginName!=null and loginName!=''">
+			and s.loginname like CONCAT("%",#{loginName},"%")
+		</if>	
+		<if test="curBal!=null">
+			and ul.cur_bal = #{curBal}
+		</if>
+		<if test="sourceName!=null and sourceName!=''">
+			and ss.loginname like CONCAT("%",#{sourceName},"%")
+		</if>
+		<if test="orderNo!=null and orderNo!=''">
+			and uo.order_no like CONCAT("%",#{orderNo},"%")
+		</if>
+		<if test="type!=null">
+			and ul.type  = #{type}
+		</if>
+		<if test="createDateStartStr!=null and createDateStartStr!=''">
+			and str_to_date(ul.create_date,'%Y-%m-%d %H:%i:%s') &gt;= #{createDateStartStr}
+		</if>
+		<if test="createDateEndStr!=null and createDateEndStr!=''">
+			and str_to_date(ul.create_date,'%Y-%m-%d %H:%i:%s') &lt;= #{createDateEndStr}
+		</if>
+		<if test="userId!=null">
+			and ul.user_id = #{userId}
+		</if>
+		<if test="machineCode!=null and machineCode!=''">
+			and b.baidu_id = #{machineCode}
+		</if>
+</select>
+<!-- 查找单条(id) -->
+<select id="findUserWalletLogById" resultType="UserWalletLogPojo" parameterType="Long">
+		select
+		    ul.id           as id,
+			ul.user_id      as userId,
+			s.loginname     as loginName,
+			ul.cur_bal      as curBal,
+			ul.type         as type,
+			(CASE WHEN ul.type = 0 THEN '收入' WHEN ul.type = 1 THEN '支出' END)  as typeName,
+			ul.trade_amt    as tradeAmt,
+			ul.source       as source,
+			ss.loginname    as sourceName,
+			ul.order_id     as orderId,
+			uo.order_no     as orderNo,
+			ul.out_trade_no as outTradeNo,
+			ul.create_date  as createDate,
+			ul.remarks      as remarks
+        from user_wallet_log ul left join sys_login s on s.id=ul.user_id
+        left join sys_login ss on ss.id=ul.source
+        left join user_order uo on uo.id=ul.order_id
+		where
+		ul.id=#{id}
+</select>
+<!-- 查找单条(userId) -->
+<select id="findUserWalletLogByUserId" resultType="UserWalletLogPojo" parameterType="Long">
+		select
+		    ul.id           as id,
+			ul.user_id      as userId,
+			s.loginname     as loginName,
+			ul.cur_bal      as curBal,
+			ul.type         as type,
+			(CASE WHEN ul.type = 0 THEN '收入' WHEN ul.type = 1 THEN '支出' END)  as typeName,
+			ul.trade_amt    as tradeAmt,
+			ul.source       as source,
+			ss.loginname    as sourceName,
+			ul.order_id     as orderId,
+			uo.order_no     as orderNo,
+			ul.out_trade_no as outTradeNo,
+			ul.create_date  as createDate,
+			ul.remarks      as remarks
+        from user_wallet_log ul left join sys_login s on s.id=ul.user_id
+        left join sys_login ss on ss.id=ul.source
+        left join user_order uo on uo.id=ul.order_id
+		where
+		ul.user_id=#{userId}
+</select>
+<!-- 查找单条(userId) -->
+<select id="getUserWalletLogByUserId" resultType="UserWalletLogPojo" parameterType="Long">
+		select
+		    ul.id           as id,
+			ul.user_id      as userId,
+			s.loginname     as loginName,
+			ul.cur_bal      as curBal,
+			ul.type         as type,
+			(CASE WHEN ul.type = 0 THEN '收入' WHEN ul.type = 1 THEN '支出' END)  as typeName,
+			ul.trade_amt    as tradeAmt,
+			ul.source       as source,
+			ss.loginname    as sourceName,
+			ul.order_id     as orderId,
+			uo.order_no     as orderNo,
+			ul.out_trade_no as outTradeNo,
+			ul.create_date  as createDate,
+			ul.remarks      as remarks
+        from user_wallet_log ul left join sys_login s on s.id=ul.user_id
+        left join sys_login ss on ss.id=ul.source
+        left join user_order uo on uo.id=ul.order_id
+		where
+		ul.user_id=#{userId}
+		and	ul.type = 0
+		and (ul.out_trade_no is null or ul.out_trade_no != 'cancel')
+</select>
+<!--加入某条-->
+<insert id="insertUserWalletLog" parameterType="UserWalletLogPojo">
+		insert into user_wallet_log  (user_id,cur_bal,type,trade_amt,source,order_id,create_date,create_by,remarks,out_trade_no)
+		values(#{userId},#{curBal},#{type},#{tradeAmt},#{source},#{orderId},now(),#{createBy},#{remarks},#{outTradeNo})
+</insert>
+<!-- 删除单条(id) -->
+<delete id="delUserWalletLog" parameterType="Long">
+		delete from user_wallet_log  where id = #{id}
+</delete>
+<!--编辑单条-->
+<update id="updateUserWalletLog" parameterType="UserWalletLogPojo">
+		update user_wallet_log set
+        <if test="userId != null">
+			user_id = #{userId},
+		</if>
+		<if test="curBal != null">
+			cur_bal = #{curBal},
+		</if>
+		<if test="type != null">
+			type = #{type},
+		</if>
+		<if test="tradeAmt != null">
+			trade_amt = #{tradeAmt},
+		</if>
+		<if test="source != null">
+			source = #{source},
+		</if>
+		<if test="orderId != null">
+			order_id = #{orderId},
+		</if>
+		<if test="outTradeNo != null">
+			out_trade_no = #{outTradeNo},
+		</if>
+		<if test="remarks != null">
+			remarks = #{remarks},
+		</if>
+		update_date = now()
+		where
+		id=#{id}
+</update>
+<select id="getUserIncomeCountToday" resultType="int" parameterType="Long">
+	select count(*) from user_wallet_log where user_id=#{userId} and create_date > date_format(now(),'%Y-%m-%d') and type=0 and user_id != source;
+</select>
+</mapper>

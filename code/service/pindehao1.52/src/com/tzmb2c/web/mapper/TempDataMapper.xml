@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.TempDataMapper">
+
+	<select id="getSingleRecord" resultType="TempDataPojo" >
+		select
+		t.id as id,
+		t.realName as realName,
+		t.address as address,
+		t.phone as phone
+		from temp_data t
+		where t.id in (select min(id) from temp_data)
+	</select>
+	<delete id="deleteSingleRecord" parameterType="Integer">
+		delete from temp_data where id=#{id}
+	</delete>
+	
+</mapper>

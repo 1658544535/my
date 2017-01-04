@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="freeDraw" extends="default">
+		<!-- 进入免费抽奖页面 -->
+		<action name="goFreeDrawList" class="com.tzmb2c.web.action.FreeDrawAction" method="freeDrawCount">
+			<result name="success">/page/system/freeDraw/freeDrawList.jsp</result>
+		</action>
+		<!-- 进入新增免费抽奖页面 -->
+		<action name="goAddFreeDraw" class="com.tzmb2c.web.action.FreeDrawAction" method="goAddFreeDraw">
+			<result name="success">/page/system/freeDraw/addFreeDraw.jsp</result>
+		</action>
+		<!-- 新增免费抽奖 -->
+		<action name="addFreeDraw" class="com.tzmb2c.web.action.FreeDrawAction" method="addFreeDraw">
+		</action>
+		<!-- 进入选择免费抽奖商品页面 -->
+		<action name="goSelectFreeDrawProduct" class="com.tzmb2c.web.action.FreeDrawAction" method="selectFreeDrawProductCount">
+			<result name="success">/page/system/freeDraw/selectFreeDrawProduct.jsp</result>
+		</action>
+		<!-- 进入选择免费抽奖编辑页面 -->
+		<action name="goUpdateFreeDraw" class="com.tzmb2c.web.action.FreeDrawAction" method="goUpdateFreeDraw">
+			<result name="success">/page/system/freeDraw/updateFreeDraw.jsp</result>
+		</action>
+		<!-- 进入选择免费抽奖编辑页面 -->
+		<action name="updateFreeDraw" class="com.tzmb2c.web.action.FreeDrawAction" method="updateFreeDraw">
+		</action>
+		<!-- 参加免费抽奖团列表 -->
+		<action name="goFreeDrawGroRec" class="com.tzmb2c.web.action.FreeDrawAction" method="freeDrawGroRecCount">
+			<result name="success">/page/system/freeDraw/freeDrawGroRecList.jsp</result>
+		</action>
+		<!-- 参加免费抽奖人列表 -->
+		<action name="goFreeDrawGroUserRec" class="com.tzmb2c.web.action.FreeDrawAction" method="freeDrawGroUserRecCount">
+			<result name="success">/page/system/freeDraw/freeDrawGroUserRecList.jsp</result>
+		</action>
+		<!-- 设置中奖列表 -->
+		<action name="goFreeDrawGroPrizeListWeb" class="com.tzmb2c.web.action.FreeDrawAction" method="FreeDrawGroPrizeList">
+			<result name="success">/page/system/freeDraw/freeDrawGroPrizeList.jsp</result>
+		</action>
+	</package>
+	<package name="freeDraw-json" extends="json-default">
+		<!-- 免费抽奖count -->
+		<action name="freeDrawCount" class="com.tzmb2c.web.action.FreeDrawAction" method="freeDrawCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>			
+		<!-- 免费抽奖list -->
+		<action name="freeDrawList" class="com.tzmb2c.web.action.FreeDrawAction" method="freeDrawList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>			
+		<!-- 选择免费抽奖商品count -->
+		<action name="selectFreeDrawProductCount" class="com.tzmb2c.web.action.FreeDrawAction" method="selectFreeDrawProductCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>			
+		<!-- 选择免费抽奖商品list -->
+		<action name="selectFreeDrawProductList" class="com.tzmb2c.web.action.FreeDrawAction" method="selectFreeDrawProductList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>			
+		<!-- 根据id查找替换商品 -->
+		<action name="findFreeDrawProductById" class="com.tzmb2c.web.action.FreeDrawAction" method="findFreeDrawProductById">
+			<result type="json">
+				<param name="root">dataMap</param>
+			</result>
+		</action>		
+		<!-- 根据id删除活动 -->
+		<action name="delFreeDrawById" class="com.tzmb2c.web.action.FreeDrawAction" method="delFreeDrawById">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>	
+		<!-- 根据id移除中奖列表 -->
+		<action name="delFreeDrawGroPrizeById" class="com.tzmb2c.web.action.FreeDrawAction" method="delFreeDrawGroPrizeById">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 根据ids删除活动 -->
+		<action name="delFreeDrawByIds" class="com.tzmb2c.web.action.FreeDrawAction" method="delFreeDrawByIds">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>	
+		
+		<!-- 选中审核 -->
+		<action name="checkFreeDraw" class="com.tzmb2c.web.action.FreeDrawAction" method="checkFreeDraw">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>	
+		<!-- 选中取消审核 -->
+		<action name="uncheckFreeDraw" class="com.tzmb2c.web.action.FreeDrawAction" method="uncheckFreeDraw">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 选中审核 -->
+		<action name="checkAllFreeDraw" class="com.tzmb2c.web.action.FreeDrawAction" method="checkAllFreeDraw">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>	
+		<!-- 选中取消审核 -->
+		<action name="uncheckAllFreeDraw" class="com.tzmb2c.web.action.FreeDrawAction" method="uncheckAllFreeDraw">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 免费抽奖团列表count -->
+		<action name="freeDrawGroRecCount" class="com.tzmb2c.web.action.FreeDrawAction" method="freeDrawGroRecCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>			
+		<!-- 免费抽奖团列表list -->
+		<action name="freeDrawGroRecList" class="com.tzmb2c.web.action.FreeDrawAction" method="freeDrawGroRecList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<!-- 免费抽奖参团人列表count -->
+		<action name="freeDrawGroUserRecCount" class="com.tzmb2c.web.action.FreeDrawAction" method="freeDrawGroUserRecCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>			
+		<!-- 免费抽奖参团人列表list -->
+		<action name="freeDrawGroUserRecList" class="com.tzmb2c.web.action.FreeDrawAction" method="freeDrawGroUserRecList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>		
+		<action name="goFreeDrawGroPrizeList" class="com.tzmb2c.web.action.FreeDrawAction" method="FreeDrawGroPrizeList">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 开奖 -->
+		<action name="openFreeDrawHandle" class="com.tzmb2c.web.action.FreeDrawAction" method="openFreeDrawHandle">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 检查是否已开奖 -->
+		<action name="checkOpenWin" class="com.tzmb2c.web.action.FreeDrawAction" method="checkOpenWin">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

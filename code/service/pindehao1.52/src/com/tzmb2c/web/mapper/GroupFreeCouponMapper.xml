@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.GroupFreeCouponMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id as id,
+		user_id as userId,
+		status as status,
+		active_time as activeTime,
+		invalid_time as invalidTime,
+		used as used,
+		last_use_time as lastUseTime,
+		source as source,
+		invitation_user_id as invitationUserId,
+		version as version,
+		create_date as createDate,
+		create_by as createBy,
+		update_date as updateDate,
+		update_by as updateBy
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="GroupFreeCouponPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			group_free_coupon
+		where
+			id = #{id}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from group_free_coupon g
+		left join sys_login s on s.id = g.user_id
+		where 1=1
+		  <if test="id != null ">
+			and g.id = #{id}
+		  </if>
+		  <if test="userId != null ">
+			and g.user_id = #{userId}
+		  </if>
+		  <if test="status != null ">
+			and g.status = #{status}
+		  </if>
+		  <if test="activeTime != null ">
+			and g.active_time = #{activeTime}
+		  </if>
+		  <if test="invalidTime != null ">
+			and g.invalid_time = #{invalidTime}
+		  </if>
+		  <if test="validTime != null ">
+			  and g.invalid_time &gt;= #{validTime}
+		  </if>
+		  <if test="nowTime != null ">
+		  	  and g.active_time &lt;= #{nowTime}
+			  and g.invalid_time &gt;= #{nowTime}
+		  </if>
+		  <if test="used != null ">
+			and g.used = #{used}
+		  </if>
+		  <if test="lastUseTime != null ">
+			and g.last_use_time = #{lastUseTime}
+		  </if>
+		  <if test="source != null ">
+			and g.source = #{source}
+		  </if>
+		  <if test="version != null ">
+			and g.version = #{version}
+		  </if>
+		  <if test="createDate != null ">
+			and g.create_date = #{createDate}
+		  </if>
+		  <if test="createBy != null ">
+			and g.create_by = #{createBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and g.update_date = #{updateDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and g.update_by = #{updateBy}
+		  </if>
+		  <if test="userName != null ">
+			and (s.name like concat('%',#{userName},'%') 
+			or s.id like concat('%',#{userName},'%'))
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="GroupFreeCouponPojo">
+		select
+			<!-- <include refid="Base_Column_List" /> -->
+			g.id as id,
+			g.user_id as userId,
+			g.status as status,
+			g.active_time as activeTime,
+			g.invalid_time as invalidTime,
+			g.used as used,
+			g.last_use_time as lastUseTime,
+			g.source as source,
+			g.invitation_user_id as invitationUserId,
+			g.version as version,
+			g.create_date as createDate,
+			g.create_by as createBy,
+			g.update_date as updateDate,
+			g.update_by as updateBy,
+			s.name as userName,
+			s.image as userLogo,
+			s.loginname as userPhone
+		from group_free_coupon g
+		left join sys_login s on s.id = g.user_id
+		where 1=1
+			<if test="id != null ">
+			  and g.id = #{id}
+			</if>
+			<if test="userId != null ">
+			  and g.user_id = #{userId}
+			</if>
+			<if test="status != null ">
+			  and g.status = #{status}
+			</if>
+			<if test="activeTime != null ">
+			  and g.active_time = #{activeTime}
+			</if>
+			<if test="invalidTime != null ">
+			  and g.invalid_time = #{invalidTime}
+			</if>
+			<if test="validTime != null ">
+			  and g.invalid_time &gt;= #{validTime}
+			</if>
+			<if test="used != null ">
+			  and g.used = #{used}
+			</if>
+			<if test="lastUseTime != null ">
+			  and g.last_use_time = #{lastUseTime}
+			</if>
+			<if test="source != null ">
+			  and g.source = #{source}
+			</if>
+			<if test="version != null ">
+			  and g.version = #{version}
+			</if>
+			<if test="createDate != null ">
+			  and g.create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and g.create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and g.update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and g.update_by = #{updateBy}
+			</if>
+			<if test="userName != null ">
+				and (s.name like concat('%',#{userName},'%') 
+				or s.id like concat('%',#{userName},'%'))
+		  	</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="GroupFreeCouponPojo">
+		update group_free_coupon
+		<set>
+			<if test="userId != null">
+			  user_id = #{userId},
+			</if>
+			<if test="status != null">
+			  status = #{status},
+			</if>
+			<if test="activeTime != null">
+			  active_time = #{activeTime},
+			</if>
+			<if test="invalidTime != null">
+			  invalid_time = #{invalidTime},
+			</if>
+			<if test="currentTime != null">
+				active_time = now(),
+				invalid_time = date_add(now(), INTERVAL 1 day),
+			</if>
+			<if test="used != null">
+			  used = #{used},
+			</if>
+			<if test="lastUseTime != null">
+			  last_use_time = #{lastUseTime},
+			</if>
+			<if test="source != null">
+			  source = #{source},
+			</if>
+			<if test="invitationUserId != null">
+			  invitation_user_id = #{invitationUserId},
+			</if>
+			<if test="version != null">
+			  version = #{version},
+			</if>
+			  update_date = now(),
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+		</set>
+		where 1 = 1
+			<if test="id != null ">
+			  and id = #{id}
+			</if>
+			<if test="userId != null ">
+			  and user_id = #{userId}
+			</if>
+	</update>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from group_free_coupon 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="GroupFreeCouponPojo">
+		insert into group_free_coupon
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="activeTime != null">
+				active_time,
+			</if>
+			<if test="invalidTime != null">
+				invalid_time,
+			</if>
+			<if test="used != null">
+				used,
+			</if>
+			<if test="lastUseTime != null">
+				last_use_time,
+			</if>
+			<if test="source != null">
+				source,
+			</if>
+			<if test="version != null">
+				version,
+			</if>
+				create_date,
+			<if test="createBy != null">
+				create_by,
+			</if>
+				update_date,
+			<if test="updateBy != null">
+				update_by,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="userId != null">
+				#{userId},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+			<if test="activeTime != null">
+				#{activeTime},
+			</if>
+			<if test="invalidTime != null">
+				#{invalidTime},
+			</if>
+			<if test="used != null">
+				#{used},
+			</if>
+			<if test="lastUseTime != null">
+				#{lastUseTime},
+			</if>
+			<if test="source != null">
+				#{source},
+			</if>
+			<if test="version != null">
+				#{version},
+			</if>
+				now(),
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+				now(),
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+		</trim>
+	</insert>
+	
+</mapper>

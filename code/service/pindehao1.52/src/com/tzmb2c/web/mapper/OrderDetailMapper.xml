@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.OrderDetailMapper">
+ 
+	<!-- <cache/>  -->
+
+	<select id="getOrderDetailAll" resultType="orderDetailPojo">
+		select t.id as id, t.user_id as userId, t.order_id as orderId, t.loginname as loginname, t.shop_id as shopId ,t.product_id as productId, t.product_name as productName,t.product_model as productModel,t.stock_id as stockId ,t.stock_price_old as stockPriceOld,
+		t.stock_price as stockPrice,t.num as num,t.type as type,t.channel as channel,t.status as status,t.sku_link_id as skuLinkId
+		from user_order_detail t order by t.create_date desc
+	</select>
+	
+	<select id="getfindByIdOrderDetail" parameterType="Long" resultType="orderDetailPojo" >
+		select t.id as id, t.user_id as userId, t.order_id as orderId, t.loginname as loginname, t.shop_id as shopId ,t.product_id as productId, t.product_name as productName,t.product_model as productModel,t.stock_id as stockId ,t.stock_price_old as stockPriceOld,
+		t.stock_price as stockPrice,t.num as num,(t.num*t.stock_price) as subtotal,t.type as type,t.channel as channel,t.product_image as productImage,t.re_status as reStatus,t.status as status,pr.image as productImages,
+		t.sku_link_id as skuLinkId,t.activity_id as activityId,(select order_no from user_order where id=t.order_id limit 1)as orderNo,
+		(select (case when order_status=1 then "待付款" when order_status=2 then "已付款" when order_status=3 then "已发货" when order_status=4 then "已确认" when order_status=5 then "已评论" end) as orderStaName from user_order where id=t.order_id limit 1)as orderStatusName,
+		sl.business_code,CONCAT(sl.sku_color,':',sl.sku_format) as productSku,CONCAT(s.name,':',a.logistics_no) as serialNumber
+		from user_order_detail t 
+		left join product pr on t.product_id = pr.id
+		left join user_order_ship a on t.order_id =a.order_id
+		left join sys_dict  s on  s.name_en =a.logistics_name
+		left join product_sku_link sl on sl.id = t.sku_link_id
+		where
+		t.id = #{id} 
+	</select>
+	
+	<!-- 根据orderid查找订单详情 -->
+	<select id="getfindByOrderIdOrderDetail" parameterType="Long" resultType="orderDetailPojo" >
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.order_id as orderId,
+		(select wallet_price from user_order where id=t.order_id ) as walletPrice,
+		(select order_no from user_order where id=t.order_id ) as orderNo,
+		t.loginname as loginname, 
+		t.shop_id as shopId ,
+		(select name from user_shop where id=t.shop_id ) as shopName,
+		(select images from user_shop where id=t.shop_id ) as shopImages,
+		t.product_id as productId, 
+		t.product_name as productName,
+		t.product_model as productModel,
+		t.stock_id as stockId ,
+		t.stock_price_old as stockPriceOld,
+		t.stock_price as stockPrice,
+		t.num as num,
+		t.type as type,
+		t.channel as channel,
+		t.status as status,
+		pr.image as productImages,
+		t.sku_link_id as skuLinkId
+		from user_order_detail t left join product pr on t.product_id = pr.id
+		where
+		t.order_id = #{id} group by shop_id
+	</select>
+	
+	<select id="getfindByUserIdOrderDetail" parameterType="Long" resultType="orderDetailPojo" >
+		select 
+		t.id as id, 
+		(select ao.create_date from alipay_order_info ao where ao.out_trade_no = w.out_trade_no)as sentTime,
+		(select wo.create_date from wxpay_order_info wo where wo.out_trade_no = w.out_trade_no )as sentTimes,
+		(select ao.trade_no from alipay_order_info ao where ao.out_trade_no = w.out_trade_no)as tradeNo,
+		(select wo.transaction_id from wxpay_order_info wo where wo.out_trade_no = w.out_trade_no)as tradeNos,
+		t.user_id as userId,
+		t.order_id as orderId, 
+		t.loginname as loginname, 
+		t.shop_id as shopId ,
+		t.re_status as reStatus,
+		(select name from user_shop where id=t.shop_id ) as shopName,
+		(select images from user_shop where id=t.shop_id ) as shopImages,
+		t.product_id as productId,
+		t.product_name as productName,
+		t.product_model as productModel,
+		t.stock_id as stockId ,
+		t.stock_price_old as stockPriceOld,
+		t.stock_price as stockPrice,
+		t.num as num,
+		(t.num*t.stock_price) as subtotal,
+		t.type as type,
+		t.channel as channel,
+		t.status as status,
+		w.is_cancel_order as isCancelOrder,
+		t.re_status as reStatus,
+		pr.image as productImages,
+		pr.product_num as productNum,
+		w.out_trade_no as outTradeNo,
+		t.sku_link_id as skuLinkId,
+		sl.business_code,	
+		CONCAT(sl.sku_color,':',sl.sku_format) as productSku
+		from user_order_detail t 
+		left join product pr on t.product_id = pr.id
+		left join user_order w on w.id=t.order_id
+		left join product_sku_link sl on sl.id = t.sku_link_id
+		where
+		t.order_id = #{id} 
+	</select>
+	
+	<!-- 为导出Excel所用，请勿随意改动（增加或删除字段等等） -->
+	<select id="getfindByUserIdOrderDetailExcel" parameterType="Long" resultType="orderDetailPojo" >
+		select 
+		(select ao.create_date from alipay_order_info ao where ao.out_trade_no = w.out_trade_no)as sentTime,
+		(select wo.create_date from wxpay_order_info wo where wo.out_trade_no = w.out_trade_no )as sentTimes,
+		(select ao.trade_no from alipay_order_info ao where ao.out_trade_no = w.out_trade_no)as tradeNo,
+		(select wo.transaction_id from wxpay_order_info wo where wo.out_trade_no = w.out_trade_no)as tradeNos,
+		(select name from user_shop where id=t.shop_id ) as shopName,
+		t.product_name as productName,
+		t.stock_price as stockPrice,
+		t.num as num,
+		w.all_price as allPrice,
+		pr.id as productId,
+		pr.product_num as productNum,
+		t.sku_link_id as skuLinkId,
+		psl.sku_color as skuColor,
+		psl.sku_format as skuFormat,
+		psl.business_code as businessCode
+		from user_order_detail t 
+		left join product pr on t.product_id = pr.id
+		left join user_order w on w.id=t.order_id
+		left join product_sku_link psl on psl.id=t.sku_link_id
+		where
+		t.order_id = #{id} 
+	</select>
+	
+	<select id="getOrderDetail" parameterType="Long" resultType="orderDetailPojo">
+		select t.id as id,(select name from user_shop where id=t.shop_id)as shopName,(select espress_price from user_order where id=t.order_id) as espress_price, t.user_id as userId, t.order_id as orderId, t.loginname as loginname, t.shop_id as shopId ,t.product_id as productId, t.product_name as productName,t.product_image as productImage,t.product_model as productModel,t.stock_id as stockId ,t.stock_price_old as stockPriceOld,
+		t.stock_price as stockPrice,t.num as num,t.type as type,t.channel as channel,t.status as status,
+		t.re_status as reStatus,uor.refund_num as refundNum,
+		(select image from product where id=t.product_id ) productImages,
+		(select product_num from product where id=t.product_id ) productNum,
+		(select status from product where id=t.product_id ) productStatus,
+		t.sku_link_id as skuLinkId,
+		t.activity_id as activityId,
+		t.activity_name as activityName,
+		(select group_date from user_order uo where uo.id=t.order_id ) as groupDate,
+		p.product_num as productNum,
+        sl.business_code as businessCode,	
+		CONCAT(sl.sku_color,':',sl.sku_format) as productSku,
+		os.logistics_name as logisticsName,
+		os.logistics_no as logisticsNo
+		from user_order_detail t 
+		left join product p on t.product_id = p.id 
+		left join user_order_refund uor on uor.detail_id=t.id 
+		left join product_sku_link sl on sl.id = t.sku_link_id
+		left join user_order_ship os on os.order_id = t.order_id
+		
+		where
+		t.order_id = #{id} 
+	</select>
+	<!-- 根据支付流水号找到所有订单  -->
+	<select id="getOrderDetailByOutTradeNo" parameterType="String" resultType="orderDetailPojo">
+		select 
+		t.id as id,
+		(select name from user_shop where id=shop_id)as shopName,
+		(select espress_price from user_order where id=order_id) as espress_price, 
+		t.user_id as userId, 
+		t.order_id as orderId, 
+		t.loginname as loginname, 
+		t.shop_id as shopId ,
+		t.product_id as productId, 
+		t.product_name as productName,
+		t.product_image as productImage,
+		t.product_model as productModel,
+		t.stock_id as stockId ,
+		t.stock_price_old as stockPriceOld,
+		t.stock_price as stockPrice,
+		t.num as num,
+		t.type as type,
+		t.channel as channel,
+		t.status as status,
+		t.re_status as reStatus,
+		(select image from product where id=t.product_id ) productImages,
+		(select product_num from product where id=t.product_id ) productNum,
+		o.source as source
+		from user_order_detail t
+		left join user_order o on t.order_id = o.id
+		where
+		o.out_trade_no = #{outTradeNo} 
+	</select>
+
+	<insert id="insertOrderDetail" parameterType="orderDetailPojo">
+		insert into
+		user_order_detail(id,user_id,order_id,loginname,shop_id,product_id,product_name,product_image,product_model,stock_id,stock_price_old,stock_price,num,type,channel,status,postage_type,sku_link_id,activity_id,activity_name,weight
+		<if test="source != null">
+			,source
+		</if>
+		<if test="sourceId != null">
+			,source_id
+		</if>
+		)
+		values(#{id},#{userId},#{orderId},#{loginname},#{shopId},#{productId},#{productName},#{productImage},#{productModel},#{stockId},#{stockPriceOld},#{stockPrice},#{num},#{type},#{channel},#{status},#{postageType},#{skuLinkId},#{activityId},#{activityName},#{weight}
+		<if test="source != null">
+			,#{source}
+		</if>
+		<if test="sourceId != null">
+			,#{sourceId}
+		</if>
+		)
+	</insert>
+	
+	<delete id="delOrderDetail" parameterType="Long">
+		delete from user_order_detail where id = #{id}
+	</delete>
+	
+	<delete id="deleteOrderDetail"  parameterType="Long">
+		delete from user_order_detail where id = #{id}
+	</delete>
+	
+	<update id="updateOrderDetail" parameterType="orderDetailPojo">
+	
+		update user_order_detail set
+		user_id = #{userId},
+		shop_id =#{shopId},
+		product_id =#{productId},
+		product_name =#{productName},
+		product_model =#{productModel},
+		stock_id =#{stockId},
+		stock_price_old =#{stockPriceOld},
+		stock_price =#{stockPrice},
+		num =#{num},
+		type =#{type},
+		channel =#{channel},
+		status =#{status},
+		re_status =#{reStatus}
+		where id = #{id}
+	</update>
+	
+	<update id="updateReStatus" parameterType="java.util.Map">
+		update user_order_detail set
+		re_status =#{reStatus}
+		where id = #{id}
+	</update>
+	
+	<update id="updateReStatusmap" parameterType="java.util.Map">
+		update user_order_detail set
+		<if test="reStatus != null">
+		re_status =#{reStatus},
+		</if>
+		<if test="status != null">
+		status=#{status},
+		</if>
+		update_date=now()
+		where id =#{id}
+	</update>
+	
+	<select id="orderDetailAllCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from user_order_detail t left join user_order uo on t.order_id = uo.id 
+		left join product p on t.product_id = p.id 
+		left join sys_login sl on t.user_id = sl.id 
+		left join platform_special ps on t.source=1 and ps.id=t.source_id
+		left join user_maker_theme umt on t.source=2 and umt.id=t.source_id left join sys_login sl1 on sl1.id=umt.user_id
+		left join user_circle_post ucp on t.source=3 and ucp.id=t.source_id left join sys_login sl2 on sl2.id=ucp.user_id
+		left join micro_page mp on t.source=4 and mp.id=t.source_id
+		where 1=1
+		<if test="productId !=null and productId !='' ">
+			and t.product_id = #{productId} and uo.order_status >= 2
+		</if>
+		<if test="contentGuide !=null">
+			and uo.order_status >= 4 and t.source in (1,2,3,4)
+		</if>
+		<if test="beganday !=null and beganday !=''">
+			and UNIX_TIMESTAMP(uo.create_date) >= UNIX_TIMESTAMP(CONCAT(#{beganday},':00'))
+		</if>
+		<if test="endday !=null and endday !=''">
+			and  UNIX_TIMESTAMP(CONCAT(#{endday},':00')) >= UNIX_TIMESTAMP(uo.create_date)
+		</if>
+		<if test="productName !=null and productName !=''">
+		    and t.product_name like concat("%",#{productName},"%")
+		</if>
+		<if test="source !=null">
+		    and t.source = #{source}
+		</if>
+		<if test="types !=null">
+		    <if test="types ==11">
+		    and sl2.type = #{types}
+		    </if>
+		    <if test="types ==12">
+		    and (sl1.type = #{types}
+		    or sl2.type = #{types})
+		    </if>
+		    <if test="types !=11 and types!=12">
+		    and (sl1.type not in(11,12)
+		    or sl2.type not in(11,12)
+		    or t.source in (1,4))
+		    </if>
+		</if>
+		<if test="sysLoginName !=null and sysLoginName !=''">
+		    and sl1.name like concat("%",#{sysLoginName},"%")
+		    or sl2.name like concat("%",#{sysLoginName},"%")
+		</if>
+	</select>
+	
+	<select id="orderDetailAllList" resultType="orderDetailPojo"
+		parameterType="java.util.Map">
+		select t.id as id,
+		t.user_id as userId, 
+		t.order_id as orderId, 
+		t.loginname as loginname, 
+		t.shop_id as shopId ,
+		t.product_id as productId, 
+		t.product_name as productName,
+		t.product_model as productModel,
+		t.stock_id as stockId ,
+		t.stock_price_old as stockPriceOld,
+		t.stock_price as stockPrice,
+		t.num as num,t.type as type,
+		t.channel as channel,
+		t.create_date as createDate,
+		uo.create_date as createDate1,
+		(select update_date from alipay_order_info where  out_trade_no=uo.out_trade_no limit 1) as updateDate,
+		(select company from user_consumer where user_id=t.user_id) as userName,
+	    sl.name as channelName,
+		t.status as status,
+		t.re_status as reStatus,
+		t.sku_link_id as skuLinkId,
+		<!--sku.value as value,-->
+		p.product_num as productNum,
+		p.image as productImage,
+		t.source as source,
+		(CASE WHEN t.source = 1 THEN '平台专题' WHEN t.source = 2 THEN '创客专题' WHEN t.source = 3 THEN '笔记' WHEN t.source = 4 THEN '微页面' END)  as sourceName,
+		sl1.type as types,
+		(CASE WHEN sl1.type != 12 THEN '平台' WHEN sl1.type = 12 THEN '创客' END) as userType,
+		(CASE WHEN sl2.type != 11 and sl2.type != 12 THEN '平台' WHEN sl2.type = 11 THEN '达人' WHEN sl2.type = 12 THEN '创客' END)  as userType1,
+		sl1.name as sysLoginName,
+		sl2.name as sysLoginName1,
+		ps.title ascontentTitle,
+		umt.special_name as contentTitle1,
+		ucp.title as contentTitle2,
+		mp.title as contentTitle3
+		from user_order_detail t 
+		left join product p on t.product_id = p.id 
+		<!--left join sku_attribute sku on sku.id = t.sku_link_id -->
+		left join user_order uo on t.order_id = uo.id 
+		left join sys_login sl on t.user_id = sl.id  
+		left join platform_special ps on t.source=1 and ps.id=t.source_id
+		left join user_maker_theme umt on t.source=2 and umt.id=t.source_id left join sys_login sl1 on sl1.id=umt.user_id
+		left join user_circle_post ucp on t.source=3 and ucp.id=t.source_id left join sys_login sl2 on sl2.id=ucp.user_id
+		left join micro_page mp on t.source=4 and mp.id=t.source_id
+		where 1=1
+		<if test="productId != null">
+			and t.product_id = #{productId} and uo.order_status >= 2
+		</if>
+		<if test="orderId != null">
+			and t.order_id = #{orderId}
+		</if>
+		<if test="contentGuide !=null">
+			and uo.order_status >= 4 and t.source in (1,2,3,4)
+		</if>
+		<if test="beganday !=null and beganday !=''">
+			and UNIX_TIMESTAMP(uo.create_date) >= UNIX_TIMESTAMP(CONCAT(#{beganday},':00'))
+		</if>
+		<if test="endday !=null and endday !=''">
+			and  UNIX_TIMESTAMP(CONCAT(#{endday},':00')) >= UNIX_TIMESTAMP(uo.create_date)
+		</if>
+		<if test="productName !=null and productName !=''">
+		    and t.product_name like concat("%",#{productName},"%")
+		</if>
+		<if test="source !=null">
+		    and t.source = #{source}
+		</if>
+		<if test="types !=null">
+		    <if test="types ==11">
+		    and sl2.type = #{types}
+		    </if>
+		    <if test="types ==12">
+		    and (sl1.type = #{types}
+		    or sl2.type = #{types})
+		    </if>
+		    <if test="types !=11 and types!=12">
+		    and (sl1.type not in(11,12)
+		    or sl2.type not in(11,12)
+		    or t.source in (1,4))
+		    </if>
+		</if>
+		<if test="sysLoginName !=null and sysLoginName !=''">
+		    and sl1.name like concat("%",#{sysLoginName},"%")
+		    or sl2.name like concat("%",#{sysLoginName},"%")
+		</if>
+		order by updateDate desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<select id="getOrderDetailWeb" parameterType="Long" resultType="orderDetailPojo">
+		select t.id as id,
+		t.user_id as userId, 
+		t.order_id as orderId, 
+		t.loginname as loginname, 
+		t.shop_id as shopId ,
+		t.product_id as productId, 
+		t.product_name as productName,
+		t.product_model as productModel,
+		t.stock_id as stockId ,
+		t.stock_price_old as stockPriceOld,
+		t.stock_price as stockPrice,
+		t.num as num,t.type as type,
+		t.channel as channel,
+		(select name from sys_dict where value=t.channel and type="channel") as channelName,
+		t.status as status,
+		(select p.name from user_shop p where p.id=t.shop_id) as shopName,
+		(select image from product where id=t.product_id ) productImages,
+		t.sku_link_id as skuLinkId
+		from user_order_detail t 
+		where
+		t.order_id = #{orderId} 
+	</select>
+	
+	<!-- 前台：退货：根据orderid查找订单详情 -->
+	<select id="getfindByOrderIdOrderDetailWeb" parameterType="Long" resultType="orderDetailPojo" >
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.order_id as orderId,
+		(select order_no from user_order where id=t.order_id ) as orderNo,
+		t.loginname as loginname, 
+		t.shop_id as shopId ,
+		(select name from user_shop where id=t.shop_id ) as shopName,
+		(select images from user_shop where id=t.shop_id ) as shopImages,
+		t.product_id as productId, 
+		t.product_name as productName,
+		t.product_model as productModel,
+		t.stock_id as stockId ,
+		t.stock_price_old as stockPriceOld,
+		t.stock_price as stockPrice,
+		t.num as num,
+		t.type as type,
+		t.channel as channel,
+		t.status as status,
+		pr.image as productImages
+		from user_order_detail t left join product pr on t.product_id = pr.id
+		where
+		t.id = #{id} group by shop_id
+	</select>
+	<select id="getOrderDetailAllbyrestatus" resultType="orderDetailPojo">
+		select t.id as id,s.image as productImage,s.id as productId,s.product_name as productName
+		from user_order_detail t  left join product s  on t.product_id=s.id  where t.order_id=#{orderId} and t.user_id=#{userId} and t.re_status=0
+	</select>
+	<select id="statisticalSell" resultType="orderDetailPojo">
+		select 
+		a.product_id as productId,
+		a.product_name as productName,
+		c.product_num productNum,
+		a.stock_price as stockPrice,
+		IFNULL(sum(a.num),0) as num 
+		from user_order_detail a 
+		left join product c on a.product_id = c.id  
+		where exists (select * from user_order b where b.id = a.order_id and date(b.create_date)='2015-08-05') group by a.product_id,a.stock_price
+	</select>
+</mapper>

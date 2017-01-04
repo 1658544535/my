@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="grouponActivityRecord" extends="default">
+		<!-- 进入列表页面 -->
+		<action name="goGrouponActivityRecord" class="com.tzmb2c.web.action.GrouponActivityRecordAction" method="goGrouponActivityRecord">
+			<result name="success">/page/system/grouponActivityRecord/grouponActivityRecordList.jsp</result>
+		</action>
+		<!-- 新增 -->
+		<action name="goAddGrouponActivityRecord" class="com.tzmb2c.web.action.GrouponActivityRecordAction" method="goAddGrouponActivityRecord">
+		    <result name="success">/page/system/grouponActivityRecord/addGrouponActivityRecord.jsp</result>
+		</action>
+		<!-- 新增提交 -->
+		<action name="addGrouponActivityRecord" class="com.tzmb2c.web.action.GrouponActivityRecordAction" method="add">
+		</action>		
+		<!-- 编辑页面 -->
+		<action name="goEditGrouponActivityRecord" class="com.tzmb2c.web.action.GrouponActivityRecordAction" method="goEditGrouponActivityRecord">
+			<result name="success">/page/system/grouponActivityRecord/updateGrouponActivityRecord.jsp</result>
+		</action>
+		<!-- 编辑提交 -->
+		<action name="updateGrouponActivityRecord" class="com.tzmb2c.web.action.GrouponActivityRecordAction" method="update">
+		</action>
+	</package>
+	<package name="grouponActivityRecord-json" extends="json-default">
+		<!-- 内容 -->
+		<action name="grouponActivityRecordList" class="com.tzmb2c.web.action.GrouponActivityRecordAction" method="grouponActivityRecordList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="grouponActivityRecordCnt" class="com.tzmb2c.web.action.GrouponActivityRecordAction" method="grouponActivityRecordRowCnt">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+		<!-- 根据ID删除 -->
+		<action name="delGrouponActivityRecord" class="com.tzmb2c.web.action.GrouponActivityRecordAction" method="delete">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+		<!-- 删除选中 -->
+		<action name="delGrouponActivityRecordAll" class="com.tzmb2c.web.action.GrouponActivityRecordAction" method="deleteAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 通过审核 -->
+		<action name="checkGrouponActivityRecord" class="com.tzmb2c.web.action.GrouponActivityRecordAction" method="check">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 取消审核 -->
+		<action name="uncheckGrouponActivityRecord" class="com.tzmb2c.web.action.GrouponActivityRecordAction" method="uncheck">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中通过审核 -->
+		<action name="checkGrouponActivityRecordAll" class="com.tzmb2c.web.action.GrouponActivityRecordAction" method="checkAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中取消审核 -->
+		<action name="uncheckGrouponActivityRecordAll" class="com.tzmb2c.web.action.GrouponActivityRecordAction" method="uncheckAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+	</package>
+</struts>

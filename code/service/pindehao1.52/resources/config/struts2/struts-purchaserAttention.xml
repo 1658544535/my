@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+	<package name="purchaserAttention" extends="default">
+
+		<action name="purchaserAttentionManage" class="com.tzmb2c.web.action.PurchaserAttentionAction"
+			method="getPurchaserAttentionCount">
+			<result name="success">/page/system/purchaser/managePurchaserAttention.jsp
+			</result>
+		</action>
+
+		<!-- 添加信息 <action name="goAddPushNotice" class="com.tzmb2c.web.action.PurchaserAttentionAction" 
+			method="goAddAttention"> <result>/page/system/notice/addnotice.jsp</result> 
+			</action> -->
+
+		<!-- 添加信息 <action name="addPushNotice" class="com.tzmb2c.web.action.PurchaserAttentionAction" 
+			method="addAttention"> <result>/page/system/notice/addnotice.jsp</result> 
+			</action> -->
+
+		<!-- 更新 <action name="goUpdatePushNotice" class="com.tzmb2c.web.action.PurchaserAttentionAction" 
+			method="goFindAttention"> <result>/page/system/notice/updatenotice.jsp</result> 
+			</action> -->
+
+		<!-- 更新 <action name="updatePushnotice" class="com.tzmb2c.web.action.PurchaserAttentionAction" 
+			method="updateAttention"> </action> -->
+
+		<!-- <action name="verifyPushNotice" class="com.tzmb2c.web.action.PurchaserAttentionAction" 
+			method="verifyPushNotice"> </action> <action name="verifyAllPushNotice" class="com.tzmb2c.web.action.PurchaserAttentionAction" 
+			method="verifyAllPushNotice"> </action> -->
+
+		<!-- 删除 -->
+		<action name="delAttention" class="com.tzmb2c.web.action.PurchaserAttentionAction"
+			method="delAttention">
+		</action>
+
+		<!-- 删除全部 -->
+		<action name="attentionDeleteId" class="com.tzmb2c.web.action.PurchaserAttentionAction"
+			method="delAllAttentionById">
+		</action>
+
+	</package>
+
+	<package name="purchaserAttention-json" extends="json-default">
+		<!--平台入口 -->
+		<action name="getAttentionCount" class="com.tzmb2c.web.action.PurchaserAttentionAction"
+			method="getPurchaserAttentionCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+
+		<action name="attentionAllList" class="com.tzmb2c.web.action.PurchaserAttentionAction"
+			method="purchaserAttentionAllList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+
+		<action name="delAttention" class="com.tzmb2c.web.action.PurchaserAttentionAction"
+			method="delAttention">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+
+		<!-- <action name="verifyPushNotice" class="com.tzmb2c.web.action.PurchaserAttentionAction" 
+			method="verifyPushNotice"> <result type="json"> <param name="root">result</param> 
+			</result> </action> -->
+
+	</package>
+	
+</struts>

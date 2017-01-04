@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="productSkuLink" extends="default">
+        <!-- 产品SKU -->
+		<action name="productSkuLinkManage" class="com.tzmb2c.web.action.ProductSkuLinkAction" method="getProductSkuLinkCount">
+			<result>/page/system/product/productSkuLinkList.jsp</result>
+		</action>
+		
+		
+		<!-- 添加产品SKU-->
+		<action name="goproductSkuLinkAdd" class="com.tzmb2c.web.action.ProductSkuLinkAction" method="goproductSkuLinkAdd">
+			<result>/page/system/product/productSkuLinkAdd.jsp</result>
+		</action>
+		
+		<action name="productSkuLinkAdd" class="com.tzmb2c.web.action.ProductSkuLinkAction" method="productSkuLinkAdd">
+		</action> 
+
+		<!-- 修改产品SKU-->
+		<action name="goFindProductSkuLink" class="com.tzmb2c.web.action.ProductSkuLinkAction" method="goFindProductSkuLink">
+			<result>/page/system/product/productSkuLinkUpdate.jsp</result>
+		</action>
+		
+		<action name="productSkuLinkUpdate" class="com.tzmb2c.web.action.ProductSkuLinkAction" method="productSkuLinkUpdate">
+		</action> 
+
+		<!-- 删除全部 -->
+		<action name="productSkuLinkDeleteId" class="com.tzmb2c.web.action.ProductSkuLinkAction" method="productSkuLinkDeleteId">
+		</action>
+		
+		<!-- 审核全部 -->
+		<action name="productSkuLinkCheckId" class="com.tzmb2c.web.action.ProductSkuLinkAction" method="productSkuLinkCheckId">
+		</action>
+		
+		<!-- 添加sku颜色/规格-->
+		<action name="goAddSkuColor" class="com.tzmb2c.web.action.ProductSkuLinkAction" method="goAddSkuColor">
+			<result>/page/system/product/skuColorAdd.jsp</result>
+		</action>
+		
+		<action name="addSkuColor" class="com.tzmb2c.web.action.ProductSkuLinkAction" method="addSkuColor">
+		</action> 
+		<!-- 修改sku颜色/规格-->
+		<action name="goSkuAttributeUpdate" class="com.tzmb2c.web.action.ProductSkuLinkAction" method="goSkuAttributeUpdate">
+			<result>/page/system/product/skuAttributeUpdate.jsp</result>
+		</action>
+		
+		<action name="skuAttributeUpdate" class="com.tzmb2c.web.action.ProductSkuLinkAction" method="skuAttributeUpdate">
+		</action> 
+		
+		<!-- 添加sku规格-->
+		<action name="goAddSkuFormat" class="com.tzmb2c.web.action.ProductSkuLinkAction" method="goAddSkuFormat">
+			<result>/page/system/product/skuFormatAdd.jsp</result>
+		</action>
+		
+		<action name="addSkuFormat" class="com.tzmb2c.web.action.ProductSkuLinkAction" method="addSkuFormat">
+		</action>
+		
+	</package>
+	<package name="productSkuLink-json" extends="json-default">
+		<!--平台入口-->
+		<action name="getProductSkuLinkCount" class="com.tzmb2c.web.action.ProductSkuLinkAction" method="getProductSkuLinkCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+
+		<!-- 根据条件查找对应产品SKU -->
+		<action name="getProductSkuLinkAll" class="com.tzmb2c.web.action.ProductSkuLinkAction"
+			method="getProductSkuLinkAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<!-- 删除产品成功回调 -->
+		<action name="deleProductSkuLink" class="com.tzmb2c.web.action.ProductSkuLinkAction"
+			method="deleProductSkuLink">
+			<result type="json">
+	       		 <param name="root">result</param>
+	       		 <param name="productSkuLinkPojo.productId">${productSkuLinkPojo.productId}</param>
+			</result>
+		</action>
+		<!-- 审核 -->
+		<action name="checkProductSkuLink" class="com.tzmb2c.web.action.ProductSkuLinkAction" method="checkProductSkuLink">
+			<result type="json">
+	       		 <param name="root">result</param>
+	       		  <param name="productSkuLinkPojo.productId">${productSkuLinkPojo.productId}</param>
+			</result>
+		</action>
+		<!-- 取消审核 -->
+		<action name="uncheckProductSkuLink" class="com.tzmb2c.web.action.ProductSkuLinkAction" method="uncheckProductSkuLink">
+			<result type="json">
+	       		 <param name="root">result</param>
+	       		  <param name="productSkuLinkPojo.productId">${productSkuLinkPojo.productId}</param>
+			</result>
+		</action>
+	</package>
+</struts>

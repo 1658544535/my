@@ -1,0 +1,682 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.GrouponActivityMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id as id,
+		product_id as productId,
+		begin_time as beginTime,
+		end_time as endTime,
+		num as num,
+		price as price,
+		is_default as isDefault,
+		price_min as priceMin,
+		price_max as priceMax,
+		status as status,
+		activity_status as activityStatus,
+		type as type,
+		sorting as sorting,
+		title as title,
+		rebate_ratio as rebateRatio,
+		restriction_num as restrictionNum,
+		banner as banner,
+		is_delete as isDelete,
+		create_by as createBy,
+		create_date as createDate,
+		update_by as updateBy,
+		update_date as updateDate,
+		limit_num as limitNum,
+		surplus_num as surplusNum
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="GrouponActivityPojo">
+		select
+			ga.id as id,
+			ga.product_id as productId,
+			ga.begin_time as beginTime,
+			ga.end_time as endTime,
+			ga.num as num,
+			ga.prize_num as prizeNum,
+			ga.price as price,
+			ga.is_default as isDefault,
+			ga.price_min as priceMin,
+			ga.price_max as priceMax,
+			ga.status as status,
+			ga.activity_status as activityStatus,
+			ga.type as type,
+			ga.sorting as sorting,
+			ga.title as title,
+			ga.rebate_ratio as rebateRatio,
+			ga.restriction_num as restrictionNum,
+			ga.banner as banner,
+			ga.is_delete as isDelete,
+			ga.create_by as createBy,
+			ga.create_date as createDate,
+			ga.update_by as updateBy,
+			ga.update_date as updateDate,
+			ga.limit_num as limitNum,
+			ga.surplus_num as surplusNum,
+			ga.rebate_ratio as rebateRatio,
+			ga.restriction_num as restrictionNum,
+			p.product_name as productName,
+			p.image as productImage,
+			p.product_sketch as productSketch
+		from
+			groupon_activity ga
+			left join product p on ga.product_id = p.id
+		where
+			ga.id = #{id}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from groupon_activity ga 
+			left join product p on ga.product_id = p.id
+		where 1=1
+		  <if test="query != null and query != '' ">
+			and (p.product_name like CONCAT("%",#{query},"%")
+			or p.product_num like CONCAT("%",#{query},"%") 
+			or p.id like CONCAT("%",#{query},"%"))
+		  </if>
+		  <if test="productTypeIds !=null and productTypeIds != ''">
+			and p.product_type_ids like concat("%:",#{productTypeIds},":%")
+		  </if>
+		  <if test="productType1 !=null and productType1 != ''">
+			and p.product_type1 = #{productType1}
+		  </if>
+		  <if test="productTypeId !=null and productTypeId != ''">
+			and p.product_type_id = #{productTypeId}
+		  </if>
+		  <if test="productName != null and productName != '' ">
+			and (p.product_name like CONCAT("%",#{productName},"%"))
+		  </if>
+		  <if test="id != null ">
+			and ga.id = #{id}
+		  </if>
+		  <if test="productId != null ">
+			and ga.product_id = #{productId}
+		  </if>
+		  <if test="beginTimeStr !=null and beginTimeStr !=''">
+			and str_to_date(ga.begin_time,'%Y-%m-%d %H:%i:%s') &gt;= #{beginTimeStr}
+		  </if>
+		  <if test="endTimeStr !=null and endTimeStr !=''">
+			and str_to_date(ga.end_time,'%Y-%m-%d %H:%i:%s') &lt;= #{endTimeStr}
+		  </if>
+		  <if test="num != null ">
+			and ga.num = #{num}
+		  </if>
+		  <if test="prizeNum != null ">
+			  and ga.prize_num = #{prizeNum}
+			</if>
+		  <if test="price != null ">
+			and ga.price = #{price}
+		  </if>
+		  <if test="isDefault != null ">
+			and ga.is_default = #{isDefault}
+		  </if>
+		  <if test="priceMin != null and priceMin != '' ">
+			and ga.price_min = #{priceMin}
+		  </if>
+		  <if test="priceMax != null and priceMax != '' ">
+			and ga.price_max = #{priceMax}
+		  </if>
+		  <if test="status != null ">
+			and ga.status = #{status}
+		  </if>
+		  <if test="activityStatus != null ">
+			and ga.activity_status = #{activityStatus}
+		  </if>
+		  <if test="type != null ">
+			and ga.type = #{type}
+		  </if>
+		  <if test="sorting != null ">
+			and ga.sorting = #{sorting}
+		  </if>
+		  <if test="title != null and title != '' ">
+			and ga.title = #{title}
+		  </if>
+		  <if test="banner != null and banner != '' ">
+			and ga.banner = #{banner}
+		  </if>
+		  <if test="isDelete != null ">
+			and ga.is_delete = #{isDelete}
+		  </if>
+		  <if test="createBy != null ">
+			and ga.create_by = #{createBy}
+		  </if>
+		  <if test="createDate != null ">
+			and ga.create_date = #{createDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and ga.update_by = #{updateBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and ga.update_date = #{updateDate}
+		  </if>
+		  <if test="limitNum != null ">
+			and ga.limit_num = #{limitNum}
+		  </if>
+		  <if test="surplusNum != null ">
+			and ga.surplus_num = #{surplusNum}
+		  </if>
+		  <if test="isDelete != null ">
+			and ga.is_delete = #{isDelete}
+		  </if>
+		  <if test="keywords != null and keywords != ''">
+			and
+				(
+					p.product_name LIKE CONCAT(CONCAT('%', #{keywords}),'%')
+					 or 
+					p.product_num LIKE CONCAT(CONCAT('%', #{keywords}),'%') 
+					 or 
+					p.product_no LIKE CONCAT(CONCAT('%', #{keywords}),'%') 
+				)
+		  </if>
+		  <if test="keywords1 != null and keywords1 != ''">
+			and p.product_name LIKE CONCAT(CONCAT('%', #{keywords1}),'%')
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="GrouponActivityPojo">
+		select
+			ga.id as id,
+			ga.product_id as productId,
+			ga.begin_time as beginTime,
+			ga.end_time as endTime,
+			ga.num as num,
+			ga.prize_num as prizeNum,
+			ga.price as price,
+			ga.is_default as isDefault,
+			ga.price_min as priceMin,
+			ga.price_max as priceMax,
+			ga.status as status,
+			ga.activity_status as activityStatus,
+			ga.type as type,
+			ga.sorting as sorting,
+			ga.title as title,
+			ga.banner as banner,
+			ga.is_delete as isDelete,
+			ga.create_by as createBy,
+			ga.create_date as createDate,
+			ga.update_by as updateBy,
+			ga.update_date as updateDate,
+			ga.limit_num as limitNum,
+			ga.surplus_num as surplusNum,
+			ga.rebate_ratio as rebateRatio,
+			ga.restriction_num as restrictionNum,
+			p.product_name as productName,
+			p.image as productImage,
+			p.image_main as imageMain,
+			p.image_small as imageSmall,
+			p.product_no as productNo,
+			p.product_num as productNum,
+			p.sell_number + p.base_number as sellNumber,
+			p.distribution_price as distributionPrice,
+			p.selling_price as sellingPrice,
+			(select count(*) 
+			from groupon_user_record gur 
+			where gur.activity_id = ga.id 
+			and gur.activity_type = ga.type
+			) as numNow,
+			(SELECT COUNT(*) FROM groupon_user_record gur 
+			LEFT JOIN groupon_activity_record gar ON gur.attend_id = gar.id
+			WHERE gar.activity_id=ga.id) as numNow1,
+			p.product_sketch as productSketch,
+			p.status as productStatus
+		    from groupon_activity ga
+			left join product p on ga.product_id = p.id
+		where 1=1
+			<if test="surplusNumStr != null and surplusNumStr != '' ">
+			  and ${surplusNumStr}
+			</if>
+		    <if test="query != null and query != '' ">
+			  and (p.product_name like CONCAT("%",#{query},"%")
+			  or p.product_num like CONCAT("%",#{query},"%") 
+			  or p.id like CONCAT("%",#{query},"%"))
+		    </if>
+		    <if test="productName != null and productName != '' ">
+			  and (p.product_name like CONCAT("%",#{productName},"%"))
+		    </if>
+		    <if test="productTypeIds !=null and productTypeIds != ''">
+			  and p.product_type_ids like concat("%:",#{productTypeIds},":%")
+		    </if>
+		    <if test="productType1 !=null and productType1 != ''">
+			  and p.product_type1 = #{productType1}
+		    </if>
+		    <if test="productTypeId !=null and productTypeId != ''">
+			  and p.product_type_id = #{productTypeId}
+		    </if>
+			<if test="id != null ">
+			  and ga.id = #{id}
+			</if>
+			<if test="productId != null ">
+			  and ga.product_id = #{productId}
+			</if>
+			<if test="beginTimeStr3 !=null and beginTimeStr3 !=''">
+			  and str_to_date(ga.begin_time,'%Y-%m-%d %H:%i:%s') &gt;= #{beginTimeStr3}
+		    </if>
+		    <if test="endTimeStr3 !=null and endTimeStr3 !=''">
+			  and str_to_date(ga.end_time,'%Y-%m-%d %H:%i:%s') &lt;= #{endTimeStr3}
+		    </if>
+		    
+			<if test="beginTimeStr !=null and beginTimeStr !=''">
+			  and str_to_date(ga.begin_time,'%Y-%m-%d %H:%i:%s') &lt;= #{beginTimeStr}
+		    </if>
+		    <if test="endTimeStr !=null and endTimeStr !=''">
+			  and str_to_date(ga.end_time,'%Y-%m-%d %H:%i:%s') &gt;= #{endTimeStr}
+		    </if>
+		    <if test="endTimeStr2 !=null and endTimeStr2 !=''">
+			  and str_to_date(ga.end_time,'%Y-%m-%d %H:%i:%s') &lt;= #{endTimeStr2}
+		    </if>
+		    <if test="nowTime !=null and nowTime !=''">
+			 and ga.begin_time &lt;= #{nowTime}
+			 and ga.end_time &gt;= #{nowTime}
+		    </if>
+		    <if test="overTime !=null and overTime !=''">
+			 and ga.end_time &lt;= #{overTime}
+		    </if>
+			<if test="num != null ">
+			  and ga.num = #{num}
+			</if>
+			<if test="prizeNum != null ">
+			  and ga.prize_num = #{prizeNum}
+			</if>
+			<if test="price != null ">
+			  and ga.price = #{price}
+			</if>
+			<if test="isDefault != null ">
+			  and ga.is_default = #{isDefault}
+			</if>
+			<if test="priceMin != null and priceMin != '' ">
+			  and ga.price_min = #{priceMin}
+			</if>
+			<if test="priceMax != null and priceMax != '' ">
+			  and ga.price_max = #{priceMax}
+			</if>
+			<if test="status != null ">
+			  and ga.status = #{status}
+			</if>
+			<if test="activityStatus != null ">
+			  and ga.activity_status = #{activityStatus}
+			</if>
+			<if test="type != null ">
+			  and ga.type = #{type}
+			</if>
+			<if test="sorting != null ">
+			  and ga.sorting = #{sorting}
+			</if>
+			<if test="title != null and title != '' ">
+			  and ga.title = #{title}
+			</if>
+			<if test="banner != null and banner != '' ">
+			  and ga.banner = #{banner}
+			</if>
+			<if test="isDelete != null ">
+			  and ga.is_delete = #{isDelete}
+			</if>
+			<if test="createBy != null ">
+			  and ga.create_by = #{createBy}
+			</if>
+			<if test="createDate != null ">
+			  and ga.create_date = #{createDate}
+			</if>
+			<if test="updateBy != null ">
+			  and ga.update_by = #{updateBy}
+			</if>
+			<if test="updateDate != null ">
+			  and ga.update_date = #{updateDate}
+			</if>
+			<if test="limitNum != null ">
+			  and ga.limit_num = #{limitNum}
+			</if>
+			<if test="surplusNum != null ">
+			  and ga.surplus_num = #{surplusNum}
+			</if>
+			<if test="isDelete != null ">
+				and ga.is_delete = #{isDelete}
+			</if>
+			<if test="secProductType != null ">
+			  and p.product_type_ids = #{secProductType}
+			</if>
+			<!--<if test="productTypeId != null ">
+			  and p.product_type_id = #{productTypeId}
+			</if>
+			<if test="productTypeIds != null ">
+			  and p.product_type_ids = #{productTypeIds}
+			</if>-->
+			<if test="isNotProductId != null ">
+			  and p.id != #{isNotProductId}
+			</if>
+			<if test="cids != null and cids !='' ">
+				and ga.id not in 
+				<foreach collection="cids" item="cids" index="index" open="(" separator="," close=")">
+					#{cids}
+				</foreach>
+			</if>
+			<if test="keywords != null and keywords != ''">
+				and
+					(
+						p.product_name LIKE CONCAT(CONCAT('%', #{keywords}),'%')
+						 or 
+						p.product_num LIKE CONCAT(CONCAT('%', #{keywords}),'%') 
+						 or 
+						p.product_no LIKE CONCAT(CONCAT('%', #{keywords}),'%') 
+					)
+		   </if>
+		   <if test="keywords1 != null and keywords1 != ''">
+				and p.product_name LIKE CONCAT(CONCAT('%', #{keywords1}),'%')
+		   </if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="orderBy2 != null and orderBy2 !=''">
+			${orderBy2}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="GrouponActivityPojo">
+		update groupon_activity
+		<set>
+			<if test="productId != null">
+			  product_id = #{productId},
+			</if>
+			<if test="beginTime != null">
+			  begin_time = #{beginTime},
+			</if>
+			<if test="endTime != null">
+			  end_time = #{endTime},
+			</if>
+			<if test="num != null">
+			  num = #{num},
+			</if>
+			<if test="prizeNum != null">
+			  prize_num = #{prizeNum},
+			</if>
+			<if test="price != null">
+			  price = #{price},
+			</if>
+			<if test="isDefault != null">
+			  is_default = #{isDefault},
+			</if>
+			<if test="priceMin != null">
+			  price_min = #{priceMin},
+			</if>
+			<if test="priceMax != null">
+			  price_max = #{priceMax},
+			</if>
+			<if test="status != null">
+			  status = #{status},
+			</if>
+			<if test="activityStatus != null">
+			  activity_status = #{activityStatus},
+			</if>
+			<if test="type != null">
+			  type = #{type},
+			</if>
+			<if test="sorting != null">
+			  sorting = #{sorting},
+			</if>
+			<if test="title != null">
+			  title = #{title},
+			</if>
+			<if test="rebateRatio != null">
+				rebate_ratio = #{rebateRatio},
+			</if>
+			<if test="restrictionNum != null">
+				restriction_num = #{restrictionNum},
+			</if>
+			<if test="banner != null">
+			  banner = #{banner},
+			</if>
+			<if test="isDelete != null">
+			  is_delete = #{isDelete},
+			</if>
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+			<if test="limitNum != null">
+			  limit_num = #{limitNum},
+			</if>
+			<if test="surplusNum != null">
+			  surplus_num = #{surplusNum},
+			</if>
+			<if test="surplusNumM != null">
+			  surplus_num = surplus_num - #{surplusNumM},
+			</if>
+			  update_date = now()
+		</set>
+		where
+			1 = 1
+			<if test="id != null">
+				and id = #{id}
+			</if>
+			<if test="currentTime !=null and currentTime !='' ">
+				and #{currentTime} &gt;= str_to_date(begin_time,'%Y-%m-%d %H:%i:%s')
+				and #{currentTime} &lt;= str_to_date(end_time,'%Y-%m-%d %H:%i:%s')
+				and activity_status != 1 and status=1
+		  	</if>
+		  	<if test="currentTime2 !=null and currentTime2 !='' ">
+				and str_to_date(end_time,'%Y-%m-%d %H:%i:%s') &lt;= #{currentTime2}
+				and activity_status &lt; 2 and status=1
+		  	</if>
+	</update>
+	
+	<update id="deleteById" parameterType="Long">
+		update groupon_activity 
+		set 
+		is_delete = 1,
+		update_date = now()
+		where
+			id = #{id}
+	</update>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="GrouponActivityPojo">
+		insert into groupon_activity
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="productId != null">
+				product_id,
+			</if>
+			<if test="beginTime != null">
+				begin_time,
+			</if>
+			<if test="endTime != null">
+				end_time,
+			</if>
+			<if test="currentTime != null">
+				begin_time,
+				end_time,
+			</if>
+			<if test="num != null">
+				num,
+			</if>
+			<if test="prizeNum != null">
+				prize_num,
+			</if>
+			<if test="price != null">
+				price,
+			</if>
+			<if test="isDefault != null">
+				is_default,
+			</if>
+			<if test="priceMin != null">
+				price_min,
+			</if>
+			<if test="priceMax != null">
+				price_max,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="activityStatus != null">
+				activity_status,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="sorting != null">
+				sorting,
+			</if>
+			<if test="title != null">
+				title,
+			</if>
+			<if test="rebateRatio != null">
+				rebate_ratio,
+			</if>
+			<if test="restrictionNum != null">
+				restriction_num,
+			</if>
+			<if test="banner != null">
+				banner,
+			</if>
+			<if test="isDelete != null">
+				is_delete,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+				create_date,
+			<if test="updateBy != null">
+				update_by,
+			</if>
+			<if test="limitNum != null">
+				limit_num,
+			</if>
+			<if test="surplusNum != null">
+				surplus_num,
+			</if>
+				update_date,
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="productId != null">
+				#{productId},
+			</if>
+			<if test="beginTime != null">
+				#{beginTime},
+			</if>
+			<if test="endTime != null">
+				#{endTime},
+			</if>
+			<if test="currentTime != null">
+				now(),
+				date_add(now(), INTERVAL 1 day),
+			</if>
+			<if test="num != null">
+				#{num},
+			</if>
+			<if test="prizeNum != null">
+				#{prizeNum},
+			</if>
+			<if test="price != null">
+				#{price},
+			</if>
+			<if test="isDefault != null">
+				#{isDefault},
+			</if>
+			<if test="priceMin != null">
+				#{priceMin},
+			</if>
+			<if test="priceMax != null">
+				#{priceMax},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+			<if test="activityStatus != null">
+				#{activityStatus},
+			</if>
+			<if test="type != null">
+				#{type},
+			</if>
+			<if test="sorting != null">
+				#{sorting},
+			</if>
+			<if test="title != null">
+				#{title},
+			</if>
+			<if test="rebateRatio != null">
+				#{rebateRatio},
+			</if>
+			<if test="restrictionNum != null">
+				#{restrictionNum},
+			</if>
+			<if test="banner != null">
+				#{banner},
+			</if>
+			<if test="isDelete != null">
+				#{isDelete},
+			</if>
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+				now(),
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+			<if test="limitNum != null">
+				#{limitNum},
+			</if>
+			<if test="surplusNum != null">
+				#{surplusNum},
+			</if>
+				now(),
+		</trim>
+	</insert>
+	
+	<select id="listPage2" parameterType="java.util.Map" resultType="GrouponActivityPojo">
+		select
+			ga.id as id,
+			ga.product_id as productId,
+			ga.num as num,
+			ga.price as price,
+			ga.status as status,
+			ga.activity_status as activityStatus,
+			ga.type as type,
+			(select count(*) 
+			from groupon_user_record gur 
+			where gur.activity_id = ga.id 
+			and gur.activity_type = ga.type
+			) as numNow,
+			ps.price as price1,
+			ps.sell_number as sellNumber1,
+			ps.product_image as productImage1,
+			ps.product_name as  productName1,
+			ps.day_sell as daySell
+		    from groupon_activity ga
+			left join product_sell ps on ps.product_id = ga.product_id
+		where 1=1
+		    <if test="productType1 !=null and productType1 != ''">
+			  and ps.product_type1 = #{productType1}
+		    </if>
+		    <if test="isNotProductId != null ">
+			  and ga.product_id != #{isNotProductId}
+			</if>
+			<if test="secProductType != null ">
+			  and ps.product_type_ids = #{secProductType}
+			</if>
+			<if test="status != null ">
+			  and ga.status = #{status}
+			</if>
+			<if test="type != null ">
+			  and ga.type = #{type}
+			</if>
+			<if test="isDelete != null ">
+			  and ga.is_delete = #{isDelete}
+			</if>
+			<if test="orderBy != null and orderBy !=''">
+				order by ${orderBy}
+			</if>
+			<if test="pageSize != null">
+				limit #{pageNo}, #{pageSize}
+			</if>
+	</select>
+</mapper>

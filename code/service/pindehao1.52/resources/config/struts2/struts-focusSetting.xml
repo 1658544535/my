@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="focusSetting" extends="default">
+		<!-- 进入列表页面 -->
+		<action name="goFocusSetting" class="com.tzmb2c.web.action.FocusSettingAction" method="goFocusSetting">
+			<result name="success">/page/system/focusSetting/focusSettingList.jsp</result>
+		</action>
+		<!-- 进入活动图片管理列表页面 -->
+		<action name="goActivityFocusSetting" class="com.tzmb2c.web.action.FocusSettingAction" method="goActivityFocusSetting">
+			<result name="success">/page/system/focusSetting/activityFocusSettingList.jsp</result>
+		</action>
+		<!-- 新增 -->
+		<action name="goAddFocusSetting" class="com.tzmb2c.web.action.FocusSettingAction" method="goAddFocusSetting">
+		    <result name="success">/page/system/focusSetting/addFocusSetting.jsp</result>
+		</action>
+		<!-- 活动顶部图片新增 -->
+		<action name="goAddActivityFocusSetting" class="com.tzmb2c.web.action.FocusSettingAction" method="goAddActivityFocusSetting">
+		    <result name="success">/page/system/focusSetting/addActivityFocusSetting.jsp</result>
+		</action>
+		<!-- 新增提交 -->
+		<action name="addFocusSetting" class="com.tzmb2c.web.action.FocusSettingAction" method="add">
+		</action>		
+		<!-- 编辑页面 -->
+		<action name="goEditFocusSetting" class="com.tzmb2c.web.action.FocusSettingAction" method="goEditFocusSetting">
+			<result name="success">/page/system/focusSetting/updateFocusSetting.jsp</result>
+		</action>
+		<!-- 编辑提交 -->
+		<action name="updateFocusSetting" class="com.tzmb2c.web.action.FocusSettingAction" method="update">
+		</action>
+		<!-- 活动编辑页面 -->
+		<action name="goEditActivityFocusSetting" class="com.tzmb2c.web.action.FocusSettingAction" method="goEditActivityFocusSetting">
+			<result name="success">/page/system/focusSetting/updateActivityFocusSetting.jsp</result>
+		</action>
+	</package>
+	<package name="focusSetting-json" extends="json-default">
+		<!-- 内容 -->
+		<action name="focusSettingList" class="com.tzmb2c.web.action.FocusSettingAction" method="focusSettingList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="focusSettingCnt" class="com.tzmb2c.web.action.FocusSettingAction" method="goFocusSetting">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+		<!-- 内容 -->
+		<action name="activityFocusSettingList" class="com.tzmb2c.web.action.FocusSettingAction" method="activityFocusSettingList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="activityFocusSettingCnt" class="com.tzmb2c.web.action.FocusSettingAction" method="goActivityFocusSetting">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+		<!-- 根据ID删除 -->
+		<action name="delFocusSetting" class="com.tzmb2c.web.action.FocusSettingAction" method="delete">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+		<!-- 删除选中 -->
+		<action name="delFocusSettingAll" class="com.tzmb2c.web.action.FocusSettingAction" method="deleteAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 通过审核 -->
+		<action name="checkFocusSetting" class="com.tzmb2c.web.action.FocusSettingAction" method="check">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 取消审核 -->
+		<action name="uncheckFocusSetting" class="com.tzmb2c.web.action.FocusSettingAction" method="uncheck">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中通过审核 -->
+		<action name="checkFocusSettingAll" class="com.tzmb2c.web.action.FocusSettingAction" method="checkAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中取消审核 -->
+		<action name="uncheckFocusSettingAll" class="com.tzmb2c.web.action.FocusSettingAction" method="uncheckAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+	</package>
+</struts>

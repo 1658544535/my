@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.UserCollectMapper">
+ 
+	<!-- <cache/>  -->
+
+	<select id="getUserCollectAll" resultType="userCollectPojo">
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.type as type,
+		t.product_id as productId
+		from user_collect  t order by t.create_date desc
+	</select>
+	
+	<select id="getfindByIdUserCollect" parameterType="Long" resultType="userCollectPojo" >
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.type as type,
+		t.product_id as productId
+		from user_collect t where
+		t.id = #{id} 
+	</select>
+	
+	
+	<select id="findUserCollectByProductId" parameterType="userCollectPojo" resultType="userCollectPojo" >
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.product_id as productId,
+		t.type as type,
+		t.activity_id as activityId
+		from user_collect t where
+		t.product_id = #{productId} and 
+		t.user_id = #{userId} and
+		t.activity_id = #{activityId} and
+		t.type = #{type}
+	</select>
+	
+	<select id="getfindByUserIdUserCollect" parameterType="Long" resultType="userCollectPojo" >
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.product_id as productId,
+		t.type as type,
+		p.product_name as productName,
+		p.distribution_price as distributionPrice,
+		p.selling_price as sellingPrice,
+		p.lowest_price as lowestPrice,
+		p.image as image,
+		p.is_introduce as isIntroduce
+		from user_collect t left join product p on t.product_id = p.id
+		where
+		t.user_id = #{id} 
+	</select>
+
+	<insert id="insertUserCollect" parameterType="userCollectPojo">
+		insert into user_collect
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="productId != null">
+				product_id,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="updateBy != null">
+				update_by,
+			</if>
+			<if test="updateDate != null">
+				update_date,
+			</if>
+			<if test="remarks != null">
+				remarks,
+			</if>
+			<if test="version != null">
+				version,
+			</if>
+			<if test="activityId != null">
+				activity_id,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="isDelete != null">
+				is_delete,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="userId != null">
+				#{userId},
+			</if>
+			<if test="productId != null">
+				#{productId},
+			</if>
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+			<if test="createDate != null">
+				#{createDate},
+			</if>
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+			<if test="updateDate != null">
+				#{updateDate},
+			</if>
+			<if test="remarks != null">
+				#{remarks},
+			</if>
+			<if test="version != null">
+				#{version},
+			</if>
+			<if test="activityId != null">
+				#{activityId},
+			</if>
+			<if test="type != null">
+				#{type},
+			</if>
+			<if test="isDelete != null">
+				#{isDelete},
+			</if>
+		</trim>
+	</insert>
+	
+	<delete id="delUserCollect" parameterType="Long">
+		delete from user_collect where id = #{id}
+	</delete>
+	
+	<delete id="deleteUserCollect"  parameterType="java.util.Map">
+		delete from user_collect where user_id = #{userId} and product_id=#{productId} and activity_id = #{activityId}
+	</delete>
+	
+	<update id="updateUserCollect" parameterType="userCollectPojo">
+		update user_collect
+		<set>
+			<if test="userId != null">
+			  user_id = #{userId},
+			</if>
+			<if test="productId != null">
+			  product_id = #{productId},
+			</if>
+			<if test="createBy != null">
+			  create_by = #{createBy},
+			</if>
+			<if test="createDate != null">
+			  create_date = #{createDate},
+			</if>
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+			<if test="updateDate != null">
+			  update_date = #{updateDate},
+			</if>
+			<if test="remarks != null">
+			  remarks = #{remarks},
+			</if>
+			<if test="version != null">
+			  version = #{version},
+			</if>
+			<if test="activityId != null">
+			  activity_id = #{activityId},
+			</if>
+			<if test="type != null">
+			  type = #{type},
+			</if>
+			<if test="isDelete != null">
+			  is_delete = #{isDelete},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<select id="userCollectAllCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from user_collect where
+		1=1
+		<if test="productId!=null and productId!=''">
+			and product_id  = #{productId}
+		</if>
+		<if test="userId!=null and userId!=''">
+			and user_id = #{userId}
+		</if>
+		<if test="productName!=null and productName!=''">
+			and product_name like CONCAT("%",#{productName},"%")
+		</if>
+		<if test="productModel!=null and productModel!=''">
+			and product_model like CONCAT("%",#{productModel},"%")
+		</if>
+		<if test="channel!=null ">
+			and channel = #{channel}
+		</if>
+		<if test="activityId != null ">
+			and activity_id = #{activityId}
+		</if>
+		<if test="isDelete != null ">
+			and is_delete = #{isDelete}
+		</if>
+		<if test="type != null ">
+			and type = #{type}
+		</if>
+	</select>
+	
+	<select id="productCollectAllCount" resultType="int" parameterType="userCollectPojo">
+		select count(*)
+		from user_collect
+		where 1=1
+		  <if test="id != null ">
+			and id = #{id}
+		  </if>
+		  <if test="userId != null ">
+			and user_id = #{userId}
+		  </if>
+		  <if test="productId != null ">
+			and product_id = #{productId}
+		  </if>
+		  <if test="createBy != null ">
+			and create_by = #{createBy}
+		  </if>
+		  <if test="createDate != null ">
+			and create_date = #{createDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and update_by = #{updateBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and update_date = #{updateDate}
+		  </if>
+		  <if test="remarks != null and remarks != '' ">
+			and remarks = #{remarks}
+		  </if>
+		  <if test="version != null ">
+			and version = #{version}
+		  </if>
+		  <if test="activityId != null ">
+			and activity_id = #{activityId}
+		  </if>
+		  <if test="type != null ">
+			and type = #{type}
+		  </if>
+		  <if test="isDelete != null ">
+			and is_delete = #{isDelete}
+		  </if>
+	</select>
+	
+	<select id="userCollectAllList" resultType="userCollectPojo"
+		parameterType="java.util.Map">
+		select 
+		id as id,
+		user_id as userId,
+		product_id as productId,
+		create_by as createBy,
+		create_date as createDate,
+		update_by as updateBy,
+		update_date as updateDate,
+		remarks as remarks,
+		version as version,
+		activity_id as activityId,
+		type as type,
+		is_delete as isDelete
+		from user_collect
+		where
+		1=1
+		<if test="channel!=null ">
+		  and channel = #{channel}
+		</if>
+		<if test="id != null ">
+		  and id = #{id}
+		</if>
+		<if test="userId != null ">
+		  and user_id = #{userId}
+		</if>
+		<if test="productId != null ">
+		  and product_id = #{productId}
+		</if>
+		<if test="createBy != null ">
+		  and create_by = #{createBy}
+		</if>
+		<if test="createDate != null ">
+		  and create_date = #{createDate}
+		</if>
+		<if test="updateBy != null ">
+		  and update_by = #{updateBy}
+		</if>
+		<if test="updateDate != null ">
+		  and update_date = #{updateDate}
+		</if>
+		<if test="remarks != null and remarks != '' ">
+		  and remarks = #{remarks}
+		</if>
+		<if test="version != null ">
+		  and version = #{version}
+		</if>
+		<if test="activityId != null ">
+		  and activity_id = #{activityId}
+		</if>
+		<if test="type != null ">
+		  and type = #{type}
+		</if>
+		<if test="isDelete != null ">
+		  and is_delete = #{isDelete}
+		</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	<select id="UserCollectByUserId" parameterType="userCollectPojo" resultType="userCollectPojo" >
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.product_id as productId,
+		t.type as type,
+		t.activity_Id as activityId
+		from user_collect t where
+		t.user_id = #{userId}
+		<!-- group by t.product_id -->
+		and t.type = #{type}
+		order by t.id desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+		
+	</select>
+	
+	<select id="findUserCollectByUserIdPage" parameterType="java.util.Map" resultType="userCollectPojo" >
+		select 
+			t.id as id,
+			t.user_id as userId,
+			t.product_id as productId,
+			t.type as type,
+			t.activity_id as activityId,
+			p.product_name as productName,
+			p.distribution_price as distributionPrice,
+			p.status as proStatus,
+			p.selling_price as sellingPrice,
+			p.lowest_price as lowestPrice,
+			p.image as image,
+			p.is_introduce as isIntroduce,
+			p.sell_number + p.base_number as sellNumber,
+			ga.num as groupNum,
+			ga.price as groupPrice,
+			ga.type as activityType
+		from user_collect t 
+			left join product p on t.product_id = p.id
+			left join groupon_activity ga on ga.id = t.activity_id
+		where
+			t.user_id = #{userId} 
+			and
+			t.is_delete = 0
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+</mapper>

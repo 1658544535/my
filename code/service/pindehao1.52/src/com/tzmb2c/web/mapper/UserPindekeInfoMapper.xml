@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.UserPindekeInfoMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id as id,
+		user_id as userId,
+		name as name,
+		phone as phone,
+		card_no as cardNo,
+		extend_channel as extendChannel,
+		extend_img1 as extendImg1,
+		extend_img2 as extendImg2,
+		extend_img3 as extendImg3,
+		extend_img4 as extendImg4,
+		extend_img5 as extendImg5,
+		return_msg as returnMsg,
+		rebate_price as rebatePrice,
+		withdraw_price as withdrawPrice,
+		surplu_price as surpluPrice,
+		is_delete as isDelete,
+		status as status,
+		create_by as createBy,
+		create_date as createDate,
+		update_by as updateBy,
+		update_date as updateDate,
+		freezing_price as freezingPrice
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="UserPindekeInfoPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			user_pindeke_info
+		where
+			id = #{id}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from user_pindeke_info upi
+		left join sys_login sl on sl.id=upi.user_id
+		where 1=1 and is_delete=0
+		  <if test="id != null ">
+			and upi.id = #{id}
+		  </if>
+		  <if test="userId != null ">
+			and upi.user_id = #{userId}
+		  </if>
+		  <if test="name != null and name != '' ">
+			and upi.name = #{name}
+		  </if>
+		  <if test="phone != null and phone != '' ">
+			and upi.phone = #{phone}
+		  </if>
+		  <if test="cardNo != null and cardNo != '' ">
+			and upi.card_no = #{cardNo}
+		  </if>
+		  <if test="extendChannel != null and extendChannel != '' ">
+			and upi.extend_channel = #{extendChannel}
+		  </if>
+		  <if test="extendImg1 != null and extendImg1 != '' ">
+			and upi.extend_img1 = #{extendImg1}
+		  </if>
+		  <if test="extendImg2 != null and extendImg2 != '' ">
+			and upi.extend_img2 = #{extendImg2}
+		  </if>
+		  <if test="extendImg3 != null and extendImg3 != '' ">
+			and upi.extend_img3 = #{extendImg3}
+		  </if>
+		  <if test="extendImg4 != null and extendImg4 != '' ">
+			and upi.extend_img4 = #{extendImg4}
+		  </if>
+		  <if test="extendImg5 != null and extendImg5 != '' ">
+			and upi.extend_img5 = #{extendImg5}
+		  </if>
+		  <if test="returnMsg != null ">
+			and upi.return_msg = #{returnMsg}
+		  </if>
+		  <if test="pindekeDateStr != null and pindekeDateStr != '' and pindekeDateEndStr != null and pindekeDateEndStr != '' ">
+			  and upi.create_date between #{pindekeDateStr} and #{pindekeDateEndStr}
+		  </if>
+		  <if test="nameAndPhone != null and nameAndPhone != '' ">
+		    and (upi.name like concat('%',#{nameAndPhone},'%') 
+			    or upi.phone like concat('%',#{nameAndPhone},'%')
+			    or sl.phone like concat('%',#{nameAndPhone},'%')
+			    )
+		  </if>
+		  <if test="rebatePrice != null ">
+			and upi.rebate_price = #{rebatePrice}
+		  </if>
+		  <if test="withdrawPrice != null ">
+			and upi.withdraw_price = #{withdrawPrice}
+		  </if>
+		  <if test="surpluPrice != null ">
+			and upi.surplu_price = #{surpluPrice}
+		  </if>
+		  <if test="isDelete != null ">
+			and upi.is_delete = #{isDelete}
+		  </if>
+		  <if test="status != null ">
+			and upi.status = #{status}
+		  </if>
+		  <if test="createBy != null ">
+			and upi.create_by = #{createBy}
+		  </if>
+		  <if test="createDate != null ">
+			and upi.create_date = #{createDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and upi.update_by = #{updateBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and upi.update_date = #{updateDate}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="UserPindekeInfoPojo">
+		select
+			upi.id as id,
+			upi.user_id as userId,
+			upi.name as name,
+			upi.phone as phone,
+			upi.card_no as cardNo,
+			upi.extend_channel as extendChannel,
+			upi.extend_img1 as extendImg1,
+			upi.extend_img2 as extendImg2,
+			upi.extend_img3 as extendImg3,
+			upi.extend_img4 as extendImg4,
+			upi.extend_img5 as extendImg5,
+			upi.return_msg as returnMsg,
+			upi.rebate_price as rebatePrice,
+			upi.withdraw_price as withdrawPrice,
+			upi.surplu_price as surpluPrice,
+			upi.is_delete as isDelete,
+			upi.status as status,
+			upi.create_by as createBy,
+			upi.create_date as createDate,
+			upi.update_by as updateBy,
+			upi.update_date as updateDate,
+			upi.freezing_price as freezingPrice,
+			sl.loginname as loginname
+		from user_pindeke_info upi
+		left join sys_login sl on sl.id=upi.user_id
+		where 1=1 and is_delete=0
+			<if test="id != null ">
+			  and upi.id = #{id}
+			</if>
+			<if test="userId != null ">
+			  and upi.user_id = #{userId}
+			</if>
+			<if test="name != null and name != '' ">
+			  and upi.name = #{name}
+			</if>
+			<if test="phone != null and phone != '' ">
+			  and upi.phone = #{phone}
+			</if>
+			<if test="cardNo != null and cardNo != '' ">
+			  and upi.card_no = #{cardNo}
+			</if>
+			<if test="extendChannel != null and extendChannel != '' ">
+			  and upi.extend_channel = #{extendChannel}
+			</if>
+			<if test="extendImg1 != null and extendImg1 != '' ">
+			  and upi.extend_img1 = #{extendImg1}
+			</if>
+			<if test="extendImg2 != null and extendImg2 != '' ">
+			  and upi.extend_img2 = #{extendImg2}
+			</if>
+			<if test="extendImg3 != null and extendImg3 != '' ">
+			  and upi.extend_img3 = #{extendImg3}
+			</if>
+			<if test="extendImg4 != null and extendImg4 != '' ">
+			  and upi.extend_img4 = #{extendImg4}
+			</if>
+			<if test="extendImg5 != null and extendImg5 != '' ">
+			  and upi.extend_img5 = #{extendImg5}
+			</if>
+			<if test="returnMsg != null ">
+			  and upi.return_msg = #{returnMsg}
+			</if>
+			<if test="pindekeDateStr != null and pindekeDateStr != '' and pindekeDateEndStr != null and pindekeDateEndStr != '' ">
+			  and upi.create_date between #{pindekeDateStr} and #{pindekeDateEndStr}
+		    </if>
+		    <if test="nameAndPhone != null and nameAndPhone != '' ">
+		    and (
+		    	 upi.name like concat('%',#{nameAndPhone},'%') 
+		         or upi.phone like concat('%',#{nameAndPhone},'%')
+		         or sl.loginname like concat('%',#{nameAndPhone},'%')
+		         )
+		  </if>
+			<if test="rebatePrice != null ">
+			  and upi.rebate_price = #{rebatePrice}
+			</if>
+			<if test="withdrawPrice != null ">
+			  and upi.withdraw_price = #{withdrawPrice}
+			</if>
+			<if test="surpluPrice != null ">
+			  and upi.surplu_price = #{surpluPrice}
+			</if>
+			<if test="isDelete != null ">
+			  and upi.is_delete = #{isDelete}
+			</if>
+			<if test="status != null ">
+			  and upi.status = #{status}
+			</if>
+			<if test="createBy != null ">
+			  and upi.create_by = #{createBy}
+			</if>
+			<if test="createDate != null ">
+			  and upi.create_date = #{createDate}
+			</if>
+			<if test="updateBy != null ">
+			  and upi.update_by = #{updateBy}
+			</if>
+			<if test="updateDate != null ">
+			  and upi.update_date = #{updateDate}
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="UserPindekeInfoPojo">
+		update user_pindeke_info
+		<set>
+			<if test="userId != null">
+			  user_id = #{userId},
+			</if>
+			<if test="name != null">
+			  name = #{name},
+			</if>
+			<if test="phone != null">
+			  phone = #{phone},
+			</if>
+			<if test="cardNo != null">
+			  card_no = #{cardNo},
+			</if>
+			<if test="extendChannel != null">
+			  extend_channel = #{extendChannel},
+			</if>
+			<if test="extendImg1 != null">
+			  extend_img1 = #{extendImg1},
+			</if>
+			<if test="extendImg2 != null">
+			  extend_img2 = #{extendImg2},
+			</if>
+			<if test="extendImg3 != null">
+			  extend_img3 = #{extendImg3},
+			</if>
+			<if test="extendImg4 != null">
+			  extend_img4 = #{extendImg4},
+			</if>
+			<if test="extendImg5 != null">
+			  extend_img5 = #{extendImg5},
+			</if>
+			<if test="returnMsg != null">
+			  return_msg = #{returnMsg},
+			</if>
+			<if test="rebatePrice != null">
+			  rebate_price = #{rebatePrice},
+			</if>
+			<if test="rebatePriceAdd != null">
+			  rebate_price = rebate_price + #{rebatePriceAdd},
+			</if>
+			<if test="freezingPrice != null">
+			  freezing_price = #{freezingPrice},
+			</if>
+			<if test="freezingPriceAdd != null">
+			  freezing_price = freezing_price + #{freezingPriceAdd},
+			</if>
+			<if test="freezingPriceMinus != null">
+			  freezing_price = freezing_price - #{freezingPriceMinus},
+			</if>
+			<if test="withdrawPrice != null">
+			  withdraw_price = #{withdrawPrice},
+			</if>
+			<if test="surpluPrice != null">
+			  surplu_price = #{surpluPrice},
+			</if>
+			<if test="surpluPriceAdd != null">
+			  surplu_price = surplu_price + #{surpluPriceAdd},
+			</if>
+			<if test="surpluPriceMinus != null">
+			  surplu_price = surplu_price - #{surpluPriceMinus},
+			</if>
+			<if test="rebatePriceStr != null">
+			  rebate_price = ${rebatePriceStr},
+			</if>
+			<if test="withdrawPriceStr != null">
+			  withdraw_price = ${withdrawPriceStr},
+			</if>
+			<if test="surpluPriceStr != null">
+			  surplu_price = ${surpluPriceStr},
+			</if>
+			<if test="isDelete != null">
+			  is_delete = #{isDelete},
+			</if>
+			<if test="status != null">
+			  status = #{status},
+			</if>
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+			  update_date = now()
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<!--审核成功修改用户分享码及更改是否拼得客状态-->
+	<update id="updateInvitationCode" parameterType="java.util.Map">
+		update sys_login
+		<set>
+			<if test="invitationCode != null">
+			  invitation_code = #{invitationCode},
+			</if>
+			<if test="isPindeke != null">
+			  is_pindeke = #{isPindeke}
+			</if>
+		</set>
+		where id = #{userId}
+	</update>
+	
+	<!--<delete id="deleteById" parameterType="Long">
+		delete from user_pindeke_info 
+		where
+			id = #{id}
+	</delete>-->
+	
+	
+	<!--删除，只是更改删除状态-->
+	<update id="deleteById" parameterType="java.util.Map">
+		update user_pindeke_info 
+			<set>
+				<if test="isDelete != null">
+					is_delete = #{isDelete}
+				</if>
+			</set>
+			where id = #{id}
+	</update>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="UserPindekeInfoPojo">
+		insert into user_pindeke_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="phone != null">
+				phone,
+			</if>
+			<if test="cardNo != null">
+				card_no,
+			</if>
+			<if test="extendChannel != null">
+				extend_channel,
+			</if>
+			<if test="extendImg1 != null">
+				extend_img1,
+			</if>
+			<if test="extendImg2 != null">
+				extend_img2,
+			</if>
+			<if test="extendImg3 != null">
+				extend_img3,
+			</if>
+			<if test="extendImg4 != null">
+				extend_img4,
+			</if>
+			<if test="extendImg5 != null">
+				extend_img5,
+			</if>
+			<if test="returnMsg != null">
+				return_msg,
+			</if>
+			<if test="rebatePrice != null">
+				rebate_price,
+			</if>
+			<if test="withdrawPrice != null">
+				withdraw_price,
+			</if>
+			<if test="surpluPrice != null">
+				surplu_price,
+			</if>
+			<if test="isDelete != null">
+				is_delete,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="updateBy != null">
+				update_by,
+			</if>
+			<if test="updateDate != null">
+				update_date,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="userId != null">
+				#{userId},
+			</if>
+			<if test="name != null">
+				#{name},
+			</if>
+			<if test="phone != null">
+				#{phone},
+			</if>
+			<if test="cardNo != null">
+				#{cardNo},
+			</if>
+			<if test="extendChannel != null">
+				#{extendChannel},
+			</if>
+			<if test="extendImg1 != null">
+				#{extendImg1},
+			</if>
+			<if test="extendImg2 != null">
+				#{extendImg2},
+			</if>
+			<if test="extendImg3 != null">
+				#{extendImg3},
+			</if>
+			<if test="extendImg4 != null">
+				#{extendImg4},
+			</if>
+			<if test="extendImg5 != null">
+				#{extendImg5},
+			</if>
+			<if test="returnMsg != null">
+				#{returnMsg},
+			</if>
+			<if test="rebatePrice != null">
+				#{rebatePrice},
+			</if>
+			<if test="withdrawPrice != null">
+				#{withdrawPrice},
+			</if>
+			<if test="surpluPrice != null">
+				#{surpluPrice},
+			</if>
+			<if test="isDelete != null">
+				#{isDelete},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+			<if test="createDate != null">
+				#{createDate},
+			</if>
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+			<if test="updateDate != null">
+				#{updateDate},
+			</if>
+		</trim>
+	</insert>
+	
+	<select id="findByUserId" parameterType="Long" resultType="UserPindekeInfoPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			user_pindeke_info
+		where
+			user_id = #{userId}
+		limit 1
+	</select>
+	
+</mapper>

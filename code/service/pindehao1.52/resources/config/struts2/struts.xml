@@ -1,0 +1,545 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<constant name="struts.objectFactory.spring.autoWire.alwaysRespect" value="true" />
+	<constant name="struts.devMode" value="false" />
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+	<constant name="struts.action.extension" value="action,do" />
+	<constant name="struts.mapper.alwaysSelectFullNamespace"
+		value="false" />
+	<constant name="struts.multipart.maxSize" value="62428800" />
+	<!-- 代理商  -->
+	<include file="/config/struts2/struts-agency.xml" />
+	<!-- app活动  -->
+	<include file="/config/struts2/struts-activity.xml" />
+	<!-- 电商订单  -->
+	<include file="/config/struts2/struts-eleorder.xml" />
+	<!-- 前台权限页面 -->
+	<include file="/config/struts2/struts-web-session.xml" />
+	<!-- 前台页面 -->
+	<include file="/config/struts2/struts-web.xml" />
+	<!--产品原生图片 -->
+	<include file="/config/struts2/struts-productPrimaryImages.xml" />
+	<!--产品焦点图片 -->
+	<include file="/config/struts2/struts-productFocusImages.xml" />
+	<!--用户订单统计结算 -->
+	<include file="/config/struts2/struts-userOrderStatistics.xml" />
+	<!-- 用户资料 -->
+	<include file="/config/struts2/struts-userInfo.xml" />
+	<!-- 店铺信息 -->
+	<include file="/config/struts2/struts-shop.xml" />
+	<!-- 角色管理 -->
+	<include file="/config/struts2/struts-sysRole.xml" />
+	<!-- 用户管理 -->
+	<include file="/config/struts2/struts-sysLogin.xml" />
+	<!-- 用户角色管理 -->
+	<include file="/config/struts2/struts-sysUserRole.xml" />
+	<!-- 系统字典 -->
+	<include file="/config/struts2/struts-sysDict.xml" />
+	<!-- 登录 -->
+	<include file="/config/struts2/struts-login.xml" />
+	<!-- 登录日志 -->
+	<include file="/config/struts2/struts-loginRec.xml" />
+	<!-- 个人信息 -->
+	<!-- <include file="/config/struts2/struts-user.xml" /> -->
+	<!-- 菜单 -->
+	<include file="/config/struts2/struts-menu.xml" />
+	<!-- 用户角色 -->
+	<include file="/config/struts2/struts-userrole.xml" />
+	<!-- 角色菜单 -->
+	<include file="/config/struts2/struts-sysRoleMenu.xml" />
+	<!-- 搜索关键字记录 -->
+	<include file="/config/struts2/struts-searchKey.xml" />
+	<!-- 登录信息记录 -->
+	<include file="/config/struts2/struts-sysLoginLog.xml" />
+	<!-- 访问信息记录 -->
+	<include file="/config/struts2/struts-productAccessLog.xml" />
+	<!-- 用户订单详情 -->
+	<include file="/config/struts2/struts-orderDetail.xml" />
+	<!-- 用户订单 -->
+	<include file="/config/struts2/struts-order.xml" />
+	<!-- 用户订单发货管理 -->
+	<include file="/config/struts2/struts-orderShip.xml" />
+	<!-- 供应商管理 -->
+	<include file="/config/struts2/struts-manufacturer.xml" />
+	<!-- 分销商管理 -->
+	<include file="/config/struts2/struts-consumer.xml" />
+	<!-- 帮助/FAQ系统 -->
+	<include file="/config/struts2/struts-help.xml" />
+	<!-- 退货管理 -->
+	<include file="/config/struts2/struts-orderRefund.xml" />
+	<!-- 购物车管理 -->
+	<include file="/config/struts2/struts-cart.xml" />
+	<!--推送信息综合管理 -->
+	<include file="/config/struts2/struts-pagePush.xml" />
+	<!-- 搜索关键字记录 -->
+	<include file="/config/struts2/struts-searchKey.xml" />
+	<!-- 用户消息回复 -->
+	<include file="/config/struts2/struts-messageReport.xml" />
+	<!-- 用户消息管理 -->
+	<include file="/config/struts2/struts-message.xml" />
+	<!-- 产品评价管理 -->
+	<include file="/config/struts2/struts-productComment.xml" />
+	<!-- 账户安全 -->
+	<include file="/config/struts2/struts-accountSecurity.xml" />
+	<!-- 产品分类 -->
+	<include file="/config/struts2/struts-producttype.xml" />
+	<!-- 产品 -->
+	<include file="/config/struts2/struts-product.xml" />
+	<!-- 采购商:我的关注 -->
+	<include file="/config/struts2/struts-purchaserAttention.xml" />
+	<!-- 产品图片 -->
+	<include file="/config/struts2/struts-productimages.xml" />
+	<!-- 信息管理系统：行业资讯,市场动态 -->
+	<include file="/config/struts2/struts-info.xml" />
+	<!-- 收货地址管理 -->
+	<include file="/config/struts2/struts-deliveryAddress.xml" />
+	<!-- 用户认证 -->
+	<include file="/config/struts2/struts-userAttestation.xml" />
+	<!-- 用户认证 -->
+	<include file="/config/struts2/struts-history.xml" />
+	<!-- 产品SKU -->
+	<include file="/config/struts2/struts-productstock.xml" />
+	<!-- 退货记录 -->
+	<include file="/config/struts2/struts-userOrderRefund.xml" />
+	<!-- 物流管理 -->
+	<include file="/config/struts2/struts-express.xml" />
+	<!-- 商品销售记录、统计 -->
+	<include file="/config/struts2/struts-userOrderDetail.xml" />
+	<!-- 帮助类型 -->
+	<include file="/config/struts2/struts-helptype.xml" />
+	<!-- 用户收藏产品 -->
+	<include file="/config/struts2/struts-userCollect.xml" />
+	<!-- 用户收藏店铺 -->
+	<include file="/config/struts2/struts-userShopCollect.xml" />
+	<!-- 综合字典管理 -->
+	<include file="/config/struts2/struts-syntheticalDict.xml" />
+	<!-- 区域 -->
+	<include file="/config/struts2/struts-sysarea.xml" />
+	<!-- 代理商实名认证 -->
+	<include file="/config/struts2/struts-authenticationAgency.xml" />
+	<!-- 订单推送 -->
+	<include file="/config/struts2/struts-push.xml" />
+	<!-- 首页图片推送 -->
+	<include file="/config/struts2/struts-pushHomepg.xml" />
+	<!-- 活动产品设置 -->
+	<include file="/config/struts2/struts-activityProduct.xml" />
+	<!-- 限时活动产品设置 -->
+	<include file="/config/struts2/struts-activityGoods.xml" />
+	<!-- 限时活动时间设置 -->
+	<include file="/config/struts2/struts-activityTime.xml" />
+	<!-- 首页活动标题设置 -->
+	<include file="/config/struts2/struts-activityTitle.xml" />
+	<!-- 产品优惠管理-->
+	<include file="/config/struts2/struts-coupon.xml" />
+	<!-- 分销商账户管理-->
+	<include file="/config/struts2/struts-userDistributionInfo.xml" />
+	<!-- 后台产品列表SKU -->
+	<include file="/config/struts2/struts-productSkuLink.xml" />
+	<!-- 用户积分管理-->
+	<include file="/config/struts2/struts-userScore.xml" />
+	<!-- 积分明细管理-->
+	<include file="/config/struts2/struts-userScoreLog.xml" />
+	<!-- 红包邀请码管理-->
+	<include file="/config/struts2/struts-redpacketCode.xml" />
+	<!-- 场景管理-->
+	<include file="/config/struts2/struts-scene.xml" />
+	<!-- 场景产品管理-->
+	<include file="/config/struts2/struts-sceneProduct.xml" />
+	<!-- 套餐管理-->
+	<include file="/config/struts2/struts-homePackage.xml" />
+	<!-- 套餐产品管理-->
+	<include file="/config/struts2/struts-packageProduct.xml" />
+    <!-- 百度用户浏览记录-->
+    <include file="/config/struts2/struts-baiduLogin.xml" />
+    <!-- APP弹窗管理-->
+    <include file="/config/struts2/struts-popup.xml" />
+    <!-- 品牌管理-->
+    <include file="/config/struts2/struts-brandDic.xml" />
+    <!-- 商家中心前端入口 -->
+    <include file="/config/struts2/struts-sellerWeb.xml" />
+    <!-- 专场管理-->
+    <include file="/config/struts2/struts-specialShow.xml" />
+    <!-- 专场产品管理-->
+    <include file="/config/struts2/struts-specialProduct.xml" />
+    <!-- 品牌管理-->
+    <include file="/config/struts2/struts-userBrand.xml" />
+    <!-- APP导航-->
+    <include file="/config/struts2/struts-navigation.xml" />
+    <!-- 专场推送-->
+    <include file="/config/struts2/struts-specialPush.xml" />
+    <!-- 用户钱包-->
+    <include file="/config/struts2/struts-userWallet.xml" />
+    <!-- 用户钱包使用的流水记录-->
+    <include file="/config/struts2/struts-userWalletLog.xml" />
+    <!-- 后台商家结算 -->
+    <include file="/config/struts2/struts-manufacturersettle.xml" />
+    <!-- 闪屏设置管理 -->
+    <include file="/config/struts2/struts-splashScreen.xml" />
+    <!-- app端用户钱包-->
+    <include file="/config/struts2/struts-walletWeb.xml" />
+    <!-- 运营数据统计-->
+    <include file="/config/struts2/struts-operations.xml" />
+    <!-- 商家审核管理 -->
+    <include file="/config/struts2/struts-sellerCheck.xml" />
+    <!-- 首页图标管理 -->
+    <include file="/config/struts2/struts-homePageIcon.xml" />
+    <!-- 有米广告管理 -->
+    <include file="/config/struts2/struts-adSpread.xml" />
+    <!-- 商家消息管理 -->
+    <include file="/config/struts2/struts-messagesCenter.xml" />
+    <!-- 商家扣分管理 -->
+    <include file="/config/struts2/struts-userDeductionScore.xml" />
+    <!-- 后台商家提现 -->
+    <include file="/config/struts2/struts-manufacturerWithdraw.xml" />
+    <!-- web活动页面-->
+    <include file="/config/struts2/struts-webView.xml" />
+    <!-- 儿童故事管理 -->
+    <include file="/config/struts2/struts-childrenStory.xml" />
+    <!-- 少儿频道-->
+    <include file="/config/struts2/struts-childrenChannel.xml" />
+    <!-- 少儿频道浏览记录-->
+    <include file="/config/struts2/struts-childrenChannelHistory.xml" />
+    <!-- 设置视觉商品-->
+    <include file="/config/struts2/struts-visualGoodSeting.xml" />
+	<!--玩具记录管理 -->
+    <include file="/config/struts2/struts-userToyLog.xml" />
+    <!-- 用户部件记录-->
+    <include file="/config/struts2/struts-userPartsLog.xml" />
+    <!-- 设置游戏工厂玩具-->
+    <include file="/config/struts2/struts-gameFactoryToy.xml" />
+    <!-- 设置工厂玩具配件-->
+    <include file="/config/struts2/struts-gameToyParts.xml" />
+    <!-- 标签管理 -->
+    <include file="/config/struts2/struts-label.xml" />
+    <!-- 任务设置 -->
+    <include file="/config/struts2/struts-taskSetting.xml" />
+    <!-- 达人用户审核 -->
+    <include file="/config/struts2/struts-userTalentAuth.xml" />
+    <!-- 任务管理  -->
+    <include file="/config/struts2/struts-taskLibrary.xml" />
+    <!-- 年龄与能力联动  -->
+    <include file="/config/struts2/struts-ageSkillLink.xml" />
+    <!-- 视频管理 -->
+    <include file="/config/struts2/struts-video.xml" />
+	<!-- 社圈分类 -->
+    <include file="/config/struts2/struts-socialCircleType.xml" />
+    <!-- 社圈管理 -->
+    <include file="/config/struts2/struts-socialCircle.xml" />
+    <!-- 专题管理 -->
+    <include file="/config/struts2/struts-platformSpecial.xml" />
+    <!-- 知识库管理 -->
+    <include file="/config/struts2/struts-knowledgeBase.xml" />
+    <!-- 创客管理 -->
+    <include file="/config/struts2/struts-userMaker.xml" />
+    <!-- 创客品牌管理 -->
+    <include file="/config/struts2/struts-userMakerBrand.xml" />
+     <!-- 笔记管理 -->
+    <include file="/config/struts2/struts-userCirclePost.xml" />
+    <!-- 创客专题管理 -->
+    <include file="/config/struts2/struts-userMakerTheme.xml" />
+    <!-- 创客店铺管理 -->
+    <include file="/config/struts2/struts-userMakerShop.xml" />  
+    <!-- 任务类型联动 -->
+    <include file="/config/struts2/struts-taskTypeLink.xml" />
+    <!-- 创客中心 -->
+    <include file="/config/struts2/struts-geekWeb.xml" />
+    <!-- 视频统计 -->
+    <include file="/config/struts2/struts-dataAudit.xml" />
+    <!-- 达人中心 -->
+    <include file="/config/struts2/struts-tarentoWeb.xml" />
+    <!-- 热门推荐 -->
+    <include file="/config/struts2/struts-hotPush.xml" />
+    <!-- 有你喜欢标签管理 -->
+    <include file="/config/struts2/struts-favourites_label.xml" />
+    <!-- 自定义模板 -->
+    <include file="/config/struts2/struts-templatePageData.xml" />
+    <!-- 首页Banner推荐 -->
+    <include file="/config/struts2/struts-focusSetting.xml" />
+    <!-- 外链 -->
+    <include file="/config/struts2/struts-externalLinks.xml" />  
+    <!-- 创客店铺推荐 -->
+    <include file="/config/struts2/struts-shopRecommend.xml" />
+    <!-- 活动商品-商品推荐管理 -->
+    <include file="/config/struts2/struts-product_recommend.xml" />
+    <!-- 商家中心品类推荐 -->
+    <include file="/config/struts2/struts-productTypeRecommend.xml" />
+    <!-- 微页面 -->
+    <include file="/config/struts2/struts-microPage.xml" />
+    <!-- 商家中心热门品牌推荐 -->
+    <include file="/config/struts2/struts-hotBrandRecommend.xml" />
+    <!-- 商城更多分类 -->
+    <include file="/config/struts2/struts-categorySetting.xml" />
+    <!-- 商城更多分类详情设置 -->
+    <include file="/config/struts2/struts-categoryDetailSetting.xml" />   
+    <!-- 内容导购 -->
+    <include file="/config/struts2/struts-contentGuide.xml" />
+	<!-- 团购活动 -->
+    <include file="/config/struts2/struts-grouponActivity.xml" />  
+    <!-- 发货订单导入表 -->
+    <include file="/config/struts2/struts-deliveryOrderImport.xml" />
+    <!-- 猜价活动 -->
+    <include file="/config/struts2/struts-guessActivity.xml" />
+    <!-- 团购记录 -->
+    <include file="/config/struts2/struts-grouponActivityRecord.xml" />
+    <!-- 团购用户记录 -->
+    <include file="/config/struts2/struts-grouponUserRecord.xml" /> 
+    <!-- 团免活动 -->
+    <include file="/config/struts2/struts-freeGroupActivity.xml" />
+    <!-- 0.1抽奖 -->
+    <include file="/config/struts2/struts-drawGroupActivity.xml" />
+    <!-- 团免券管理 -->
+    <include file="/config/struts2/struts-groupFreeCoupon.xml" />
+    <!-- 团免券领取设置管理 -->
+	<include file="/config/struts2/struts-groupFreeCouponSetting.xml" /> 
+    <!-- 首页团购推荐 -->
+    <include file="/config/struts2/struts-grouponRecommend.xml" />
+    <!-- 专题表 -->
+    <include file="/config/struts2/struts-special.xml" /> 
+    <!-- 专题分类表 -->
+    <include file="/config/struts2/struts-specialType.xml" /> 
+	<!-- 专题商品表 -->
+	<include file="/config/struts2/struts-specialGoods.xml" /> 
+	<!-- 专区表 -->
+    <include file="/config/struts2/struts-zones.xml" /> 
+	<!-- 专区商品表 -->
+	<include file="/config/struts2/struts-zoneGoods.xml" /> 
+	<!-- 限时秒杀表 -->
+	<include file="/config/struts2/struts-seckill.xml" /> 
+	<!-- 秒杀商品表 -->
+	<include file="/config/struts2/struts-seckillGoods.xml" /> 
+	<!-- 秒杀商品表 -->
+	<include file="/config/struts2/struts-seckillGoods.xml" /> 
+	<!-- 活动商品评论表 -->
+	<include file="/config/struts2/struts-activityProductComment.xml" />
+	<!-- 商品当日销售量记录表 -->
+    <include file="/config/struts2/struts-productSell.xml" /> 
+    <!--拼团信息导出 -->
+    <include file="/config/struts2/struts-grouponExcel.xml" /> 
+	<!-- 消息模板表 -->
+	<include file="/config/struts2/struts-noticeTemplate.xml" /> 
+	<!-- 版本控制表 -->
+    <include file="/config/struts2/struts-versionControl.xml" /> 
+	<!-- 领取优惠券记录表 -->
+    <include file="/config/struts2/struts-userCouponFlag.xml" /> 
+
+    <!-- ****** API xml ****** -->
+    <!-- api入口 -->
+	<include file="/config/struts2/struts-api.xml" />
+	<!-- sellerApi入口 -->
+	<include file="/config/struts2/struts-sellerApi.xml" />
+	<!-- 钱包Api入口 -->
+	<include file="/config/struts2/struts-walletApi.xml" />
+	<!-- 1.7Api入口 -->
+	<include file="/config/struts2/struts-sceneApi.xml" />
+    <!-- 1.8Api入口 -->
+	<include file="/config/struts2/struts-api_1_8.xml" />
+	<!-- 1.9 支付方式修改 -->
+	<!-- <include file="/config/struts2/struts-api_1_9.xml" /> -->
+    <!-- 2.1 app首页修改 -->
+    <include file="/config/struts2/struts-api_2_1.xml" />
+    <!-- 2.2 少儿频道修改 -->
+    <include file="/config/struts2/struts-api_2_2.xml" />
+    <!-- 2.3 融云修改 -->
+    <include file="/config/struts2/struts-api_2_3.xml" />
+    <!-- 2.4 工厂游戏修改 -->
+    <include file="/config/struts2/struts-api_2_4.xml" />
+    <!-- 2.5 儿童视觉修改 -->
+    <include file="/config/struts2/struts-api_2_5.xml" />
+    <!-- 3.0 创客社圈版 -->
+    <include file="/config/struts2/struts-api_3_0.xml" />
+    <!-- 3.1多宝宝版 -->
+    <include file="/config/struts2/struts-api_3_1.xml" />
+    <!-- 3.2商品推送版 -->
+    <include file="/config/struts2/struts-api_3_2.xml" />
+    <!-- 3.3自定义编辑器版 -->
+    <include file="/config/struts2/struts-api_3_3.xml" />
+    <!-- 3.4普通商品版 -->
+    <include file="/config/struts2/struts-api_3_4.xml" />
+    <!-- 3.5团购版 -->
+    <include file="/config/struts2/struts-api_3_5.xml" />
+    <!-- 3.6拼得客 -->
+    <include file="/config/struts2/struts-api_3_6.xml" />
+    <!-- 拼得客-用户信息表 -->
+	<include file="/config/struts2/struts-userPindekeInfo.xml" /> 
+    <!-- 拼得客提现管理 -->
+    <include file="/config/struts2/struts-userDealLog.xml" />
+    <!-- 统计数据接口 -->
+    <include file="/config/struts2/struts-statistics.xml" />
+    <!-- 免费抽奖 -->
+    <include file="/config/struts2/struts-freeDraw.xml" />
+    <!-- 拼得客任务 -->
+    <include file="/config/struts2/struts-pindekeTaskProduct.xml" />
+    <!-- 用户兑换码表 -->
+	<include file="/config/struts2/struts-userRedeemCode.xml" />
+    
+    
+	<package name="default" extends="struts-default">
+		<!-- 定义一个拦截器 -->
+		<interceptors>
+			<!-- 声明自定义的拦截器 -->
+			<interceptor name="system-session"
+				class="maowu.framework.utils.web.struts2.SessionInterceptor" />
+			<interceptor name="json"
+				class="org.apache.struts2.json.JSONInterceptor" />
+			<!-- 声明自定义拦截器栈 -->
+			<interceptor-stack name="systemInterceptor">
+				<!-- 配置使用自定义拦截器 -->
+				<interceptor-ref name="system-session" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<!-- 配置修改struts2框架运行时，默认执行的是自定义拦截器栈 -->
+		<default-interceptor-ref name="systemInterceptor" />
+
+		<global-results>
+			<!-- 当返回login视图名时，转入/login.jsp页面 -->
+			<result name="loginpage">/page/login.jsp</result>
+			<result name="notAuthority">/page/common/notAuthority.jsp</result>
+			<result name="errorpage">/page/common/error.jsp</result>
+
+		</global-results>
+
+		<global-exception-mappings>
+			<exception-mapping result="errorpage" exception="java.lang.Exception" />
+		</global-exception-mappings>
+
+
+
+
+
+	</package>
+	<package name="web-default" extends="struts-default">
+		<!-- 定义一个拦截器 -->
+		<interceptors>
+			<!-- 声明自定义的拦截器 -->
+			<interceptor name="web-session"
+				class="maowu.framework.utils.web.struts2.WebSessionInterceptor" />
+			<interceptor name="json"
+				class="org.apache.struts2.json.JSONInterceptor" />
+			<!-- 声明自定义拦截器栈 -->
+			<interceptor-stack name="webInterceptor">
+				<!-- 配置使用自定义拦截器 -->
+				<interceptor-ref name="web-session" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<!-- 配置修改struts2框架运行时，默认执行的是自定义拦截器栈 -->
+		<default-interceptor-ref name="webInterceptor" />
+
+		<global-results>
+			<!-- 当返回login视图名时，转入/login.jsp页面 -->
+			<result name="loginpage">/web/login.jsp</result>
+			<result name="notAuthority">/page/common/notAuthority.jsp</result>
+			<result name="errorpage">/page/common/error.jsp</result>
+
+		</global-results>
+
+		<global-exception-mappings>
+			<exception-mapping result="errorpage" exception="java.lang.Exception" />
+		</global-exception-mappings>
+
+
+
+
+
+	</package>
+	<package name="sellerweb-default" extends="struts-default">
+		<!-- 定义一个拦截器 -->
+		<interceptors>
+			<!-- 声明自定义的拦截器 -->
+			<interceptor name="web-session"
+				class="maowu.framework.utils.web.struts2.WebSessionInterceptor" />
+			<interceptor name="json"
+				class="org.apache.struts2.json.JSONInterceptor" />
+			<!-- 声明自定义拦截器栈 -->
+			<interceptor-stack name="webInterceptor">
+				<!-- 配置使用自定义拦截器 -->
+				<interceptor-ref name="web-session" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<!-- 配置修改struts2框架运行时，默认执行的是自定义拦截器栈 -->
+		<default-interceptor-ref name="webInterceptor" />
+
+		<global-results>
+			<!-- 当返回login视图名时，转入/login.jsp页面 -->
+			<result name="loginpage">/seller/page/login.jsp</result>
+			<result name="notAuthority">/page/common/notAuthority.jsp</result>
+			<result name="errorpage">/page/common/error.jsp</result>
+
+		</global-results>
+
+		<global-exception-mappings>
+			<exception-mapping result="errorpage" exception="java.lang.Exception" />
+		</global-exception-mappings>
+	</package>
+	
+	<package name="geekweb-default" extends="struts-default">
+		<!-- 定义一个拦截器 -->
+		<interceptors>
+			<!-- 声明自定义的拦截器 -->
+			<interceptor name="web-session"
+				class="maowu.framework.utils.web.struts2.GeekSessionInterceptor" />
+			<interceptor name="json"
+				class="org.apache.struts2.json.JSONInterceptor" />
+			<!-- 声明自定义拦截器栈 -->
+			<interceptor-stack name="webInterceptor">
+				<!-- 配置使用自定义拦截器 -->
+				<interceptor-ref name="web-session" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<!-- 配置修改struts2框架运行时，默认执行的是自定义拦截器栈 -->
+		<default-interceptor-ref name="webInterceptor" />
+
+		<global-results>
+			<!-- 当返回login视图名时，转入/login.jsp页面 -->
+			<result name="loginpage">/geek/page/login.jsp</result>
+			<result name="notAuthority">/page/common/notAuthority.jsp</result>
+			<result name="errorpage">/page/common/error.jsp</result>
+
+		</global-results>
+
+		<global-exception-mappings>
+			<exception-mapping result="errorpage" exception="java.lang.Exception" />
+		</global-exception-mappings>
+	</package>
+	<package name="iface-default" extends="struts-default">
+		<!-- 定义一个拦截器 -->
+		<interceptors>
+			<!-- 声明自定义的拦截器 -->
+			<interceptor name="web-iface" class="maowu.framework.utils.web.struts2.IfcaeValidInterceptor">
+				<param name="includecls">com.tzmb2c.web.action.AppApiAction</param>
+			</interceptor>
+			<!-- 声明自定义拦截器栈 -->
+			<interceptor-stack name="webInterceptor">
+				<!-- 配置使用自定义拦截器 -->
+				<interceptor-ref name="web-iface" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<!-- 配置修改struts2框架运行时，默认执行的是自定义拦截器栈 -->
+		<default-interceptor-ref name="webInterceptor" />
+		
+		<global-results>
+			<!-- <result name="errorpage" type="">/page/common/error.jsp</result> -->
+			<result name="errorpage" type="redirectAction">
+				<param name="actionName">appApiError</param>  
+        	</result>
+		</global-results>
+		
+		<global-exception-mappings>
+			<exception-mapping result="errorpage" exception="java.lang.Exception" />
+		</global-exception-mappings>
+	</package>
+	<bean type="org.apache.struts2.dispatcher.multipart.MultiPartRequest"
+		name="myRequestParser" class="com.tzmb2c.common.RequestParseWrapper"
+		scope="default" optional="true" />
+	<constant name="struts.multipart.handler" value="myRequestParser" />
+</struts>
+
+

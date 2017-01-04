@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="pushHomepg" extends="default">
+		<!--首页图片推送-->
+		<action name="pushHomePageManage" class="com.tzmb2c.web.action.PushHomePageAction" method="pushHomePageList">
+			<result name="success">/page/system/notice/pushHomepg.jsp</result>
+		</action>
+		<action name="pushHomePageAdd" class="com.tzmb2c.web.action.PushHomePageAction" method="pushHomePageAdd">
+			<result name="success">/page/system/notice/pushHomepgAdd.jsp</result>
+		</action>
+		<action name="addPushHomePage" class="com.tzmb2c.web.action.PushHomePageAction" method="addPushHomePage">
+		</action>
+		<!-- 删除 -->
+		<action name="delPushHomePage" class="com.tzmb2c.web.action.PushHomePageAction" method="delPushHomePage">
+		</action>
+		<!-- 编辑 -->
+		<action name="goUpdatePushHomePage" class="com.tzmb2c.web.action.PushHomePageAction" method="goFindPushHomePage">
+			<result>/page/system/notice/updatePushHomepg.jsp</result>
+		</action>
+		<!-- 更新 -->
+		<action name="updatePushHomePage" class="com.tzmb2c.web.action.PushHomePageAction" method="updatePushHomePage">
+		</action>
+		
+		<!-- 审核全部 -->
+		<action name="pushHomePagecheckAll" class="com.tzmb2c.web.action.PushHomePageAction" method="PushHomePagecheckAll">
+		</action>
+		
+		<!-- 删除全部 -->
+		<action name="pushHomePageDeleteId" class="com.tzmb2c.web.action.PushHomePageAction" method="PushHomePageDeleteId">
+		</action>
+	</package>
+	
+	<package name="pushHomepg-json" extends="json-default">
+		<action name="pushHomePageList" class="com.tzmb2c.web.action.PushHomePageAction" method="pushHomePageList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="pushHomePageListCount" class="com.tzmb2c.web.action.PushHomePageAction" method="pushHomePageListCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		<action name="checkPushHomePage" class="com.tzmb2c.web.action.PushHomePageAction" method="checkPushHomePage">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		<action name="uncheckPushHomePage" class="com.tzmb2c.web.action.PushHomePageAction" method="uncheckPushHomePage">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		<action name="delPushHomePage" class="com.tzmb2c.web.action.PushHomePageAction" method="delPushHomePage">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

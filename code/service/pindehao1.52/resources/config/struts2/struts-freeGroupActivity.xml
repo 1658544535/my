@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="freeGroupActivity" extends="default">
+		<!-- 进入团免活动页面 -->
+		<action name="goFreeGroupActivityList" class="com.tzmb2c.web.action.FreeGroupActivityAction" method="freeGroupActivityCount">
+			<result name="success">/page/system/freeGroupActivity/freeGroupActivityList.jsp</result>
+		</action>
+		<!-- 进入新增团免活动页面 -->
+		<action name="goAddFreeGroupActivity" class="com.tzmb2c.web.action.FreeGroupActivityAction" method="goAddFreeGroupActivity">
+			<result name="success">/page/system/freeGroupActivity/addFreeGroupActivity.jsp</result>
+		</action>
+		<!-- 新增团免活动 -->
+		<action name="addFreeGroupActivity" class="com.tzmb2c.web.action.FreeGroupActivityAction" method="addFreeGroupActivity">
+		</action>
+		<!-- 进入选择团免商品页面 -->
+		<action name="goSelectFreeGroupProduct" class="com.tzmb2c.web.action.FreeGroupActivityAction" method="selectFreeGroupProductCount">
+			<result name="success">/page/system/freeGroupActivity/selectFreeGroupProduct.jsp</result>
+		</action>
+		<!-- 进入选择团免活动编辑页面 -->
+		<action name="goUpdateFreeGroupActivity" class="com.tzmb2c.web.action.FreeGroupActivityAction" method="goUpdateFreeGroupActivity">
+			<result name="success">/page/system/freeGroupActivity/updateFreeGroupActivity.jsp</result>
+		</action>
+		<!-- 进入选择团免活动编辑页面 -->
+		<action name="updateFreeGroupActivity" class="com.tzmb2c.web.action.FreeGroupActivityAction" method="updateFreeGroupActivity">
+		</action>
+		<!-- 参加团免活动团列表 -->
+		<action name="goFreeGroupGroRec" class="com.tzmb2c.web.action.FreeGroupActivityAction" method="freeGroupGroRecCount">
+			<result name="success">/page/system/freeGroupActivity/freeGroupGroRecList.jsp</result>
+		</action>
+		<!-- 参加团免活动人列表 -->
+		<action name="goFreeGroupGroUserRec" class="com.tzmb2c.web.action.FreeGroupActivityAction" method="freeGroupGroUserRecCount">
+			<result name="success">/page/system/freeGroupActivity/freeGroupGroUserRecList.jsp</result>
+		</action>
+	</package>
+	<package name="freeGroupActivity-json" extends="json-default">
+		<!-- 团免活动count -->
+		<action name="freeGroupActivityCount" class="com.tzmb2c.web.action.FreeGroupActivityAction" method="freeGroupActivityCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>			
+		<!-- 团免活动list -->
+		<action name="freeGroupActivityList" class="com.tzmb2c.web.action.FreeGroupActivityAction" method="freeGroupActivityList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>			
+		<!-- 选择团免活动商品count -->
+		<action name="selectFreeGroupProductCount" class="com.tzmb2c.web.action.FreeGroupActivityAction" method="selectFreeGroupProductCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>			
+		<!-- 选择团免商品list -->
+		<action name="selectFreeGroupProductList" class="com.tzmb2c.web.action.FreeGroupActivityAction" method="selectFreeGroupProductList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>			
+		<!-- 根据id查找替换商品 -->
+		<action name="findFreeGroupProductById" class="com.tzmb2c.web.action.FreeGroupActivityAction" method="findFreeGroupProductById">
+			<result type="json">
+				<param name="root">dataMap</param>
+			</result>
+		</action>		
+		<!-- 根据id删除活动 -->
+		<action name="delFreeGroupActivityById" class="com.tzmb2c.web.action.FreeGroupActivityAction" method="delFreeGroupActivityById">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>	
+		<!-- 根据ids删除活动 -->
+		<action name="delFreeGroupActivityByIds" class="com.tzmb2c.web.action.FreeGroupActivityAction" method="delFreeGroupActivityByIds">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>	
+		<!-- 选中审核 -->
+		<action name="checkAllFreeGroupActivity" class="com.tzmb2c.web.action.FreeGroupActivityAction" method="checkAllFreeGroupActivity">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>	
+		<!-- 选中取消审核 -->
+		<action name="uncheckAllFreeGroupActivity" class="com.tzmb2c.web.action.FreeGroupActivityAction" method="uncheckAllFreeGroupActivity">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 团免活动团列表count -->
+		<action name="freeGroupGroRecCount" class="com.tzmb2c.web.action.FreeGroupActivityAction" method="freeGroupGroRecCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>			
+		<!-- 团免活动团列表list -->
+		<action name="freeGroupGroRecList" class="com.tzmb2c.web.action.FreeGroupActivityAction" method="freeGroupGroRecList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<!-- 团免活动参团人列表count -->
+		<action name="freeGroupGroUserRecCount" class="com.tzmb2c.web.action.FreeGroupActivityAction" method="freeGroupGroUserRecCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>			
+		<!-- 团免活动参团人列表list -->
+		<action name="freeGroupGroUserRecList" class="com.tzmb2c.web.action.FreeGroupActivityAction" method="freeGroupGroUserRecList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>		
+	</package>
+</struts>

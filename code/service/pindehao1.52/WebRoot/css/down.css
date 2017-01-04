@@ -1,0 +1,30 @@
+.down_box {
+width: 880px;
+padding: 20px 40px;
+overflow: hidden;
+zoom: 1;
+border: 1px solid #dadada;
+font-size: 14px;
+line-height: 25px;
+color:#494949;
+}
+.down_box h2 {
+text-align: center;
+
+font-size: 28px;
+font-family: "Microsoft YaHei",Î¢ÈíÑÅºÚ,"MicrosoftJhengHei";
+font-weight: normal;
+}
+.down_box p {
+padding-bottom: 5px;
+text-indent:30px;
+}
+.down_box h3 {
+font-size: 14px;
+font-weight:normal;
+}
+strong, b {
+font-weight: bold;
+}
+.small_title{ text-align:center; font-size:22px; line-height:75px;font-weight: normal;}
+.down_box img{ margin:10px 0;}

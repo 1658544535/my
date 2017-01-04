@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.WxpayOrderInfoMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id as id,
+		out_trade_no as outTradeNo,
+		transaction_id as transactionId,
+		total_fee as totalFee,
+		fee_type as feeType,
+		bank_type as bankType,
+		trade_type as tradeType,
+		time_end as timeEnd,
+		trade_status as tradeStatus,
+		create_by as createBy,
+		create_date as createDate,
+		update_by as updateBy,
+		update_date as updateDate,
+		remarks as remarks,
+		version as version,
+		out_refund_no as outRefundNo,
+		refund_id as refundId,
+		refund_fee as refundFee,
+		refund_reason as refundReason,
+		refund_status as refundStatus,
+		source as source
+	</sql>
+
+	<!-- 插入单条 -->
+	<insert id="insertPay" parameterType="WxpayOrderInfoPojo">
+		insert into wxpay_order_info
+		(out_trade_no,transaction_id,total_fee,fee_type,bank_type,time_end,trade_status,create_by,create_date,update_by,update_date,remarks,version,trade_type)
+		values
+		(#{outTradeNo},#{transactionId},#{totalFee},#{feeType},#{bankType},#{timeEnd},#{tradeStatus},#{createBy},now(),#{updateBy},now(),#{remarks},#{version},#{tradeType})
+	</insert>
+
+	<!--更新 订单状态-->
+	<update id="updatePay" parameterType="WxpayOrderInfoPojo">
+		update wxpay_order_info wo set
+		wo.transaction_id = #{transactionId},
+		wo.total_fee = #{totalFee},
+		wo.fee_type = #{feeType},
+		wo.bank_type = #{bankType},
+		wo.time_end = #{timeEnd},
+		wo.trade_status = #{tradeStatus},
+		wo.update_by = #{updateBy},
+		wo.update_date = now(),
+		wo.remarks = #{remarks},
+		wo.version = #{version}
+		where
+		wo.out_trade_no = #{outTradeNo}
+	</update>
+	
+	<!-- 查找单条 -->
+	<select id="findPayInfoByTradeNo" resultType="WxpayOrderInfoPojo" parameterType="String">
+		select 
+		id as id,
+		out_trade_no as outTradeNo,
+		transaction_id as transactionId,
+		total_fee as totalFee,
+		fee_type as feeType,
+		bank_type as bankType,
+		trade_type as tradeType,
+		time_end as timeEnd,
+		trade_status as tradeStatus,
+		out_refund_no as outRefundNo,
+		refund_id as refundId,
+		refund_fee as refundFee,
+		refund_reason as refundReason,
+		refund_status as refundStatus,
+		create_by as createBy,
+		create_date as createDate,
+		update_by as updateBy,
+		update_date as updateDate,
+		remarks as remarks,
+		version as version,
+		source as source
+		from wxpay_order_info
+		where
+		out_trade_no = #{outTradeNo}
+	</select>
+	<update id="updatePayRefund" parameterType="java.util.Map">
+		update wxpay_order_info 
+		<set> 
+			update_date = now(),
+			<if test="updateBy != null">
+			update_by = #{updateBy},
+			</if>
+			<if test="outRefundNo != null and outRefundNo != ''">
+			out_refund_no = #{outRefundNo},
+			</if>
+			<if test="refundId != null and refundId != ''">
+			refund_id = #{refundId},
+			</if>
+			<if test="refundFee != null and refundFee != ''">
+			refund_fee = #{refundFee},
+			</if>
+			<if test="refundReason != null and refundReason != ''">
+			refund_reason = #{refundReason},
+			</if>
+			<if test="refundStatus != null and refundStatus != ''">
+			refund_status = #{refundStatus},
+			</if>
+			<if test="remarks!=null and remarks !='' ">
+			remarks=#{remarks},
+			</if>
+			<if test="source !=null and source !='' ">
+				source = #{source},
+			</if>
+		</set>
+		where 1=1 
+			<if test="tradeNo != null">
+			and transaction_id = #{tradeNo}
+			</if>
+			<if test="outTradeNo != null">
+			and out_trade_no = #{outTradeNo}
+			</if>
+			<if test="outRefundNumber != null">
+			and out_refund_no = #{outRefundNumber}
+			</if>
+			<if test="tradeNo == null and outTradeNo == null and outRefundNumber == null">
+			and id = #{id}
+			</if>
+	</update>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from wxpay_order_info
+		where 1=1
+		  <if test="id != null ">
+			and id = #{id}
+		  </if>
+		  <if test="outTradeNo != null and outTradeNo != '' ">
+			and out_trade_no = #{outTradeNo}
+		  </if>
+		  <if test="transactionId != null and transactionId != '' ">
+			and transaction_id = #{transactionId}
+		  </if>
+		  <if test="totalFee != null and totalFee != '' ">
+			and total_fee = #{totalFee}
+		  </if>
+		  <if test="feeType != null and feeType != '' ">
+			and fee_type = #{feeType}
+		  </if>
+		  <if test="bankType != null and bankType != '' ">
+			and bank_type = #{bankType}
+		  </if>
+		  <if test="timeEnd != null and timeEnd != '' ">
+			and time_end = #{timeEnd}
+		  </if>
+		  <if test="tradeStatus != null and tradeStatus != '' ">
+			and trade_status = #{tradeStatus}
+		  </if>
+		  <if test="createBy != null ">
+			and create_by = #{createBy}
+		  </if>
+		  <if test="createDate != null ">
+			and create_date = #{createDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and update_by = #{updateBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and update_date = #{updateDate}
+		  </if>
+		  <if test="remarks != null and remarks != '' ">
+			and remarks = #{remarks}
+		  </if>
+		  <if test="version != null ">
+			and version = #{version}
+		  </if>
+		  <if test="outRefundNo != null and outRefundNo != '' ">
+			and out_refund_no = #{outRefundNo}
+		  </if>
+		  <if test="refundId != null and refundId != '' ">
+			and refund_id = #{refundId}
+		  </if>
+		  <if test="refundFee != null and refundFee != '' ">
+			and refund_fee = #{refundFee}
+		  </if>
+		  <if test="refundReason != null and refundReason != '' ">
+			and refund_reason = #{refundReason}
+		  </if>
+		  <if test="refundStatus != null and refundStatus != '' ">
+			and refund_status = #{refundStatus}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="WxpayOrderInfoPojo">
+		select
+			<include refid="Base_Column_List" />
+		from wxpay_order_info
+		where 1=1
+			<if test="id != null ">
+			  and id = #{id}
+			</if>
+			<if test="outTradeNo != null and outTradeNo != '' ">
+			  and out_trade_no = #{outTradeNo}
+			</if>
+			<if test="transactionId != null and transactionId != '' ">
+			  and transaction_id = #{transactionId}
+			</if>
+			<if test="totalFee != null and totalFee != '' ">
+			  and total_fee = #{totalFee}
+			</if>
+			<if test="feeType != null and feeType != '' ">
+			  and fee_type = #{feeType}
+			</if>
+			<if test="bankType != null and bankType != '' ">
+			  and bank_type = #{bankType}
+			</if>
+			<if test="timeEnd != null and timeEnd != '' ">
+			  and time_end = #{timeEnd}
+			</if>
+			<if test="tradeStatus != null and tradeStatus != '' ">
+			  and trade_status = #{tradeStatus}
+			</if>
+			<if test="createBy != null ">
+			  and create_by = #{createBy}
+			</if>
+			<if test="createDate != null ">
+			  and create_date = #{createDate}
+			</if>
+			<if test="updateBy != null ">
+			  and update_by = #{updateBy}
+			</if>
+			<if test="updateDate != null ">
+			  and update_date = #{updateDate}
+			</if>
+			<if test="remarks != null and remarks != '' ">
+			  and remarks = #{remarks}
+			</if>
+			<if test="version != null ">
+			  and version = #{version}
+			</if>
+			<if test="outRefundNo != null and outRefundNo != '' ">
+			  and out_refund_no = #{outRefundNo}
+			</if>
+			<if test="refundId != null and refundId != '' ">
+			  and refund_id = #{refundId}
+			</if>
+			<if test="refundFee != null and refundFee != '' ">
+			  and refund_fee = #{refundFee}
+			</if>
+			<if test="refundReason != null and refundReason != '' ">
+			  and refund_reason = #{refundReason}
+			</if>
+			<if test="refundStatus != null and refundStatus != '' ">
+			  and refund_status = #{refundStatus}
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+</mapper>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="searchKey" extends="default">
+
+		<action name="searchKey" class="com.tzmb2c.web.action.SearchKeyAction" method="getSearchKeyCount">
+			<result>/page/system/user/searchKey.jsp</result>
+		</action>
+		
+		<action name="SearchKeyDeleteId" class="com.tzmb2c.web.action.SearchKeyAction" method="searchKeyDeleteId">
+		
+		</action>
+		
+		<action name="goFindSearchKey" class="com.tzmb2c.web.action.SearchKeyAction" method="goFindSearchKey">
+			<result>/page/system/user/searchKeyupdate.jsp</result>
+		</action>
+		<action name="updateSearchKey" class="com.tzmb2c.web.action.SearchKeyAction" method="updateSearchKey">
+		</action>
+		
+		<!-- 热门排行记录 -->
+		<action name="searchKeyHot" class="com.tzmb2c.web.action.SearchKeyAction" method="getSearchKeyCountHot">
+			<result>/page/system/user/searchKeyHot.jsp</result>
+		</action>
+		
+		
+	</package>
+	
+	<package name="SearchKey-json" extends="json-default">
+		<action name="getSearchKeyCount" class="com.tzmb2c.web.action.SearchKeyAction" method="getSearchKeyCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+			<action name="searchKeyAllList" class="com.tzmb2c.web.action.SearchKeyAction" method="searchKeyAllList">
+			<result type="json">
+				<param name="root">page.result</param>.
+			</result>
+		</action>
+		<action name="deleSearchKey" class="com.tzmb2c.web.action.SearchKeyAction" method="deleSearchKey">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		<action name="getSearchKeyCountHot" class="com.tzmb2c.web.action.SearchKeyAction" method="getSearchKeyCountHot">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+			<action name="searchKeyAllListHot" class="com.tzmb2c.web.action.SearchKeyAction" method="searchKeyAllListHot">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+	</package>
+</struts>

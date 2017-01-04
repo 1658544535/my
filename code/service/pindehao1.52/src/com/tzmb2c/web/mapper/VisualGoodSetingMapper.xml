@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tzmb2c.web.mapper.VisualGoodSetingMapper">
+	<!-- 查询所有的记录 -->
+		<select id="findVisualGoodSetingList" resultType="SpecialProductPojo" parameterType="java.util.Map">
+		select
+              s.id                 as id,
+			  s.special_id         as specialId,			  
+			  t.name               as specialName,
+			  t.title              as title,
+			  s.introduction       as introduction,
+			  s.product_id         as productId,
+			  s.good_id            as goodId,
+			  p.image              as image,
+			  p.product_name       as productName,
+			  p.product_num        as productNum,
+			  p.product_no         as productNo,
+			  p.distribution_price as distribution_price,
+			  p.selling_price      as sellingPrice,
+			  p.sell_number        as sellNumber,
+			  p.base_number        as baseNumber,
+			  pt.name              as productTypeName,
+			  a.tips               as tips,
+			  a.sell_price         as sellPrice,
+			  a.active_price       as specialPrice,
+			  a.activity_num       as specialNum,
+			  a.activity_stock     as specialStock,
+			  a.sorting            as sorting,
+			  a.status             as status,
+			  (CASE WHEN a.status = 0 THEN '未审核' WHEN a.status = 1 THEN '已审核' END) as statusName,
+			  a.update_date        as updateDate,
+			  a.create_date        as createDate,
+			  t.user_brand_id      as userBrandId,
+			  b.brand_name         as brandName,
+			  s.visual_goods       as visualGoods,
+			  (CASE WHEN s.visual_goods = 0 THEN '非视觉商品' WHEN s.visual_goods = 1 THEN '视觉商品' END) as visualGoodsName,
+			  p.tvideo_url         as videoUrl,
+			  p.tvideo_url_image   as videoUrlImage,
+			  t.activity_id        as activityId
+	   	from  special_product s left join special_show t on t.id=s.special_id
+	   	left  join activity_goods a on a.id=s.good_id
+	   	left  join product p on p.id=s.product_id
+	   	left  join user_brand b on t.user_brand_id = b.id 
+	   	left  join product_type pt on p.product_type_id = pt.id 
+		where 1=1
+			and str_to_date(t.begin_time,'%Y-%m-%d %H:%i:%s') &lt;= now()
+			and str_to_date(t.end_time,'%Y-%m-%d %H:%i:%s') &gt; now()
+			and t.status = 4
+		<if test="specialId != null">
+			and s.special_id =#{specialId}
+		</if>
+		<if test="productId != null">
+			and s.product_id =#{productId}
+		</if>
+		<if test="productName != null and productName != '' ">
+			and p.product_name like CONCAT("%",#{productName},"%")
+		</if>
+		<if test="title != null and title != '' ">
+			and t.title like CONCAT("%",#{title},"%")
+		</if>
+		<if test="status != null">
+			and a.status=#{status}
+		</if>
+		<if test="visualGoods != null">
+			and s.visual_goods=#{visualGoods}
+		</if>
+		<if test="videoUrl != null and videoUrl != '' ">
+			and p.tvideo_url is not null and p.tvideo_url != ''
+		</if>
+		<if test="videoUrlImage != null and videoUrlImage != '' ">
+			and p.tvideo_url_image is not null and p.tvideo_url_image != ''
+		</if>
+		<if test="proStatus != null">
+			and p.status = #{proStatus}
+		</if>
+		<!-- <if test="specialStatus != null">
+			and t.status = #{specialStatus}
+		</if> -->
+		order by a.sorting desc,a.create_date desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	<!-- 查询记录的数目 -->
+	<select id="findVisualGoodSetingCount" resultType="int" parameterType="java.util.Map">
+		select count(*)
+	    from   special_product s left join special_show t on t.id=s.special_id
+	   	left   join activity_goods a on a.id=s.good_id
+	   	left   join product p on p.id=s.product_id
+		where  1=1
+			and str_to_date(t.begin_time,'%Y-%m-%d %H:%i:%s') &lt;= now()
+			and str_to_date(t.end_time,'%Y-%m-%d %H:%i:%s') &gt; now()
+			and t.status = 4
+	    <if test="specialId != null">
+			and s.special_id =#{specialId}
+		</if>
+		<if test="productId != null">
+			and s.product_id =#{productId}
+		</if>
+		<if test="title != null and title != '' ">
+			and t.title like CONCAT("%",#{title},"%")
+		</if>
+		<if test="productName != null and productName != '' ">
+			and p.product_name like CONCAT("%",#{productName},"%")
+		</if>
+		<if test="status != null">
+			and a.status=#{status}
+		</if>
+		<if test="visualGoods != null">
+			and s.visual_goods=#{visualGoods}
+		</if>
+	</select>	
+	<!-- 设置单条为视觉商品 -->
+	<update id="setSpecialProduct" parameterType="Long">
+		update special_product s set  visual_goods = 1
+		where
+		s.id = #{id}
+	</update>
+	<!-- 取消单条为视觉商品  -->
+	<update id="unsetSpecialProduct" parameterType="Long">
+		update special_product s set  visual_goods = 0
+		where
+		s.id = #{id}
+	</update>	
+</mapper>

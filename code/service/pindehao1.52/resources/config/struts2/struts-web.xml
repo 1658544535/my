@@ -1,0 +1,647 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+	<package name="strust-web" extends="struts-default">
+
+		<global-results>
+			<result name="loginweb">/web/login.jsp</result>
+			<result name="registerweb">/web/register.jsp</result>
+			<result name="errorpage">/page/common/error.jsp</result>
+		</global-results>
+		<!-- 淘宝登录 -->
+		<action name="toLoginBytaobao" class="com.taobaoLogin.action.taobaoLoginAction" method="toLoginBytaobao" />
+		<action name="doLoginBytaobao" class="com.taobaoLogin.action.taobaoLoginAction" method="doLoginBytaobao"> 
+			<result name="login" type="redirectAction">doLoginWeb.do</result>
+			<result name="ACTIVATE">/web/activate.jsp</result>
+			<result name="SUCCESS" type="redirectAction">goIndexWeb.do</result>
+		</action>
+		<!-- QQ登录 -->
+		<action name="toLoginByqq" class="com.tzmb2c.web.action.LoginByQQ" method="toLoginQQ" />
+		<action name="doLoginByqq" class="com.tzmb2c.web.action.LoginByQQ" method="doLoginByQQ"> 
+			<result name="login" type="redirectAction">doLoginWeb.do</result>
+			<result name="ACTIVATE" type="redirectAction">goActivate.do</result>
+			<result name="success" type="redirectAction">goIndexWeb.do</result>
+		</action>
+		<!-- 淘宝用户将商品分销添加到淘宝店铺中-->
+		<action name="insertProductToTaobao" class="com.taobaoLogin.action.taobaoLoginAction" method="insertProductToTaobao">
+		</action>
+		<!-- 淘宝用户登录后账户激活-->
+		<action name="doActivate" class="com.tzmb2c.web.action.taobaoActivateAction" method="doActivate">
+			<result name="loginweb" type="redirectAction">doLoginWeb.do</result>
+			<result name="success" type="redirectAction">goIndexWeb.do</result>
+		</action>
+		<!-- 淘宝用户激活页面跳转--> 
+		<action name="goActivate" class="com.tzmb2c.web.action.taobaoActivateAction" method="goActivate">
+			<result >/web/activate.jsp</result>
+		</action>
+		<!-- 淘宝用户绑定页面跳转-->
+		<action name="goBound" class="com.tzmb2c.web.action.taobaoActivateAction" method="goBound">
+			<result >/web/goactivate.jsp</result>
+		</action>
+		<!-- 淘宝用户账户绑定-->
+		<action name="doBound" class="com.tzmb2c.web.action.taobaoActivateAction" method="doBound">
+			<result type="redirectAction">goIndexWeb.do</result>
+		</action>
+		<!-- 三方登录解除绑定页面跳转-->
+		<action name="reBound" class="com.tzmb2c.web.action.taobaoActivateAction" method="reBound">
+			<result>/web/rebrand.jsp</result>
+		</action>
+		<!-- 淘宝登录解除绑定-->
+		<action name="doRerandTaobao" class="com.tzmb2c.web.action.taobaoActivateAction" method="doRerandTaobao">
+			<result type="redirectAction">doLoginOutWeb.do</result>
+		</action>
+		<!-- QQ登录解除绑定-->
+		<action name="doRebrandQQ" class="com.tzmb2c.web.action.taobaoActivateAction" method="doRebrandQQ">
+			<result type="redirectAction">doLoginOutWeb.do</result>
+		</action>
+		<!-- 前台登录 页面-->
+		<action name="doLoginWeb"
+			class="com.tzmb2c.web.action.LoginAction">
+			<result>/web/login.jsp
+			</result>
+		</action>
+		<!-- 前台登录服务协议-->
+		<action name="serviceWeb" method="serviceWeb"
+			class="com.tzmb2c.web.action.LoginAction">
+			<result>/web/service_agreements.jsp
+			</result>
+		</action>
+		<!-- 前台登录 -->
+		<action name="doLoginWebDone" method="doLoginWeb"
+			class="com.tzmb2c.web.action.LoginAction">
+			<result name="success" type="redirectAction">goIndexWeb
+			</result>
+		</action>
+		<!-- 注册验证用户名是否存在 -->
+		<action name="checkLoginname" method="checkLoginname"
+			class="com.tzmb2c.web.action.LoginAction">
+		</action>
+		<!-- 验证验证码是否正确-->
+		<action name="checkVerify" method="checkVerify" class="com.tzmb2c.web.action.LoginAction">
+		</action>
+		<!-- 注册验证用户昵称是否存在-->
+		<action name="checkNikename" method="checkNikename"
+			class="com.tzmb2c.web.action.LoginAction">
+			<result>/web/register.jsp</result>
+		</action>
+		<!-- 前台注册 跳转 -->
+		<action name="goRegister" method="goRegister"
+			class="com.tzmb2c.web.action.LoginAction">
+			<result>/web/register.jsp</result>
+		</action>
+		<!-- 前台注册添加用户 -->
+		<action name="doRegister" method="doRegister"
+			class="com.tzmb2c.web.action.LoginAction">
+			<result>/web/index.jsp</result>
+		</action>
+		<!-- 前台退出登录 -->
+		<action name="doLoginOutWeb" method="doLoginOutWeb"
+			class="com.tzmb2c.web.action.LoginAction">
+			<result>/web/login.jsp</result>
+		</action>
+		<!-- 帮助中心首页 -->
+		<action name="goHelpWeb" method="goHelpWeb"
+			class="com.tzmb2c.web.action.HelpAction">
+			<result>/web/help.jsp</result>
+		</action>
+		<!-- 帮助中心自主服务 -->
+		<action name="goSelfServiceWeb" method="goSelfServiceWeb"
+			class="com.tzmb2c.web.action.HelpAction">
+			<result>/web/self_service.jsp</result>
+		</action>
+		<!-- 帮助中心常见问题 -->
+		<action name="goFaqWeb" method="goFaqWeb"
+			class="com.tzmb2c.web.action.HelpAction">
+			<result>/web/faq.jsp</result>
+		</action>
+		<action name="goFaqTypeWeb" method="goFaqTypeWeb"
+			class="com.tzmb2c.web.action.HelpAction">
+			<result>/web/faqtype.jsp</result>
+		</action>
+		<!-- 帮助中心意见反馈 -->
+		<action name="goFeedBackWeb" method="goFeedBackWeb"
+			class="com.tzmb2c.web.action.HelpAction">
+			<result>/web/feedback.jsp</result>
+		</action>
+		<!-- 添加反馈 -->
+		<action name="feedBackAdd" class="com.tzmb2c.web.action.FeedbackAction"
+			method="feedBackAdd">
+		</action>
+		<!--帮助详情-->
+		<action name="helpDetail" class="com.tzmb2c.web.action.HelpAction"
+			method="helpDetail">
+			<result name="goself">/web/self_service_detail.jsp</result>
+			<result name="gofaq">/web/faq_detail.jsp</result>
+		</action>
+		<!-- 问题搜索结果 -->
+		<action name="goSearch" class="com.tzmb2c.web.action.HelpAction"
+			method="goSearch">
+			<result>/web/helpsearch.jsp</result>
+		</action>
+		<!--找回密码-->
+		<action name="goRetrieve" class="com.tzmb2c.web.action.HelpAction"
+			method="goRetrieve">
+			<result name="success">/web/retrieve.jsp</result>
+		</action>
+		<action name="doRetrieve" class="com.tzmb2c.web.action.HelpAction"
+			method="doRetrieve">
+		</action>
+		<!-- 前台分销服务协议-->
+		<action name="consumerAgreement" method="consumerAgreement"
+			class="com.tzmb2c.web.action.ConsumerAction">
+			<result>/web/consumer_agreements.jsp
+			</result>
+		</action>
+			<!-- 前台分销商框架协议-->
+		<action name="consumerAgreements" method="consumerAgreements"
+			class="com.tzmb2c.web.action.ConsumerAction">
+			<result>/web/consumer_agreements.jsp
+			</result>
+		</action>
+		<!-- 前台供货服务协议-->
+		<action name="manufacturerAgreement" method="manufacturerAgreement"
+			class="com.tzmb2c.web.action.ManufacturerAction">
+			<result>/web/manufacturer_agreements.jsp
+			</result>
+		</action>
+		<!-- 别动我的位置开始 -->
+
+		<!-- 店铺街 -->
+		<action name="goshopWeb" class="com.tzmb2c.web.action.ShopAction"
+			method="goshopCount">
+			<result>/web/shop.jsp</result>
+		</action>
+		<!-- 产品搜索 -->
+		<action name="searchWeb" class="com.tzmb2c.web.action.ProductAction"
+			method="searchWeb">
+			<result>/web/search.jsp</result>
+		</action>
+		<!-- 前台产品搜索 -->
+		<action name="searchWebByName" class="com.tzmb2c.web.action.ProductAction"
+			method="searchWebByName">
+			<result>/web/search.jsp</result>
+		</action>
+		<!-- 店铺搜索 -->
+		<action name="searchShopWeb" class="com.tzmb2c.web.action.ShopAction"
+			method="searchShopWeb">
+			<result>/web/search.jsp</result>
+		</action>
+		<!-- 别动我的位置结束 -->
+		<!-- 前端店铺搜索 -->
+		<action name="searchShopWebByName" class="com.tzmb2c.web.action.ShopAction"
+			method="searchShopWebByName">
+			<result>/web/search.jsp</result>
+		</action>
+		<!-- 货号搜索 -->
+		<action name="searchProductNo" class="com.tzmb2c.web.action.ProductAction"
+			method="searchProductNo">
+			<result>/web/search.jsp</result>
+		</action>
+		
+		<!--前台行业资讯 -->
+		<action name="infoPageList" class="com.tzmb2c.web.action.InfoAction"
+			method="infoPageList">
+			<result name="success">/web/infor.jsp</result>
+		</action>
+		
+		<action name="infoDetail" class="com.tzmb2c.web.action.InfoAction"
+			method="infoDetail">
+			<result name="success">/web/information_detail.jsp</result>
+		</action>
+		
+		<action name="infoList" class="com.tzmb2c.web.action.InfoAction"
+			method="infoList">
+			<result name="success">/web/information_list.jsp</result>
+		</action>
+		
+
+		<!--供应商产品列表 -->
+		<action name="productListWeb" class="com.tzmb2c.web.action.ProductAction"
+			method="getProductAllNoPage">
+			<result>/web/productList.jsp</result>
+		</action>
+
+
+		<!--供应商产品详情 -->
+		<action name="goProductDetail" class="com.tzmb2c.web.action.ProductAction"
+			method="goProductDetail">
+			<result>/web/productDetails.jsp</result>
+		</action>
+
+		<action name="goUserShopCollectWeb" class="com.tzmb2c.web.action.UserShopCollectAction"
+			method="goUserShopCollectWeb">
+			<result>/web/userShopCollectWeb.jsp</result>
+		</action>
+
+
+
+
+		<!--首页 -->
+		<action name="goIndexWeb" class="com.tzmb2c.web.action.ProductAction"
+			method="goIndexWeb">
+			<result>/web/index.jsp</result>
+		</action>
+
+		<!-- 新品快订 -->
+		<action name="goNewWeb" class="com.tzmb2c.web.action.ProductAction"
+			method="goNewWeb">
+			<result>/web/new.jsp</result>
+		</action>
+
+		<!-- 生成数据包 -->
+		<action name="exportZip" class="com.tzmb2c.web.action.UserConsumerCollectAction"
+			method="exportZip">
+		</action>
+		
+		<!-- 翻动城介绍页 -->
+		<action name="gofdcWeb" method="gofdcWeb"
+			class="com.tzmb2c.web.action.HelpAction">
+			<result>/web/introduce_fdc.jsp</result>
+		</action>
+		<!-- 见客app介绍页 -->
+		<action name="gojkapp" method="gojkapp"
+			class="com.tzmb2c.web.action.HelpAction">
+			<result>/web/introduce_jkapp.jsp</result>
+		</action>
+		<!-- 梁山电商学院 -->
+		<action name="godsxy" method="godsxy"
+			class="com.tzmb2c.web.action.HelpAction">
+			<result>/web/introduce_dsxy.jsp</result>
+		</action>
+		<!-- 企客端 -->
+		<action name="goqkd" method="goqkd"
+			class="com.tzmb2c.web.action.HelpAction">
+			<result>/web/introduce_qkd.jsp</result>
+		</action>
+		<!-- 玩具总汇期刊 -->
+		<action name="gowjzh" method="gowjzh"
+			class="com.tzmb2c.web.action.HelpAction">
+			<result>/web/introduce_wjzh.jsp</result>
+		</action>
+		<!-- 微信公众号 -->
+		<action name="gowxgzh" method="gowxgzh"
+			class="com.tzmb2c.web.action.HelpAction">
+			<result>/web/introduce_wxgzh.jsp</result>
+		</action>
+		<!-- 关于我们 -->
+		<action name="goaboutus" method="goaboutus"
+			class="com.tzmb2c.web.action.HelpAction">
+			<result>/web/about_us_detail.jsp</result>
+		</action>
+		<!-- 舌客 -->
+		<action name="goshike" method="goshike"
+			class="com.tzmb2c.web.action.HelpAction">
+			<result>/web/introduce_shike.jsp</result>
+		</action>
+		<!-- 淘竹马app -->
+		<action name="gotzmapp" method="gotzmapp"
+			class="com.tzmb2c.web.action.HelpAction">
+			<result>/web/introduce_tzmapp.jsp</result>
+		</action>
+		<!-- 淘竹马微商城 -->
+		<action name="gotzmwsc" method="gotzmwsc"
+			class="com.tzmb2c.web.action.HelpAction">
+			<result>/web/introduce_tzmwsc.jsp</result>
+		</action>
+		<!-- 淘竹马分销平台 -->
+		<action name="gotzmfxpt" method="gotzmfxpt"
+			class="com.tzmb2c.web.action.HelpAction">
+			<result>/web/introduce_tzmfxpt.jsp</result>
+		</action>
+		<!-- 网站导航 -->
+		<action name="gowebguide" method="gowebguide"
+			class="com.tzmb2c.web.action.HelpAction">
+			<result>/web/webguide.jsp</result>
+		</action>
+		<!-- 支付宝 -->
+		<action name="goOrderPay" method="goOrderPay"
+			class="com.tzmb2c.web.action.OrderAction">
+			<result>/web/orderpay.jsp</result>
+		</action>
+		<action name="requestPay" method="requestPay"
+			class="com.tzmb2c.web.action.AlipayOrderInfoAction">
+		</action>
+		<action name="getreturnUrl" method="getreturnUrl"
+			class="com.tzmb2c.web.action.AlipayOrderInfoAction">
+		<result name="success" type="redirectAction">orderWeb</result>
+		</action>
+		<action name="getnotifyUrl" method="getnotifyUrl"
+			class="com.tzmb2c.web.action.OrderAction">
+		</action>
+		<action name="getwxnotifyUrl" method="getwxnotifyUrl"
+			class="com.tzmb2c.web.action.OrderAction">
+		</action>
+		<action name="getPingnotifyUrl" method="getPingnotifyUrl"
+			class="com.tzmb2c.web.action.OrderAction">
+		</action>
+		
+	</package>
+	<package name="web-json" extends="json-default">
+		<!--分页JSON写到这里 -->
+		
+		<!--供应商查看产品列表 -->
+		<action name="goProductListWeb" class="com.tzmb2c.web.action.ProductAction"
+			method="getCountAllProduct">
+			<result>/web/productList.jsp</result>
+		</action>
+		<action name="productListWeb" class="com.tzmb2c.web.action.ProductAction"
+			method="productListWeb">
+			<result type="json">
+				<param name="root">page.result</param>
+				.
+			</result>
+		</action>
+		<!-- 别动我的位置开始 -->
+		<!-- 购物车页面-删除 -->
+		<action name="delcartWeb" class="com.tzmb2c.web.action.CartAction"
+			method="delcartWeb">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 购物车页面数量修改 -->
+		<action name="updateNumCartWeb" class="com.tzmb2c.web.action.CartAction"
+			method="updateNumCartWeb">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+
+		<!-- 购物车页面-多选删除 -->
+		<action name="delCheckCartWeb" class="com.tzmb2c.web.action.CartAction"
+			method="delCheckCartWeb">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 购物车页面-多选计算总价格 -->
+		<action name="countSumPrice" class="com.tzmb2c.web.action.CartAction"
+			method="countSumPrice">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 产品收藏页面-删除 -->
+		<action name="deluserCollectWeb" class="com.tzmb2c.web.action.UserCollectAction"
+			method="deluserCollectWeb">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 添加产品收藏 -->
+		<action name="addProductCollect" class="com.tzmb2c.web.action.UserCollectAction"
+			method="addProductCollect">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 店铺收藏页面-删除 -->
+		<action name="deluserShopCollectWeb" class="com.tzmb2c.web.action.UserShopCollectAction"
+			method="deluserShopCollectWeb">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 添加店铺收藏 -->
+		<action name="addUserShopCollect" class="com.tzmb2c.web.action.UserShopCollectAction" method="addUserShopCollect">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		<!-- 店铺街 -->
+		<action name="goshopCount" class="com.tzmb2c.web.action.ShopAction"
+			method="goshopCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		<action name="shopWeb" class="com.tzmb2c.web.action.ShopAction"
+			method="shopWeb">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="shopDetailsWeb" class="com.tzmb2c.web.action.ShopAction"
+			method="shopDetailsWeb">
+			<result>/web/shop_details.jsp</result>
+		</action>
+
+		<!-- 别动我的位置结束 -->
+
+		<!-- 产品信息管理 -->
+		<action name="productManageWeb" class="com.tzmb2c.web.action.ProductAction"
+			method="getProductCountWeb">
+			<result>/web/my_supplier_Product.jsp</result>
+		</action>
+
+		<action name="ProductCountWeb" class="com.tzmb2c.web.action.ProductAction"
+			method="getProductCountWeb">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+
+		<action name="getProductAllListWeb" class="com.tzmb2c.web.action.ProductAction"
+			method="productAllListWeb">
+			<result type="json">
+				<param name="root">page.result</param>
+				.
+			</result>
+		</action>
+
+		<!-- 删除产品信息 -->
+		<action name="deleProductWeb" class="com.tzmb2c.web.action.ProductAction"
+			method="deleProductWeb">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+
+		<!-- 产品图集管理:yang -->
+		<!--产品图集数目 -->
+		<action name="getCountProductImagesWeb" class="com.tzmb2c.web.action.ProductImagesAction"
+			method="getCountProductImagesWeb">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+
+		<!-- 根据条件查找对应产品 -->
+		<action name="getProductImagesAllWeb" class="com.tzmb2c.web.action.ProductImagesAction"
+			method="getProductImagesAllWeb">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+
+		<!-- 删除产品成功回调 -->
+		<action name="deleProductImagesWeb" class="com.tzmb2c.web.action.ProductImagesAction"
+			method="deleProductImagesWeb">
+			<result type="json">
+				<param name="root">result</param>
+				<param name="productImagesPojo.productId">${productImagesPojo.productId}</param>
+			</result>
+		</action>
+
+		<!-- 评价管理 -->
+		<action name="productCommentManageWeb" class="com.tzmb2c.web.action.ProductCommentAction"
+			method="getProductCommentCountWeb">
+			<result>/web/my_supplier_comment.jsp</result>
+		</action>
+
+		<action name="getProductCommentCountWeb" class="com.tzmb2c.web.action.ProductCommentAction"
+			method="getProductCommentCountWeb">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+
+		<action name="ProductCommentAllListWeb" class="com.tzmb2c.web.action.ProductCommentAction"
+			method="ProductCommentAllListWeb">
+			<result type="json">
+				<param name="root">page.result</param>
+				.
+			</result>
+		</action>
+		<action name="shopProductListWeb" class="com.tzmb2c.web.action.ShopAction"
+			method="shopProductListWeb">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+
+		<!-- 发货管理:yang -->
+		<action name="shipOrderCountWeb" class="com.tzmb2c.web.action.OrderAction"
+			method="shipOrderCountWeb">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+
+		<action name="getShipOrderAllListWeb" class="com.tzmb2c.web.action.OrderAction"
+			method="getShipOrderAllListWeb">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+
+		<!-- 阶梯价格 -->
+		<action name="getProductPrices" class="com.tzmb2c.web.action.ProductAction"
+			method="getProductPrices">
+			<result type="json">
+				<param name="root">pPrices</param>
+			</result>
+		</action>
+
+		<!-- 添加购物车 -->
+		<action name="addCartWeb" class="com.tzmb2c.web.action.CartAction"
+			method="addCartWeb">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+
+		<!-- 别动我的位置结束 -->
+		<!--<action name="getHistoryCount" class="com.tzmb2c.web.action.HistoryAction" 
+			method="getHistoryCount"> <result type="json"> <param name="root">page.rowCount</param> 
+			</result> </action> <action name="historyAllList" class="com.tzmb2c.web.action.HistoryAction" 
+			method="historyAllList"> <result type="json"> <param name="root">page.result</param> 
+			</result> </action> -->
+		<!-- 已购买的宝贝-订单页面 -->
+		<action name="orderlist" class="com.tzmb2c.web.action.OrderAction"
+			method="orderlist">
+			<result type="json">
+				<param name="root">jsonStr</param>
+			</result>
+		</action>
+		<action name="orderDetaillist" class="com.tzmb2c.web.action.OrderAction"
+			method="orderDetaillist">
+			<result type="json">
+				<param name="root">jsonStr</param>
+			</result>
+		</action>
+		<!-- 店铺收藏页面 -->
+		<action name="userShopCollectWeb" class="com.tzmb2c.web.action.UserShopCollectAction"
+			method="userShopCollectWeb">
+			<result type="json">
+				<param name="root">jsonStr</param>
+			</result>
+		</action>
+		<action name="getShopProduct" class="com.tzmb2c.web.action.UserShopCollectAction"
+			method="getShopProduct">
+			<result type="json">
+				<param name="root">jsonStr</param>
+			</result>
+		</action>
+		<action name="addFenxiao" class="com.tzmb2c.web.action.UserConsumerCollectAction"
+			method="addFenxiao">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="getSysAreaByPid" class="com.tzmb2c.web.action.ShopAction"
+			method="getSysAreaByPid">
+			<result type="json">
+				<param name="root">jsonStr</param>
+			</result>
+		</action>
+		
+		<!-- 添加我的收货地址 -->
+		<action name="addDeliveryAddress" class="com.tzmb2c.web.action.OrderAction"
+			method="addDeliveryAddress">
+		</action>
+		
+		<!-- 修改我的收货地址 -->
+		<action name="updateDeliveryAddressWeb" class="com.tzmb2c.web.action.DeliveryAddressAction"
+			method="updateDeliveryAddressWeb">
+		</action>
+		
+		<!-- 添加商品评价-->
+		<action name="addUserComment" class="com.tzmb2c.web.action.ProductCommentAction"
+			method="addUserComment">
+		</action>
+		
+		<!-- 我的:已买到宝贝页面的删除 -->
+		<action name="deleOrder" class="com.tzmb2c.web.action.OrderAction"
+			method="deleOrder">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 订单详情：物流信息 -->
+		<action name="getLogisticsInformation" class="com.tzmb2c.web.action.OrderDetailAction"
+			method="getLogisticsInformation">
+			<result type="json">
+				<param name="root">jsonStr</param>
+			</result>
+		</action>
+		
+		<!-- 设置我的收货地址为默认地址 -->
+		<action name="updateAddressToDefault" class="com.tzmb2c.web.action.DeliveryAddressAction"
+			method="updateAddressToDefault">
+		</action>
+		<!-- 取消我的收货地址为默认地址 -->
+		<action name="cancelAddressToDefault" class="com.tzmb2c.web.action.DeliveryAddressAction"
+			method="cancelAddressToDefault">
+		</action>
+		<!-- 注册发送验证码-->
+		<action name="sendVerify" method="sendVerify"
+			class="com.tzmb2c.web.action.LoginAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 联系客服-->
+		<action name="goContact" method="goContact"
+			class="com.tzmb2c.web.action.HelpAction">
+			<result>/web/contact.jsp
+			</result>
+		</action>
+	</package>
+
+</struts>

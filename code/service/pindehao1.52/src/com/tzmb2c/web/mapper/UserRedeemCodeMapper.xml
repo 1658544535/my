@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.UserRedeemCodeMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		urc.code as code,
+		urc.price as price,
+		urc.valid_stime as validStime,
+		urc.valid_etime as validEtime,
+		urc.status as status,
+		urc.gen_time as genTime,
+		urc.user_id as userId,
+		s.loginname as loginname,
+		urc.used as used,
+		urc.use_time as useTime
+	</sql>
+	
+	<select id="getByCode" parameterType="Long" resultType="UserRedeemCodePojo">
+		select
+			urc.code as code,
+			urc.price as price,
+			urc.valid_stime as validStime,
+			urc.valid_etime as validEtime,
+			urc.status as status,
+			urc.gen_time as genTime,
+			urc.user_id as userId,
+			urc.used as used,
+			urc.use_time as useTime
+		from
+			user_redeem_code urc
+		where
+			code = #{code}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from user_redeem_code urc
+		where 1=1
+		  <if test="keywords != null and keywords != ''">
+			and urc.code like CONCAT("%",#{keywords},"%" )
+		  </if>
+		  <if test="price != null ">
+			and urc.price = #{price}
+		  </if>
+		  <if test="validStime != null ">
+			and urc.valid_stime = #{validStime}
+		  </if>
+		  <if test="validEtime != null ">
+			and urc.valid_etime = #{validEtime}
+		  </if>
+		  <if test="status != null ">
+			and urc.status = #{status}
+		  </if>
+		  <if test="genTime != null ">
+			and str_to_date(urc.gen_time,'%Y-%m-%d %H:%i:%s') &lt;= #{genTime}
+		  </if>
+		  <if test="userId != null ">
+			and urc.user_id = #{userId}
+		  </if>
+		  <if test="used != null ">
+			and urc.used = #{used}
+		  </if>
+		  <if test="useTime != null ">
+			and str_to_date(urc.use_time,'%Y-%m-%d %H:%i:%s') &lt;= #{useTime}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="UserRedeemCodePojo">
+		select
+			<include refid="Base_Column_List" />
+		from user_redeem_code urc
+		left join sys_login s on s.id = user_id
+		where 1=1
+			<if test="keywords != null and keywords != ''">
+			and urc.code like CONCAT("%",#{keywords},"%" )
+		  </if>
+			<if test="price != null ">
+			  and urc.price = #{price}
+			</if>
+			<if test="validStime != null ">
+			  and urc.valid_stime = #{validStime}
+			</if>
+			<if test="validEtime != null ">
+			  and urc.valid_etime = #{validEtime}
+			</if>
+			<if test="status != null ">
+			  and urc.status = #{status}
+			</if>
+			<if test="genTime != null ">
+			and str_to_date(urc.gen_time,'%Y-%m-%d %H:%i:%s') &lt;= #{genTime}
+		  </if>
+		  <if test="userId != null ">
+			and urc.user_id = #{userId}
+		  </if>
+		  <if test="used != null ">
+			and urc.used = #{used}
+		  </if>
+		  <if test="useTime != null ">
+			and str_to_date(urc.use_time,'%Y-%m-%d %H:%i:%s') &lt;= #{useTime}
+		  </if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="UserRedeemCodePojo">
+		update user_redeem_code
+		<set>
+			<if test="price != null">
+			  price = #{price},
+			</if>
+			<if test="validStime != null">
+			  valid_stime = #{validStime},
+			</if>
+			<if test="validEtime != null">
+			  valid_etime = #{validEtime},
+			</if>
+			<if test="status != null">
+			  status = #{status},
+			</if>
+			<if test="genTime != null">
+			  gen_time = #{genTime},
+			</if>
+			<if test="userId != null">
+			  user_id = #{userId},
+			</if>
+			<if test="used != null">
+			  used = #{used},
+			</if>
+			<if test="useTime != null">
+			  use_time = #{useTime},
+			</if>
+		</set>
+		where
+			code = #{code}
+	</update>
+	
+	<delete id="deleteByCode" parameterType="Long">
+		delete from user_redeem_code 
+		where
+			code = #{code}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="UserRedeemCodePojo">
+		insert into user_redeem_code
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="code != null">
+				code,
+			</if>
+			<if test="price != null">
+				price,
+			</if>
+			<if test="validStime != null">
+				valid_stime,
+			</if>
+			<if test="validEtime != null">
+				valid_etime,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="genTime != null">
+				gen_time,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="used != null">
+				used,
+			</if>
+			<if test="useTime != null">
+				use_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="code != null">
+				#{code},
+			</if>
+			<if test="price != null">
+				#{price},
+			</if>
+			<if test="validStime != null">
+				#{validStime},
+			</if>
+			<if test="validEtime != null">
+				#{validEtime},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+			<if test="genTime != null">
+				#{genTime},
+			</if>
+			<if test="userId != null">
+				#{userId},
+			</if>
+			<if test="used != null">
+				#{used},
+			</if>
+			<if test="useTime != null">
+				#{useTime},
+			</if>
+		</trim>
+	</insert>
+	
+</mapper>

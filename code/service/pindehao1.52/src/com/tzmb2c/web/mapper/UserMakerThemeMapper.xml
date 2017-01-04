@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.UserMakerThemeMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id as id,user_id as userId,banner as banner,content as content,collect_num as collectNum,age_type as ageType,skill_type as skillType,option_type as optionType,product_type as productType,sorting as sorting,status as status,create_date as createDate,create_by as createBy,update_date as updateDate,update_by as updateBy,is_home_page as isHomePage
+	</sql>
+	
+	<select id="getUserMakerThemeById" parameterType="int" resultType="UserMakerThemePojo">
+		select
+			<!-- <include refid="Base_Column_List" /> -->
+			u.id as id,
+			u.user_id as userId,
+			s.name as makerName,
+			u.maker_brand_id as makerBrandId,
+			umb.brand_name as makerBrandName,
+			u.special_name as specialName,
+			u.banner as banner,
+			u.type as type,
+			u.sketch as sketch,
+			u.content as content,
+			u.collect_num as collectNum,
+			u.age_type as ageType,
+			(select name from sys_dict where value = u.age_type and type="user_age") as ageTypeStr,
+			u.skill_type as skillType,
+			(select name from sys_dict where value = u.skill_type and type="ability") as skillTypeStr,
+			u.option_type as optionType,
+			(select name from label_bucket where id = u.option_type) as optionTypeStr,
+			u.product_type as productType,
+			(select pt.name from product_type pt where pt.id = u.product_type) as productTypeStr,
+			u.sorting as sorting,
+			u.status as status,
+			u.create_date as createDate,
+			u.create_by as createBy,
+			u.update_date as updateDate,
+			u.update_by as updateBy,
+			u.sec_skill_type as secSkillType,
+			u.score as score,
+			u.is_delete as isDelete,
+			s.name as userName,
+			s.image as userImage,
+			ui.sex as userSex,
+			u.is_home_page as isHomePage,
+			u.version as version,
+			u.your_favourites_id as yourFavouritesId
+		from
+			user_maker_theme u
+			left join sys_login s on u.user_id = s.id
+			left join user_info ui on u.user_id = ui.user_id
+			left join user_maker_brand umb on u.maker_brand_id = umb.id
+		where
+			u.id = #{id}
+	</select>
+	
+	<select id="userMakerThemeCount" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from user_maker_theme u left  join sys_login s on s.id=u.user_id
+		left join user_maker_brand umb on u.maker_brand_id = umb.id
+		where 1=1 and is_delete=0
+		  <if test="id != null ">
+			  and u.id = #{id}
+			</if>
+			<if test="userId != null ">
+			  and u.user_id = #{userId}
+			</if>
+			<if test="makerName != null and makerName != '' ">
+			and s.name like CONCAT("%",#{makerName},"%")
+			</if>
+			<if test="makerBrandId != null ">
+			  and u.maker_brand_id = #{makerBrandId}
+			</if>
+			<if test="makerBrandName != null and makerBrandName != '' ">
+			  and umb.brand_name like CONCAT("%",#{makerBrandName},"%")
+			</if>
+			<if test="specialId != null ">
+			  and u.special_id = #{specialId}
+			</if>
+			<if test="specialName != null and specialName != '' ">
+			  and u.special_name like CONCAT("%",#{specialName},"%")
+			</if>
+			<if test="banner != null and banner != '' ">
+			  and u.banner = #{banner}
+			</if>
+			<if test="type != null ">
+			  and u.type = #{type}
+			</if>
+			<if test="content != null ">
+			  and u.content = #{content}
+			</if>
+			<if test="collectNum != null ">
+			  and u.collect_num = #{collectNum}
+			</if>
+			<if test="ageType != null ">
+			  and u.age_type = #{ageType}
+			</if>
+			<if test="skillType != null ">
+			  and u.skill_type = #{skillType}
+			</if>
+			<if test="secSkillType != null ">
+			  and u.sec_skill_type = #{secSkillType}
+			</if>
+			<if test="optionType != null ">
+			  and u.option_type = #{optionType}
+			</if>
+			<if test="productType != null ">
+			  and u.product_type = #{productType}
+			</if>
+			<if test="sorting != null ">
+			  and u.sorting = #{sorting}
+			</if>
+			<if test="status != null ">
+			  and u.status = #{status}
+			</if>
+			<if test="createDate != null ">
+			  and u.create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and u.create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and u.update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and u.update_by = #{updateBy}
+			</if>
+			<if test="isHomePage != null">
+				and u.is_home_page = #{isHomePage}
+			</if>
+			<if test="version != null">
+				and u.version = #{version}
+			</if>
+			<if test="yourFavouritesId != null">
+				and u.your_favourites_id = #{yourFavouritesId}
+			</if>
+	</select>
+	
+	<select id="userMakerThemeList" parameterType="java.util.Map" resultType="UserMakerThemePojo">
+		select
+			u.id as id,
+			u.user_id as userId,
+			u.banner as banner,
+			u.content as content,
+			u.sketch as sketch,
+			u.collect_num as collectNum,
+			u.age_type as ageType,
+			u.skill_type as skillType,
+			u.option_type as optionType,
+			u.product_type as productType,
+			(select name from product_type pt where pt.id=u.product_type) as productTypeStr,
+			u.sorting as sorting,
+			u.status as status,
+			(CASE WHEN u.status = 0 THEN '待审核' WHEN u.status = 1 THEN '审核成功' WHEN u.status = 2 THEN '审核失败' END) as statusStr,
+			u.create_date as createDate,
+			u.create_by as createBy,
+			u.update_by as updateBy,
+			s.name as makerName,
+			u.maker_brand_id as makerBrandId,
+			umb.brand_name as makerBrandName,
+			u.special_name as specialName,
+			u.sec_skill_type as secSkillType,
+			u.is_home_page as isHomePage,
+			u.version as version,
+			u.score as score,
+			(select s.name from sys_dict s where s.value = u.age_type and s.type='user_age') as ageTypeStr,
+			(select s.name from sys_dict s where s.value = u.skill_type and s.type='ability') as skillTypeStr,
+			(select s.name from sys_dict s where s.value = u.sec_skill_type and s.type='second_ability') as secSkillTypeStr,
+			(select l.name from label_bucket l where l.id = u.option_type) as optionTypeStr,
+			(CASE WHEN u.type = 1 THEN '创好玩' WHEN u.type = 2 THEN '创选活动' WHEN u.type = 3 THEN '普通创客专题' END) as typeStr,
+			u.type as type
+		from user_maker_theme u left  join sys_login s on s.id=u.user_id
+		left join user_maker_brand umb on u.maker_brand_id = umb.id
+		where 1=1  and is_delete=0
+			<if test="id != null ">
+			  and u.id = #{id}
+			</if>
+			<if test="userId != null ">
+			  and u.user_id = #{userId}
+			</if>
+			<if test="makerName != null and makerName != '' ">
+			  and s.name like CONCAT("%",#{makerName},"%")
+			</if>
+			<if test="makerBrandId != null ">
+			  and u.maker_brand_id = #{makerBrandId}
+			</if>
+			<if test="makerBrandName != null and makerBrandName != '' ">
+			  and u.maker_brand_name like CONCAT("%",#{makerBrandName},"%")
+			</if>
+			<if test="specialName != null and specialName != '' ">
+			  and u.special_name like CONCAT("%",#{specialName},"%")
+			</if>
+			<if test="banner != null and banner != '' ">
+			  and u.banner = #{banner}
+			</if>
+			<if test="type != null ">
+			  and u.type = #{type}
+			</if>
+			<if test="content != null ">
+			  and u.content = #{content}
+			</if>
+			<if test="collectNum != null ">
+			  and u.collect_num = #{collectNum}
+			</if>
+			<if test="ageType != null ">
+			  and u.age_type = #{ageType}
+			</if>
+			<if test="skillType != null ">
+			  and u.skill_type = #{skillType}
+			</if>
+			<if test="optionType != null ">
+			  and u.option_type = #{optionType}
+			</if>
+			<if test="productType != null ">
+			  and u.product_type = #{productType}
+			</if>
+			<if test="sorting != null ">
+			  and u.sorting = #{sorting}
+			</if>
+			<if test="status != null ">
+			  and u.status = #{status}
+			</if>
+			<if test="createDate != null ">
+			  and u.create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and u.create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and u.update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and u.update_by = #{updateBy}
+			</if>
+			<if test="isHomePage != null">
+				and u.is_home_page = #{isHomePage}
+			</if>
+			<if test="version != null">
+				and u.version = #{version}
+			</if>
+			<if test="yourFavouritesId != null">
+				and u.your_favourites_id = #{yourFavouritesId}
+			</if>
+			<if test="orderBy != null ">
+			  	order by ${orderBy}
+			</if>
+			<if test="orderBy == null or orderBy == ''">
+				order by u.id desc
+			</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="updateUserMakerTheme" parameterType="UserMakerThemePojo">
+		update user_maker_theme
+		<set>
+			<if test="userId != null">
+			  user_id = #{userId},
+			</if>
+			<if test="makerName != null">
+			  maker_name = #{makerName},
+			</if>
+			<if test="makerBrandId != null">
+			  maker_brand_id = #{makerBrandId},
+			</if>
+			<if test="makerBrandName != null">
+			  maker_brand_name = #{makerBrandName},
+			</if>
+			<if test="specialName != null">
+			  special_name = #{specialName},
+			</if>
+			<if test="banner != null">
+			  banner = #{banner},
+			</if>
+			<if test="sketch != null">
+			  sketch = #{sketch},
+			</if>
+			<if test="type != null">
+			  type = #{type},
+			</if>
+			<if test="content != null">
+			  content = #{content},
+			</if>
+			<if test="collectNum != null">
+			  collect_num = #{collectNum},
+			</if>
+			<if test="ageType != null">
+			  age_type = #{ageType},
+			</if>
+			<if test="skillType != null">
+			  skill_type = #{skillType},
+			</if>
+			<if test="optionType != null">
+			  option_type = #{optionType},
+			</if>
+			<if test="productType != null">
+			  product_type = #{productType},
+			</if>
+			<if test="sorting != null">
+			  sorting = #{sorting},
+			</if>
+			<if test="status != null">
+			  status = #{status},
+			</if>
+			<if test="isDelete != null">
+			  is_delete = #{isDelete},
+			</if>
+			update_date = now(),
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+			<if test="secSkillType != null">
+			  sec_skill_type = #{secSkillType},
+			</if>
+			<if test="score != null">
+			  score = #{score},
+			</if>
+			<if test="version != null">
+			  version = #{version},
+			</if>
+			<if test="isHomePage != null">
+			  is_home_page = #{isHomePage},
+			</if>
+			<if test="yourFavouritesId != null">
+			  your_favourites_id = #{yourFavouritesId},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<update id="updateUserMakerThemeById" parameterType="UserMakerThemePojo">
+		update user_maker_theme
+		<set>
+			<if test="status != null">
+			  status = #{status},
+			</if>
+		</set>
+			where
+			  id = #{id}
+	</update>
+		<update id="increaseUserMakerThemeNumById" parameterType="UserMakerThemePojo">
+		update user_maker_theme
+		<set>
+			<if test="collectNum != null">
+			  collect_num = collect_num + 1,
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<update id="decreaseUserMakerThemeNumById" parameterType="UserMakerThemePojo">
+		update user_maker_theme
+		<set>
+			<if test="collectNum != null">
+			  collect_num = collect_num - 1,
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	<delete id="deleteUserMakerThemeById" parameterType="int">
+		delete from user_maker_theme 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="addUserMakerTheme" useGeneratedKeys="true" keyProperty="id" parameterType="UserMakerThemePojo">
+		insert into user_maker_theme
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="makerName != null">
+				maker_name,
+			</if>
+			<if test="makerBrandId != null">
+				maker_brand_id,
+			</if>
+			<if test="makerBrandName != null">
+			    maker_brand_name,
+			</if>
+			<if test="specialName != null">
+				special_name,
+			</if>
+			<if test="banner != null">
+				banner,
+			</if>
+			<if test="sketch != null">
+				sketch,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="content != null">
+				content,
+			</if>
+			<if test="collectNum != null">
+				collect_num,
+			</if>
+			<if test="ageType != null">
+				age_type,
+			</if>
+			<if test="skillType != null">
+				skill_type,
+			</if>
+			<if test="optionType != null">
+				option_type,
+			</if>
+			<if test="productType != null">
+				product_type,
+			</if>
+			<if test="sorting != null">
+				sorting,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+			<if test="updateDate != null">
+				update_date,
+			</if>
+			<if test="updateBy != null">
+				update_by,
+			</if>
+			<if test="version != null">
+				version,
+			</if>
+			<if test="yourFavouritesId != null">
+				your_favourites_id,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="userId != null">
+				#{userId},
+			</if>
+			<if test="makerName != null">
+				#{makerName},
+			</if>
+			<if test="makerBrandId != null">
+				#{makerBrandId},
+			</if>
+			<if test="makerBrandName != null">
+				#{makerBrandName},
+			</if>
+			<if test="specialName != null">
+				#{specialName},
+			</if>
+			<if test="banner != null">
+				#{banner},
+			</if>
+			<if test="sketch != null">
+				#{sketch},
+			</if>
+			<if test="type != null">
+				#{type},
+			</if>
+			<if test="content != null">
+				#{content},
+			</if>
+			<if test="collectNum != null">
+				#{collectNum},
+			</if>
+			<if test="ageType != null">
+				#{ageType},
+			</if>
+			<if test="skillType != null">
+				#{skillType},
+			</if>
+			<if test="optionType != null">
+				#{optionType},
+			</if>
+			<if test="productType != null">
+				#{productType},
+			</if>
+			<if test="sorting != null">
+				#{sorting},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+			<if test="createDate != null">
+				#{createDate},
+			</if>
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+			<if test="updateDate != null">
+				#{updateDate},
+			</if>
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+			<if test="version != null">
+				#{version},
+			</if>
+			<if test="yourFavouritesId != null">
+				#{yourFavouritesId},
+			</if>
+		</trim>
+	</insert>
+	
+</mapper>

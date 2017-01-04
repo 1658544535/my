@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.SearchKeyMapper">
+
+<select id="selectKeyword" parameterType="java.util.Map" resultType="searchKeyPojo" >
+select t.id as id, 
+t.type as type, 
+t.hits as hits, 
+t.keyword as keyword,
+t.create_date as createDate
+from search_key t where
+t.keyword = #{keyword}
+</select>
+
+<update id="updateKeyword" parameterType="java.util.Map">
+update search_key t set t.hits=t.hits+1,t.create_date=now() where 1=1 and
+t.keyword = #{keyword}
+</update>
+
+<insert id="insertKeyword" parameterType="java.util.Map">
+insert into search_key(keyword,hits,type,create_date) values(#{keyword},#{hits},#{type},now())
+</insert>	
+	
+	<delete id="delSearchKey" parameterType="Long">
+		delete from search_key where id = #{id}
+	</delete>
+	
+	<select id="getfindByIdSearchKey" parameterType="Long" resultType="searchKeyPojo" >
+		select t.id as id, 
+		t.type as type, 
+		t.display_order as displayOrder,
+		t.hits as hits, 
+		t.keyword as keyword
+		from search_key t where
+		t.id = #{id} 
+	</select>
+	
+	<update id="updateSearchKey" parameterType="searchKeyPojo">
+	
+		update search_key set
+		update_by = #{updateBy},
+		update_date = #{updateDate},
+		type = #{type},
+		display_order =#{displayOrder},
+		hits =#{hits},
+		keyword =#{keyword}
+		where id = #{id}
+	</update>
+	
+	<select id="searchKeyAllCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from search_key where
+		1=1
+		<if test="keyword!=null and keyword!=''">
+			and keyword like CONCAT("%",#{keyword},"%")
+		</if>
+		<if test="type!=null  ">
+			and type = #{type}
+		</if>
+	</select>
+	
+	<select id="searchKeyAllList" resultType="searchKeyPojo"
+		parameterType="java.util.Map">
+		select t.id as id, 
+		t.type as type, 
+		t.display_order as displayOrder,
+		t.hits as hits, 
+		t.keyword as keyword,
+		(select name from sys_dict where value=t.type and type = 'search_key_type') typeName
+		from search_key as t
+		where
+		1=1
+		<if test="keyword!=null and keyword!=''">
+			and keyword like CONCAT("%",#{keyword},"%")
+		</if>
+		<if test="type!=null  ">
+			and type = #{type}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+		
+	</select>
+	
+	<!--  <select id="searchKeyAllCountHot" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from search_key where
+		1=1
+		<if test="keyword!=null and keyword!=''">
+			and keyword like CONCAT("%",#{keyword},"%")
+		</if>
+		<if test="os!=null and os ==1 ">
+			and UNIX_TIMESTAMP(create_date) > UNIX_TIMESTAMP(CONCAT(subdate(curdate(),date_format(curdate(),'%w')-1),' 00:00:00'))
+		</if>
+		<if test="os!=null and os ==2 ">
+			and UNIX_TIMESTAMP(create_date) > UNIX_TIMESTAMP(CONCAT(DATE_FORMAT(CURDATE(),'%Y%-%m'),'-01 00:00:00')) 
+		</if>
+	</select>-->
+	
+	<select id="searchKeyAllListHot" resultType="searchKeyPojo"
+		parameterType="java.util.Map">
+		select 
+		t.id as id, 
+		sum(t.hits) as hits, 
+		t.keyword as keyword
+		from search_key as t
+		where
+		1=1
+		<if test="keyword!=null and keyword!=''">
+			and keyword like CONCAT("%",#{keyword},"%")
+		</if>
+		<if test="os!=null and os ==1 ">
+			and UNIX_TIMESTAMP(create_date) > UNIX_TIMESTAMP(CONCAT(subdate(curdate(),date_format(curdate(),'%w')-1),' 00:00:00'))
+		</if>
+		<if test="os!=null and os ==2 ">
+			and UNIX_TIMESTAMP(create_date) > UNIX_TIMESTAMP(CONCAT(DATE_FORMAT(CURDATE(),'%Y%-%m'),'-01 00:00:00')) 
+		</if>
+		
+		group by hits,keyword  
+		order by hits desc
+		
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+		
+	</select>
+	
+</mapper>

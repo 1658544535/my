@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="statistics-json" extends="json-default">
+		<action name="orderCnt" class="com.tzmb2c.web.action.StatisticsAction" method="orderCnt">
+			<result type="json">
+				<param name="root">data</param>
+			</result>
+		</action>
+		<action name="totalSale" class="com.tzmb2c.web.action.StatisticsAction" method="totalSale">
+			<result type="json">
+				<param name="root">data</param>
+			</result>
+		</action>
+		<action name="oneOrderCnt" class="com.tzmb2c.web.action.StatisticsAction" method="oneOrderCnt">
+			<result type="json">
+				<param name="root">data</param>
+			</result>
+		</action>
+		<action name="oneTotalSale" class="com.tzmb2c.web.action.StatisticsAction" method="oneTotalSale">
+			<result type="json">
+				<param name="root">data</param>
+			</result>
+		</action>
+		<action name="userCnt" class="com.tzmb2c.web.action.StatisticsAction" method="userCnt">
+			<result type="json">
+				<param name="root">data</param>
+			</result>
+		</action>
+		<action name="openGroupCnt" class="com.tzmb2c.web.action.StatisticsAction" method="openGroupCnt">
+			<result type="json">
+				<param name="root">data</param>
+			</result>
+		</action>
+		<action name="openSuccessGroupCnt" class="com.tzmb2c.web.action.StatisticsAction" method="openSuccessGroupCnt">
+			<result type="json">
+				<param name="root">data</param>
+			</result>
+		</action>
+	</package>
+</struts>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="activityTitle" extends="default">
+	<!-- 限时秒杀时间列表 -->
+	<action name="activityTitleManage" class="com.tzmb2c.web.action.ActivityTitleAction" method="findActivityTitleCount">
+			<result>/page/system/product/activityTitleList.jsp</result>
+		</action>
+	<action name="delActivityTitleAll" class="com.tzmb2c.web.action.ActivityTitleAction" method="delActivityTitleAll">
+		</action>
+	<action name="checkActivityTitleAll" class="com.tzmb2c.web.action.ActivityTitleAction" method="checkActivityTitleAll">
+		</action>
+	<action name="findActivityTitleById" class="com.tzmb2c.web.action.ActivityTitleAction" method="findActivityTitleById">
+			<result>/page/system/product/activityTitleUpdate.jsp</result>
+	    </action>
+	<action name="updateActivityTitle" class="com.tzmb2c.web.action.ActivityTitleAction" method="updateActivityTitle">
+			<result name="success">/page/system/product/activityTitleList.jsp</result>
+		</action>
+	<action name="activityTitleAdd" class="com.tzmb2c.web.action.ActivityTitleAction" method="activityTitleAdd">
+			<result>/page/system/product/activityTitleAdd.jsp</result>
+	    </action>
+	<action name="insertActivityTitle" class="com.tzmb2c.web.action.ActivityTitleAction" method="insertActivityTitle">
+			<result name="success">/page/system/product/activityTitleList.jsp</result>
+		</action>
+	</package>
+	
+	
+	
+	
+	
+	<package name="activityTitle-json" extends="json-default">
+	    <action name="checkActivityTitle" class="com.tzmb2c.web.action.ActivityTitleAction" method="checkActivityTitle">
+	    	<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+	    </action>
+	    <action name="uncheckActivityTitle" class="com.tzmb2c.web.action.ActivityTitleAction" method="uncheckActivityTitle">
+	    <result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+	    <action name="findActivityTitleList" class="com.tzmb2c.web.action.ActivityTitleAction" method="findActivityTitleList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="findActivityTitleCount" class="com.tzmb2c.web.action.ActivityTitleAction" method="findActivityTitleCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+	    <action name="delActivityTitle" class="com.tzmb2c.web.action.ActivityTitleAction" method="delActivityTitle">
+	    	<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

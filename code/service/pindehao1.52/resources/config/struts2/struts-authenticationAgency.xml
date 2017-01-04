@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+	<package name="authenticationAgency" extends="default">
+
+<!-- 入口 -->
+		<action name="authenticationAgencyManage" class="com.tzmb2c.web.action.AgencyAuthenticationAction"
+			method="getAuthenticationAgencyAllCount">
+			<result name="success">/page/system/authenticationAgency/manageAuthenticationAgency.jsp
+			</result>
+		</action>
+<!-- 删除单条 -->
+		<action name="delAuthenticationAgency" class="com.tzmb2c.web.action.AgencyAuthenticationAction"
+			method="delAuthenticationAgency">
+		</action>
+
+<!--go审核 -->         
+		<action name="goCheckAuthenticationAgency" class="com.tzmb2c.web.action.AgencyAuthenticationAction"
+			method="goFindAuthenticationAgency">
+			<result>/page/system/authenticationAgency/checkAuthentication.jsp</result>
+		</action>
+
+<!-- 审核单条 -->
+		<action name="verifyAuthenticationAgency" class="com.tzmb2c.web.action.AgencyAuthenticationAction"
+			method="verifyAuthenticationAgency">
+		</action>
+
+<!-- 审核全部 -->
+		<action name="verifyAllAuthenticationAgency" class="com.tzmb2c.web.action.AgencyAuthenticationAction"
+			method="verifyAllAuthenticationAgency">
+		</action>
+
+<!-- go更新 -->
+		<action name="goUpdateAuthenticationAgency" class="com.tzmb2c.web.action.AgencyAuthenticationAction"
+			method="goFindAuthenticationAgency">
+			<result>/page/system/authenticationAgency/updateAuthentication.jsp</result>
+		</action>
+
+<!-- 更新 -->
+		<action name="updateAuthenticationAgency" class="com.tzmb2c.web.action.AgencyAuthenticationAction"
+			method="updateAuthenticationAgency">
+		</action>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</package>
+	
+  <package name="authenticationAgency-json" extends="json-default">
+  
+        <!--平台入口 -->
+		<action name="getAuthenticationAgencyAllCount" class="com.tzmb2c.web.action.AgencyAuthenticationAction"
+			method="getAuthenticationAgencyAllCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+	    <action name="authenticationAgencyAllList" class="com.tzmb2c.web.action.AgencyAuthenticationAction"
+			method="authenticationAgencyAllList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<action name="delAuthenticationAgency" class="com.tzmb2c.web.action.AgencyAuthenticationAction"
+			method="delAuthenticationAgency">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+
+		<action name="verifyAuthenticationAgency" class="com.tzmb2c.web.action.AgencyAuthenticationAction"
+			method="verifyAuthenticationAgency">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+	
+</package>
+
+</struts>

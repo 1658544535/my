@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.UserConsumerCollectMapper">
+
+	<delete id="delUserConsumerCollect" parameterType="Long">
+		delete from user_consumer_collect where id = #{id}
+	</delete>
+	
+	<delete id="deleteUserConsumerCollect" parameterType="java.util.Map">
+		delete from user_consumer_collect where user_id = #{userId} and product_id=#{productId}
+	</delete>
+
+	<select id="getAllList" parameterType="userConsumerCollectPojo" resultType="userConsumerCollectPojo" >
+		select 
+		t.id as id,t.user_id as userId,t.suser_id as suserId,t.product_id as productId,t.is_export as isExport,p.product_name as productName,p.image as image,
+		p.distribution_price as distributionPrice,p.sell_number as sellNumber,u.name as userName,sn.name as suserName,p.location as location,
+		t.create_by as createBy,t.create_date as createDate,t.update_by as updateBy,t.update_date as updateDate,t.remarks as remarks,t.version as version
+		from user_consumer_collect t left join product p on t.product_id = p.id left join sys_login u on t.user_id = u.id left join sys_login sn on t.suser_id = sn.id 
+		where 1=1
+		<if test="productId!=null and productId!=''">
+			and t.product_id = #{productId}
+		</if>
+		<if test="userId!=null and userId!=''">
+			and t.user_id = #{userId}
+		</if>
+		<if test="suserId!=null and suserId!=''">
+			and t.suser_id = #{suserId}
+		</if>
+		<if test="isExport!=null and isExport!=''">
+			and t.is_export = #{isExport}
+		</if>
+	</select>
+
+ 	<select id="findCollect" parameterType="userConsumerCollectPojo" resultType="userConsumerCollectPojo" >
+		select 
+		t.id as id,t.user_id as userId,t.suser_id as suserId,t.product_id as productId,t.is_export as isExport,p.product_name as productName,p.image as image,
+		t.create_by as createBy,t.create_date as createDate,t.update_by as updateBy,t.update_date as updateDate,t.remarks as remarks,t.version as version
+		from user_consumer_collect t left join product p on t.product_id = p.id
+		where 1=1
+		<if test="productId!=null and productId!=''">
+			and t.product_id = #{productId}
+		</if>
+		<if test="userId!=null and userId!=''">
+			and t.user_id = #{userId}
+		</if>
+		<if test="suserId!=null and suserId!=''">
+			and t.suser_id = #{suserId}
+		</if>
+		<if test="isExport!=null and isExport!=''">
+			and t.is_export = #{isExport}
+		</if>
+	</select>
+ 	 <select id="findCollect2" parameterType="java.util.Map" resultType="userConsumerCollectPojo" >
+		select 
+		t.id as id,t.user_id as userId,t.suser_id as suserId,t.product_id as productId,t.is_export as isExport,p.product_name as productName,p.image as image,
+		p.status as proStatus,p.distribution_price as distributionPrice,(select ifnull(sum(num),0) from user_order_detail left join user_order uo on uo.id=order_id where product_id=p.id and uo.order_status>=2) as sellNumber,
+		s.name as suserName,t.create_by as createBy,t.create_date as createDate,t.update_by as updateBy,t.update_date as updateDate,t.remarks as remarks,t.version as version
+		from user_consumer_collect t left join product p on t.product_id = p.id left join user_shop s on t.suser_id=s.user_id
+		where 1=1
+		<if test="userId!=null and userId!=''">
+			and t.user_id = #{userId}
+		</if>
+		order by t.id desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	<insert id="insertUserConsumerCollect" parameterType="userConsumerCollectPojo">
+		insert into
+		user_consumer_collect(user_id,suser_id,product_id,is_export,create_by,create_date,update_by,update_date,remarks,version)
+		values(#{userId},#{suserId},#{productId},#{isExport},#{createBy},sysdate(),#{updateBy},#{updateDate},#{remarks},#{version})
+	</insert>
+	
+	<!--我的分销库总条数-->
+	 <select id="findCountByUserId" parameterType="Long" resultType="int" >
+		select count(*)
+		from user_consumer_collect
+		where user_id = #{userId}
+	</select>
+</mapper>

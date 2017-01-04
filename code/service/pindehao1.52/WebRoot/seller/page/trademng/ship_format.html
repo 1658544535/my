@@ -1,0 +1,961 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>商家中心</title>
+		<link rel="stylesheet" href="../../css/default.css" media="all" />
+		<link rel="stylesheet" href="../../css/seller_common.css" type="text/css" media="all" />
+    </head>
+	<body>
+		<div id="head">
+			<div class="wrapper">
+				<div class="main-logo ">
+					<a class="main-logo-a" href="#" title="返回首页">
+						&nbsp;
+					</a>
+					<span class="sec-title">
+						<i class="b-inco">
+						</i>
+						<a href='../index.html'>
+							商家中心
+						</a>
+					</span>
+					<div id="st-nav">
+						<span id="login-status" class="op" data-status="1">
+							<a class="st-icons account" href="#">
+								yunyingbu@5315.cn
+							</a>
+							<a href="../login.html" rel="nofollow">
+								退出
+							</a>
+							|
+							<a href="../message.html">
+								消息
+							</a>
+						</span>
+						|
+						<a href="#" target="_blank">
+							商家咨询
+						</a>
+						|
+						<a class="bold" href="../help.html">
+							帮助中心
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="container">
+			<div class="ui-nav seller-nav">
+				<div class="ui-nav-main  seller-nav-bg">
+					<ul class="wrapper seller-nav-main" id="J_sellerNav">
+                        <li class="ui-nav-item">
+                            <a href="../index.html">
+                                首页
+                            </a>
+                        </li>
+                        <li class="ui-nav-item has-sub">
+                            <a href="../baseinfo/profile.html">
+                                基本信息
+                                <i class="iconfont">
+                                    &#xe601;
+                                </i>
+                            </a>
+                            <ul class="ui-nav-submain">
+                                <li class="ui-nav-subitem">
+                                    <a href="../baseinfo/profile.html">
+                                        基本信息
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="../baseinfo/pay_account.html">
+                                        收款银行账户
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="../baseinfo/invoice.html">
+                                        开票信息
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="../baseinfo/refund_address.html">
+                                        退货地址管理
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="../baseinfo/passwd.html">
+                                        修改密码
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="ui-nav-item has-sub">
+                            <a href="../productmng/plist.html">
+                                商品管理
+                                <i class="iconfont">
+                                    &#xe601;
+                                </i>
+                            </a>
+                            <ul class="ui-nav-submain">
+                                <li class="ui-nav-subitem">
+                                    <a href="../productmng/plist.html">
+                                        商品库
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="../productmng/select_v2.html">
+                                        添加商品
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="../productmng/brand.html">
+                                        品牌列表
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="../productmng/brand-add.html">
+                                        添加品牌
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="ui-nav-item has-sub">
+                            <a href="../martshow/martshow.html">
+                                品牌特卖
+                                <i class="iconfont">
+                                    &#xe601;
+                                </i>
+                            </a>
+                            <ul class="ui-nav-submain">
+                                <li class="ui-nav-subitem">
+                                    <a href="../martshow/martshow.html">
+                                        专场列表
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="../martshow/apply.html">
+                                        报名专场
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="ui-nav-item has-sub">
+                            <a href="../trademng/order.html" class="active">
+                                交易管理
+                                <i class="iconfont">
+                                    &#xe601;
+                                </i>
+                            </a>
+                            <ul class="ui-nav-submain">
+                                <li class="ui-nav-subitem">
+                                    <a href="../trademng/order.html">
+                                        我的订单
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem pageSellerOrderShipexportlist">
+                                    <a href="../trademng/ship.html">
+                                        发货
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="../trademng/refund.html">
+                                        售后管理
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+				</div>
+			</div>
+			<div id="content" class="wrapper">
+                <div class="pure-g admin-wrapper">
+                    <div class="pure-u-1 main">
+                        <h1 class="seller-title">
+                            导出格式模板管理
+                            <span class="c-999 f-12">
+                                注：每个商家只能自定义三个模板
+                                <a href="javascript:void(0);" title="创建模板" class="ui-button ui-button-sorange createTemplate">
+                                    创建
+                                </a>
+                            </span>
+                            <div class="seller-title-head-more">
+                                <a href="ship_export_list.html" class="ui-button ui-button-mgreen">
+                                    <i class="iconfont">&#xf0161;</i>
+                                    已导出订单
+                                </a>
+                            </div>
+                        </h1>
+                        <div class="p20">
+                            <table class="ui-table order-list">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 75px">
+                                            模板名称
+                                        </th>
+                                        <th style="width: 30px">
+                                            模式
+                                        </th>
+                                        <th style="width: 640px">
+                                            导出列
+                                        </th>
+                                        <th style="width: 105px">
+                                            创建时间
+                                        </th>
+                                        <th style="width: 65px">
+                                            操作
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            一致
+                                        </td>
+                                        <td>
+                                            1
+                                        </td>
+                                        <td>
+                                            订单编号,买家昵称,省份,市区,乡县,订单价格,创建时间,发票类型,发票抬头,买家备注,收件人,收件人手机,收件地址,商品名称,商品价格,数量
+                                        </td>
+                                        <td>
+                                            2015-11-13 10:59
+                                        </td>
+                                        <td>
+                                            <a class="editTemplate" title="编辑模板" data-mode="1" data-tempname="一致"
+                                            data-trade="id,nick,province,city,county,total_fee,gmt_create,invoice_type,invoice_name,remark,receiver_name,receiver_phone,receiver_address,item.title,item.price,item.num"
+                                            trade_item="" href="javascript:void(0)" post="http://seller.beibei.com/order/ship_format.html">
+                                                编辑
+                                            </a>
+                                            |
+                                            <a format_id="490" class="deleteTemplate" href="javascript:void(0)" post="http://seller.beibei.com/order/ship_format.html">
+                                                删除
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            管易
+                                        </td>
+                                        <td>
+                                            3
+                                        </td>
+                                        <td>
+                                            订单编号,收货人姓名,套餐信息,买家应付货款,买家应付邮费,实际单价,总金额,返点积分,买家实际支付金额,买家实际支付积分,订单状态,订单备注,收货地址,运送方式,联系电话,联系手机,订单创建时间,订单付款时间,宝贝标题,系统外部编码,物流单号,物流公司,宝贝总数量,店铺Id,店铺名称,支付方式,发票类型,发票抬头,卖家备注,订单编号,标题,价格,购买数量,商家编码,商品属性,备注,订单状态,标准单价
+                                        </td>
+                                        <td>
+                                            2014-05-28 14:31
+                                        </td>
+                                        <td>
+                                            <span style="color: red">
+                                                系统模板
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            淘宝CSV格式
+                                        </td>
+                                        <td>
+                                            2
+                                        </td>
+                                        <td>
+                                            订单编号,买家会员名,买家支付宝账号,买家应付货款,买家应付邮费,买家支付积分,总金额,返点积分,买家实际支付金额,买家实际支付积分,订单状态,买家留言,收货人姓名,收货地址
+                                            ,运送方式,联系电话 ,联系手机,订单创建时间,订单付款时间 ,宝贝标题 ,宝贝种类 ,物流单号 ,物流公司,订单备注,宝贝总数量,店铺Id,店铺名称,订单关闭原因,卖家服务费,买家服务费,发票抬头,是否手机订单,分阶段订单信息,定金排名,修改后的sku,修改后的收货地址,异常信息
+                                        </td>
+                                        <td>
+                                            2014-05-16 17:00
+                                        </td>
+                                        <td>
+                                            <span style="color: red">
+                                                系统模板
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            E店宝
+                                        </td>
+                                        <td>
+                                            1
+                                        </td>
+                                        <td>
+                                            订单号,产品条码,订单状态,买家id,买家昵称,商品名称,产品规格,商品单价,商品数量,商品总价,运费,购买优惠信息,总金额,买家购买附言,收货人姓名,收货地址-省市,收货地址-街道地址,邮编,收货人手机,收货人电话,买家选择运送方式,卖家备忘内容,订单创建时间,付款时间,物流公司,物流单号,发货附言,发票抬头,电子邮件
+                                        </td>
+                                        <td>
+                                            2014-05-10 14:20
+                                        </td>
+                                        <td>
+                                            <span style="color: red">
+                                                系统模板
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            网店管家
+                                        </td>
+                                        <td>
+                                            3
+                                        </td>
+                                        <td>
+                                            订单编号,网名,姓名,电话,国家,州省,区市,区县,地址,邮编,Email,QQ,客服备注,客户备注,应收邮资,发票抬头,业务员,订单来源,优惠金额,订单编号,编码,品名,规格,单位,数量,单价,货品备注
+                                        </td>
+                                        <td>
+                                            2014-05-10 14:19
+                                        </td>
+                                        <td>
+                                            <span style="color: red">
+                                                系统模板
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            通用(订单去重)
+                                        </td>
+                                        <td>
+                                            2
+                                        </td>
+                                        <td>
+                                            订单编号,买家备注,商家名称,省份,市区,乡县,地址,身份证号码,订单来源,专场id,最终价格,创建时间,支付时间,发票类型,发票抬头,收件人,收件人手机,收件地址,卖家备注,运费,商品总数,支付渠道,支付号信息,商品id,商品详情,商家编码,货号,商品名称,商品价格,款式,数量,小计,SKU属性,创建时间
+                                        </td>
+                                        <td>
+                                            2014-05-10 14:16
+                                        </td>
+                                        <td>
+                                            <span style="color: red">
+                                                系统模板
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            通用
+                                        </td>
+                                        <td>
+                                            3
+                                        </td>
+                                        <td>
+                                            订单编号,买家备注,商家名称,省份,市区,乡县,地址,身份证号码,订单来源,专场id,货号,小计,创建时间,支付时间,发票类型,发票抬头,收件人,收件人手机,收件地址,卖家备注,运费,支付渠道,支付号信息,订单编号,商品id,商家编码,商品名称,商品价格,数量,SKU属性
+                                        </td>
+                                        <td>
+                                            2014-05-10 14:11
+                                        </td>
+                                        <td>
+                                            <span style="color: red">
+                                                系统模板
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            通用合并
+                                        </td>
+                                        <td>
+                                            1
+                                        </td>
+                                        <td>
+                                            订单编号,买家备注,商家名称,省份,市区,乡县,地址,身份证号码,订单来源,专场id,最终价格,创建时间,支付时间,发票类型,发票抬头,收件人,收件人手机,收件地址,卖家备注,运费,商品总数,支付渠道,支付号信息,商品id,商家编码,货号,商品名称,商品价格,款式,数量,小计,SKU属性,创建时间
+                                        </td>
+                                        <td>
+                                            2014-05-10 14:14
+                                        </td>
+                                        <td>
+                                            <span style="color: red">
+                                                系统模板
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+		</div>
+		<div class="m-feedback J_feedback">
+		</div>
+		<div class="m-fb-shadow J_fb-shadow">
+		</div>
+		<div class="m-fb-dialog J_fb-dialog">
+            <form action="">
+                <div class="title">
+                    意见反馈
+                </div>
+                <div class="mnc">
+                    <p class="control-label">
+                        您的意见：
+                    </p>
+                    <textarea class="control-text J_fb-text" placeholder="请给我们提意见哟，么么哒！"></textarea>
+                </div>
+                <div class="footer">
+                    <button class="btn btn-sure">
+                        确定
+                    </button>
+                    <button class="btn btn-cancel">
+                        取消
+                    </button>
+                </div>
+            </form>
+		</div>
+		<div id="footer">
+			<div class="footer-nav">
+				<a rel="nofollow" href="../index.html">
+					首页
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="../help.html">
+					关于淘竹马
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="../help.html">
+					商家入驻
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="../help.html">
+					正品保证
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="../help.html">
+					人才招聘
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="../help.html">
+					联系我们
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="../help.html">
+					帮助中心
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="../help.html">
+					友情链接
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="#">
+					手机客户端
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="../help.html">
+					客服在线
+				</a>
+			</div>
+			<div class="footer-content">
+				<div class="wrapper">
+					<p>
+                    	广东群宇互动科技有限公司 Copyright © 2014 All Rights Reserved 版权所有 粤ICP备13081564号
+					</p>
+				</div>
+			</div>
+		</div>
+        
+        <div class="miniDialog_mask" style="display: none;"></div>
+        <!--创建模板-->
+        <div class="miniDialog_wrapper templateDialog" style="width: 670px; height: 660px; margin-top:-330px;margin-left:-335px;">
+            <div class="miniDialog_title">
+                创建模板
+            </div>
+            <div class="miniDialog_content_outer">
+                <div class="miniDialog_content">
+                    <div class="order-export-box view-OrderExportBox">
+                        <form action="#" name="exportForm"
+                        class="ui-form mt-20" method="post" style="padding-top:0" accept-charset="utf-8">
+                            <fieldset>
+                                <div class="ui-form-item">
+                                    <label for="mode" class="ui-label ui-label-reset">
+                                        <span class="ui-form-required">
+                                            *
+                                        </span>
+                                        导出模式
+                                    </label>
+                                    <select class="ui-input" name="mode" id="mode">
+                                        <option value="1">
+                                            模式一
+                                        </option>
+                                        <option value="2">
+                                            模式二
+                                        </option>
+                                        <option value="3">
+                                            模式三
+                                        </option>
+                                    </select>
+                                    <p class="ui-form-explain">
+                                        一个订单对应多个商品明细时
+                                    </p>
+                                    <p class="ui-form-explain">
+                                        模式一:根据商品明细拆分成多个相同订单不同商品的订单(通用合并、E店宝、宏巍商铺旺ERP)
+                                    </p>
+                                    <p class="ui-form-explain">
+                                        模式二:将多个商品明细用特定符合分隔合并在一起(通用[订单去重])
+                                    </p>
+                                    <p class="ui-form-explain">
+                                        模式三:订单和商品明细分开下载，已订单号关联(通用、网店管家)
+                                    </p>
+                                </div>
+                                <div class="ui-form-item mode1" style="display: block;">
+                                    <label for="mart_id" class="ui-label">
+                                        导出字段
+                                    </label>
+                                    <select class="ui-input" size="2" multiple="multiple" style="height: 220px;overflow-y:scroll;"
+                                    name="addList_1" id="addList_1">
+                                        <option value="id">
+                                            订单编号
+                                        </option>
+                                        <option value="seller_uid">
+                                            商家名称
+                                        </option>
+                                        <option value="nick">
+                                            买家昵称
+                                        </option>
+                                        <option value="province">
+                                            省份
+                                        </option>
+                                        <option value="city">
+                                            市区
+                                        </option>
+                                        <option value="county">
+                                            乡县
+                                        </option>
+                                        <option value="address">
+                                            地址
+                                        </option>
+                                        <option value="member_card">
+                                            身份证号码
+                                        </option>
+                                        <option value="source">
+                                            订单来源
+                                        </option>
+                                        <option value="event_id">
+                                            专场id
+                                        </option>
+                                        <option value="item_num">
+                                            子订单数量
+                                        </option>
+                                        <option value="type">
+                                            交易类型
+                                        </option>
+                                        <option value="total_fee">
+                                            订单价格
+                                        </option>
+                                        <option value="gmt_create">
+                                            创建时间
+                                        </option>
+                                        <option value="gmt_payed">
+                                            支付时间
+                                        </option>
+                                        <option value="gmt_shipped">
+                                            发货时间
+                                        </option>
+                                        <option value="gmt_end">
+                                            结束时间
+                                        </option>
+                                        <option value="invoice_type">
+                                            发票类型
+                                        </option>
+                                        <option value="invoice_name">
+                                            发票抬头
+                                        </option>
+                                        <option value="remark">
+                                            买家备注
+                                        </option>
+                                        <option value="receiver_name">
+                                            收件人
+                                        </option>
+                                        <option value="receiver_phone">
+                                            收件人手机
+                                        </option>
+                                        <option value="receiver_address">
+                                            收件地址
+                                        </option>
+                                        <option value="item.oid">
+                                            [明细]订单编号
+                                        </option>
+                                        <option value="item.iid">
+                                            [明细]商品id
+                                        </option>
+                                        <option value="item.sku_id">
+                                            [明细]sku
+                                        </option>
+                                        <option value="item.outer_id">
+                                            [明细]商家编码
+                                        </option>
+                                        <option value="item.title">
+                                            [明细]商品名称
+                                        </option>
+                                        <option value="item.img">
+                                            [明细]图片地址
+                                        </option>
+                                        <option value="item.price">
+                                            [明细]商品价格
+                                        </option>
+                                        <option value="item.origin_price">
+                                            [明细]原单价
+                                        </option>
+                                        <option value="item.num">
+                                            [明细]数量
+                                        </option>
+                                        <option value="item.subtotal">
+                                            [明细]小计
+                                        </option>
+                                        <option value="item.sku_properties">
+                                            [明细]SKU属性
+                                        </option>
+                                        <option value="item.gmt_create">
+                                            [明细]创建时间
+                                        </option>
+                                    </select>
+                                    <p class="ui-form-explain">
+                                        请按住键盘上的 Ctrl键 多选哦
+                                    </p>
+                                </div>
+                                <div class="ui-form-item mode2 hidden" style="display: none;">
+                                    <label for="mart_id" class="ui-label">
+                                        导出字段
+                                    </label>
+                                    <select class="ui-input" size="2" multiple="multiple" style="height: 220px;overflow-y:scroll;"
+                                    name="addList_2" id="addList_2">
+                                        <option value="id">
+                                            订单编号
+                                        </option>
+                                        <option value="seller_uid">
+                                            商家名称
+                                        </option>
+                                        <option value="nick">
+                                            买家昵称
+                                        </option>
+                                        <option value="province">
+                                            省份
+                                        </option>
+                                        <option value="city">
+                                            市区
+                                        </option>
+                                        <option value="county">
+                                            乡县
+                                        </option>
+                                        <option value="address">
+                                            地址
+                                        </option>
+                                        <option value="member_card">
+                                            身份证号码
+                                        </option>
+                                        <option value="source">
+                                            订单来源
+                                        </option>
+                                        <option value="event_id">
+                                            专场id
+                                        </option>
+                                        <option value="item_num">
+                                            子订单数量
+                                        </option>
+                                        <option value="type">
+                                            交易类型
+                                        </option>
+                                        <option value="total_fee">
+                                            订单价格
+                                        </option>
+                                        <option value="gmt_create">
+                                            创建时间
+                                        </option>
+                                        <option value="gmt_payed">
+                                            支付时间
+                                        </option>
+                                        <option value="gmt_shipped">
+                                            发货时间
+                                        </option>
+                                        <option value="gmt_end">
+                                            结束时间
+                                        </option>
+                                        <option value="invoice_type">
+                                            发票类型
+                                        </option>
+                                        <option value="invoice_name">
+                                            发票抬头
+                                        </option>
+                                        <option value="remark">
+                                            买家备注
+                                        </option>
+                                        <option value="receiver_name">
+                                            收件人
+                                        </option>
+                                        <option value="receiver_phone">
+                                            收件人手机
+                                        </option>
+                                        <option value="receiver_address">
+                                            收件地址
+                                        </option>
+                                        <option value="item.detail">
+                                            [明细]商品详情
+                                        </option>
+                                        <option value="item.oid">
+                                            [明细]订单编号
+                                        </option>
+                                        <option value="item.iid">
+                                            [明细]商品id
+                                        </option>
+                                        <option value="item.sku_id">
+                                            [明细]sku
+                                        </option>
+                                        <option value="item.outer_id">
+                                            [明细]商家编码
+                                        </option>
+                                        <option value="item.title">
+                                            [明细]商品名称
+                                        </option>
+                                        <option value="item.img">
+                                            [明细]图片地址
+                                        </option>
+                                        <option value="item.price">
+                                            [明细]商品价格
+                                        </option>
+                                        <option value="item.origin_price">
+                                            [明细]原单价
+                                        </option>
+                                        <option value="item.num">
+                                            [明细]数量
+                                        </option>
+                                        <option value="item.subtotal">
+                                            [明细]小计
+                                        </option>
+                                        <option value="item.sku_properties">
+                                            [明细]SKU属性
+                                        </option>
+                                        <option value="item.gmt_create">
+                                            [明细]创建时间
+                                        </option>
+                                    </select>
+                                    <p class="ui-form-explain">
+                                        请按住键盘上的 Ctrl键 多选哦
+                                    </p>
+                                </div>
+                                <div class="ui-form-item mode3 hidden" style="display: none;">
+                                    <label class="ui-label">
+                                        导出字段
+                                    </label>
+                                    <p>
+                                        <span style="margin-right: 145px;">
+                                            订单
+                                        </span>
+                                        <span>
+                                            订单明细
+                                        </span>
+                                    </p>
+                                    <select class="ui-input" size="2" multiple="multiple" style="height: 220px;overflow-y:scroll;"
+                                    name="addList_3" id="addList_3">
+                                        <option value="id">
+                                            订单编号
+                                        </option>
+                                        <option value="seller_uid">
+                                            商家名称
+                                        </option>
+                                        <option value="nick">
+                                            买家昵称
+                                        </option>
+                                        <option value="province">
+                                            省份
+                                        </option>
+                                        <option value="city">
+                                            市区
+                                        </option>
+                                        <option value="county">
+                                            乡县
+                                        </option>
+                                        <option value="address">
+                                            地址
+                                        </option>
+                                        <option value="member_card">
+                                            身份证号码
+                                        </option>
+                                        <option value="source">
+                                            订单来源
+                                        </option>
+                                        <option value="event_id">
+                                            专场id
+                                        </option>
+                                        <option value="item_num">
+                                            子订单数量
+                                        </option>
+                                        <option value="type">
+                                            交易类型
+                                        </option>
+                                        <option value="total_fee">
+                                            订单价格
+                                        </option>
+                                        <option value="gmt_create">
+                                            创建时间
+                                        </option>
+                                        <option value="gmt_payed">
+                                            支付时间
+                                        </option>
+                                        <option value="gmt_shipped">
+                                            发货时间
+                                        </option>
+                                        <option value="gmt_end">
+                                            结束时间
+                                        </option>
+                                        <option value="invoice_type">
+                                            发票类型
+                                        </option>
+                                        <option value="invoice_name">
+                                            发票抬头
+                                        </option>
+                                        <option value="remark">
+                                            买家备注
+                                        </option>
+                                        <option value="receiver_name">
+                                            收件人
+                                        </option>
+                                        <option value="receiver_phone">
+                                            收件人手机
+                                        </option>
+                                        <option value="receiver_address">
+                                            收件地址
+                                        </option>
+                                    </select>
+                                    <select class="ui-input" size="2" multiple="multiple" style="height: 220px;overflow-y:scroll;"
+                                    name="addList_item_3" id="addList_item_3">
+                                        <option value="oid">
+                                            订单编号
+                                        </option>
+                                        <option value="iid">
+                                            商品id
+                                        </option>
+                                        <option value="sku_id">
+                                            sku
+                                        </option>
+                                        <option value="outer_id">
+                                            商家编码
+                                        </option>
+                                        <option value="title">
+                                            商品名称
+                                        </option>
+                                        <option value="img">
+                                            图片地址
+                                        </option>
+                                        <option value="price">
+                                            商品价格
+                                        </option>
+                                        <option value="origin_price">
+                                            原单价
+                                        </option>
+                                        <option value="num">
+                                            数量
+                                        </option>
+                                        <option value="subtotal">
+                                            小计
+                                        </option>
+                                        <option value="sku_properties">
+                                            SKU属性
+                                        </option>
+                                        <option value="gmt_create">
+                                            创建时间
+                                        </option>
+                                    </select>
+                                    <p class="ui-form-explain">
+                                        请按住键盘上的 Ctrl键 多选哦
+                                    </p>
+                                </div>
+                                <div class="ui-form-item">
+                                    <label for="" class="ui-label">
+                                        <span class="ui-form-required">
+                                            *
+                                        </span>
+                                        模板名称
+                                    </label>
+                                    <input class="ui-input ui-input-checkcode" type="text" value="" name="templateName">
+                                </div>
+                                <div class="ui-form-item">
+                                    <label for="" class="ui-label">
+                                        <span class="ui-form-required">
+                                            *
+                                        </span>
+                                        验证码
+                                    </label>
+                                    <input class="ui-input ui-input-checkcode" type="text" data-explain="请输入右图中字符，不区分大小写。"
+                                    maxlength="4" autocomplete="off" value="" name="checkcode">
+                                    <img class="ui-checkcode-imgcode-img" align="absMiddle" alt="请输入您看到的内容"
+                                    src="http://www.beibei.com/checkcode/show.html" title="点击刷新图片校验码">
+                                    <a href="#" class="c-999 ui-checkcode-imgcode-img">
+                                        看不清，换一张
+                                    </a>
+                                    <div class="ui-form-explain">
+                                        请输入右图中字符，不区分大小写。
+                                    </div>
+                                </div>
+                                <div class="ui-form-item">
+                                    <input id="saveBtn" type="submit" class="ui-button ui-button-mred"  value="保存">
+                                    <span id="resultText" class="red">
+                                    </span>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="miniDialog_buttons_area">
+            </div>
+            <div class="miniDialog_close_x">
+                <i class="iconfont">&#xf00b3;</i>
+            </div>
+        </div>
+        <!--创建模板-->
+        <!--删除模板-->
+        <div class="miniDialog_wrapper deleteTemplateDialog" style="width: 300px; height: 150px;margin-left:-150px;margin-top:-75px;">
+            <div class="miniDialog_title">
+                删除模板
+            </div>
+            <div class="miniDialog_content_outer">
+                <div class="miniDialog_content">
+                    该操作无法撤销，确认要取消删除吗？
+                </div>
+            </div>
+            <div class="miniDialog_buttons_area">
+                <a class="miniDialog_button" href="#">
+                    确定
+                </a>
+                <a class="miniDialog_button miniDialog_last_button miniDialog_button_secondary"
+                href="javascript:;">
+                    取消
+                </a>
+            </div>
+        </div>
+        <!--删除模板-->
+		<script src="../../js/jquery-1.11.2.min.js" type="text/javascript"></script>
+		<script src="../../js/base.js" type="text/javascript"></script>
+		<script>
+		$(function(){
+			//创建模板
+			$(".createTemplate").on("click",function(){
+				$("form[name=exportForm]")[0].reset();
+				$(".templateDialog option").attr("selected",false);
+				$(".templateDialog,.miniDialog_mask").show();
+			});
+			//编辑模板
+			$(".editTemplate").on("click",function(){
+				var mode = parseInt($(this).attr("data-mode"))-1,
+					tempname = $(this).attr("data-tempname"),
+					trade = $(this).attr("data-trade");
+				//模式
+				$(".templateDialog #mode option").eq(mode).attr("selected",true);
+				//模板名称
+				$("input[name=templateName]").val(tempname);
+				//导出字段
+				trade = trade.split(",");
+				for (tradeItem in trade){
+					$(".templateDialog #addList_1 option").each(function(index, element) {
+                        if($(element).val() == trade[tradeItem]){
+							$(element).attr("selected",true);
+						}
+                    });
+				}
+					
+				$(".templateDialog,.miniDialog_mask").show();
+			});
+			//删除模板
+			$(".deleteTemplate").on("click",function(){
+				$(".deleteTemplateDialog,.miniDialog_mask").show();
+			});
+		});
+        </script>
+	</body>
+</html>

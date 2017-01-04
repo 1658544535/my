@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.VideoMapper">
+	<!-- 查询所有的记录 -->
+	<select id="findVideoList" resultType="VideoPojo" parameterType="java.util.Map">
+		select
+		v.id as id,
+		v.label as label,
+		v.url  as url,
+		v.age as age,
+		(select name from sys_dict where value = v.age and type="user_age") as ageName,
+	    v.skill as skill,
+	    (select name from sys_dict where value = v.skill and type="ability") as abilityName,
+	    v.type as type,
+		v.score  as score,
+		v.source as source,
+        v.status as status,
+		(CASE WHEN v.status = 0 THEN '未审核' WHEN v.status = 1 THEN '审核通过' WHEN v.status = 2 THEN '审核不通过' END) as statusName,
+		v.create_by as createBy,
+		v.create_date as createDate,
+		v.update_by as updateBy,
+		v.update_date as updateDate
+		from video v
+		where 1=1 and is_delete=0
+		<if test="label!=null and label!='' ">
+			and v.label like concat("%",#{label},"%")
+		</if>
+		<if test="source!=null and source!='' ">
+			and v.source like concat("%",#{source},"%")
+		</if> 
+		<if test="status!=null">
+			and v.status = #{status}
+		</if>
+		<if test="age!=null">
+			and v.age = #{age}
+		</if>
+		<if test="type!=null and type!='' ">
+			and v.type like concat("%",#{type},"%")
+		</if> 
+		<if test="skill!=null">
+			and v.skill = #{skill}
+		</if>
+		<if test="os==1">
+			and v.status in(0,2)
+		</if>
+		<if test="os==2">
+			and v.status = 1
+		</if>
+		<if test="os==4">
+			and v.status = 3
+		</if>
+		<if test="url!=null and url!='' ">
+			and v.url = #{url}
+		</if>
+        order by v.status asc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<select id="findVideoCount" resultType="int" parameterType="java.util.Map">
+		select count(*)
+	   	from video v	   	
+	   	where 1=1 and is_delete=0
+		<if test="label!=null and label!='' ">
+			and v.label like concat("%",#{label},"%")
+		</if>
+		<if test="source!=null and source!='' ">
+			and v.source like concat("%",#{source},"%")
+		</if> 
+		<if test="status!=null">
+			and v.status = #{status}
+		</if>
+		<if test="age!=null">
+			and v.age = #{age}
+		</if>
+		<if test="type!=null and type!='' ">
+			and v.type like concat("%",#{type},"%")
+		</if> 
+		<if test="skill!=null">
+			and v.skill = #{skill}
+		</if>
+		<if test="os==1">
+			and v.status in(0,2)
+		</if>
+		<if test="os==2">
+			and v.status = 1
+		</if>
+		<if test="os==4">
+			and v.status = 3
+		</if>
+	</select>
+	
+	<select id="findVideoById" resultType="VideoPojo" parameterType="java.util.Map">
+		select
+		v.id as id,
+		v.label as label,
+		v.url  as url,
+		v.age as age,
+		v.skill as skill,
+		v.type as type,
+		v.score  as score,
+		v.source as source,
+        v.status as status,
+        v.remark as remark,
+		(select name from sys_dict where value = v.status and type="status") as statusName,
+		v.create_by as createBy,
+		v.create_date as createDate,
+		v.update_by as updateBy,
+		v.update_date as updateDate
+		from video v
+		where v.id = #{id}
+	</select>
+	
+	<!-- 插入单条 -->
+	<insert id="insertVideo" parameterType="VideoPojo" useGeneratedKeys="true" keyProperty="id">
+		insert into video 
+		(id,label,url,age,skill,type,score,source,remark,status,create_by,create_date,update_by,update_date)
+		values(#{id},#{label},#{url},#{age},#{skill},#{type},#{score},#{source},#{remark},#{status},#{createBy},now(),#{updateBy},now())
+	</insert>
+	
+	<!-- 删除单条 -->
+	<delete id="delVideo" parameterType="Long">
+		delete from video where id = #{id}
+	</delete>
+	
+	<!--更新单条-->
+	<update id="updateVideo" parameterType="VideoPojo">
+		update video set
+		<if test="label!=null and label!='' ">
+		label=#{label},
+		</if>
+		<if test="url!=null and url!='' ">
+		url=#{url},
+		</if>
+		<if test="age!=null">
+		age=#{age},
+		</if>
+		<if test="skill!=null">
+		skill=#{skill},
+		</if>
+		<if test="type!=null">
+		type=#{type},
+		</if>
+		<if test="score!=null">
+		score=#{score},
+		</if>
+		<if test="source!=null and source!='' ">
+		source=#{source},
+		</if>
+		<if test="status!=null">
+		status = #{status},
+		</if>
+		<if test="isDelete!=null and isDelete!='' ">
+		is_delete=#{isDelete},
+		</if>
+		<if test="remark!=null and remark!='' ">
+		remark=#{remark},
+		</if>
+		<if test="updateBy!=null and updateBy!='' ">
+		update_by = #{updateBy},
+		</if>
+		update_date = now()
+		where id = #{id}
+	</update>
+	
+	<!--更新单条状态-->
+	<update id="checkVideo" parameterType="Long">
+		update video set status = 1,update_date = now() where id = #{id}
+	</update>
+	<!--更新单条状态-->
+	<update id="uncheckVideo" parameterType="Long">
+		update video set status = 2,update_date = now() where id = #{id}
+	</update>
+	<!--更新单条状态-->
+	<update id="editVideo" parameterType="Long">
+		update video set status = 3,update_date = now() where id = #{id}
+	</update>
+
+	
+</mapper>

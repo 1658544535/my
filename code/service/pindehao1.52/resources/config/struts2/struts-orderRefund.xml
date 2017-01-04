@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="orderRefund" extends="default">
+
+		<!-- 用户购物车页 -->
+		<action name="orderRefund" class="com.tzmb2c.web.action.OrderRefundAction" method="getOrderRefundCount">
+			<result>/page/system/user/orderRefund.jsp</result>
+		</action>
+		
+		<!-- 删除 -->
+		<action name="OrderRefundDeleteId" class="com.tzmb2c.web.action.OrderRefundAction" method="orderRefundDeleteId">
+		</action>
+		<!-- 添加 -->
+		<action name="addOrderRefund" class="com.tzmb2c.web.action.OrderRefundAction" method="addOrderRefund">
+		</action>
+		
+		<action name="goFindOrderRefund" class="com.tzmb2c.web.action.OrderRefundAction" method="goFindOrderRefund">
+			<result>/page/system/user/orderRefundupdate.jsp</result>
+		</action>
+		<action name="updateOrderRefund" class="com.tzmb2c.web.action.OrderRefundAction" method="updateOrderRefund">
+		</action>
+		
+	</package>
+	
+	<package name="orderRefund-json" extends="json-default">
+		<action name="deleOrderRefund" class="com.tzmb2c.web.action.OrderRefundAction" method="deleOrderRefund">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		<action name="refundListByorderId" class="com.tzmb2c.web.action.OrderRefundAction" method="refundListByorderId">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		<!--平台入口-->
+		<action name="getOrderRefundCount" class="com.tzmb2c.web.action.OrderRefundAction" method="getOrderRefundCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		<action name="orderRefundAllList" class="com.tzmb2c.web.action.OrderRefundAction" method="orderRefundAllList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="refundcont" class="com.tzmb2c.web.action.OrderRefundAction" method="refundcont">
+			<result type="json">
+				<param name="root">data</param>
+			</result>
+		</action>
+		
+	</package>
+</struts>

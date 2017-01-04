@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="zoneGoods" extends="default">
+		<!-- 进入列表页面 -->
+		<action name="goZoneGoods" class="com.tzmb2c.web.action.ZoneGoodsAction" method="goZoneGoods">
+			<result name="success">/page/system/zones/zoneGoodsList.jsp</result>
+		</action>
+		<!-- 新增 -->
+		<action name="goAddZoneGoods" class="com.tzmb2c.web.action.ZoneGoodsAction" method="goAddZoneGoods">
+		    <result name="success">/page/system/zones/addZoneGoods.jsp</result>
+		</action>
+		<!-- 新增提交 -->
+		<action name="addZoneGoods" class="com.tzmb2c.web.action.ZoneGoodsAction" method="add">
+		</action>		
+		<!-- 编辑页面 -->
+		<action name="goEditZoneGoods" class="com.tzmb2c.web.action.ZoneGoodsAction" method="goEditZoneGoods">
+			<result name="success">/page/system/zones/updateZoneGoods.jsp</result>
+		</action>
+		<!-- 编辑提交 -->
+		<action name="updateZoneGoods" class="com.tzmb2c.web.action.ZoneGoodsAction" method="update">
+		</action>
+	</package>
+	<package name="zoneGoods-json" extends="json-default">
+		<!-- 内容 -->
+		<action name="zoneGoodsList" class="com.tzmb2c.web.action.ZoneGoodsAction" method="zoneGoodsList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="zoneGoodsCnt" class="com.tzmb2c.web.action.ZoneGoodsAction" method="goZoneGoods">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+		<!-- 根据ID删除 -->
+		<action name="delZoneGoods" class="com.tzmb2c.web.action.ZoneGoodsAction" method="delete">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+		<!-- 删除选中 -->
+		<action name="delZoneGoodsAll" class="com.tzmb2c.web.action.ZoneGoodsAction" method="deleteAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 通过审核 -->
+		<action name="checkZoneGoods" class="com.tzmb2c.web.action.ZoneGoodsAction" method="check">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 取消审核 -->
+		<action name="uncheckZoneGoods" class="com.tzmb2c.web.action.ZoneGoodsAction" method="uncheck">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中通过审核 -->
+		<action name="checkZoneGoodsAll" class="com.tzmb2c.web.action.ZoneGoodsAction" method="checkAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中取消审核 -->
+		<action name="uncheckZoneGoodsAll" class="com.tzmb2c.web.action.ZoneGoodsAction" method="uncheckAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+		<!-- 编辑排序 -->
+		<action name="updateZoneGoodsSorting" class="com.tzmb2c.web.action.ZoneGoodsAction"
+			method="updateSorting">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 批量添加活动商品 -->
+		<action name="addAllZoneGoods" class="com.tzmb2c.web.action.ZoneGoodsAction"
+			method="addAll">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>		
+	</package>
+</struts>

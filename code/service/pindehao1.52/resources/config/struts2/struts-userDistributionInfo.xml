@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="UserDistributionInfo" extends="default">
+
+		<!-- 分销商账户信息 -->
+		<action name="userDistributionInfo" class="com.tzmb2c.web.action.UserDistributionInfoAction" method="userDistributionInfo">
+			<result name="success">/page/system/userDistribution/userDistribution.jsp</result>
+		</action>
+		
+		<!-- 编辑分销商账户信息 -->
+		<action name="userDistributionInfoUpdate" class="com.tzmb2c.web.action.UserDistributionInfoAction" method="userDistributionInfoUpdate">
+			<result name="success">/page/system/userDistribution/userDistributionInfoUpdate.jsp</result>
+		</action>
+		
+		<!-- 编辑分销商账户信息提交 -->
+		<action name="userDistributionInfoUpdateSub" class="com.tzmb2c.web.action.UserDistributionInfoAction" method="userDistributionInfoUpdateSub">
+		</action>
+		
+		<!-- 批量审核分销商账户信息 -->
+		<action name="userDistributionInfoChecks" class="com.tzmb2c.web.action.UserDistributionInfoAction" method="userDistributionInfoChecks">
+		</action>
+		
+		<!-- 分销商信息管理 -->
+		<action name="userDistributionInfoManage" class="com.tzmb2c.web.action.UserDistributionInfoAction" method="userDistributionInfoManage">
+			<result name="success">/page/system/userDistribution/userDistributionManage.jsp</result>
+		</action>
+		
+		
+	</package>
+	<package name="UserDistributionInfo-json" extends="json-default">
+		
+		<!-- 分销商账户信息列表 -->
+		<action name="userDistributionInfoAll" class="com.tzmb2c.web.action.UserDistributionInfoAction" method="userDistributionInfoAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<!-- 分销商账户信息 -->
+		<action name="userDistributionInfoCount" class="com.tzmb2c.web.action.UserDistributionInfoAction" method="userDistributionInfo">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		
+		<!-- 审核分销商账户信息 -->
+		<action name="userDistributionInfoCheckById" class="com.tzmb2c.web.action.UserDistributionInfoAction" method="userDistributionInfoCheckById">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 分销商信息管理列表 -->
+		<action name="userDistributionInfoManageAll" class="com.tzmb2c.web.action.UserDistributionInfoAction" method="userDistributionInfoManageAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<!-- 分销商信息管理 -->
+		<action name="userDistributionInfoManageCount" class="com.tzmb2c.web.action.UserDistributionInfoAction" method="userDistributionInfoManage">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		
+		
+	</package>
+</struts>

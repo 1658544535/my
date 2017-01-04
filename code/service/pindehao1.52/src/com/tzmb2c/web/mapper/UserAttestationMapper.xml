@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.UserAttestationMapper">
+
+	<!-- 插入 -->
+	<insert id="addAttestationInfo" parameterType="userAttestationPojo">
+		insert into
+		user_attestation
+		(user_id,type,attestation_image,user3c_image,status,create_by,create_date,update_by,update_date,remarks,version)
+		values
+		(#{userId},#{type},#{attestationImage},#{user3cImage}, #{status},#{createBy},
+		#{createDate},#{updateBy},#{updateDate},#{version},#{remarks})
+	</insert>
+
+	<!-- 查找单条认证信息 -->
+	<select id="findAttestationInfoById" resultType="UserAttestationPojo"
+		parameterType="Long">
+		select 
+		an.user_id as userId,
+		an.attestation_image as attestationImage,
+		an.user3c_image as user3cImage,
+		an.status as status,
+		(select name from sys_dict where value=an.status and type="status") as statusName,
+		an.create_by as createBy,
+		an.create_date as createDate,
+		an.update_by as updateBy,
+		an.update_date as updateDate,
+		an.remarks as remarks,
+		an.version as version,
+		sl.name as userName
+		from user_attestation an left join sys_login sl on an.user_id = sl.id
+		where
+		an.user_id = #{userId}
+	</select>
+	
+	<!-- 编辑认证信息 -->
+	<update id="updateAttestationInfo" parameterType="userAttestationPojo">
+		update user_attestation an set
+		user_id=#{userId},attestation_image=#{attestationImage},user3c_image=#{user3cImage},status=#{status},create_by=#{createBy},
+		create_date=#{createDate},update_by=#{updateBy},update_date=#{updateDate},
+		remarks=#{remarks},version=#{version}
+		where
+		an.user_id = #{userId}
+	</update>
+
+	<!-- 审核单条 -->
+	<update id="checkAttestationInfo" parameterType="userAttestationPojo">
+		update
+		user_attestation an set
+		status=1
+		where
+		an.user_id = #{userId}
+	</update>
+
+	<!-- 审核全部 -->
+	<update id="checkAllAttestationInfoById" parameterType="String">
+		update
+		user_attestation an set
+		status=1
+		where
+		an.user_id = #{userId}
+	</update>
+
+	<!-- 删除全部 -->
+	<delete id="delAllAttestationInfoById" parameterType="String">
+		delete from
+		user_attestation
+		where
+		user_id = #{userId}
+	</delete>
+
+	<!-- 删除单个 -->
+	<delete id="delAttestationInfo" parameterType="userAttestationPojo">
+		delete from
+		user_attestation
+		where
+		user_id =
+		#{userId}
+	</delete>
+
+	<!-- 查询所有关注记录 -->
+	<select id="attestationInfoAllList" resultType="UserAttestationPojo"
+		parameterType="java.util.Map">
+		select 
+		an.user_id as userId,
+		an.attestation_image as attestationImage,
+		an.user3c_image as user3cImage,
+		an.status as status,
+		(select name from sys_dict where value=an.status and type="status") as statusName,
+		an.create_by as createBy,
+		an.create_date as createDate,
+		an.update_by as updateBy,
+		an.update_date as updateDate,
+		an.remarks as remarks,
+		an.version as version,
+		sl.name as userName
+		from user_attestation an left join sys_login sl on an.user_id = sl.id
+		where
+		1=1
+		<if test="type == 1">
+			and an.type=1
+		</if>
+		<if test="type == 2">
+			and an.type=2
+		</if>
+		<if test="userId!=null and userId !='' ">
+			and an.user_id like concat("%",#{userId},"%" )
+		</if>
+		<if test="userName!=null and userName !='' ">
+			and sl.name like concat("%",#{userName},"%" )
+		</if>
+		<if test="status !=null ">
+			and an.status=#{status}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+
+	<!-- 查找所有的关注信息数目 -->
+	<select id="attestationInfoAllCount" resultType="int"
+		parameterType="java.util.Map">
+		select count(an.user_id)
+		from user_attestation an left join sys_login sl on an.user_id = sl.id 
+		where 1=1
+		<if test="type == 1">
+			and an.type=1
+		</if>
+		<if test="type == 2">
+			and an.type=2
+		</if>
+		<if test="userId!=null and userId !='' ">
+			and an.user_id like concat("%",#{userId},"%" )
+		</if>
+		<if test="userName!=null and userName !='' ">
+			and sl.name like concat("%",#{userName},"%" )
+		</if>
+		<if test="status !=null ">
+			and an.status=#{status}
+		</if>
+	</select>
+
+</mapper>

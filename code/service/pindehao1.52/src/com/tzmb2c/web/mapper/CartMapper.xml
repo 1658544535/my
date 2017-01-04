@@ -1,0 +1,626 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.CartMapper">
+ 
+	<!-- <cache/>  -->
+
+	<select id="getCartAll" resultType="cartPojo">
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.shop_id as shopId ,
+		t.product_id as productId, 
+		t.product_name as productName,
+		t.product_model as productModel,
+		t.stock_id as stockId ,
+		t.stock_price_old as stockPriceOld,
+		t.stock_price as stockPrice,
+		t.num as num,
+		t.type as type,
+		t.channel as channel,
+		t.status as status,
+		t.postage_type as postageType,
+		t.weight as weight,
+		t.sku_link_id as skuLinkId,
+		t.activity_id as activityId
+		from user_cart t order by t.create_date desc
+	</select>
+	
+	<select id="getfindByIdCart" parameterType="Long" resultType="cartPojo" >
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.shop_id as shopId ,
+        s.name as shopName,
+		t.product_id as productId, 
+		t.product_name as productName,
+		t.product_model as productModel,
+		t.stock_id as stockId ,
+		t.stock_price_old as stockPriceOld,
+		t.stock_price as stockPrice,
+		t.num as num,
+		t.type as type,
+		t.channel as channel,
+		t.status as status,
+		t.postage_type as postageType,
+		t.weight as weight,
+		t.sku_link_id as skuLinkId,
+		t.activity_id as activityId
+		from user_cart t left join user_shop as s on t.shop_id=s.id where
+		t.id = #{id} 
+	</select>
+	
+	<select id="findCartByProductId" parameterType="cartPojo" resultType="cartPojo" >
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.shop_id as shopId ,
+        t.product_image as productImage,
+        s.name as shopName,
+		t.product_id as productId, 
+		t.product_name as productName,
+		t.product_model as productModel,
+		t.stock_id as stockId,
+		t.stock_price_old as stockPriceOld,
+		t.stock_price as stockPrice,
+		t.num as num,
+		t.type as type,
+		t.channel as channel,
+		t.status as status,
+		t.postage_type as postageType,
+		t.weight as weight,
+		t.sku_link_id as skuLinkId,
+		t.activity_id as activityId
+		from user_cart t LEFT join user_shop s on t.shop_id=s.id where
+		t.product_id = #{productId} and t.user_id = #{userId}
+		<if test="skuLinkId != null">
+			and t.sku_link_id = #{skuLinkId}
+		</if>
+		<if test="type != null">
+			and t.type = #{type}
+		</if>
+		<if test="activityId != null">
+			and t.activity_id = #{activityId}
+		</if>
+	</select>
+	
+	<select id="getfindByUserIdCart" parameterType="Long" resultType="cartPojo" >
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.shop_id as shopId ,
+		s.name as shopName,
+		t.product_id as productId, 
+		t.product_name as productName,
+		t.product_model as productModel,
+		t.stock_id as stockId ,
+		t.stock_price_old as stockPriceOld,
+		t.stock_price as stockPrice,
+		t.num as num,
+		t.type as type,
+		t.channel as channel,
+		p.image as productImage,
+		p.status as proStatus,
+		ps.size as size,
+		ps.color as color,
+		t.status as status,
+		t.postage_type as postageType,
+		t.weight as weight,
+		t.sku_link_id as skuLinkId,
+		t.activity_id as activityId
+		from user_cart t left join product p on t.product_id = p.id left join product_stock ps on t.stock_id = ps.id left join user_shop s on t.shop_id = s.id
+		where
+		t.user_id = #{id} order by t.id desc
+	</select>
+	
+	<select id="findCartByShopUserId" parameterType="Long" resultType="cartPojo" >
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.shop_id as shopId ,
+		s.name as shopName,
+		t.product_id as productId, 
+		t.product_name as productName,
+		t.product_model as productModel,
+		t.stock_id as stockId ,
+		t.stock_price_old as stockPriceOld,
+		t.stock_price as stockPrice,
+		t.num as num,
+		t.type as type,
+		t.channel as channel,
+		p.image as productImage,
+		p.status as proStatus,
+		ps.size as size,
+		ps.color as color,
+		t.status as status,
+		t.postage_type as postageType,
+		t.weight as weight,
+		t.sku_link_id as skuLinkId,
+		t.activity_id as activityId
+		from user_cart t left join product p on t.product_id = p.id left join product_stock ps on t.stock_id = ps.id left join user_shop s on t.shop_id = s.id
+		where
+		t.user_id = #{id} order by IFNULL(t.update_date,t.create_Date) desc
+	</select>
+	
+	<select id="findCartShopByUserId" parameterType="Long" resultType="cartPojo" >
+		select 
+		t.user_id as userId,
+		t.shop_id as shopId ,
+		s.name as shopName,
+		max(IFNULL(t.update_date,t.create_Date)) as updateDate
+		from user_cart t left join user_shop s on t.shop_id = s.id
+		where t.user_id = #{id}
+		group by userId,shopId,shopName
+		order by updateDate desc
+	</select>
+	
+	<select id="findCartBrandByUserId" parameterType="Long" resultType="cartPojo" >
+		select 
+		t.user_id as userId,
+		t.activity_id as activityId,
+		s.title as specialName,
+		max(IFNULL(t.update_date,t.create_Date)) as updateDate
+		from user_cart t left join activity_time s on t.activity_id = s.id
+		where t.user_id = #{id}
+		group by activity_id
+		order by updateDate desc
+	</select>
+	
+	<select id="findCartByUserIdAndShopId" parameterType="cartPojo" resultType="cartPojo" >
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.shop_id as shopId ,
+		s.name as shopName,
+		t.product_id as productId, 
+		t.product_name as productName,
+		t.product_model as productModel,
+		t.stock_id as stockId ,
+		t.stock_price_old as stockPriceOld,
+		t.stock_price as stockPrice,
+		t.num as num,
+		t.type as type,
+		t.channel as channel,
+		p.image as productImage,
+		p.status as proStatus,
+		ps.size as size,
+		ps.color as color,
+		t.status as status,
+		t.postage_type as postageType,
+		t.stock_price as stockPrice,
+		t.product_id as productId,
+		t.weight as weight,
+		t.sku_link_id as skuLinkId,
+		t.activity_id as activityId
+		from user_cart t left join product p on t.product_id = p.id left join product_stock ps on t.stock_id = ps.id left join user_shop s on t.shop_id = s.id
+		where 
+		t.user_id = #{userId} 
+		<if test="shopId!=null and shopId!=''">
+			and t.shop_id=#{shopId}
+		</if>
+		
+		order by t.shop_id desc,IFNULL(t.update_date,t.create_Date) desc
+	</select>
+	
+	
+	
+	
+	<select id="findCartByUserId" parameterType="cartPojo" resultType="cartPojo" >
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.shop_id as shopId ,
+		s.name as shopName,
+		t.product_id as productId, 
+		t.product_name as productName,
+		t.product_model as productModel,
+		t.stock_id as stockId ,
+		t.stock_price_old as stockPriceOld,
+		t.stock_price as stockPrice,
+		t.num as num,
+		p.status as proStatus,
+		t.type as type,
+		t.channel as channel,
+		p.image as productImage,
+		ps.size as size,
+		ps.color as color,
+		t.status as status,
+		t.postage_type as postageType,
+		t.weight as weight,
+		t.sku_link_id as skuLinkId,
+		t.activity_id as activityId
+		from user_cart t left join product p on t.product_id = p.id left join product_stock ps on t.stock_id = ps.id left join user_shop s on t.shop_id = s.id
+		where
+		t.user_id = #{userId} 
+	</select>
+
+	<insert id="insertCart" parameterType="cartPojo">
+		insert into
+		user_cart(id,user_id,shop_id,product_id,product_name,product_image,product_model,stock_id,stock_price_old,stock_price,num,type,channel,status,create_by,create_date,update_by,update_date,remarks,version,postage_type,weight,sku_link_id,activity_id,activity_name
+		<if test="source != null">
+			,source
+		</if>
+		<if test="sourceId != null">
+			,source_id
+		</if>
+		)
+		values(#{id},#{userId},#{shopId},#{productId},#{productName},#{productImage},#{productModel},#{stockId},#{stockPriceOld},#{stockPrice},#{num},#{type},#{channel},#{status},#{createBy},#{createDate},#{updateBy},#{updateDate},#{remarks},#{version},#{postageType},#{weight},#{skuLinkId},#{activityId},#{activityName}
+		<if test="source != null">
+			,#{source}
+		</if>
+		<if test="sourceId != null">
+			,#{sourceId}
+		</if>
+		)
+	</insert>
+	
+	<delete id="deleteCart" parameterType="Long">
+		delete from user_cart where id = #{id}
+	</delete>
+	
+	<delete id="deleteCarts" parameterType="String">
+		delete from user_cart where id in 
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">  
+        	#{item}
+        </foreach>  
+	</delete>
+	
+	<update id="updateCart" parameterType="cartPojo">
+	
+		update user_cart set
+		<if test="updateBy != null">
+			update_by = #{updateBy},
+		</if>
+		<if test="updateDate != null and updateDate != ''">
+			update_date = #{updateDate},
+		</if>
+		user_id = #{userId},
+		shop_id =#{shopId},
+		product_id =#{productId},
+		product_name =#{productName},
+		product_model =#{productModel},
+		stock_id =#{stockId},
+		stock_price_old =#{stockPriceOld},
+		stock_price =#{stockPrice},
+		num =#{num},
+		type =#{type},
+		channel =#{channel},
+		status =#{status}
+		where id = #{id}
+	</update>
+	
+	<update id="updateNumCartWeb" parameterType="cartPojo">
+	
+		update user_cart set
+		stock_price =#{stockPrice},
+		num =#{num}
+		where id = #{id}
+	</update>
+	
+	<update id="updateStatusCartWeb" parameterType="String">
+	
+		update user_cart set
+		status =1 
+		where
+		status = 0 
+		and id in
+		<foreach item="item" index="index" collection="array"   
+                        open="(" separator="," close=")">  
+                       #{item}  
+        </foreach>  
+	</update>
+	
+	<select id="cartAllCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from user_cart t left join product p on p.id=t.product_id 
+		where
+		1=1
+		<if test="productName!=null and productName!=''">
+			and p.product_name like CONCAT("%",#{productName},"%")
+		</if>
+		<if test="productModel!=null and productModel!=''">
+			and p.product_model like CONCAT("%",#{productModel},"%")
+		</if>
+		<if test="productNum!=null and productNum!=''">
+			and p.product_num=#{productNum}
+		</if>
+		<if test="channel!=null ">
+			and t.channel = #{channel}
+		</if>
+	</select>
+	
+	<select id="findCartByUserIdCount" resultType="int" parameterType="Long">
+		select
+		count(*)
+		from user_cart where
+		user_id= #{id} 
+	</select>
+	
+	<select id="cartAllList" resultType="cartPojo"
+		parameterType="java.util.Map">
+
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.shop_id as shopId ,
+		t.product_id as productId, 
+		t.product_name as productName,
+		t.product_image as productImage,
+		t.product_model as productModel,
+		t.stock_id as stockId ,
+		t.stock_price_old as stockPriceOld,
+		t.stock_price as stockPrice,
+		t.num as num,
+		t.type as type,
+		t.channel as channel,
+		t.status as status,
+		t.postage_type as postageType,
+		t.weight as weight,
+		t.update_date as createDate,
+		p.product_num as productNum,
+		(select name from sys_dict where value=t.status and type = 'status') statusName,
+		(select name from sys_dict where value=t.channel and type = 'channel') channelName,
+		(select name from sys_login where id=t.user_id ) userName,
+		(select user_id from user_shop where id=t.shop_id ) shopUserid,
+		(select name from user_shop where id=t.shop_id ) shopName,
+		t.sku_link_id as skuLinkId,
+		t.activity_id as activityId 
+		from user_cart as t left join product p on p.id=t.product_id
+		where
+		1=1
+
+		<if test="productName!=null and productName!=''">
+			and p.product_name like CONCAT("%",#{productName},"%")
+		</if>
+		<if test="productModel!=null and productModel!=''">
+			and p.product_model like CONCAT("%",#{productModel},"%")
+		</if>
+		<if test="productNum!=null and productNum!=''">
+			and p.product_num=#{productNum}
+		</if>
+		<if test="channel!=null ">
+			and t.channel = #{channel}
+		</if>
+			order by id desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	
+	</select>
+	
+	<select id="getCartsByIds" resultType="cartPojo"
+		parameterType="String">
+
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.shop_id as shopId ,
+		t.product_id as productId, 
+		t.product_name as productName,
+		t.product_image as productImage,
+		t.product_model as productModel,
+		t.stock_id as stockId ,
+		t.stock_price_old as stockPriceOld,
+		t.stock_price as stockPrice,
+		t.num as num,
+		t.type as type,
+		t.channel as channel,
+		t.status as status,
+		t.postage_type as postageType,
+		t.weight as weight,
+		(select name from sys_dict where value=t.status and type = 'status') statusName,
+		(select name from sys_dict where value=t.channel and type = 'channel') channelName,
+		(select name from sys_login where id=t.user_id ) userName,
+		(select user_id from user_shop where id=t.shop_id ) shopUserid,
+		(select name from user_shop where id=t.shop_id ) shopName,
+		t.sku_link_id as skuLinkId,
+		t.activity_id as activityId 
+		from user_cart as t
+		where
+		id in
+		<foreach item="item" index="index" collection="array"   
+                        open="(" separator="," close=")">  
+                       #{item}  
+        </foreach>  
+        order by shop_id desc
+	</select>
+	<!-- 获取加入购物车的所有商品 -->
+	<select id="getCartsByIdsSummit" resultType="cartPojo"
+		parameterType="String">
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.shop_id as shopId ,
+		t.product_id as productId, 
+		t.product_name as productName,
+		t.product_image as productImage,
+		t.product_model as productModel,
+		t.stock_id as stockId ,
+		t.stock_price_old as stockPriceOld,
+		t.stock_price as stockPrice,
+		t.num as num,
+		t.type as type,
+		t.channel as channel,
+		t.status as status,
+		t.postage_type as postageType,
+		t.weight as weight,
+		(select name from sys_dict where value=t.status and type = 'status') statusName,
+		(select name from sys_dict where value=t.channel and type = 'channel') channelName,
+		(select name from sys_login where id=t.user_id ) userName,
+		(select user_id from user_shop where id=t.shop_id ) shopUserid,
+		(select name from user_shop where id=t.shop_id ) shopName,
+		t.sku_link_id as skuLinkId,
+		t.activity_id as activityId 
+		from user_cart as t
+		where
+		id in
+		<foreach item="item" index="index" collection="array"   
+                        open="(" separator="," close=")">  
+                       #{item}  
+        </foreach>
+        order by shop_id desc
+	</select>
+	
+	<select id="getCartAllByShopId" parameterType="Long" resultType="cartPojo">
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.shop_id as shopId ,
+		t.product_id as productId, 
+		t.product_image as productImage,
+		t.product_name as productName,
+		t.product_model as productModel,
+		t.stock_id as stockId ,
+		t.stock_price_old as stockPriceOld,
+		t.stock_price as stockPrice,
+		t.num as num,
+		t.type as type,
+		t.channel as channel,
+		t.status as status,
+		t.postage_type as postageType,
+		t.weight as weight,
+		t.sku_link_id as skuLinkId,
+		t.activity_id as activityId
+		from user_cart t where t.user_id=#{userId} and t.shop_id=#{shopId} and status = 1 
+	</select>
+	<!--
+	<select id="findCartByUserIdAndBrand" parameterType="cartPojo" resultType="cartPojo" >
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.shop_id as shopId ,
+		s.name as shopName,
+		t.product_id as productId, 
+		t.product_name as productName,
+		t.product_model as productModel,
+		t.stock_id as stockId ,
+		t.stock_price_old as stockPriceOld,
+		t.stock_price as stockPrice,
+		t.num as num,
+		t.type as type,
+		t.channel as channel,
+		p.image as productImage,
+		p.status as proStatus,
+		t.status as status,
+		t.postage_type as postageType,
+		t.stock_price as stockPrice,
+		t.product_id as productId,
+		t.weight as weight,
+		t.sku_link_id as skuLinkId,
+		t.activity_id as activityId,
+		at.title as activityName
+		from user_cart t left join product p on t.product_id = p.id left join user_shop s on t.shop_id = s.id
+		left join activity_time at on t.activity_id = at.id
+		where t.user_id = #{userId} 
+		<if test="activityId != null">
+			and t.activity_id = #{activityId}
+		</if>
+		order by t.activity_id desc,IFNULL(t.update_date,t.create_Date) desc
+	</select>
+	
+	<select id="groupCartBrandByUserId" parameterType="Long" resultType="cartPojo" >
+		select 
+		t.user_id as userId,
+		t.activity_id as activityId,
+		s.title as activityName,
+		max(IFNULL(t.update_date,t.create_Date)) as updateDate
+		from user_cart t left join activity_time s on t.activity_id = s.id
+		where t.user_id = #{id}
+		group by t.activity_id
+		order by updateDate desc
+	</select>
+	-->
+	<select id="findCartByUserIdAndBrand" parameterType="cartPojo" resultType="cartPojo" >
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.shop_id as shopId ,
+		s.name as shopName,
+		s.images as shopImage,
+		t.product_id as productId, 
+		t.product_name as productName,
+		t.product_model as productModel,
+		t.stock_id as stockId ,
+		t.stock_price_old as stockPriceOld,
+		t.stock_price as stockPrice,
+		t.num as num,
+		t.type as type,
+		t.channel as channel,
+		p.image as productImage,
+		p.status as proStatus,
+		t.status as status,
+		t.postage_type as postageType,
+		t.stock_price as stockPrice,
+		t.product_id as productId,
+		t.weight as weight,
+		t.sku_link_id as skuLinkId,
+		t.activity_id as activityId,
+		t.activity_name as activityName,
+		t.source as source,
+		t.source_id as sourceId
+		from user_cart t left join product p on t.product_id = p.id left join user_shop s on t.shop_id = s.id
+		where t.user_id = #{userId} 
+		<if test="activityId != null">
+			and t.activity_id = #{activityId}
+		</if>
+		<if test="activityName != null">
+			and t.activity_name = #{activityName}
+		</if>
+		<if test="checkStatus != null">
+			and t.status = 1
+		</if>
+		order by t.activity_id desc,t.activity_name desc,IFNULL(t.update_date,t.create_Date) desc
+	</select>
+	
+	<select id="groupCartBrandByUserId" parameterType="Long" resultType="cartPojo" >
+		select 
+		t.user_id as userId,
+		t.activity_id as activityId,
+		t.activity_name as activityName,
+		max(IFNULL(t.update_date,t.create_Date)) as updateDate
+		from user_cart t
+		where t.user_id = #{id}
+		group by t.activity_id,t.activity_name
+		order by updateDate desc
+	</select>
+	
+	<!-- 获取加入购物车的所有商品 -->
+	<select id="submitCartsByIds" resultType="cartPojo"
+		parameterType="String">
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.shop_id as shopId ,
+		t.product_id as productId, 
+		t.product_name as productName,
+		t.product_image as productImage,
+		t.product_model as productModel,
+		t.stock_id as stockId ,
+		t.stock_price_old as stockPriceOld,
+		t.stock_price as stockPrice,
+		t.num as num,
+		t.type as type,
+		t.channel as channel,
+		t.status as status,
+		t.postage_type as postageType,
+		t.weight as weight,
+		(select name from sys_dict where value=t.status and type = 'status') statusName,
+		(select name from sys_dict where value=t.channel and type = 'channel') channelName,
+		(select name from sys_login where id=t.user_id ) userName,
+		(select user_id from user_shop where id=t.shop_id ) shopUserid,
+		(select name from user_shop where id=t.shop_id ) shopName,
+		t.sku_link_id as skuLinkId,
+		t.activity_id as activityId,
+		t.activity_name as activityName
+		from user_cart as t
+		where
+		t.id in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">  
+           #{item}  
+        </foreach>
+        order by t.activity_id desc,t.activity_name desc
+	</select>
+</mapper>

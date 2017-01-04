@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tzmb2c.web.mapper.PopupMapper">
+<!-- 查询所有的记录 -->
+	<select id="findPopupList" resultType="PopupPojo" parameterType="java.util.Map">
+		select
+		p.id             as id,
+		p.start_time     as startTime,
+		p.end_time       as endTime,
+		p.popup_pic      as popupPic,
+		p.parameter      as parameter,
+		p.parameter_size as parameterSize,
+		(CASE WHEN p.parameter_size = 1 THEN '产品ID' WHEN p.parameter_size = 2 THEN '店铺ID' WHEN p.parameter_size = 3 THEN '产品类型ID' WHEN p.parameter_size = 4 THEN 'URL'END)  as parameterSizeName,
+		p.popup_size     as popupSize,
+		(CASE WHEN p.popup_size = 1 THEN '首页弹窗' END)  as popupSizeName,
+		p.status         as status,
+		(CASE WHEN p.status = 0 THEN '未通过' WHEN p.status = 1 THEN '已通过' END)  as statusName,
+		p.title          as title,
+		p.create_date    as createDate		
+		from popup p
+		where 1=1
+		<if test="option != null">
+			<if test="startTimeStr!=null and startTimeStr !=''">
+				and str_to_date(p.start_time,'%Y-%m-%d %H:%i:%s') &lt;= #{startTimeStr}
+			</if>
+			<if test="endTimeStr!=null and endTimeStr !=''">
+				and str_to_date(p.end_time,'%Y-%m-%d %H:%i:%s') &gt;= #{endTimeStr}
+			</if>
+		</if>
+		<if test="option == null">
+			<if test="startTimeStr!=null and startTimeStr !=''">
+				and str_to_date(p.start_time,'%Y-%m-%d %H:%i:%s') &gt;= #{startTimeStr}
+			</if>
+			<if test="endTimeStr!=null and endTimeStr !=''">
+				and str_to_date(p.end_time,'%Y-%m-%d %H:%i:%s') &lt;= #{endTimeStr}
+			</if>
+		</if>
+		<if test="parameterSize!=null">
+			and p.parameter_size = #{parameterSize}
+		</if>
+		<!-- <if test="popupSize!=null">
+			and p.popup_size = #{popupSize}
+		</if> -->
+		<if test="status!=null">
+			and p.status = #{status}
+		</if>
+		order by p.create_date desc
+		<if test="pageNo != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	<select id="findPopupCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from popup p
+		where 1=1
+		<if test="startTimeStr!=null and startTimeStr !=''">
+			and str_to_date(p.start_time,'%Y-%m-%d %H:%i:%s') &gt;= #{startTimeStr}
+		</if>
+		<if test="endTimeStr!=null and endTimeStr !=''">
+			and str_to_date(p.end_time,'%Y-%m-%d %H:%i:%s') &lt;= #{endTimeStr}
+		</if>
+		<if test="parameterSize!=null">
+			and p.parameter_size = #{parameterSize}
+		</if>
+		<!-- <if test="popupSize!=null">
+			and p.popup_size = #{popupSize}
+		</if> -->
+		<if test="status!=null">
+			and p.status = #{status}
+		</if>
+	</select>
+	<!--审核某条-->
+	<update id="checkPopup" parameterType="Long">
+		update popup p set
+		status = 1,
+		create_date = now()
+		where 
+		p.id = #{id}
+	</update>	
+	<!--取审某条-->
+	<update id="uncheckPopup" parameterType="Long">
+		update popup  p set
+		status = 0,
+		create_date = now()
+		where 
+		p.id = #{id}
+	</update>
+	<!--加入某条-->
+	<insert id="insertPopup" parameterType="PopupPojo">
+		insert into popup (start_time,end_time,popup_pic,parameter,parameter_size,popup_size,status,create_date,title)
+		values(str_to_date(#{startTimeStr},'%Y-%m-%d %H:%i:%s'),str_to_date(#{endTimeStr},'%Y-%m-%d %H:%i:%s'),#{popupPic},#{parameter},#{parameterSize},#{popupSize},#{status},now(),#{title})
+	</insert>	
+	<!-- 删除单条(id) -->
+	<delete id="delPopup" parameterType="PopupPojo">
+		delete from popup where id = #{id}
+	</delete>
+	<!-- 查找单条 -->
+	<select id="findPopupById" resultType="PopupPojo" parameterType="Long">
+		select
+		p.id             as id,
+		p.start_time     as startTime,
+		p.end_time       as endTime,
+		p.popup_pic      as popupPic,
+		p.parameter      as parameter,
+		p.parameter_size as parameterSize,
+		(CASE WHEN p.parameter_size = 1 THEN '产品ID' WHEN p.parameter_size = 2 THEN '店铺ID' WHEN p.parameter_size = 3 THEN '产品类型ID' WHEN p.parameter_size = 4 THEN 'URL'END)  as parameterSizeName,
+		p.popup_size     as popupSize,
+		(CASE WHEN p.popup_size = 1 THEN '首页弹窗' END)  as popupSizeName,
+		p.status         as status,
+		(CASE WHEN p.status = 0 THEN '未通过' WHEN p.status = 1 THEN '已通过' END)  as statusName,
+		p.title          as title,
+		p.create_date    as createDate
+		from popup p
+		where
+		p.id=#{id}
+	</select>
+	<!--编辑单条-->
+	<update id="updatePopup" parameterType="PopupPojo">
+		update popup p set
+		<if test="startTimeStr!=null and startTimeStr !=''">
+			p.start_time = str_to_date(#{startTimeStr},'%Y-%m-%d %H:%i:%s'),
+		</if>
+		<if test="endTimeStr!=null and endTimeStr !=''">
+			p.end_time = str_to_date(#{endTimeStr},'%Y-%m-%d %H:%i:%s'),
+		</if>
+		<if test="popupPic!=null and popupPic != ''">
+			p.popup_pic = #{popupPic},
+		</if>
+		<if test="parameter!= null">
+			p.parameter = #{parameter},
+		</if>
+		<if test="parameterSize!=null">
+			p.parameter_size = #{parameterSize},
+		</if>
+		<if test="popupSize!=null">
+			p.popup_size = #{popupSize},
+		</if> 
+		<if test="status!=null">
+			p.status = #{status},
+		</if>
+		<if test="title!=null and title != ''">
+			p.title = #{title},
+		</if>
+		create_date   = now()
+		where id = #{id}
+	</update>
+</mapper>

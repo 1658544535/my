@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="favouritesLabel" extends="default">
+		<!-- 页面（全部）  -->
+		<action name="favouritesLabelList" class="com.tzmb2c.web.action.FavouritesLabelAction" method="favouritesLabelListCount">
+			<result name="success">/page/system/favouritesLabel/favouritesLabelList.jsp</result>
+		</action>	
+		<!-- 根据ID删除    -->
+		<action name="delFavouritesLabel" class="com.tzmb2c.web.action.FavouritesLabelAction" method="delFavouritesLabel">
+		</action>
+		<!-- 跳转编辑         -->
+		<action name="goUpdateFavouritesLabel" class="com.tzmb2c.web.action.FavouritesLabelAction" method="goUpdateFavouritesLabel">
+		    <result name="success">/page/system/favouritesLabel/updateFavouritesLabel.jsp</result>
+		</action>
+		<!-- 编辑提交          -->
+		<action name="updateFavouritesLabel" class="com.tzmb2c.web.action.FavouritesLabelAction" method="updateFavouritesLabel">
+		</action>
+		<!-- 跳转新增        -->
+		<action name="goAddFavouritesLabel" class="com.tzmb2c.web.action.FavouritesLabelAction" method="goAddFavouritesLabel">
+		    <result name="success">/page/system/favouritesLabel/addFavouritesLabel.jsp</result>
+		</action>
+		<!-- 新增提交         -->
+		<action name="addFavouritesLabel" class="com.tzmb2c.web.action.FavouritesLabelAction" method="addFavouritesLabel">
+		</action>
+		<!-- 有你喜欢-笔记列表页面 -->
+		<action name="userCirclePostFavourites" class="com.tzmb2c.web.action.FavouritesLabelAction" method="userCirclePostFavourites">
+			<result name="success">/page/system/favouritesLabel/userCirclePostListFavourites.jsp</result>
+			<result name="product">/page/system/favouritesLabel/productFavourites.jsp</result>
+			<result name="producttype">/page/system/favouritesLabel/productTypeFavourites.jsp</result>
+		</action>
+		<!-- 根据ID批量删除    -->
+		<action name="delFavouritesDetailLabel" class="com.tzmb2c.web.action.FavouritesLabelAction" method="delFavouritesDetailLabel">
+		</action>
+		<!-- 有你喜欢-笔记列表添加页面 -->
+		<action name="userCirclePostFavouritesAdd" class="com.tzmb2c.web.action.UserCirclePostAction" method="findUserCirclePostCount">
+		<!-- <action name="userCirclePostFavouritesAdd" class="com.tzmb2c.web.action.FavouritesLabelAction" method="userCirclePostFavouritesAdd"> -->
+			<result>/page/system/favouritesLabel/userCirclePostListFavouritesAdd.jsp</result>
+		</action>
+		<!-- 有你喜欢-笔记列表添加 -->
+		<action name="doUserCirclePostFavouritesAdd" class="com.tzmb2c.web.action.FavouritesLabelAction" method="doUserCirclePostFavouritesAdd">
+		</action>
+		<!-- 有你喜欢-商品列表添加页面 -->
+		<action name="productFavouritesAdd" class="com.tzmb2c.web.action.ProductAction" method="getActProBucketCount">
+			<result>/page/system/favouritesLabel/productFavouritesAdd.jsp</result>
+		</action>
+		<!-- 有你喜欢-商品列表添加 -->
+		<action name="doProductFavouritesAdd" class="com.tzmb2c.web.action.FavouritesLabelAction" method="doProductFavouritesAdd">
+		</action>
+	</package>
+	<package name="favouritesLabel-json" extends="json-default">
+		<!-- 内容 -->
+		<action name="favouritesLabelListAll" class="com.tzmb2c.web.action.FavouritesLabelAction" method="favouritesLabelListAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="favouritesLabelListCount" class="com.tzmb2c.web.action.FavouritesLabelAction" method="favouritesLabelListCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>		
+		<!-- 有你喜欢-笔记条数 -->
+		<action name="userCirclePostFavouritesCount" class="com.tzmb2c.web.action.FavouritesLabelAction" method="userCirclePostFavourites">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		<!-- 有你喜欢-笔记列表 -->
+		<action name="userCirclePostFavouritesList" class="com.tzmb2c.web.action.FavouritesLabelAction" method="userCirclePostFavouritesList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<!-- 根据ID删除    -->
+		<action name="delFavouritesDetailLabelOne" class="com.tzmb2c.web.action.FavouritesLabelAction" method="delFavouritesDetailLabelOne">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="favouritesLabelListAllSelect" class="com.tzmb2c.web.action.FavouritesLabelAction" method="favouritesLabelListAllSelect">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<!-- 有你喜欢笔记查看-修改序号 -->
+		<action name="doPostFavouritesUpdateSorting" class="com.tzmb2c.web.action.FavouritesLabelAction" method="doPostFavouritesUpdateSorting">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 添加产品分类ID -->
+		<action name="doAddProductTypeId" class="com.tzmb2c.web.action.FavouritesLabelAction" method="doAddProductTypeId">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 有你喜欢-商品条数 -->
+		<action name="userCirclePostFavouritesProCount" class="com.tzmb2c.web.action.FavouritesLabelAction" method="userCirclePostFavouritesProCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		<!-- 有你喜欢-产品类型条数 -->
+		<action name="userCirclePostFavouritesProTypeCount" class="com.tzmb2c.web.action.FavouritesLabelAction" method="userCirclePostFavouritesProTypeCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+	</package>
+</struts>

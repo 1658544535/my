@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="specialType" extends="default">
+		<!-- 进入列表页面 -->
+		<action name="goSpecialType" class="com.tzmb2c.web.action.SpecialTypeAction" method="goSpecialType">
+			<result name="success">/page/system/specialModule/specialTypeList.jsp</result>
+		</action>
+		<!-- 新增 -->
+		<action name="goAddSpecialType" class="com.tzmb2c.web.action.SpecialTypeAction" method="goAddSpecialType">
+		    <result name="success">/page/system/specialModule/addSpecialType.jsp</result>
+		</action>
+		<!-- 新增提交 -->
+		<action name="addSpecialType" class="com.tzmb2c.web.action.SpecialTypeAction" method="add">
+		</action>		
+		<!-- 编辑页面 -->
+		<action name="goEditSpecialType" class="com.tzmb2c.web.action.SpecialTypeAction" method="goEditSpecialType">
+			<result name="success">/page/system/specialModule/updateSpecialType.jsp</result>
+		</action>
+		<!-- 编辑提交 -->
+		<action name="updateSpecialType" class="com.tzmb2c.web.action.SpecialTypeAction" method="update">
+		</action>
+	</package>
+	<package name="specialType-json" extends="json-default">
+		<!-- 内容 -->
+		<action name="specialTypeList" class="com.tzmb2c.web.action.SpecialTypeAction" method="specialTypeList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="specialTypeCnt" class="com.tzmb2c.web.action.SpecialTypeAction" method="specialTypeRowCnt">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+		<!-- 根据ID删除 -->
+		<action name="delSpecialType" class="com.tzmb2c.web.action.SpecialTypeAction" method="delete">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+		<!-- 删除选中 -->
+		<action name="delSpecialTypeAll" class="com.tzmb2c.web.action.SpecialTypeAction" method="deleteAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 通过审核 -->
+		<action name="checkSpecialType" class="com.tzmb2c.web.action.SpecialTypeAction" method="check">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 取消审核 -->
+		<action name="uncheckSpecialType" class="com.tzmb2c.web.action.SpecialTypeAction" method="uncheck">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 修改显示隐藏状态 -->
+		<action name="goUpdateStatusDisplay" class="com.tzmb2c.web.action.SpecialTypeAction" method="updateStatusDisplay">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+		<!-- 选中通过审核 -->
+		<action name="checkSpecialTypeAll" class="com.tzmb2c.web.action.SpecialTypeAction" method="checkAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中取消审核 -->
+		<action name="uncheckSpecialTypeAll" class="com.tzmb2c.web.action.SpecialTypeAction" method="uncheckAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+	</package>
+</struts>

@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="product" extends="default">
+		<!--  七牛管理页面 -->
+		<action name="qiniuManage" class="com.tzmb2c.web.action.QiNiuAction" method="qiniuFileCount">
+			<result name="success">/page/system/qiniu_web/qiniuManage.jsp</result>
+		</action>
+		<!-- 七牛上传文件页面 -->
+		<action name="qiniuUpload" class="com.tzmb2c.web.action.QiNiuAction" method="qiniuUpload">
+			<result>/page/system/qiniu_web/qiniu_upload.jsp</result>
+		</action>
+		
+		<!-- 七牛上传文件提交 -->
+		<action name="qiniuUploadSubmit" class="com.tzmb2c.web.action.QiNiuAction" method="qiniuUploadSubmit">
+		</action>
+
+		<!-- 七牛上传文件删除 -->
+		<action name="delQiNiu" class="com.tzmb2c.web.action.QiNiuAction" method="delQiNiu">
+		</action>
+		
+		<!-- 七牛上传文件批量删除 -->
+		<action name="delQiNiuAll" class="com.tzmb2c.web.action.QiNiuAction" method="delQiNiuAll">
+		</action>
+		
+		<!-- OSS上传文件提交 -->
+		<action name="ossUploadSubmit" class="com.tzmb2c.web.action.OssAction" method="ossUploadSubmit">
+		</action>
+		
+		<!-- 产品 -->
+		<action name="productManage" class="com.tzmb2c.web.action.ProductAction" method="getCountProduct">
+			<result>/page/system/product/productList.jsp</result>
+		</action>
+		
+		
+		<!-- 添加产品-->
+		<action name="goproductAdd" class="com.tzmb2c.web.action.ProductAction" method="goproductAdd">
+			<result>/page/system/product/productAdd.jsp</result>
+		</action>
+		
+		<action name="productAdd" class="com.tzmb2c.web.action.ProductAction" method="productAdd">
+				
+		</action> 
+
+		<!-- 修改产品-->
+		<action name="goFindProduct" class="com.tzmb2c.web.action.ProductAction" method="goFindProduct">
+			<result>/page/system/product/productUpdate.jsp</result>
+		</action>
+		
+		<action name="productUpdate" class="com.tzmb2c.web.action.ProductAction" method="productUpdate">
+		</action> 
+		
+		<!-- 修改产品名称-->
+		<action name="goFindProductName" class="com.tzmb2c.web.action.ProductAction" method="goFindProductName">
+			<result name="success">/page/system/product/productNameUpdate.jsp</result>
+		</action>
+		
+		<action name="productNameUpdate" class="com.tzmb2c.web.action.ProductAction" method="productNameUpdate">
+			<result name="success">/page/system/product/productListList.jsp</result>
+		</action> 
+		
+		
+		<!-- 修改产品详情 -->
+		<action name="goFindProductContent" class="com.tzmb2c.web.action.ProductAction" method="goFindProductContent">
+			<result>/page/system/product/productContentUpdate.jsp</result>
+		</action>
+		
+		<action name="productContentUpdate" class="com.tzmb2c.web.action.ProductAction" method="productContentUpdate">
+			<result name="success">/page/system/product/productList.jsp</result>
+		</action>
+		
+		<!-- 修改商品上架下架状态 -->
+		<action name="productStatusUpdate" class="com.tzmb2c.web.action.ProductAction" method="productStatusUpdate">
+		</action>
+		
+		<!--修改商品库存列表-->
+		<action name="goProductStock" class="com.tzmb2c.web.action.ProductAction"
+			method="findProductStockCount">
+			<result name="success">/page/system/product/productStock.jsp</result>
+		</action>
+		<action name="productstockUpdate" class="com.tzmb2c.web.action.ProductAction"
+			method="productStockUpdate">
+		</action>
+		
+		
+		
+		<!-- 删除全部 -->
+		<action name="productDeleteId" class="com.tzmb2c.web.action.ProductAction" method="productDeleteId">
+		</action>
+		
+		<!-- 审核全部 -->
+		<action name="checkProductAll" class="com.tzmb2c.web.action.ProductAction" method="checkProductAll">
+		</action>
+		
+		<!-- 商家商品-审核全部 -->
+		<action name="sellerCheckProductAll" class="com.tzmb2c.web.action.ProductAction" method="sellerCheckProductAll">
+		</action>
+		
+		<!-- 价格阶梯 -->
+		<action name="ladderPriceManage" class="com.tzmb2c.web.action.ProductAction" method="getCountProduct">
+			<result>/page/system/product/ladderPriceList.jsp</result>
+		</action>
+		<action name="goSetLadderPrice" class="com.tzmb2c.web.action.ProductAction" method="goSetLadderPrice">
+			<result>/page/system/product/ladderPriceSet.jsp</result>
+		</action>
+		<action name="setLadderPrice" class="com.tzmb2c.web.action.ProductAction" method="setLadderPrice">
+			<result name="success" type="redirectAction" >ladderPriceManage</result>
+		</action>
+		
+		<!-- 起订量管理 -->
+		<action name="minimumManage" class="com.tzmb2c.web.action.ProductAction" method="getCountProduct">
+			<result>/page/system/product/minimumList.jsp</result>
+		</action>
+		<action name="goSetMinimum" class="com.tzmb2c.web.action.ProductAction" method="goSetMinimum">
+			<result>/page/system/product/minimumSet.jsp</result>
+		</action>
+		<action name="setMinimum" class="com.tzmb2c.web.action.ProductAction" method="setMinimum">
+			<result name="success" type="redirectAction" >minimumManage</result>
+		</action>
+		
+		<!-- 产品列表 -->
+		<action name="productListManage" class="com.tzmb2c.web.action.ProductAction" method="getCountProduct">
+			<result>/page/system/product/productListList.jsp</result>
+		</action>
+		
+		<!-- 产品优先显示 -->
+		<action name="productIntroduceManage" class="com.tzmb2c.web.action.ProductAction" method="getIndexProduct">
+			<result>/page/system/product/productIntroduceChoose.jsp</result>
+		</action>
+		<action name="goSetIntroduce" class="com.tzmb2c.web.action.ProductAction" method="getCountIndexProduct">
+			<result>/page/system/product/productIntroduceList.jsp</result>
+		</action>
+		<action name="setIntroduce" class="com.tzmb2c.web.action.ProductAction" method="setIntroduce">
+			<result name="success" type="redirectAction" >productIntroduceManage</result>
+		</action>
+		
+		<!--导出产品EXCEL-->
+		<action name="getProductExcel" class="com.tzmb2c.web.action.ProductAction" method="getProductExcel">
+			<result name="success" type="stream">  
+				<param name="contentType">application/vnd.ms-excel</param>  
+				<param name="inputName">inputStream</param>  
+				<param name="contentDisposition">attachment;filename="${downloadFileName}"</param>  
+				<param name="bufferSize">4096</param>  
+			</result>  
+		</action>
+		
+		<!--导出产品EXCEL-->
+		<action name="getProductExcel2" class="com.tzmb2c.web.action.ProductAction" method="getProductExcel2">
+			<result name="success" type="stream">  
+				<param name="contentType">application/vnd.ms-excel</param>  
+				<param name="inputName">inputStream</param>  
+				<param name="contentDisposition">attachment;filename="${downloadFileName}"</param>  
+				<param name="bufferSize">4096</param>
+			</result>  
+		</action>
+		
+	
+		<!-- 商家产品列表 -->
+		<action name="sellerProductManage" class="com.tzmb2c.web.action.ProductAction" method="getCountSellerProduct">
+			<result>/page/system/product/sellerProductManage.jsp</result>
+		</action>
+		<!-- 开团团列表 -->
+		<action name="goGroRecList" class="com.tzmb2c.web.action.ProductAction" method="groRecCount">
+			<result>/page/system/product/groRecList.jsp</result>
+		</action>
+		<!-- 团参加的人列表 -->
+		<action name="goGroUserRecList" class="com.tzmb2c.web.action.ProductAction" method="groUserRecCount">
+			<result>/page/system/product/groUserRecList.jsp</result>
+		</action>
+		
+		<!-- 二维码下载 -->
+		<action name="qrcodeDownload" class="com.tzmb2c.web.action.ProductAction" method="qrcodeDownload">
+		</action>
+	</package>
+	
+	<package name="product-json" extends="json-default">
+		<!-- 开团列表内容 -->
+		<action name="groRecList" class="com.tzmb2c.web.action.ProductAction" method="groRecList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 开团列表条数 -->
+		<action name="groRecCount" class="com.tzmb2c.web.action.ProductAction" method="groRecCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		<!-- 团参加的人内容 -->
+		<action name="groUserRecList" class="com.tzmb2c.web.action.ProductAction" method="groUserRecList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 团参加的人条数 -->
+		<action name="groUserRecCount" class="com.tzmb2c.web.action.ProductAction" method="groUserRecCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		<!-- 审核 -->
+		<action name="checkProduct" class="com.tzmb2c.web.action.ProductAction" method="checkProduct">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		<!-- 取消审核 -->
+		<action name="uncheckProduct" class="com.tzmb2c.web.action.ProductAction" method="uncheckProduct">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		<!-- 删除产品成功回调 -->
+		<action name="deleProduct" class="com.tzmb2c.web.action.ProductAction"
+			method="deleProduct">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		<!--平台入口-->
+		<action name="getCountProduct" class="com.tzmb2c.web.action.ProductAction" method="getCountProduct">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		<!--设置首页推荐入口-->
+		<action name="getCountIndexProduct" class="com.tzmb2c.web.action.ProductAction" method="getCountIndexProduct">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		<!-- 首页推荐产品 -->
+		<action name="goSetIntroduceList" class="com.tzmb2c.web.action.ProductAction"
+			method="goSetIntroduce">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+
+		<!-- 根据条件查找对应产品 -->
+		<action name="getProductAll" class="com.tzmb2c.web.action.ProductAction"
+			method="getProductAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<!--修改首页新品推荐-->
+		<action name="updateTopFive" class="com.tzmb2c.web.action.ProductAction"
+			method="updateTopFive">
+				<result  type="redirectAction">productIntroduceManage</result>
+		</action>
+		
+		<!-- 添加品牌-->
+		<action name="addBrand" class="com.tzmb2c.web.action.ProductAction" method="goproductAdd">
+			<result type="json">
+				<param name="root">jsonStr</param>
+			</result>
+		</action>
+		
+		<action name="qiniuFileCount" class="com.tzmb2c.web.action.QiNiuAction" method="qiniuFileCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		
+		<action name="qiniuFileList" class="com.tzmb2c.web.action.QiNiuAction" method="qiniuFileList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<!--商品库存修改入口-->
+		<action name="findProductStockCount" class="com.tzmb2c.web.action.ProductAction"
+			method="findProductStockCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		
+		<action name="findProductStockList" class="com.tzmb2c.web.action.ProductAction"
+			method="findProductStockList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="upProductSkuImage" class="com.tzmb2c.web.action.ProductAction"
+			method="upProductSkuImage">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="getAttrSxBtn" class="com.tzmb2c.web.action.ProductAction"
+			method="getAttrSxBtn">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="getAttrGsBtn" class="com.tzmb2c.web.action.ProductAction"
+			method="getAttrGsBtn">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+	</package>
+	
+</struts>

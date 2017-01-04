@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="homePageIcon" extends="default">
+		<!-- 页面（全部）  -->
+		<action name="homePageIconList" class="com.tzmb2c.web.action.HomePageIconAction" method="homePageIconListCount">
+			<result name="success">/page/system/homePackage/homePageIcon.jsp</result>
+		</action>	
+		<!-- 根据ID删除    -->
+		<action name="delHomePageIcon" class="com.tzmb2c.web.action.HomePageIconAction" method="delHomePageIcon">
+		</action>
+		<!-- 批量删除         -->
+		<action name="delHomePageIconAll" class="com.tzmb2c.web.action.HomePageIconAction" method="delHomePageIconAll">
+		</action>
+		<!-- 页面（编辑） -->
+		<action name="goUpdateHomePageIcon" class="com.tzmb2c.web.action.HomePageIconAction" method="goUpdateHomePageIcon">
+			<result name="success">/page/system/homePackage/updateHomePageIcon.jsp</result>
+		</action>
+		<!-- 编辑                 -->
+		<action name="updateHomePageIcon" class="com.tzmb2c.web.action.HomePageIconAction" method="updateHomePageIcon">
+		</action>
+		<!-- 通过审核         -->
+		<action name="checkHomePageIcon" class="com.tzmb2c.web.action.HomePageIconAction" method="checkHomePageIcon">
+		</action>
+		<!-- 取消审核         -->
+		<action name="uncheckHomePageIcon" class="com.tzmb2c.web.action.HomePageIconAction" method="uncheckHomePageIcon">
+		</action>
+		<!-- 批量通过审核 -->
+		<action name="checkHomePageIconAll" class="com.tzmb2c.web.action.HomePageIconAction" method="checkHomePageIconAll">
+		</action>
+		<!-- 新增                 -->
+		<action name="goAddHomePageIcon" class="com.tzmb2c.web.action.HomePageIconAction" method="goAddHomePageIcon">
+		    <result name="success">/page/system/homePackage/addHomePageIcon.jsp</result>
+		</action>
+		<!-- 新增提交         -->
+		<action name="addHomePageIcon" class="com.tzmb2c.web.action.HomePageIconAction" method="addHomePageIcon">
+		</action>
+	</package>
+	<package name="homePageIcon-json" extends="json-default">
+		<!-- 内容 -->
+		<action name="homePageIconListAll" class="com.tzmb2c.web.action.HomePageIconAction" method="homePageIconListAll">
+			<result type="json">
+			<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="homePageIconListCount" class="com.tzmb2c.web.action.HomePageIconAction" method="homePageIconListCount">
+			<result type="json">
+			<param name="root">page.rowCount</param>
+			</result>
+		</action>		
+	</package>
+</struts>
