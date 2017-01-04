@@ -72,8 +72,8 @@
 	var validStime =new tt.Field("有效开始时间","userRedeemCodePojo.validStime").setMsgId("validStime_mgId");
 	var validEtime =new tt.Field("有效结束时间","userRedeemCodePojo.validEtime").setMsgId("validEtime_mgId");
 	var status1 =new tt.Field("审核状态","userRedeemCodePojo.status").setMsgId("status_mgId");
-	var loginname =new tt.Field("用户账户","userRedeemCodePojo.loginname").setMsgId("loginname_mgId");
-	tt.vf.req.add(price,validStime,validEtime,status1,loginname);
+	//var loginname =new tt.Field("用户账户","userRedeemCodePojo.loginname").setMsgId("loginname_mgId");
+	tt.vf.req.add(price,validStime,validEtime,status1);
 	$(document).ready(function() {
 		$("#sbutton").click(function(){	
 			if(tt.validate()){
