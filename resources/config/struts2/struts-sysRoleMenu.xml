@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="menurole" extends="default">
+
+
+
+		<!-- 添加角色菜单 -->
+		<action name="roleMenuManage" class="com.tzmb2c.web.action.SysRoleMenuAction"
+			method="goAddMenuRole">
+			<result>/page/system/rolemenu/addmenurole.jsp</result>
+		</action>
+
+		<!-- 添加角色菜单成功回调 -->
+		<action name="addmenurole" class="com.tzmb2c.web.action.SysRoleMenuAction"
+			method="addMenuRole">
+			<result name="success" type="redirectAction">roleMenuManage</result>
+		</action>
+
+		<!-- 删除角色菜单成功回调 -->
+		<action name="deleMenuRole" class="com.tzmb2c.web.action.SysRoleMenuAction"
+			method="deleMenuRole">
+			<result name="success" type="redirectAction">roleMenuManage</result>
+		</action>
+
+		<!-- 更新角色菜单成功回调 -->
+		<action name="queryMenuRole" class="com.tzmb2c.web.action.SysRoleMenuAction"
+			method="queryMenuRole">
+			<result name="success" type="redirectAction">roleMenuManage</result>
+		</action>
+
+	</package>
+	<package name="MenuRole-json" extends="json-default">
+		<!-- 查看角色菜单 -->
+		<action name="getMenuRoleByRoleid" class="com.tzmb2c.web.action.SysRoleMenuAction"
+			method="getMenuRoleByRoleid">
+			<result type="json">
+				<param name="includeProperties">jsonStr</param>
+			</result>
+		</action>
+	</package>
+</struts>

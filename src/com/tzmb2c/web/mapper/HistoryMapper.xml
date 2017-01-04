@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.HistoryMapper">
+	<insert id="insert" parameterType="HistoryPojo">
+		insert into
+		history(user_id,type,business_id,hid,create_by,create_date,update_by,update_date,remarks,version)
+		values(#{userId},#{type},#{businessId},#{hid},#{createBy},#{createDate},#{updateBy},#{updateDate},#{remarks},#{version})
+	</insert>
+	<!-- 查询所有的记录 -->
+	<select id="historyAllList" resultType="HistoryPojo"
+		parameterType="java.util.Map">
+		select 
+	   	ht.id,
+	   	ht.user_id as userId,
+	   	ht.type,
+	   	(select name from sys_dict where value=ht.type and type="history_type") as typeName,
+	   	ht.business_id as businessId,
+	   	ht.hid,
+	   	ht.create_by as createBy,
+	   	ht.create_date as createDate,
+	   	ht.update_by as updateBy,
+	   	ht.update_date as updateDate,
+	   	ht.remarks,
+	   	ht.version,
+	   	sl.name as userName
+	    from history ht left join sys_login sl on ht.user_id = sl.id
+		where
+		1=1
+		<if test="userName!=null and userName !='' ">
+			and sl.name like concat("%",#{userName},"%" )
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+
+	<!-- 返回记录数目 -->
+	<select id="historyAllCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from history ht left join sys_login sl on ht.user_id = sl.id
+		where 1=1
+		<if test="userName!=null and userName !='' ">
+			and sl.name like concat("%",#{userName},"%" )
+		</if>
+	</select>
+	
+	<!-- 用户浏览商品的记录 -->
+	<select id="historyUserList" resultType="HistoryPojo"
+		parameterType="Long">
+	<!--select
+	   	ht.id,
+	   	ht.user_id as userId,
+	   	ht.type,
+	   	ht.business_id as businessId,
+	   	ht.hid,
+	   	ht.create_date as createDate,
+	   	p.product_name as productName,
+	   	p.distribution_price as distributionPrice,
+		p.selling_price as sellingPrice,
+		p.lowest_price as lowestPrice,
+		p.image as image,
+		p.sell_number + p.base_number as sellNumber,
+		p.status as proStatus,
+		s.name as shopName
+	    from history ht 
+	    left join product p on ht.business_id = p.id left join user_shop s on p.user_id = s.user_id
+		where 1=1
+		and ht.type=1
+		and ht.user_id = #{userId}
+		order by ht.update_date desc
+		limit 8
+		-->
+  select 
+		ht.id,
+	   	ht.user_id as userId,   
+	    max(ht.update_date) as update_date2 ,
+	   	ht.type,   
+	    ht.update_date,
+	    ht.business_id as businessId,
+	   	ht.hid,
+	   	ht.create_date as createDate,
+	   	p.product_name as productName,
+	   	p.distribution_price as distributionPrice,
+		p.selling_price as sellingPrice,
+		p.lowest_price as lowestPrice,
+		p.image as image,
+		p.sell_number + p.base_number as sellNumber,
+		p.status as proStatus,
+		s.name as shopName
+	from
+	     history as ht,     
+	     product as p,     
+	     user_shop as s
+	where 
+	      ht.business_id = p.id      
+	and
+	      p.user_id = s.user_id      
+	and
+	      ht.user_id=#{userId}
+	and 
+	      ht.type=1       
+	group by 
+	      ht.business_id   
+	order by
+	      update_date2 desc
+	limit  8
+
+	</select>
+		<!-- 用户浏览商品的记录 -->
+	<select id="historyUserList2" resultType="HistoryPojo"
+		parameterType="HistoryPojo">
+		select 
+	   	ht.id,
+	   	ht.user_id as userId,
+	   	ht.type,
+	   	ht.business_id as businessId,
+	   	ht.hid,
+	   	IFNULL(ht.update_date,ht.create_Date) as createDate,
+	   	p.product_name as productName,
+	   	p.distribution_price as distributionPrice,
+		p.selling_price as sellingPrice,
+		p.lowest_price as lowestPrice,
+		p.image as image,
+		p.status as proStatus,
+		p.sell_number + p.base_number as sellNumber,
+		p.base_number as baseNumber,
+		s.name as shopName,
+		ht.activity_Id as activityId
+	    from history ht,product p left join user_shop s on p.user_id = s.user_id
+		where
+		ht.user_id = #{userId}
+		 and ht.business_id = p.id
+		order by createDate desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+
+	<select id="checkhistory" resultType="int" parameterType="java.util.Map">
+		select count(*)
+		from history ht
+		where 1=1
+		<if test="userId!=null and userId !='' ">
+		  and ht.user_id = #{userId}
+		</if>
+		<if test="type!=null and type !='' ">
+		  and ht.type = #{type}
+		</if>
+		<if test="businessId!=null and businessId !='' ">
+		  and ht.business_id = #{businessId}
+		</if>
+		<if test="activityId!=null ">
+		  and ht.activity_id = #{activityId}
+		</if>
+		<if test="createDate!=null and createDate !='' ">
+		and date_format(ht.create_date,'%Y-%m-%d')=date_format(now(),'%Y-%m-%d')
+		</if>
+	</select>
+	<insert id="inserthistory" parameterType="java.util.Map">
+		insert into
+		history(user_id,type,business_id,activity_id,hid,create_by,create_date,update_by,update_date,remarks,version)
+		values(#{userId},#{type},#{businessId},#{activityId},#{hid},#{createBy},#{createDate},#{updateBy},#{updateDate},#{remarks},#{version})
+	</insert>
+	<update id="updatehistory" parameterType="java.util.Map">
+		update history ht
+		set update_date=now(),
+		hid = hid+1
+		where 1=1
+		<if test="userId!=null and userId !='' ">
+		  and ht.user_id = #{userId}
+		</if>
+		<if test="businessId!=null and businessId !='' ">
+		  and ht.business_id = #{businessId}
+		</if>
+		<if test="activityId!=null and activityId !='' ">
+		  and ht.activity_id = #{activityId}
+		</if>
+		<if test="createDate!=null and createDate !='' ">
+		and date_format(ht.create_date,'%Y-%m-%d')=date_format(now(),'%Y-%m-%d')
+		</if>
+	</update>
+
+</mapper>

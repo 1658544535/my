@@ -1,0 +1,129 @@
+@CHARSET "UTF-8";
+
+/**
+* default index
+* width: 1440px
+**/
+
+/******************************************************** header begin ********************************************************/
+.header-left-div {
+	width: 280px;
+	height: 100px;
+	background-color: #e6e6fa;
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	overflow: hidden;
+}
+
+.header-right-div {
+	width: 280px;
+	height: 50px;
+	background-color: #e6e6fa;
+	position: absolute;
+	top: 0;
+	left: 1267px;
+	overflow: hidden;
+	display: none;
+}
+
+/**
+	border-style: solid;
+	border-width: 1px;
+	border-color: #483C32;
+**/
+.header-main-div {
+	width: 1134px;
+	height: 50px;
+	background-color: #DDDDDD;
+	position: relative;
+	top: 0;
+	left: 306px;
+	overflow: hidden;
+}
+/******************************************************** header end ********************************************************/
+
+/** header body split line */
+.header-body-split-line {
+	width: 960px;
+}
+
+/******************************************************** body begin ********************************************************/
+/**
+border-style: solid;
+border-width: 1px;
+border-color: #483C32;
+**/
+.body-left-div {
+	position: absolute;
+	width: 280px;
+	height: 600px;
+	top: 106px;
+	left: 5px;
+	background-color: #e6e6fa;
+}
+
+.body-right-div {
+	position: absolute;
+	width: 280px;
+	height: 500px;
+	top: 101px;
+	right: 5px;
+	background-color: #808080;
+	display: none;
+}
+
+.body-main-div {
+	position: relative;
+	width: 1130px;
+	height: 655px;
+	top: 2px;
+	left: 306px;
+	background-color: #e0ffff;
+}
+/******************************************************** body end ********************************************************/
+
+/** footer body split line */
+.footer-body-split-line {
+	width: 960px;
+}
+
+/******************************************************** footer begin ********************************************************/
+/**
+border-style: solid;
+	border-width: 1px;
+	border-color: #483C32;
+**/
+.footer-left-div {
+	width: 24px;
+	height: 120px;
+	position: absolute;
+	left: 0;
+	display: none;
+	overflow: hidden;
+}
+
+.footer-right-div {
+	width: 24px;
+	height: 120px;
+	position: absolute;
+	right: 0;
+	display: none;
+	overflow: hidden;
+}
+
+/**
+	border-style: solid;
+	border-width: 1px;
+	border-color: #483C32;
+**/
+.footer-main-div {
+	position: relative;
+	width: 960px;
+	height: 50px;
+	left: 306px;
+	bottom: 0;
+	background-color: #696969;
+	display: none;
+}
+/******************************************************** footer end ********************************************************/

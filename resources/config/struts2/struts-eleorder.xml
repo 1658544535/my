@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="eleorder" extends="struts-default">	
+		<!--
+		<action name="insertEleOrder" class="com.tzmb2c.web.action.EleorderAction" method="insertEleOrder">
+			<result name="success">/page/system/recordcount/insertEleOrder.jsp</result>
+		</action>
+		-->
+		<action name="ImportEleExcel" class="com.tzmb2c.web.action.EleorderAction" method="ImportEleExcel">	
+		</action>
+		<action name="dianshangDetail" class="com.tzmb2c.web.action.EleorderAction" method="dianshangDetail">	
+			<result name="success">/page/system/recordcount/dianshang.jsp</result>
+		</action>
+		<action name="taozhumaDetail" class="com.tzmb2c.web.action.EleorderAction" method="taozhumaDetail">	
+			<result name="success">/page/system/recordcount/taozhuma.jsp</result>
+		</action>
+		<action name="eleAllorderlist" class="com.tzmb2c.web.action.EleorderAction"
+			method="getEleAllorderlist">
+			<result name="success">/page/system/recordcount/Allorder.jsp
+			</result>
+		</action>
+		
+	</package>
+	<package name="eleorder-json" extends="json-default">
+		<action name="getEleAllorderlist" class="com.tzmb2c.web.action.EleorderAction"
+			method="getEleAllorderlist">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="getEleAllorderlistCount" class="com.tzmb2c.web.action.EleorderAction"
+			method="getEleAllorderlistCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+	</package>
+</struts>

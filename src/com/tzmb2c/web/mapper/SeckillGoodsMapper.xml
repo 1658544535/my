@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.SeckillGoodsMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		sg.id as id,
+		sg.seckill_id as seckillId,
+		sg.activity_id as activityId,
+		sg.product_id as productId,
+		sg.status as status,
+		(CASE WHEN sg.status = 0 THEN '未审核' WHEN sg.status = 1 THEN '已审核' END)  as statusName,
+		sg.sorting as sorting,
+		sg.create_date as createDate,
+		sg.create_by as createBy,
+		sg.update_date as updateDate,
+		sg.update_by as updateBy,
+		sg.is_home as isHome,
+		ga.num as num,
+		
+		(SELECT COUNT(*) FROM groupon_user_record gur 
+			LEFT JOIN groupon_activity_record gar ON gur.attend_id = gar.id
+			WHERE gar.activity_id=sg.activity_id) as numNow,
+		ga.price as price,
+		ga.limit_num as limitNum,
+		ga.surplus_num as surplusNum,
+		p.product_no as productNo,
+		p.product_num as productNum,
+		p.product_name as productName,
+		p.distribution_price as alonePrice,
+		p.image as image,
+		p.image_main as imageMain,
+		p.sell_number + p.base_number as sellNumber,
+		p.selling_price as sellingPrice
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="SeckillGoodsPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			seckill_goods sg left join groupon_activity ga on sg.activity_id= ga.id left join product p on sg.product_id=p.id
+		where
+			sg.id = #{id}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from seckill_goods
+		where 1=1
+		  <if test="id != null ">
+			and id = #{id}
+		  </if>
+		  <if test="seckillId != null ">
+			and seckill_id = #{seckillId}
+		  </if>
+		  <if test="activityId != null ">
+			and activity_id = #{activityId}
+		  </if>
+		  <if test="productId != null ">
+			and product_id = #{productId}
+		  </if>
+		  <if test="status != null ">
+			and status = #{status}
+		  </if>
+		  <if test="sorting != null ">
+			and sorting = #{sorting}
+		  </if>
+		  <if test="createDate != null ">
+			and create_date = #{createDate}
+		  </if>
+		  <if test="createBy != null ">
+			and create_by = #{createBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and update_date = #{updateDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and update_by = #{updateBy}
+		  </if>
+		  <if test="isHome != null ">
+			  and is_home = #{isHome}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="SeckillGoodsPojo">
+		select
+			<include refid="Base_Column_List" />
+		from seckill_goods sg left join groupon_activity ga on sg.activity_id= ga.id left join product p on sg.product_id=p.id
+		where 1=1
+			<if test="id != null ">
+			  and sg.id = #{id}
+			</if>
+			<if test="seckillId != null ">
+			  and sg.seckill_id = #{seckillId}
+			</if>
+			<if test="activityId != null ">
+			  and sg.activity_id = #{activityId}
+			</if>
+			<if test="productId != null ">
+			  and sg.product_id = #{productId}
+			</if>
+			<if test="status != null ">
+			  and sg.status = #{status}
+			</if>
+			<if test="sorting != null ">
+			  and sg.sorting = #{sorting}
+			</if>
+			<if test="createDate != null ">
+			  and sg.create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and sg.create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and sg.update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and sg.update_by = #{updateBy}
+			</if>
+			<if test="isHome != null ">
+			  and sg.is_home = #{isHome}
+			</if>
+			<if test="surplusNum != null ">
+			  and ga.surplus_num = #{surplusNum}
+			</if>
+			<if test="today != null and tomorrow != null">
+			  and ga.begin_time &gt;= #{today}
+			  and ga.end_time &lt;= #{tomorrow}
+			</if>
+			<if test="isDelete != null ">
+			  and ga.is_delete = #{isDelete}
+			</if>
+			<if test="status != null ">
+			  and ga.status = #{status}
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="SeckillGoodsPojo">
+		update seckill_goods
+		<set>
+			<if test="seckillId != null">
+			  seckill_id = #{seckillId},
+			</if>
+			<if test="activityId != null">
+			  activity_id = #{activityId},
+			</if>
+			<if test="productId != null">
+			  product_id = #{productId},
+			</if>
+			<if test="status != null">
+			  status = #{status},
+			</if>
+			<if test="sorting != null">
+			  sorting = #{sorting},
+			</if>
+			<if test="createDate != null">
+			  create_date = #{createDate},
+			</if>
+			<if test="createBy != null">
+			  create_by = #{createBy},
+			</if>
+			<if test="updateDate != null">
+			  update_date = #{updateDate},
+			</if>
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+			<if test="isHome != null ">
+			  is_home = #{isHome}
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from seckill_goods 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="SeckillGoodsPojo">
+		insert into seckill_goods
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="seckillId != null">
+				seckill_id,
+			</if>
+			<if test="activityId != null">
+				activity_id,
+			</if>
+			<if test="productId != null">
+				product_id,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="sorting != null">
+				sorting,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+			<if test="updateDate != null">
+				update_date,
+			</if>
+			<if test="updateBy != null">
+				update_by,
+			</if>
+			<if test="isHome != null ">
+			    is_home,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="seckillId != null">
+				#{seckillId},
+			</if>
+			<if test="activityId != null">
+				#{activityId},
+			</if>
+			<if test="productId != null">
+				#{productId},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+			<if test="sorting != null">
+				#{sorting},
+			</if>
+			<if test="createDate != null">
+				#{createDate},
+			</if>
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+			<if test="updateDate != null">
+				#{updateDate},
+			</if>
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+			<if test="isHome != null ">
+			    #{isHome},
+			</if>
+		</trim>
+	</insert>
+	
+</mapper>

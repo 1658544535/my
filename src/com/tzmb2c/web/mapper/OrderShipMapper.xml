@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.OrderShipMapper">
+
+	<select id="getOrderShipAll" resultType="orderShipPojo">
+		select t.id as id,
+		t.order_id as orderId, t.user_id as userId, t.logistics_name as
+		logisticsName, t.logistics_no as logisticsNo, t.consignor as consignor
+		,t.consignor_address as consignorAddress, t.ship_phone as
+		shipPhone, t.consignee as consignee ,t.consignee_address as
+		consigneeAddress, t.consignee_phone as consigneePhone,t.consignee_type
+		as consigneeType,t.buyer_message as buyerMessage ,t.remarks as remarks ,t.order_status as
+		orderStatus,t.status as status,t.order_no as
+		orderNo,t.create_date as createDate
+		from user_order_ship t order by t.create_date desc
+	</select>
+
+	<select id="getfindByIdOrderShip" parameterType="Long"
+		resultType="orderShipPojo">
+		select t.id as id,
+		t.order_id as orderId, t.user_id as userId, t.logistics_name as
+		logisticsName, t.logistics_no as logisticsNo, t.consignor as consignor
+		,t.consignor_address as consignorAddress, t.ship_phone as
+		shipPhone, t.consignee as consignee ,t.consignee_address as
+		consigneeAddress, t.consignee_phone as consigneePhone,t.consignee_type
+		as consigneeType,t.buyer_message as buyerMessage ,t.order_status as
+		orderStatus,t.status as status,t.order_no as
+		orderNo,t.remarks as remarks ,t.create_date as createDate
+		from
+		user_order_ship t where
+		t.id = #{id}
+	</select>
+	
+	<select id="findByIdOrderShip" parameterType="Long"
+		resultType="orderShipPojo">
+		select t.id as id,
+		t.order_id as orderId, t.user_id as userId, t.logistics_name as
+		logisticsName, t.logistics_no as logisticsNo, t.consignor as consignor
+		,d.name as logisticsNameCN,t.consignor_address as consignorAddress, t.ship_phone as
+		shipPhone, t.consignee as consignee ,t.consignee_address as
+		consigneeAddress, t.consignee_phone as consigneePhone,t.consignee_type
+		as consigneeType,t.buyer_message as buyerMessage ,t.order_status as
+		orderStatus,t.status as status,t.order_no as
+		orderNo,t.remarks as remarks ,t.create_date as createDate,
+		(select product_image from user_order_detail where order_id=t.order_id group by order_id)as productImages
+		from
+		user_order_ship t left join sys_dict d on t.logistics_name=d.name_en where
+		t.order_id = #{orderId}
+	</select>
+
+	<insert id="insertOrderShip" parameterType="orderShipPojo">
+		insert into
+		user_order_ship(order_id,user_id,logistics_name,logistics_no,consignor,consignor_address,ship_phone,consignee,consignee_address,consignee_phone,consignee_type,buyer_message,order_status,status,order_no,create_by,create_date,update_by,update_date,remarks,version)
+		values(#{orderId},#{userId},#{logisticsName},#{logisticsNo},#{consignor},#{consignorAddress},#{shipPhone},#{consignee},#{consigneeAddress},#{consigneePhone},#{consigneeType},#{buyerMessage},#{orderStatus},#{status},#{orderNo},#{createBy},#{createDate},#{updateBy},#{updateDate},#{remarks},#{version})
+	</insert>
+
+	<delete id="delOrderShip" parameterType="Long">
+		delete from
+		user_order_ship where id = #{id}
+	</delete>
+
+	<delete id="deleteOrderShip" parameterType="Long">
+		delete from
+		user_order_ship where id = #{id}
+	</delete>
+
+	<update id="updateOrderShip" parameterType="orderShipPojo">
+		update
+		user_order_ship 
+		<set>
+		<if test="updateBy != null">
+		update_by = #{updateBy},
+		</if>
+		<if test="updateDate != null and updateDate != ''">
+		update_date = #{updateDate},
+		</if>
+		<!--
+		<if test="orderId!=null">
+		order_id = #{orderId},
+		</if>
+		<if test="userId!=null">
+		user_id = #{userId},
+		</if>
+		-->
+		<if test="logisticsName!=null and logisticsName!=''">
+		logistics_name = #{logisticsName},
+		</if>
+		<if test="logisticsNo!=null and logisticsNo!=''">
+		logistics_no =#{logisticsNo},
+		</if>
+		<if test="consignor!=null and consignor!=''">
+		consignor=#{consignor},
+		</if>
+		<if test="consignorAddress!=null and consignorAddress!=''">
+		consignor_address =#{consignorAddress},
+		</if>
+		<if test="shipPhone!=null and shipPhone!=''">
+		ship_phone=#{shipPhone},
+		</if>
+		<if test="consignee!=null and consignee!=''">
+		consignee =#{consignee},
+		</if>
+		<if test="consigneeAddress!=null and consigneeAddress!=''">
+		consignee_address=#{consigneeAddress},
+		</if>
+		<if test="consigneePhone!=null and consigneePhone!=''">
+		consignee_phone =#{consigneePhone},
+		</if>
+		<if test="consigneeType!=null and consigneeType!=''">
+		consignee_type =#{consigneeType},
+		</if>
+		<if test="buyerMessage!=null">
+		buyer_message=#{buyerMessage},
+		</if>
+		<if test="remarks!=null">
+		remarks=#{remarks},
+		</if>
+		<if test="orderStatus!=null">
+		order_status =#{orderStatus},
+		</if>
+		<if test="status!=null">
+		status =#{status},
+		</if>
+		<!--
+		<if test="orderNo!=null and orderNo!=''">
+		order_no =#{orderNo}
+		</if>
+		-->
+		</set>
+		where id = #{id}
+	</update>
+
+	<select id="orderShipAllCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from user_order_ship where
+		1=1
+		<if test="logisticsNo!=null and logisticsNo!=''">
+			and logistics_no like CONCAT("%",#{logisticsNo},"%")
+		</if>
+		<if test="orderNo!=null and orderNo!=''">
+			and order_no like CONCAT("%",#{orderNo},"%")
+		</if>
+		<if test="orderStatus!=null  ">
+			and order_status = #{orderStatus}
+		</if>
+		<if test="consigneeType!=null  ">
+			and consignee_type = #{consigneeType}
+		</if>
+	</select>
+
+	<select id="orderShipAllList" resultType="orderShipPojo" parameterType="java.util.Map">
+		select 
+		t.id as id,
+		t.order_id as orderId, 
+		t.user_id as userId, 
+		t.logistics_name as logisticsName, 
+		t.logistics_no as logisticsNo, 
+		t.consignor as consignor,
+		t.consignor_address as consignorAddress, 
+		t.ship_phone as shipPhone, 
+		t.consignee as consignee ,
+		t.consignee_address as consigneeAddress, 
+		t.consignee_phone as consigneePhone,
+		t.consignee_type as consigneeType,
+		t.buyer_message as buyerMessage ,
+		t.order_status as orderStatus,
+		t.remarks as remarks ,
+		t.status as status,
+		t.order_no as orderNo,
+		t.create_date as createDate,
+		(select name from sys_dict where value=t.order_status and type = 'ship_order_status') orderStatusName,
+		(select name from sys_dict where value=t.consignee_type and type = 'consignee_type') consigneeTypeName
+		from
+		user_order_ship as t
+		where
+		1=1
+		<if test="logisticsNo!=null and logisticsNo!=''">
+			and logistics_no like CONCAT("%",#{logisticsNo},"%")
+		</if>
+		<if test="orderNo != null and orderNo != '' and panduan == null">
+			and order_no like CONCAT("%",#{orderNo},"%")
+		</if>
+		<if test="orderNo != null and orderNo != '' and panduan != null">
+			and order_no ==#{orderNo}
+		</if>
+		<if test="orderId!=null">
+			and order_id =#{orderId}
+		</if>
+		<if test="orderStatus!=null  ">
+			and order_status = #{orderStatus}
+		</if>
+		<if test="consigneeType!=null  ">
+			and consignee_type = #{consigneeType}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+
+	</select>
+	
+	<select id="checkOrderShipExpired" resultType="int"
+		parameterType="Long">
+
+		select count(t.id) as isExpired
+		from user_order_ship t
+		where 
+		t.create_date&lt;date_sub(now(),interval 45 day) 
+		and t.order_id=#{orderId}
+
+	</select>
+
+</mapper>

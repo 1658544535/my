@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.YourFavouritesMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id as id,
+		name as name,
+		image as image,
+		age_type as ageType,
+		content_type as contentType,
+		sorting as sorting,
+		is_delete as isDelete,
+		create_date as createDate,
+		create_by as createBy,
+		update_date as updateDate,
+		update_by as updateBy
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="YourFavouritesPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			your_favourites
+		where
+			id = #{id}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from your_favourites
+		where 1=1
+		  <if test="id != null ">
+			and id = #{id}
+		  </if>
+		  <if test="name != null and name != '' ">
+			and name = #{name}
+		  </if>
+		  <if test="image != null and image != '' ">
+			and image = #{image}
+		  </if>
+		  <if test="ageType != null and ageType != '' ">
+			and age_type = #{ageType}
+		  </if>
+		  <if test="contentType != null ">
+			and content_type = #{contentType}
+		  </if>
+		  <if test="sorting != null ">
+			and sorting = #{sorting}
+		  </if>
+		  <if test="isDelete != null ">
+			and is_delete = #{isDelete}
+		  </if>
+		  <if test="createDate != null ">
+			and create_date = #{createDate}
+		  </if>
+		  <if test="createBy != null ">
+			and create_by = #{createBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and update_date = #{updateDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and update_by = #{updateBy}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="YourFavouritesPojo">
+		select
+			<include refid="Base_Column_List" />
+		from your_favourites
+		where 1=1
+			<if test="id != null ">
+			  and id = #{id}
+			</if>
+			<if test="name != null and name != '' ">
+			  and name = #{name}
+			</if>
+			<if test="image != null and image != '' ">
+			  and image = #{image}
+			</if>
+			<if test="ageType != null and ageType != '' ">
+			  and age_type like CONCAT("%",#{ageType},"%")
+			</if>
+			<if test="contentType != null ">
+			  and content_type = #{contentType}
+			</if>
+			<if test="sorting != null ">
+			  and sorting = #{sorting}
+			</if>
+			<if test="isDelete != null ">
+			  and is_delete = #{isDelete}
+			</if>
+			<if test="createDate != null ">
+			  and create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and update_by = #{updateBy}
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="YourFavouritesPojo">
+		update your_favourites
+		<set>
+			<if test="name != null">
+			  name = #{name},
+			</if>
+			<if test="image != null">
+			  image = #{image},
+			</if>
+			<if test="ageType != null">
+			  age_type = #{ageType},
+			</if>
+			<if test="contentType != null">
+			  content_type = #{contentType},
+			</if>
+			<if test="sorting != null">
+			  sorting = #{sorting},
+			</if>
+			<if test="isDelete != null">
+			  is_delete = #{isDelete},
+			</if>
+			  update_date = now(),
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from your_favourites 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="YourFavouritesPojo">
+		insert into your_favourites
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="image != null">
+				image,
+			</if>
+			<if test="ageType != null">
+				age_type,
+			</if>
+			<if test="contentType != null">
+				content_type,
+			</if>
+			<if test="sorting != null">
+				sorting,
+			</if>
+			<if test="isDelete != null">
+				is_delete,
+			</if>
+				create_date,
+			<if test="createBy != null">
+				create_by,
+			</if>
+				update_date,
+			<if test="updateBy != null">
+				update_by,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="name != null">
+				#{name},
+			</if>
+			<if test="image != null">
+				#{image},
+			</if>
+			<if test="ageType != null">
+				#{ageType},
+			</if>
+			<if test="contentType != null">
+				#{contentType},
+			</if>
+			<if test="sorting != null">
+				#{sorting},
+			</if>
+			<if test="isDelete != null">
+				#{isDelete},
+			</if>
+				now(),
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+				now(),
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+		</trim>
+	</insert>
+	
+</mapper>

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tzmb2c.web.mapper.UserPartsLogMapper">
+	<!-- 查询所有的记录 -->
+	<select id="findUserPartsLogList" resultType="UserPartsLogPojo" parameterType="java.util.Map">
+		SELECT
+		upl.id                as id,
+		upl.user_id           as userId,
+		s.loginname           as loginname,
+		upl.toy_id            as toyId,
+		gft.name              as toyName,
+		gft.images            as toyImages,
+		upl.parts_id          as partsId,
+		gtp.name              as partsName,
+		gtp.images            as partsImages,
+		gtp.create_time       as createTime,
+		upl.create_begin_date as createBeginDate,
+		upl.create_end_date   as createEndDate,
+		upl.status            as status,
+		(CASE WHEN upl.status = 0 THEN '未生成' WHEN upl.status = 1 THEN '生成中' WHEN upl.status = 2 THEN '已生成' WHEN upl.status = 3 THEN '已合成' END) as statusName,
+		upl.create_by         as createBy,
+		upl.create_date       as createDate,
+		upl.update_by         as updateBy,
+		upl.update_date       as updateDate
+		FROM
+		user_parts_log upl left join sys_login s on s.id=upl.user_id
+		left join game_factory_toy gft on gft.id=upl.toy_id
+		left join game_toy_parts gtp on gtp.id=upl.parts_id
+		WHERE
+		1 = 1
+		<if test="id != null">
+			and upl.id = #{id}
+		</if>
+		<if test="toyId != null">
+			and upl.toy_id = #{toyId}
+		</if>
+		<if test="loginname != null and loginname != '' ">
+			and s.loginname  like CONCAT("%",#{loginname},"%")
+		</if>
+		<if test="toyName != null and toyName != '' ">
+			and gft.name  like CONCAT("%",#{toyName},"%")
+		</if>
+		<if test="partsName != null and partsName != '' ">
+			and gtp.name  like CONCAT("%",#{partsName},"%")
+		</if>
+		<if test="status != null">
+			and upl.status = #{status}
+		</if>
+		<if test="paixu == 1 and userId != null">
+		    and upl.user_id = #{userId}
+		    group by upl.parts_id
+		</if>
+		<if test="paixu != 1">
+		   order by upl.create_date desc , upl.create_begin_date desc
+		</if>
+		<if test="paixu == 1">
+		   order by upl.create_end_date
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	<!-- 查询记录的数目 -->
+    <select id="findUserPartsLogCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from user_parts_log upl left join sys_login s on s.id=upl.user_id
+		left join game_factory_toy gft on gft.id=upl.toy_id
+		left join game_toy_parts gtp on gtp.id=upl.parts_id
+		where 1=1
+        <if test="id != null">
+			and upl.id = #{id}
+		</if>
+		<if test="loginname != null and loginname != '' ">
+			and s.loginname  like CONCAT("%",#{loginname},"%")
+		</if>
+		<if test="toyName != null and toyName != '' ">
+			and gft.name  like CONCAT("%",#{toyName},"%")
+		</if>
+		<if test="partsName != null and partsName != '' ">
+			and gtp.name  like CONCAT("%",#{partsName},"%")
+		</if>
+		<if test="status != null">
+			and upl.status = #{status}
+		</if>
+	</select>
+	<!--审核某条-->
+	<update id="checkUserPartsLog" parameterType="Long">
+		update user_parts_log upl set
+		status = 1,
+		update_date = now()
+		where 
+		upl.id = #{id}
+	</update>	
+	<!--取审某条-->
+	<update id="uncheckUserPartsLog" parameterType="Long">
+		update user_parts_log upl set
+		status = 0,
+		update_date = now()
+		where 
+		upl.id = #{id}
+	</update>
+	<!--加入某条-->
+	<insert id="insertUserPartsLog" parameterType="UserPartsLogPojo">
+		insert into user_parts_log 
+		(user_id,toy_id,parts_id,create_begin_date,create_end_date,status,create_by,create_date) 
+		values 
+		(#{userId},#{toyId},#{partsId},#{createBeginDate},#{createEndDate},#{status},#{createBy},now())
+	</insert>	
+	<!-- 删除单条(id) -->
+	<delete id="delUserPartsLog" parameterType="Long">
+		delete from user_parts_log where id = #{id}
+	</delete>
+	<!-- 查找单条 -->
+	<select id="findUserPartsLogById" resultType="UserPartsLogPojo" parameterType="Long">
+		SELECT
+		upl.id                as id,
+		upl.user_id           as userId,
+		s.loginname           as loginname,
+		upl.toy_id            as toyId,
+		gft.name              as toyName,
+		upl.parts_id          as partsId,
+		gtp.name              as partsName,
+		gtp.create_time       as createTime,
+		upl.create_begin_date as createBeginDate,
+		upl.create_end_date   as createEndDate,
+		upl.status            as status,
+		(CASE WHEN upl.status = 0 THEN '未生成' WHEN upl.status = 1 THEN '生成中' WHEN upl.status = 2 THEN '已生成' WHEN upl.status = 3 THEN '已合成' END) as statusName,
+		upl.create_by         as createBy,
+		upl.create_date       as createDate,
+		upl.update_by         as updateBy,
+		upl.update_date       as updateDate
+	    FROM
+		user_parts_log upl left join sys_login s on s.id=upl.user_id
+		left join game_factory_toy gft on gft.id=upl.toy_id
+		left join game_toy_parts gtp on gtp.id=upl.parts_id
+		where
+		upl.id=#{id}
+	</select>
+	<!--编辑单条-->
+	<update id="updateUserPartsLog" parameterType="UserPartsLogPojo">
+		update user_parts_log set
+        <if test="userId != null">
+			user_id = #{userId},
+		</if>
+		<if test="toyId != null">
+			toy_id = #{toyId},
+		</if>
+		<if test="partsId != null">
+			parts_id = #{partsId},
+		</if>
+		<if test="createBeginDate != null and createBeginDate != ''">
+			create_begin_date = #{createBeginDate},
+		</if>
+		<if test="createEndDate != null and createEndDate != ''">
+			create_end_date = #{createEndDate},
+		</if>
+		<if test="status != null">
+			status = #{status},
+		</if>
+		<if test="updateBy!=null and updateBy!='' ">
+			update_by = #{updateBy},
+		</if>
+		update_date = now()
+		where  id = #{id}			
+	</update>
+</mapper>

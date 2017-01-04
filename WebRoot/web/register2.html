@@ -1,0 +1,322 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="css/all.css" rel="stylesheet" type="text/css" />
+<link href="css/faq.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui.js"></script>
+<script>
+	$(function() {
+		$( "#tabs" ).tabs();
+	});
+</script>
+<title>M2C分销平台</title>
+<style type="text/css">
+	.box-shadow {
+box-shadow: 0 1px 2px #D1D1D1;
+}
+.mt-25 {
+margin-top: 25px;
+}
+.wrapper {
+margin: 0 auto;
+position: relative;
+width: 1002px;
+}
+.pure-g {
+letter-spacing: -0.31em;
+text-rendering: optimizespeed;
+overflow:hidden;
+}
+.pure-u-7-10 {
+width: 700px;
+float:left;
+}
+#m-member-panel {
+margin: 30px 0 60px 60px;
+padding: 30px 0 0;
+border-right: 1px solid #ccc;
+min-height: 350px;
+}
+#m-member-panel h2 {
+margin: 0 0 40px 15px;
+border-left: 4px solid #CA3C3C;
+padding-left: 10px;
+
+}
+h2 {
+display: block;
+font-size: 1.5em;
+font-weight: bold;
+letter-spacing:normal;
+}
+#m-member-panel form {
+color: #666; margin:0; display:block;
+}
+.pure-form-aligned input{display: inline-block;
+vertical-align: middle;}
+.pure-form fieldset {
+margin: 0;
+padding: 0.35em 0 0.75em;
+border: 0;
+}
+.pure-form-aligned .pure-control-group {
+margin-bottom: 15px;
+letter-spacing:normal;
+}
+.pure-form-aligned .pure-control-group label {
+text-align: right;
+display: inline-block;
+vertical-align: middle;
+width: 10em;
+margin: 0 1em 0 0;
+}
+#m-member-panel form {
+color: #666;
+}
+#m-member-panel .pure-input-1-3 {
+margin-right: 12px;
+}
+.pure-form input[type=text], .pure-form input[type=password] {
+height: 32px;
+font-size: 12px;
+padding-top: 8px;
+}
+.pure-form .pure-input-1-3 {
+width: 33%;
+padding: 0.5em 0.6em;
+display: inline-block;
+border: 1px solid #ccc;
+box-shadow: inset 0 1px 3px #ddd;
+border-radius: 2px;
+-webkit-box-sizing: border-box;
+-moz-box-sizing: border-box;
+box-sizing: border-box;
+}
+.c-999{ color:#999; letter-spacing:normal; }
+.pure-form-aligned .pure-controls {
+margin: 1.5em 0 0 11em;
+}
+.c-999 a {
+color: #3E3E3E;
+text-decoration: none;
+}
+.c-999 a:hover{ color:#df434e;}
+.pure-button-main {
+background: #df434e;
+/*border-color: #c6375e;*/
+color: #fff;
+border:1px solid #CC3333;
+border-radius:3px;
+text-shadow: 0 1px 1px rgba(0,0,0,.2);
+
+}
+#m-member-panel #submit-btn {
+font-size: 14px;
+}
+.pure-button {
+padding: .5em 1.5em;
+}
+.pure-u-3-10 {
+width: 300px;
+display: inline-block;
+zoom: 1;
+letter-spacing: normal;
+word-spacing: normal;
+vertical-align: top;
+text-rendering: auto;
+}
+#m-login-tip {
+text-align: center;
+padding-top: 50px;
+}
+p {
+margin: 0 0 8px;
+display:block;
+}
+.mt-50 {
+margin-top: 50px;
+}
+#m-open-login {
+list-style-type: none;
+margin: 15px 85px 0;
+padding: 0;
+text-align: left;
+}
+#m-open-login li {
+background-color: #fff;
+border: 1px solid #ddd;
+border-radius: 4px;
+cursor: pointer;
+height: 24px;
+line-height: 24px;
+margin: 5px 0;
+transition: border .2s linear 0s,-moz-box-shadow .2s linear 0s;
+padding-left: 10px;
+}
+li {
+display: list-item;
+text-align: -webkit-match-parent;
+}
+.icons.qq-icon {
+background-position: 0 -55px;
+}
+.icons {
+background: url(http://s1.husor.cn/image/base/icons.png) no-repeat -1000px 0;
+display: inline-block;
+height: 18px;
+line-height: 18px;
+padding-left: 22px;
+}
+a {
+color: #3E3E3E;
+text-decoration: none;
+}
+.pure-button-green {
+background: #df434e;
+border-color: #CC3333;
+}
+.icons {
+background: url(http://s1.husor.cn/image/base/icons.png) no-repeat -1000px 0;
+display: inline-block;
+height: 18px;
+line-height: 18px;
+padding-left: 22px;
+}
+#m-open-login li:hover {
+border: 1px solid #ccc;
+box-shadow: 0 0 7px #ccc;
+}
+.icons.taobao-icon {
+background-position: 0 0;
+}
+.white-bg {
+background: #ffffff;
+margin-bottom: 10px;
+overflow: hidden;
+}
+
+#main-nav {
+height: 64px;
+position: relative;
+background: #df434e;
+width:100%;
+}
+#head .wrapper {
+z-index: 200;
+z-index: 301;
+position: relative;
+}
+#main-nav .nav-item.current, #main-nav .nav-item.current:hover {
+/*background: #cf2f3b;*/
+color: #fff;
+text-decoration: none;
+line-height:64px;
+}
+#main-nav .nav-item {
+/*background: #df434e;*/
+float: left;
+font-size: 16px;
+height: 64px;
+position: relative;
+width: 120px;
+color: #fff;
+font: 700 15px/38px "";
+text-align: center;
+text-decoration: none;
+line-height:64px;
+
+}
+.nav-item:hover{ background:#cf2f3b;}
+</style>
+</head>
+
+<body class="body" style="background:#f5f5f5;">
+<div class="top">
+	<div class="top-width">
+    	<div class="welcome">您好，欢迎djyww0505来到M2C分销平台<a href="#" class="out">退出</a></div>
+        <div class="login"><a href="#" class="login-a">首页</a><span class="login-line">|</span><a href="#" class="login-a">我的</a><span class="login-line">|</span><a href="shopping_Cart.html" class="login-a">购物车</a><span class="login-line">|</span><a href="#" class="login-a">收藏夹</a><span class="login-line">|</span><a href="help.html" class="login-a">帮助中心</a><span class="login-line">|</span><a href="#" class="login-a">网站导航</a></div>
+    </div>
+</div>
+
+<div class="top02-width">
+	<div class="logo02"></div>
+	<div class="search"><input name="" type="text" value="请简单描述你的问题" onfocus="this.value=''" onblur="if(this.value==''){this.value='请简单描述你的问题'}" class="search-input"/><button type="submit" class="search-button">搜 索</button></div>
+</div> 
+
+<div class="clear"></div>
+<div id="main-nav">
+        <div class="wrapper">
+            
+            <a href="" class="nav-item current">首页</a>
+            <a href="" class="nav-item ">新品快订</a>
+            <a href="" class="nav-item ">
+                店铺街
+            </a>
+            <a href="" class="nav-item ">行业资讯</a>
+          
+    	</div>
+    </div>
+
+
+<div class="faq-width" style="font-size:12px;">
+	<div id="content" class="pure-g wrapper mt-25 white-bg box-shadow">
+                <div class="pure-u-7-10">
+    <div id="m-member-panel" class="register">
+        <h2>新用户注册</h2>
+        <form action="http://d.beibei.com/member/register.html" class="pure-form pure-form-aligned" method="post" accept-charset="utf-8">        <input type="hidden" name="sign" value="na7p2jF0kCsF14PA90fqZW2XEx/9kXWZrfTcuAl2y8Pjd9EYgal6c/eHFMZUDGHZNph7rdgLM9WX7yHhSxarSA==">
+        <input type="hidden" name="done" value="http://www.beibei.com/">
+        <fieldset>
+            <div class="pure-control-group">
+    			<label for="email">你的邮箱：</label>
+    			<input type="text" id="email" class="pure-input-1-3" data-url="http://www.beibei.com/member/available.html" data-hint="输入你的常用邮箱" autocomplete="off" name="email" value="">
+    			
+    			    		</div>
+    		<div class="pure-control-group">
+    			<label for="passwd">密码：</label>
+    			<input type="password" id="passwd" class="pure-input-1-3" data-hint="6-16位，可含字母、数字、符号" name="passwd" value="">
+    			
+    			    		</div>
+    		<div class="pure-control-group">
+    			<label for="repasswd">确认密码：</label>
+    			<input type="password" id="repasswd" class="pure-input-1-3" data-hint="再输一次密码" name="repasswd" value="">
+    			
+    			    		</div>
+    		
+    		<div class="pure-controls">
+        		<label class="c-999">注册即接受<a href="http://www.beibei.com/support/user/agreement.html" target="_blank">《淘竹马玩具分销网使用协议》</a></label>
+            </div>
+    		<div class="pure-controls">
+                <button id="submit-btn" data-hint="正在注册..." type="button" class="pure-button  pure-button-main  pure-u-3-10" style="width:33%;">立即注册</button>
+                <span id="msg-area" class="f-12"><!--  --></span>
+    		</div>
+    		<div class="pure-controls">
+                <span class="error-msg"></span>
+    		</div>
+    	</fieldset>
+        </form>    </div>
+</div>
+
+<div class="pure-u-3-10">
+    <div id="m-login-tip">
+        <p><font style="font-weight:bold;">已有账号？</font> <a href="http://www.beibei.com/member/login.html" class="pure-button pure-input-1-3 pure-button-green pure-button-main">立即登录</a></p>
+        <div class="mt-50 c-999">
+            <p>你也可以通过以下途径登录</p>
+            <ul id="m-open-login">
+                <li><a class="icons qq-icon" href="http://www.beibei.com/openid/qq/index.html">用QQ账号登录</a></li>
+                <li><a class="icons taobao-icon" href="http://www.beibei.com/openid/taobao/index.html">用淘宝账号登录</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+            
+            </div>
+    
+   
+</div>
+
+<div class="clear"></div>
+
+</body>
+</html>

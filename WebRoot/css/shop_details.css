@@ -1,0 +1,9 @@
+@charset "utf-8";
+/* CSS Document */
+.topBanner{height:200px; margin:0px auto; background-repeat:no-repeat; background-position-x:center; background-position-y:top;}
+.topBanner div{width:998px; height:100%; margin:0px auto; background-position-x:-460px; background-position-y:0px; }
+/*.topBanner div a{width:100%; height:100%; display:block;}*/
+.bigeyes{width:100%; height:200px; /*overflow:hidden;*/ }
+.bigeyes #banner{width:100%;height:200px;}
+#banner{width:100%;}
+#banner div{width:100%;height:200px;background-repeat:no-repeat;background-position-x:center;background-position-y:top;}

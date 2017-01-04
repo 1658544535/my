@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="information-web" extends="struts-default">
+		<!-- 信息页面 -->
+		<action name="goImformationWeb" class="com.tzmb2c.web.action.InfoAction" method="imformationWeb">
+			<result>/page/system/info/imformationWeb.jsp</result>
+		</action>
+	</package>
+
+	<package name="info" extends="default">
+
+		<global-results>
+			<result name="loginpage">/page/login.jsp</result>
+			<result name="errorpage">/page/common/error.jsp</result>
+		</global-results>
+
+		<action name="infoManage" class="com.tzmb2c.web.action.InfoAction"
+			method="getInfoCount">
+			<result name="success">/page/system/info/manageInfo.jsp</result>
+		</action>
+
+		<!-- 添加信息 -->
+		<action name="goAddInfo" class="com.tzmb2c.web.action.InfoAction"
+			method="goAddInfo">
+			<result>/page/system/info/addInfo.jsp</result>
+		</action>
+
+		<!-- 添加信息 -->
+		<action name="addInfo" class="com.tzmb2c.web.action.InfoAction"
+			method="addInfo">
+			<result>/page/system/info/addInfo.jsp</result>
+		</action>
+
+		<!-- 更新 -->
+		<action name="goUpdateInfo" class="com.tzmb2c.web.action.InfoAction"
+			method="goFindInfo">
+			<result>/page/system/info/updateInfo.jsp</result>
+		</action>
+
+		<!-- 更新 -->
+		<action name="updateInfo" class="com.tzmb2c.web.action.InfoAction"
+			method="updateInfo">
+		</action>
+
+		<!-- 审核 -->
+		<action name="goCheckInfo" class="com.tzmb2c.web.action.InfoAction"
+			method="goFindCheckInfo">
+			<result>/page/system/info/checkInfo.jsp</result>
+		</action>
+
+		<!-- 审核 -->
+		<action name="checkInfo" class="com.tzmb2c.web.action.InfoAction"
+			method="checkInfo">
+		</action>
+
+		<!-- 审核全部 -->
+		<action name="verifyAllPushNotice" class="com.tzmb2c.web.action.InfoAction"
+			method="verifyAllPushNotice">
+		</action>
+
+		<!-- 删除 -->
+		<action name="delInfo" class="com.tzmb2c.web.action.InfoAction"
+			method="delInfo">
+		</action>
+
+		<!-- 删除全部 -->
+		<action name="infoDeleteId" class="com.tzmb2c.web.action.InfoAction"
+			method="delAllInfoById">
+		</action>
+		
+	</package>
+
+	<package name="info-json" extends="json-default">
+		<!--平台入口 -->
+		<action name="getInfoCount" class="com.tzmb2c.web.action.InfoAction"
+			method="getInfoCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+
+		<action name="infoAllList" class="com.tzmb2c.web.action.InfoAction"
+			method="infoAllList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+
+		<action name="delInfo" class="com.tzmb2c.web.action.InfoAction"
+			method="delInfo">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+
+		<action name="checkInfo" class="com.tzmb2c.web.action.InfoAction"
+			method="checkInfo">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!--资讯单条审核.fu-->
+		<action name="updateinfo" class="com.tzmb2c.web.action.InfoAction"
+			method="updateinfo">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<action name="InfoCount1" class="com.tzmb2c.web.action.InfoAction"
+			method="InfoCount1">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+	</package>
+
+</struts>

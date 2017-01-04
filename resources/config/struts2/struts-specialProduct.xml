@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<!-- <package name="sceneProduct-web" extends="struts-default">-->
+		<!--app场景活动产品详情页 -->
+		<!--<action name="goSpecialProductWeb" 
+			class="com.tzmb2c.web.action.SpecialProductAction" method="goSpecialProductWeb">
+			<result>/page/system/special/specialProductWeb.jsp</result>
+		</action>
+	</package>-->
+	<package name="specialProduct" extends="default">
+		<!-- 场景产品管理 -->
+		<action name="specialProductList"
+			class="com.tzmb2c.web.action.SpecialProductAction" method="specialProductListCount">
+			<result name="success">/page/system/special/specialProductList.jsp</result>
+		</action>
+		<!-- 根据ID删除 -->
+		<action name="delSpecialProduct"
+			class="com.tzmb2c.web.action.SpecialProductAction" method="delSpecialProduct">
+		</action>
+		<!-- 根据ID批量删除 -->
+		<action name="delSpecialProductAll"
+			class="com.tzmb2c.web.action.SpecialProductAction" method="delSpecialProductAll">
+		</action>
+		<!-- 根据ID编辑(跳转) -->
+		<action name="goUpdateSpecialProduct"
+			class="com.tzmb2c.web.action.SpecialProductAction" method="goUpdateSpecialProduct">
+			<result name="success">/page/system/special/updateSpecialProductList.jsp</result>
+		</action>
+		<!-- 根据ID编辑 -->
+		<action name="updateSpecialProduct"
+			class="com.tzmb2c.web.action.SpecialProductAction" method="updateSpecialProduct">
+		</action>
+		<!-- 批量通过审核 -->
+		<action name="checkSpecialProductAll"
+			class="com.tzmb2c.web.action.SpecialProductAction" method="checkSpecialProductAll">
+		</action>
+		<!-- 通过审核 -->
+		<action name="checkSpecialProduct"
+			class="com.tzmb2c.web.action.SpecialProductAction" method="checkSpecialProduct">
+		</action>
+		<!-- 取消审核 -->
+		<action name="uncheckSpecialProduct"
+			class="com.tzmb2c.web.action.SpecialProductAction" method="uncheckSpecialProduct">
+		</action>
+		<!-- 新增场景 -->
+		<action name="goAddSpecialProductList"
+			class="com.tzmb2c.web.action.SpecialProductAction" method="goAddSpecialProductList">
+			<result name="success">/page/system/special/addSpecialProductList.jsp</result>
+		</action>
+		<!-- 提交新增场景 -->
+		<action name="addSpecialProductListOk"
+			class="com.tzmb2c.web.action.SpecialProductAction" method="addSpecialProductListOk">
+		</action>
+	</package>	
+	<package name="specialProduct-json" extends="json-default">
+		<!-- 场景产品列表 -->
+		<action name="specialProductListAll"
+			class="com.tzmb2c.web.action.SpecialProductAction" method="specialProductListAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+
+		<!-- 场景产品条数 -->
+		<action name="specialProductListCount"
+			class="com.tzmb2c.web.action.SpecialProductAction" method="specialProductListCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+	</package>
+</struts>

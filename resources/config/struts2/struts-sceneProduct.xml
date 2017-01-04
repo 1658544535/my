@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="sceneProduct-web" extends="iface-default">
+		<!--app场景活动产品详情页 -->
+		<action name="goSceneProductWeb" 
+			class="com.tzmb2c.web.action.SceneProductAction" method="goSceneProductWeb">
+			<result>/page/system/scene/sceneProductWeb.jsp</result>
+		</action>
+		<!--app场景活动产品详情页带视频 -->
+		<action name="goSceneProductWebVideo" 
+			class="com.tzmb2c.web.action.SceneProductAction" method="goSceneProductWebVideo">
+			<result >/page/system/scene/sceneProductWebVideo.jsp</result>
+		</action>
+
+	</package>
+
+	<package name="sceneProduct" extends="default">
+		<!-- 场景产品管理 -->
+		<action name="sceneProductList"
+			class="com.tzmb2c.web.action.SceneProductAction" method="sceneProductListCount">
+			<result name="success">/page/system/scene/sceneProductList.jsp</result>
+		</action>
+		<!-- 根据ID删除 -->
+		<action name="delSceneProductById"
+			class="com.tzmb2c.web.action.SceneProductAction" method="delSceneProductById">
+		</action>
+		<!-- 根据ID批量删除 -->
+		<action name="delSceneProductAllById"
+			class="com.tzmb2c.web.action.SceneProductAction" method="delSceneProductAllById">
+		</action>
+		<!-- 根据ID编辑(跳转) -->
+		<action name="goUpdateSceneProductById"
+			class="com.tzmb2c.web.action.SceneProductAction" method="goUpdateSceneProductById">
+			<result name="success">/page/system/scene/updateSceneProductList.jsp</result>
+		</action>
+		<!-- 根据ID编辑 -->
+		<action name="updateSceneProductById"
+			class="com.tzmb2c.web.action.SceneProductAction" method="updateSceneProductById">
+		</action>
+		<!-- 批量通过审核 -->
+		<action name="checkSceneProductAllById"
+			class="com.tzmb2c.web.action.SceneProductAction" method="checkSceneProductAllById">
+		</action>
+		<!-- 通过审核 -->
+		<action name="checkSceneProductById"
+			class="com.tzmb2c.web.action.SceneProductAction" method="checkSceneProductById">
+		</action>
+		<!-- 取消审核 -->
+		<action name="uncheckSceneProductById"
+			class="com.tzmb2c.web.action.SceneProductAction" method="uncheckSceneProductById">
+		</action>
+		<!-- 新增场景 -->
+		<action name="goAddSceneProductList"
+			class="com.tzmb2c.web.action.SceneProductAction" method="goAddSceneProductList">
+			<result name="success">/page/system/scene/addSceneProductList.jsp</result>
+		</action>
+		<!-- 提交新增场景 -->
+		<action name="addSceneProductListOk"
+			class="com.tzmb2c.web.action.SceneProductAction" method="addSceneProductListOk">
+		</action>
+	</package>
+	
+	<package name="sceneProduct-json" extends="json-default">
+		<!-- 场景产品列表 -->
+		<action name="sceneProductListAll"
+			class="com.tzmb2c.web.action.SceneProductAction" method="sceneProductListAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+
+		<!-- 场景产品条数 -->
+		<action name="sceneProductListCount"
+			class="com.tzmb2c.web.action.SceneProductAction" method="sceneProductListCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+	</package>
+</struts>

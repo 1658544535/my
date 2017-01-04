@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.ChildrenChannelHistoryMapper">
+	<!-- 查询所有的记录 -->
+	<select id="findChildrenChannelHistoryList" resultType="ChildrenChannelHistoryPojo" parameterType="java.util.Map">
+		select
+			h.id           as id,
+			h.user_id      as userId,
+			h.type         as type,
+			(CASE WHEN h.type = 1 THEN '频道' WHEN h.type = 2 THEN '专场' WHEN h.type = 3 THEN '商品' WHEN h.type = 4 THEN 'TV视频' WHEN h.type = 5 THEN '视觉视频' END)  as typeName,
+			h.business_id as businessId,
+			<if test="type==1">
+	   		c.name         as businessName,
+	   		</if> 
+	   		<if test="type==2">
+	   		ss.title       as businessName,
+	   		</if>
+	   		<if test="type==3 || type==4 ||type==5">
+	   		p.product_name as businessName,
+	   		ss.title       as businessNames,
+	   		</if>
+			h.hid          as hid,
+			h.activity_id  as activityId,
+			s.name         as userName,
+			h.create_date  as createDate,
+			h.create_by    as createBy,
+			h.update_date  as updateDate,
+			h.update_by    as updateBy		
+	   	from children_channel_history h
+	   	left join sys_login s on h.user_id = s.id
+	   	<if test="type==1">
+	   		left join children_channel c on h.business_id = c.id
+	   	</if>
+	   	<if test="type==2">
+	   		left join special_show ss on h.activity_id = ss.activity_id
+	   	</if>
+	   	<if test="type==3 or type==4 or type==5">
+	   		left join product p on h.business_id = p.id
+	   		left join special_show ss on h.activity_id = ss.activity_id
+	   	</if>
+		where 1=1 
+		<if test="userName!=null and userName !='' ">
+			and s.name like concat("%",#{userName},"%" )
+		</if>
+        <if test="type!=null">
+			and h.type = #{type}
+		</if>
+		<if test="userId != null">
+			and h.user_id = #{userId}
+		</if>
+		<if test="businessId != null">
+			and h.business_id = #{businessId}
+		</if>
+		<if test="type == 1 and (businessName != null and businessName != '')">
+			and c.name like concat("%",#{businessName},"%" )
+		</if>
+		<if test="type == 2 and (businessName != null and businessName != '')">
+			and ss.title like concat("%",#{businessName},"%" )
+		</if>
+		<if test="(type == 3 or type == 4 or type == 5) and (businessName != null and businessName != '')">
+			and p.product_name like concat("%",#{businessName},"%" )
+		</if>
+		<if test="(type == 3 or type == 4 or type == 5) and (businessNames != null and businessNames != '')">
+			and ss.title like concat("%",#{businessNames},"%" )
+		</if>
+		<if test="createDate != null and createDate != '' ">
+			and str_to_date(h.create_date,'%Y-%m-%d') = #{createDate}
+		</if>
+			
+		<if test="paixu==null">
+			order by h.create_date 
+		</if>
+		<if test="paixu==1">
+			order by h.hid 
+		</if>
+		<if test="paixu==2">
+			order by h.hid desc
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	<!--查询条数-->
+	<select id="findChildrenChannelHistoryCount" resultType="int" parameterType="java.util.Map">
+	    select count(*)
+	   		from children_channel_history h
+	   		left join sys_login s on h.user_id = s.id
+	   	<if test="type==1">
+	   		left join children_channel c on h.business_id = c.id
+	   	</if>
+	   	<if test="type==2">
+	   		left join special_show ss on h.activity_id = ss.activity_id
+	   	</if>
+	   	<if test="type==3 or type==4 or type==5">
+	   		left join product p on h.business_id = p.id
+	   		left join special_show ss on h.activity_id = ss.activity_id
+	   	</if>
+		where 1=1 
+		<if test="userName!=null and userName !='' ">
+			and s.name like concat("%",#{userName},"%" )
+		</if>
+        <if test="type!=null">
+			and h.type = #{type}
+		</if>
+		<if test="type == 1 and (businessName != null and businessName != '')">
+			and c.name like concat("%",#{businessName},"%" )
+		</if>
+		<if test="type == 2 and (businessName != null and businessName != '')">
+			and ss.title like concat("%",#{businessName},"%" )
+		</if>
+		<if test="(type == 3 or type == 4 or type == 5) and (businessName != null and businessName != '')">
+			and p.product_name like concat("%",#{businessName},"%" )
+		</if>
+		<if test="(type == 3 or type == 4 or type == 5) and (businessNames != null and businessNames != '')">
+			and ss.title like concat("%",#{businessNames},"%" )
+		</if>
+	</select>
+    <!-- 插入单条 -->
+	<insert id="insertChildrenChannelHistory" parameterType="ChildrenChannelHistoryPojo" useGeneratedKeys="true" keyProperty="id">
+		insert into children_channel_history 
+		(id,user_id,type,business_id,hid,activity_id,create_date,create_by,update_date,update_by)
+		values(#{id},#{userId},#{type},#{businessId},#{hid},#{activityId},now(),#{createBy},now(),#{updateBy})
+	</insert>
+	
+	<!-- 删除单条 -->
+	<delete id="delChildrenChannelHistory" parameterType="Long">
+		delete from children_channel_history where id = #{id}
+	</delete>
+	
+	<!--更新单条-->
+	<update id="updateChildrenChannelHistory" parameterType="ChildrenChannelHistoryPojo">
+		update children_channel_history set
+		<if test="userId!=null">
+		user_id = #{userId},
+		</if>
+		<if test="type!=null">
+		type = #{type},
+		</if>
+		<if test="businessId!=null">
+		business_id = #{businessId},
+		</if>
+		<if test="hid!=null">
+		hid = #{hid},
+		</if>
+		<if test="activityId!=null">
+		activity_id = #{activityId},
+		</if>
+		update_date = now()
+		where id = #{id}
+	</update>
+</mapper>

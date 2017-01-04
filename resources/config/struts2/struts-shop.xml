@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="shop" extends="default">
+		<action name="shop" class="com.tzmb2c.web.action.ShopAction" method="getShopCount">
+			<result>/page/system/user/shop.jsp</result>
+		</action>
+		<action name="shopChecks" class="com.tzmb2c.web.action.ShopAction" method="shopChecks">
+		</action>
+		<action name="goFindShop" class="com.tzmb2c.web.action.ShopAction" method="goFindShop">
+			<result>/page/system/user/shopupdate.jsp</result>
+		</action>
+		<action name="updateShop" class="com.tzmb2c.web.action.ShopAction" method="updateShop">
+		</action>
+		<action name="delShop" class="com.tzmb2c.web.action.ShopAction" method="delShop">
+		</action>
+		<action name="undercarriageShop" class="com.tzmb2c.web.action.ShopAction" method="undercarriageShop">
+		</action>
+		<action name="addShop" class="com.tzmb2c.web.action.ShopAction" method="addShop">
+			<result>/page/system/user/shopAdd.jsp</result>
+		</action>
+		<action name="insertShop" class="com.tzmb2c.web.action.ShopAction" method="insertShop">
+		</action>
+	</package>
+	<package name="shop-json" extends="json-default">
+	<!--平台入口-->
+		<action name="getShopCount" class="com.tzmb2c.web.action.ShopAction" method="getShopCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+			<action name="shopAllList" class="com.tzmb2c.web.action.ShopAction" method="shopAllList">
+			<result type="json">
+				<param name="root">page.result</param>.
+			</result>
+		</action>
+		<action name="checkShop" class="com.tzmb2c.web.action.ShopAction" method="checkShop">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		<action name="setSelfSupport" class="com.tzmb2c.web.action.ShopAction" method="setSelfSupport">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		<action name="setUnSelfSupport" class="com.tzmb2c.web.action.ShopAction" method="setUnSelfSupport">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

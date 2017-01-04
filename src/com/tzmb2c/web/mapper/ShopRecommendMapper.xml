@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.ShopRecommendMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		r.id as id,
+		s.user_id as userId,
+		s.name as name,
+		s.top_image as topImage,
+		s.images as images,
+		r.shop_id as shopId,
+		r.sorting as sorting,
+		r.create_date as createDate,
+		r.create_by as createBy,
+		r.update_date as updateDate,
+		r.update_by as updateBy
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="ShopRecommendPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			shop_recommend r left join user_shop  s on  s.id =r.shop_id
+		where
+			r.id = #{id}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from shop_recommend r left join user_shop  s on  s.id =r.shop_id
+		where 1=1
+		  <if test="id != null ">
+			and r.id = #{id}
+		  </if>
+		  <if test="shopId != null ">
+			and r.shop_id = #{shopId}
+		  </if>
+		  <if test="sorting != null ">
+			and r.sorting = #{sorting}
+		  </if>
+		  <if test="createDate != null ">
+			and r.create_date = #{createDate}
+		  </if>
+		  <if test="createBy != null ">
+			and r.create_by = #{createBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and r.update_date = #{updateDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and r.update_by = #{updateBy}
+		  </if>
+		  <if test="shopStatus != null ">
+			  and s.status = #{shopStatus}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="ShopRecommendPojo">
+		select
+			<include refid="Base_Column_List" />
+		from shop_recommend r left join user_shop  s on  s.id =r.shop_id
+		where 1=1 
+			<if test="id != null ">
+			  and r.id = #{id}
+			</if>
+			<if test="shopId != null ">
+			  and r.shop_id = #{shopId}
+			</if>
+			<if test="sorting != null ">
+			  and r.sorting = #{sorting}
+			</if>
+			<if test="createDate != null ">
+			  and r.create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and r.create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and r.update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and r.update_by = #{updateBy}
+			</if>
+			<if test="shopId != null ">
+			  and r.shop_id = #{shopId}
+			</if>
+			<if test="shopStatus != null ">
+			  and s.status = #{shopStatus}
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="ShopRecommendPojo">
+		update shop_recommend 
+		<set>
+			<if test="shopId != null">
+			  shop_id = #{shopId},
+			</if>
+			<if test="sorting != null">
+			  sorting = #{sorting},
+			</if>
+			<if test="createDate != null">
+			  create_date = #{createDate},
+			</if>
+			<if test="createBy != null">
+			  create_by = #{createBy},
+			</if>
+			<if test="updateDate != null">
+			  update_date = #{updateDate},
+			</if>
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from shop_recommend 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="ShopRecommendPojo">
+		insert into shop_recommend
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="shopId != null">
+				shop_id,
+			</if>
+			<if test="sorting != null">
+				sorting,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+			<if test="updateDate != null">
+				update_date,
+			</if>
+			<if test="updateBy != null">
+				update_by,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="shopId != null">
+				#{shopId},
+			</if>
+			<if test="sorting != null">
+				#{sorting},
+			</if>
+			<if test="createDate != null">
+				#{createDate},
+			</if>
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+			<if test="updateDate != null">
+				#{updateDate},
+			</if>
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+		</trim>
+	</insert>
+	
+</mapper>

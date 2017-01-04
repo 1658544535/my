@@ -1,0 +1,888 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.UserGrowthLineMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id as id,
+		user_id as userId,
+		listen_skill as listenSkill,
+		language_skill as languageSkill,
+		vision_skill as visionSkill,
+		move_skill as moveSkill,
+		touch_skill as touchSkill,
+		action_skill as actionSkill,
+		emotion_skill as emotionSkill,
+		language_grow as languageGrow,
+		coordination_skill as coordinationSkill,
+		brain_grow as brainGrow,
+		exploring_skill as exploringSkill,
+		special_skill as specialSkill,
+		sport_skill as sportSkill,
+		think_skill as thinkSkill,
+		learn_skill as learnSkill,
+		listen_skill_last as listenSkillLast,
+		language_skill_last as languageSkillLast,
+		vision_skill_last as visionSkillLast,
+		move_skill_last as moveSkillLast,
+		touch_skill_last as touchSkillLast,
+		action_skill_last as actionSkillLast,
+		emotion_skill_last as emotionSkillLast,
+		language_grow_last as languageGrowLast,
+		coordination_skill_last as coordinationSkillLast,
+		brain_grow_last as brainGrowLast,
+		exploring_skill_last as exploringSkillLast,
+		special_skill_last as specialSkillLast,
+		sport_skill_last as sportSkillLast,
+		think_skill_last as thinkSkillLast,
+		learn_skill_last as learnSkillLast,
+		score as score,
+		cognitive_skill as cognitiveSkill,
+		cognitive_skill_last as cognitiveSkillLast
+	</sql>
+	
+	<select id="getUserGrowthLineById" parameterType="Long" resultType="UserGrowthLinePojo">
+		select
+			<!-- <include refid="Base_Column_List" /> -->
+			u.id as id,
+			u.user_id as userId,
+			u.listen_skill as listenSkill,
+			u.language_skill as languageSkill,
+			u.vision_skill as visionSkill,
+			u.move_skill as moveSkill,
+			u.touch_skill as touchSkill,
+			u.action_skill as actionSkill,
+			u.emotion_skill as emotionSkill,
+			u.language_grow as languageGrow,
+			u.coordination_skill as coordinationSkill,
+			u.brain_grow as brainGrow,
+			u.exploring_skill as exploringSkill,
+			u.special_skill as specialSkill,
+			u.sport_skill as sportSkill,
+			u.think_skill as thinkSkill,
+			u.learn_skill as learnSkill,
+			u.listen_skill_last as listenSkillLast,
+			u.language_skill_last as languageSkillLast,
+			u.vision_skill_last as visionSkillLast,
+			u.move_skill_last as moveSkillLast,
+			u.touch_skill_last as touchSkillLast,
+			u.action_skill_last as actionSkillLast,
+			u.emotion_skill_last as emotionSkillLast,
+			u.language_grow_last as languageGrowLast,
+			u.coordination_skill_last as coordinationSkillLast,
+			u.brain_grow_last as brainGrowLast,
+			u.exploring_skill_last as exploringSkillLast,
+			u.special_skill_last as specialSkillLast,
+			u.sport_skill_last as sportSkillLast,
+			u.think_skill_last as thinkSkillLast,
+			u.learn_skill_last as learnSkillLast,
+			u.score as score,
+			u.cognitive_skill as cognitiveSkill,
+			u.cognitive_skill_last as cognitiveSkillLast,
+			s.image as userImage,
+			s.name as userName
+		from
+			user_growth_line u
+			left join sys_login s on u.user_id = s.id
+		where
+			u.id = #{id}
+	</select>
+	<select id="getUserGrowthLineByUid" parameterType="java.util.Map" resultType="UserGrowthLinePojo">
+		select
+			u.id as id,
+			u.user_id as userId,
+			u.baby_id as babyId,
+			u.listen_skill as listenSkill,
+			u.language_skill as languageSkill,
+			u.vision_skill as visionSkill,
+			u.move_skill as moveSkill,
+			u.touch_skill as touchSkill,
+			u.action_skill as actionSkill,
+			u.emotion_skill as emotionSkill,
+			u.language_grow as languageGrow,
+			u.coordination_skill as coordinationSkill,
+			u.brain_grow as brainGrow,
+			u.exploring_skill as exploringSkill,
+			u.special_skill as specialSkill,
+			u.sport_skill as sportSkill,
+			u.think_skill as thinkSkill,
+			u.learn_skill as learnSkill,
+			u.listen_skill_last as listenSkillLast,
+			u.language_skill_last as languageSkillLast,
+			u.vision_skill_last as visionSkillLast,
+			u.move_skill_last as moveSkillLast,
+			u.touch_skill_last as touchSkillLast,
+			u.action_skill_last as actionSkillLast,
+			u.emotion_skill_last as emotionSkillLast,
+			u.language_grow_last as languageGrowLast,
+			u.coordination_skill_last as coordinationSkillLast,
+			u.brain_grow_last as brainGrowLast,
+			u.exploring_skill_last as exploringSkillLast,
+			u.special_skill_last as specialSkillLast,
+			u.sport_skill_last as sportSkillLast,
+			u.think_skill_last as thinkSkillLast,
+			u.learn_skill_last as learnSkillLast,
+			u.score as score,
+			u.cognitive_skill as cognitiveSkill,
+			u.cognitive_skill_last as cognitiveSkillLast,
+			s.image as userImage,
+			s.name as userName
+		from
+			user_growth_line u
+			left join sys_login s on u.user_id = s.id
+		where
+			u.user_id = #{userId} and baby_id = #{babyId}
+	</select>
+	
+	<select id="userGrowthLineCount" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from user_growth_line
+		where 1=1
+		  <if test="id != null ">
+			and id = #{id}
+		  </if>
+		  <if test="userId != null ">
+			and user_id = #{userId}
+		  </if>
+		  <if test="listenSkill != null ">
+			and listen_skill = #{listenSkill}
+		  </if>
+		  <if test="languageSkill != null ">
+			and language_skill = #{languageSkill}
+		  </if>
+		  <if test="visionSkill != null ">
+			and vision_skill = #{visionSkill}
+		  </if>
+		  <if test="moveSkill != null ">
+			and move_skill = #{moveSkill}
+		  </if>
+		  <if test="touchSkill != null ">
+			and touch_skill = #{touchSkill}
+		  </if>
+		  <if test="actionSkill != null ">
+			and action_skill = #{actionSkill}
+		  </if>
+		  <if test="emotionSkill != null ">
+			and emotion_skill = #{emotionSkill}
+		  </if>
+		  <if test="languageGrow != null ">
+			and language_grow = #{languageGrow}
+		  </if>
+		  <if test="coordinationSkill != null ">
+			and coordination_skill = #{coordinationSkill}
+		  </if>
+		  <if test="brainGrow != null ">
+			and brain_grow = #{brainGrow}
+		  </if>
+		  <if test="exploringSkill != null ">
+			and exploring_skill = #{exploringSkill}
+		  </if>
+		  <if test="specialSkill != null ">
+			and special_skill = #{specialSkill}
+		  </if>
+		  <if test="sportSkill != null ">
+			and sport_skill = #{sportSkill}
+		  </if>
+		  <if test="thinkSkill != null ">
+			and think_skill = #{thinkSkill}
+		  </if>
+		  <if test="learnSkill != null ">
+			and learn_skill = #{learnSkill}
+		  </if>
+		  <if test="listenSkillLast != null ">
+			and listen_skill_last = #{listenSkillLast}
+		  </if>
+		  <if test="languageSkillLast != null ">
+			and language_skill_last = #{languageSkillLast}
+		  </if>
+		  <if test="visionSkillLast != null ">
+			and vision_skill_last = #{visionSkillLast}
+		  </if>
+		  <if test="moveSkillLast != null ">
+			and move_skill_last = #{moveSkillLast}
+		  </if>
+		  <if test="touchSkillLast != null ">
+			and touch_skill_last = #{touchSkillLast}
+		  </if>
+		  <if test="actionSkillLast != null ">
+			and action_skill_last = #{actionSkillLast}
+		  </if>
+		  <if test="emotionSkillLast != null ">
+			and emotion_skill_last = #{emotionSkillLast}
+		  </if>
+		  <if test="languageGrowLast != null ">
+			and language_grow_last = #{languageGrowLast}
+		  </if>
+		  <if test="coordinationSkillLast != null ">
+			and coordination_skill_last = #{coordinationSkillLast}
+		  </if>
+		  <if test="brainGrowLast != null ">
+			and brain_grow_last = #{brainGrowLast}
+		  </if>
+		  <if test="exploringSkillLast != null ">
+			and exploring_skill_last = #{exploringSkillLast}
+		  </if>
+		  <if test="specialSkillLast != null ">
+			and special_skill_last = #{specialSkillLast}
+		  </if>
+		  <if test="sportSkillLast != null ">
+			and sport_skill_last = #{sportSkillLast}
+		  </if>
+		  <if test="thinkSkillLast != null ">
+			and think_skill_last = #{thinkSkillLast}
+		  </if>
+		  <if test="learnSkillLast != null ">
+			and learn_skill_last = #{learnSkillLast}
+		  </if>
+		  <if test="score != null ">
+			and score = #{score}
+		  </if>
+		  <if test="cognitiveSkill != null ">
+			and cognitive_skill = #{cognitiveSkill}
+		  </if>
+		  <if test="cognitiveSkillLast != null ">
+			and cognitive_skill_last = #{cognitiveSkillLast}
+		  </if>
+	</select>
+	
+	<select id="userGrowthLineList" parameterType="java.util.Map" resultType="UserGrowthLinePojo">
+		select
+			<include refid="Base_Column_List" />
+		from user_growth_line
+		where 1=1
+			<if test="id != null ">
+			  and id = #{id}
+			</if>
+			<if test="userId != null ">
+			  and user_id = #{userId}
+			</if>
+			<if test="listenSkill != null ">
+			  and listen_skill = #{listenSkill}
+			</if>
+			<if test="languageSkill != null ">
+			  and language_skill = #{languageSkill}
+			</if>
+			<if test="visionSkill != null ">
+			  and vision_skill = #{visionSkill}
+			</if>
+			<if test="moveSkill != null ">
+			  and move_skill = #{moveSkill}
+			</if>
+			<if test="touchSkill != null ">
+			  and touch_skill = #{touchSkill}
+			</if>
+			<if test="actionSkill != null ">
+			  and action_skill = #{actionSkill}
+			</if>
+			<if test="emotionSkill != null ">
+			  and emotion_skill = #{emotionSkill}
+			</if>
+			<if test="languageGrow != null ">
+			  and language_grow = #{languageGrow}
+			</if>
+			<if test="coordinationSkill != null ">
+			  and coordination_skill = #{coordinationSkill}
+			</if>
+			<if test="brainGrow != null ">
+			  and brain_grow = #{brainGrow}
+			</if>
+			<if test="exploringSkill != null ">
+			  and exploring_skill = #{exploringSkill}
+			</if>
+			<if test="specialSkill != null ">
+			  and special_skill = #{specialSkill}
+			</if>
+			<if test="sportSkill != null ">
+			  and sport_skill = #{sportSkill}
+			</if>
+			<if test="thinkSkill != null ">
+			  and think_skill = #{thinkSkill}
+			</if>
+			<if test="learnSkill != null ">
+			  and learn_skill = #{learnSkill}
+			</if>
+			<if test="listenSkillLast != null ">
+			  and listen_skill_last = #{listenSkillLast}
+			</if>
+			<if test="languageSkillLast != null ">
+			  and language_skill_last = #{languageSkillLast}
+			</if>
+			<if test="visionSkillLast != null ">
+			  and vision_skill_last = #{visionSkillLast}
+			</if>
+			<if test="moveSkillLast != null ">
+			  and move_skill_last = #{moveSkillLast}
+			</if>
+			<if test="touchSkillLast != null ">
+			  and touch_skill_last = #{touchSkillLast}
+			</if>
+			<if test="actionSkillLast != null ">
+			  and action_skill_last = #{actionSkillLast}
+			</if>
+			<if test="emotionSkillLast != null ">
+			  and emotion_skill_last = #{emotionSkillLast}
+			</if>
+			<if test="languageGrowLast != null ">
+			  and language_grow_last = #{languageGrowLast}
+			</if>
+			<if test="coordinationSkillLast != null ">
+			  and coordination_skill_last = #{coordinationSkillLast}
+			</if>
+			<if test="brainGrowLast != null ">
+			  and brain_grow_last = #{brainGrowLast}
+			</if>
+			<if test="exploringSkillLast != null ">
+			  and exploring_skill_last = #{exploringSkillLast}
+			</if>
+			<if test="specialSkillLast != null ">
+			  and special_skill_last = #{specialSkillLast}
+			</if>
+			<if test="sportSkillLast != null ">
+			  and sport_skill_last = #{sportSkillLast}
+			</if>
+			<if test="thinkSkillLast != null ">
+			  and think_skill_last = #{thinkSkillLast}
+			</if>
+			<if test="learnSkillLast != null ">
+			  and learn_skill_last = #{learnSkillLast}
+			</if>
+			<if test="score != null ">
+			  and score = #{score}
+			</if>
+			<if test="cognitiveSkill != null ">
+			  and cognitive_skill = #{cognitiveSkill}
+			</if>
+			<if test="cognitiveSkillLast != null ">
+			  and cognitive_skill_last = #{cognitiveSkillLast}
+			</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="updateUserGrowthLine" parameterType="UserGrowthLinePojo">
+		update user_growth_line
+		<set>
+			<if test="userId != null">
+			  user_id = #{userId},
+			</if>
+			<if test="babyId != null">
+			  baby_id = #{babyId},
+			</if>
+			<if test="listenSkill != null">
+			  listen_skill = #{listenSkill},
+			</if>
+			<if test="languageSkill != null">
+			  language_skill = #{languageSkill},
+			</if>
+			<if test="visionSkill != null">
+			  vision_skill = #{visionSkill},
+			</if>
+			<if test="moveSkill != null">
+			  move_skill = #{moveSkill},
+			</if>
+			<if test="touchSkill != null">
+			  touch_skill = #{touchSkill},
+			</if>
+			<if test="actionSkill != null">
+			  action_skill = #{actionSkill},
+			</if>
+			<if test="emotionSkill != null">
+			  emotion_skill = #{emotionSkill},
+			</if>
+			<if test="languageGrow != null">
+			  language_grow = #{languageGrow},
+			</if>
+			<if test="coordinationSkill != null">
+			  coordination_skill = #{coordinationSkill},
+			</if>
+			<if test="brainGrow != null">
+			  brain_grow = #{brainGrow},
+			</if>
+			<if test="exploringSkill != null">
+			  exploring_skill = #{exploringSkill},
+			</if>
+			<if test="specialSkill != null">
+			  special_skill = #{specialSkill},
+			</if>
+			<if test="sportSkill != null">
+			  sport_skill = #{sportSkill},
+			</if>
+			<if test="thinkSkill != null">
+			  think_skill = #{thinkSkill},
+			</if>
+			<if test="learnSkill != null">
+			  learn_skill = #{learnSkill},
+			</if>
+			<if test="listenSkillLast != null">
+			  listen_skill_last = #{listenSkillLast},
+			</if>
+			<if test="languageSkillLast != null">
+			  language_skill_last = #{languageSkillLast},
+			</if>
+			<if test="visionSkillLast != null">
+			  vision_skill_last = #{visionSkillLast},
+			</if>
+			<if test="moveSkillLast != null">
+			  move_skill_last = #{moveSkillLast},
+			</if>
+			<if test="touchSkillLast != null">
+			  touch_skill_last = #{touchSkillLast},
+			</if>
+			<if test="actionSkillLast != null">
+			  action_skill_last = #{actionSkillLast},
+			</if>
+			<if test="emotionSkillLast != null">
+			  emotion_skill_last = #{emotionSkillLast},
+			</if>
+			<if test="languageGrowLast != null">
+			  language_grow_last = #{languageGrowLast},
+			</if>
+			<if test="coordinationSkillLast != null">
+			  coordination_skill_last = #{coordinationSkillLast},
+			</if>
+			<if test="brainGrowLast != null">
+			  brain_grow_last = #{brainGrowLast},
+			</if>
+			<if test="exploringSkillLast != null">
+			  exploring_skill_last = #{exploringSkillLast},
+			</if>
+			<if test="specialSkillLast != null">
+			  special_skill_last = #{specialSkillLast},
+			</if>
+			<if test="sportSkillLast != null">
+			  sport_skill_last = #{sportSkillLast},
+			</if>
+			<if test="thinkSkillLast != null">
+			  think_skill_last = #{thinkSkillLast},
+			</if>
+			<if test="learnSkillLast != null">
+			  learn_skill_last = #{learnSkillLast},
+			</if>
+			<if test="score != null">
+			  score = #{score},
+			</if>
+			<if test="cognitiveSkill != null">
+			  cognitive_skill = #{cognitiveSkill},
+			</if>
+			<if test="cognitiveSkillLast != null">
+			  cognitive_skill_last = #{cognitiveSkillLast},
+			</if>
+		</set>
+		where
+			 id = #{id}
+	</update>
+	<!--添加用户积分 -->
+	<update id="addUserScore" parameterType="java.util.Map">
+		update user_growth_line
+		<set>
+			<if test="listenSkill != null">
+			  listen_skill = listen_skill + #{listenSkill},
+			</if>
+			<if test="languageSkill != null">
+			  language_skill = language_skill + #{languageSkill},
+			</if>
+			<if test="visionSkill != null">
+			  vision_skill = vision_skill + #{visionSkill},
+			</if>
+			<if test="moveSkill != null">
+			  move_skill = move_skill + #{moveSkill},
+			</if>
+			<if test="touchSkill != null">
+			  touch_skill = touch_skill + #{touchSkill},
+			</if>
+			<if test="actionSkill != null">
+			  action_skill = action_skill + #{actionSkill},
+			</if>
+			<if test="emotionSkill != null">
+			  emotion_skill = emotion_skill + #{emotionSkill},
+			</if>
+			<if test="languageGrow != null">
+			  language_grow = language_grow + #{languageGrow},
+			</if>
+			<if test="coordinationSkill != null">
+			  coordination_skill = coordination_skill + #{coordinationSkill},
+			</if>
+			<if test="brainGrow != null">
+			  brain_grow = brain_grow + #{brainGrow},
+			</if>
+			<if test="exploringSkill != null">
+			  exploring_skill = exploring_skill + #{exploringSkill},
+			</if>
+			<if test="specialSkill != null">
+			  special_skill = special_skill + #{specialSkill},
+			</if>
+			<if test="sportSkill != null">
+			  sport_skill = sport_skill + #{sportSkill},
+			</if>
+			<if test="thinkSkill != null">
+			  think_skill = think_skill + #{thinkSkill},
+			</if>
+			<if test="learnSkill != null">
+			  learn_skill = learn_skill + #{learnSkill},
+			</if>
+			<if test="cognitiveSkill != null">
+			  cognitive_skill = cognitive_skill + #{cognitiveSkill},
+			</if>
+			<if test="listenSkillLast != null">
+			  listen_skill_last = #{listenSkillLast},
+			</if>
+			<if test="languageSkillLast != null">
+			  language_skill_last = #{languageSkillLast},
+			</if>
+			<if test="visionSkillLast != null">
+			  vision_skill_last = #{visionSkillLast},
+			</if>
+			<if test="moveSkillLast != null">
+			  move_skill_last = #{moveSkillLast},
+			</if>
+			<if test="touchSkillLast != null">
+			  touch_skill_last = #{touchSkillLast},
+			</if>
+			<if test="actionSkillLast != null">
+			  action_skill_last = #{actionSkillLast},
+			</if>
+			<if test="emotionSkillLast != null">
+			  emotion_skill_last = #{emotionSkillLast},
+			</if>
+			<if test="languageGrowLast != null">
+			  language_grow_last = #{languageGrowLast},
+			</if>
+			<if test="coordinationSkillLast != null">
+			  coordination_skill_last = #{coordinationSkillLast},
+			</if>
+			<if test="brainGrowLast != null">
+			  brain_grow_last = #{brainGrowLast},
+			</if>
+			<if test="exploringSkillLast != null">
+			  exploring_skill_last = #{exploringSkillLast},
+			</if>
+			<if test="specialSkillLast != null">
+			  special_skill_last = #{specialSkillLast},
+			</if>
+			<if test="sportSkillLast != null">
+			  sport_skill_last = #{sportSkillLast},
+			</if>
+			<if test="thinkSkillLast != null">
+			  think_skill_last = #{thinkSkillLast},
+			</if>
+			<if test="learnSkillLast != null">
+			  learn_skill_last = #{learnSkillLast},
+			</if>
+			<if test="score != null">
+			  score = score + #{score},
+			</if>
+			<if test="cognitiveSkillLast != null">
+			  cognitive_skill_last = #{cognitiveSkillLast},
+			</if>
+		</set>
+		where
+			user_id = #{userId} and baby_id = #{babyId}
+	</update>
+	
+	<delete id="deleteUserGrowthLineById" parameterType="int">
+		delete from user_growth_line 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="addUserGrowthLine" useGeneratedKeys="true" keyProperty="id" parameterType="UserGrowthLinePojo">
+		insert into user_growth_line
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="babyId != null">
+				baby_id,
+			</if>
+			<if test="listenSkill != null">
+				listen_skill,
+			</if>
+			<if test="languageSkill != null">
+				language_skill,
+			</if>
+			<if test="visionSkill != null">
+				vision_skill,
+			</if>
+			<if test="moveSkill != null">
+				move_skill,
+			</if>
+			<if test="touchSkill != null">
+				touch_skill,
+			</if>
+			<if test="actionSkill != null">
+				action_skill,
+			</if>
+			<if test="emotionSkill != null">
+				emotion_skill,
+			</if>
+			<if test="languageGrow != null">
+				language_grow,
+			</if>
+			<if test="coordinationSkill != null">
+				coordination_skill,
+			</if>
+			<if test="brainGrow != null">
+				brain_grow,
+			</if>
+			<if test="exploringSkill != null">
+				exploring_skill,
+			</if>
+			<if test="specialSkill != null">
+				special_skill,
+			</if>
+			<if test="sportSkill != null">
+				sport_skill,
+			</if>
+			<if test="thinkSkill != null">
+				think_skill,
+			</if>
+			<if test="learnSkill != null">
+				learn_skill,
+			</if>
+			<if test="listenSkillLast != null">
+				listen_skill_last,
+			</if>
+			<if test="languageSkillLast != null">
+				language_skill_last,
+			</if>
+			<if test="visionSkillLast != null">
+				vision_skill_last,
+			</if>
+			<if test="moveSkillLast != null">
+				move_skill_last,
+			</if>
+			<if test="touchSkillLast != null">
+				touch_skill_last,
+			</if>
+			<if test="actionSkillLast != null">
+				action_skill_last,
+			</if>
+			<if test="emotionSkillLast != null">
+				emotion_skill_last,
+			</if>
+			<if test="languageGrowLast != null">
+				language_grow_last,
+			</if>
+			<if test="coordinationSkillLast != null">
+				coordination_skill_last,
+			</if>
+			<if test="brainGrowLast != null">
+				brain_grow_last,
+			</if>
+			<if test="exploringSkillLast != null">
+				exploring_skill_last,
+			</if>
+			<if test="specialSkillLast != null">
+				special_skill_last,
+			</if>
+			<if test="sportSkillLast != null">
+				sport_skill_last,
+			</if>
+			<if test="thinkSkillLast != null">
+				think_skill_last,
+			</if>
+			<if test="learnSkillLast != null">
+				learn_skill_last,
+			</if>
+			<if test="score != null">
+				score,
+			</if>
+			<if test="cognitiveSkill != null">
+				cognitive_skill,
+			</if>
+			<if test="cognitiveSkillLast != null">
+				cognitive_skill_last,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="userId != null">
+				#{userId},
+			</if>
+			<if test="babyId != null">
+				#{babyId},
+			</if>
+			<if test="listenSkill != null">
+				#{listenSkill},
+			</if>
+			<if test="languageSkill != null">
+				#{languageSkill},
+			</if>
+			<if test="visionSkill != null">
+				#{visionSkill},
+			</if>
+			<if test="moveSkill != null">
+				#{moveSkill},
+			</if>
+			<if test="touchSkill != null">
+				#{touchSkill},
+			</if>
+			<if test="actionSkill != null">
+				#{actionSkill},
+			</if>
+			<if test="emotionSkill != null">
+				#{emotionSkill},
+			</if>
+			<if test="languageGrow != null">
+				#{languageGrow},
+			</if>
+			<if test="coordinationSkill != null">
+				#{coordinationSkill},
+			</if>
+			<if test="brainGrow != null">
+				#{brainGrow},
+			</if>
+			<if test="exploringSkill != null">
+				#{exploringSkill},
+			</if>
+			<if test="specialSkill != null">
+				#{specialSkill},
+			</if>
+			<if test="sportSkill != null">
+				#{sportSkill},
+			</if>
+			<if test="thinkSkill != null">
+				#{thinkSkill},
+			</if>
+			<if test="learnSkill != null">
+				#{learnSkill},
+			</if>
+			<if test="listenSkillLast != null">
+				#{listenSkillLast},
+			</if>
+			<if test="languageSkillLast != null">
+				#{languageSkillLast},
+			</if>
+			<if test="visionSkillLast != null">
+				#{visionSkillLast},
+			</if>
+			<if test="moveSkillLast != null">
+				#{moveSkillLast},
+			</if>
+			<if test="touchSkillLast != null">
+				#{touchSkillLast},
+			</if>
+			<if test="actionSkillLast != null">
+				#{actionSkillLast},
+			</if>
+			<if test="emotionSkillLast != null">
+				#{emotionSkillLast},
+			</if>
+			<if test="languageGrowLast != null">
+				#{languageGrowLast},
+			</if>
+			<if test="coordinationSkillLast != null">
+				#{coordinationSkillLast},
+			</if>
+			<if test="brainGrowLast != null">
+				#{brainGrowLast},
+			</if>
+			<if test="exploringSkillLast != null">
+				#{exploringSkillLast},
+			</if>
+			<if test="specialSkillLast != null">
+				#{specialSkillLast},
+			</if>
+			<if test="sportSkillLast != null">
+				#{sportSkillLast},
+			</if>
+			<if test="thinkSkillLast != null">
+				#{thinkSkillLast},
+			</if>
+			<if test="learnSkillLast != null">
+				#{learnSkillLast},
+			</if>
+			<if test="score != null">
+				#{score},
+			</if>
+			<if test="cognitiveSkill != null">
+				#{cognitiveSkill},
+			</if>
+			<if test="cognitiveSkillLast != null">
+				#{cognitiveSkillLast},
+			</if>
+		</trim>
+	</insert>
+	<update id="batchAgeUpdGrowLine" parameterType="int" >
+		update user_growth_line g left join user_baby i on g.user_id =i.user_id
+		<set>
+			<if test="ageType != null and ageType == 1">
+			  g.coordination_skill = g.vision_skill + g.touch_skill,
+			  g.vision_skill = 0,
+			  g.touch_skill = 0,
+			  g.coordination_skill_last = g.coordination_skill,
+			  g.language_grow = g.language_grow + g.listen_skill, 
+			  g.listen_skill = 0,
+			  g.language_grow_last = g.language_grow,
+			</if>
+			<if test="ageType != null and ageType == 2">
+			  g.move_skill = g.coordination_skill,
+			  g.coordination_skill = 0,
+			  g.move_skill_last = g.move_skill,
+			  g.language_skill = g.language_grow,
+			  g.language_grow = 0,
+			  g.language_skill_last = g.language_skill,
+			  g.special_skill = g.brain_grow,
+			  g.brain_grow =0,
+			  g.special_skill_last = g.special_skill,
+			  g.cognitive_skill = g.exploring_skill,
+			  g.exploring_skill = 0,
+			  g.cognitive_skill_last = g.cognitive_skill,
+			</if>
+			<if test="ageType != null and ageType == 3">
+			  g.cognitive_skill = g.cognitive_skill + g.language_skill,
+			  g.language_skill = 0,
+			  g.cognitive_skill_last = g.cognitive_skill,
+			</if>
+			<if test="ageType != null and ageType == 4">
+			  g.learn_skill = g.cognitive_skill,
+			  g.cognitive_skill = 0,
+			  g.learn_skill_last = g.learn_skill,
+			</if>
+		</set>
+		where
+			i.baby_birthday is not null
+			<if test="ageType != null and ageType == 1">
+			and i.baby_birthday = date_add(date_format(now(),'%Y-%m-%d'), interval -7 month)
+			</if>
+			<if test="ageType != null and ageType == 2">
+			and i.baby_birthday = date_add(date_format(now(),'%Y-%m-%d'), interval -13 month)
+			</if>
+			<if test="ageType != null and ageType == 3">
+			and i.baby_birthday = date_add(date_format(now(),'%Y-%m-%d'), interval -37 month)
+			</if>
+			<if test="ageType != null and ageType == 4">
+			and i.baby_birthday = date_add(date_format(now(),'%Y-%m-%d'), interval -73 month)
+			</if>
+			<if test="ageType == null">
+			and 1=2
+			</if>
+	</update>
+	<update id="batchMonthUpdGrowLine">
+		update user_growth_line g
+		<set>
+			g.action_skill_last = g.action_skill,
+			g.cognitive_skill_last = g.cognitive_skill,
+			g.coordination_skill_last = g.coordination_skill,
+			g.emotion_skill_last = g.emotion_skill,
+			g.exploring_skill_last = g.exploring_skill,
+			g.language_skill_last = g.language_skill,
+			g.learn_skill_last = g.learn_skill,
+			g.listen_skill_last = g.listen_skill,
+			g.move_skill_last = g.move_skill,
+			g.special_skill_last = g.special_skill,
+			g.sport_skill_last = g.sport_skill,
+			g.think_skill_last = g.think_skill,
+			g.touch_skill_last = g.touch_skill,
+			g.vision_skill_last = g.vision_skill,
+		</set>
+		where
+			date_format(now(),'%d') = '01'
+	</update>
+</mapper>

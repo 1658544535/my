@@ -1,0 +1,534 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.PlatformSpecialMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id as id,
+		type as type,
+		title as title,
+		banner as banner,
+		content as content,
+		sketch as sketch,
+		age_type as ageType,
+		(select s.name from sys_dict s where s.value = age_type and s.type='user_age') as ageTypeStr,
+		skill_type as skillType,
+		(select s.name from sys_dict s where s.value = skill_type and s.type='ability') as skillTypeStr,
+		option_type as optionType,
+		(select l.name from label_bucket l where l.id = option_type) as optionTypeStr,
+		product_type as productType,
+		(select pt.name from product_type pt where pt.id = product_type) as productTypeStr,
+		collect_num as collectNum,
+		sorting as sorting,
+		status as status,
+		score as score,
+		special_categories as specialCategories,
+		sec_skill_type as secSkillType,
+		(select s.name from sys_dict s where s.value = sec_skill_type and s.type='second_ability') as secSkillTypeStr,
+		create_date as createDateStr,
+		create_by as createBy,
+		update_date as updateDateStr,
+		update_by as updateBy,
+		is_home_page as isHomePage,
+		version as version,
+		your_favourites_id as yourFavouritesId
+	</sql>
+	
+	<select id="getById" parameterType="int" resultType="PlatformSpecialPojo">
+		select
+			p.id as id,
+			p.type as type,
+			(CASE WHEN p.type = 1 THEN '普通专题' WHEN p.type = 2 THEN '首页专题' WHEN p.type = 3 THEN '热门专题' WHEN p.type = 4 THEN '经典专题' END) as typeStr,
+			p.title as title,
+			p.banner as banner,
+			p.content as content,
+			p.sketch as sketch,
+			p.age_type as ageType,
+			(select s.name from sys_dict s where s.value = p.age_type and s.type='user_age') as ageTypeStr,
+			p.skill_type as skillType,
+			(select s.name from sys_dict s where s.value = p.skill_type and s.type='ability') as skillTypeStr,
+			p.option_type as optionType,
+			(select l.name from label_bucket l where l.id = p.option_type) as optionTypeStr,
+			p.product_type as productType,
+			(select pt.name from product_type pt where pt.id = p.product_type) as productTypeStr,
+			p.collect_num as collectNum,
+			p.sorting as sorting,
+			p.status as status,
+			p.score as score,
+			(CASE WHEN p.status = 0 THEN '未审核' WHEN p.status = 1 THEN '审核成功' WHEN p.status = 2 THEN '审核失败' END) as statusStr,
+			p.special_categories as specialCategories,
+			(CASE WHEN p.special_categories = 1 THEN '软文专题'  WHEN p.special_categories = 2 THEN '商品专题' END) as specialCategoriesStr,
+			p.sec_skill_type as secSkillType,
+			(select s.name from sys_dict s where s.value = p.sec_skill_type and s.type='second_ability') as secSkillTypeStr,
+			p.create_date as createDateStr,
+			p.create_by as createBy,
+			p.update_date as updateDateStr,
+			p.update_by as updateBy,
+			p.version as version,
+			p.your_favourites_id as yourFavouritesId,
+			(select yf.name from sys_dict yf where yf.id = p.your_favourites_id and yf.status=1) as yourFavouritesName
+		from platform_special p
+		where
+			p.id = #{id}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from platform_special
+		where 1=1
+		  <if test="id != null ">
+			and id = #{id}
+		  </if>
+		  <if test="type != null ">
+			and type = #{type}
+		  </if>
+		  <if test="title != null and title != '' ">
+			and title = #{title}
+		  </if>
+		  <if test="banner != null and banner != '' ">
+			and banner = #{banner}
+		  </if>
+		  <if test="content != null ">
+			and content = #{content}
+		  </if>
+		  <if test="ageType != null ">
+			and age_type = #{ageType}
+		  </if>
+		  <if test="skillType != null ">
+			and skill_type = #{skillType}
+		  </if>
+		  <if test="optionType != null ">
+			and option_type = #{optionType}
+		  </if>
+		  <if test="productType != null ">
+			and product_type = #{productType}
+		  </if>
+		  <if test="specialCategories != null ">
+			and special_categories = #{specialCategories}
+		  </if>
+		  <if test="sorting != null ">
+			and sorting = #{sorting}
+		  </if>
+		  <if test="status != null ">
+			and status = #{status}
+		  </if>
+		  <if test="createDate != null ">
+			and create_date = #{createDate}
+		  </if>
+		  <if test="createBy != null ">
+			and create_by = #{createBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and update_date = #{updateDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and update_by = #{updateBy}
+		  </if>
+		  <if test="isHomePage != null ">
+			and is_home_page = #{isHomePage}
+		  </if>
+		  <if test="version != null ">
+			and version = #{version}
+		  </if>
+		  <if test="yourFavouritesId != null ">
+			and your_favourites_id = #{yourFavouritesId}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="PlatformSpecialPojo">
+		select
+			p.id as id,
+			p.type as type,
+			(CASE WHEN p.type = 1 THEN '普通专题' WHEN p.type = 2 THEN '首页专题' WHEN p.type = 3 THEN '热门专题' WHEN p.type = 4 THEN '经典专题' END) as typeStr,
+			p.title as title,
+			p.banner as banner,
+			<!-- p.content as content,-->
+			p.sketch as sketch,
+			p.age_type as ageType,
+			(select s.name from sys_dict s where s.value = p.age_type and s.type='user_age') as ageTypeStr,
+			p.skill_type as skillType,
+			(select s.name from sys_dict s where s.value = p.skill_type and s.type='ability') as skillTypeStr,
+			p.option_type as optionType,
+			(select l.name from label_bucket l where l.id = p.option_type) as optionTypeStr,
+			p.product_type as productType,
+			(select pt.name from product_type pt where pt.id = p.product_type) as productTypeStr,
+			p.collect_num as collectNum,
+			p.sorting as sorting,
+			p.score as score,
+			p.status as status,
+			(CASE WHEN p.status = 0 THEN '审核中' WHEN p.status = 1 THEN '审核成功' WHEN p.status = 2 THEN '审核失败' WHEN p.status = 3 THEN '删除' END) as statusStr,
+			p.special_categories as specialCategories,
+			(CASE WHEN p.special_categories = 1 THEN '软文专题'  WHEN p.special_categories = 2 THEN '商品专题' END) as specialCategoriesStr,
+			p.sec_skill_type as secSkillType,
+			(select s.name from sys_dict s where s.value = p.sec_skill_type and s.type='second_ability') as secSkillTypeStr,
+			p.create_date as createDateStr,
+			p.create_by as createBy,
+			p.update_date as updateDate,
+			p.update_by as updateBy,
+			p.is_home_page as isHomePage,
+			p.version as version,
+			p.your_favourites_id as yourFavouritesId
+		from platform_special p
+		where 1=1
+			<if test="id != null ">
+			  and id = #{id}
+			</if>
+			<if test="ids != null ">
+			  and id &lt;= #{ids}
+			</if>
+			<if test="type != null ">
+			  and type = #{type}
+			</if>
+			<if test="title != null and title != '' ">
+				and title like CONCAT("%",#{title},"%")
+		  	</if>
+			<if test="banner != null and banner != '' ">
+			  and banner = #{banner}
+			</if>
+			<if test="content != null ">
+			  and content = #{content}
+			</if>
+			<if test="ageType != null ">
+			  and age_type = #{ageType}
+			</if>
+			<if test="skillType != null ">
+			  and skill_type = #{skillType}
+			</if>
+			<if test="optionType != null ">
+			  and option_type = #{optionType}
+			</if>
+			<if test="productType != null ">
+			  and product_type = #{productType}
+			</if>
+			 <if test="specialCategories != null ">
+				and special_categories = #{specialCategories}
+		  	</if>
+			<if test="sorting != null ">
+			  and sorting = #{sorting}
+			</if>
+			<if test="status != null ">
+			  and status = #{status}
+			</if>
+			<if test="createDate != null ">
+			  and create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and update_by = #{updateBy}
+			</if>
+			<if test="isHomePage != null ">
+			  and is_home_page = #{isHomePage}
+		  	</if>
+			<if test="version != null ">
+			  and version = #{version}
+		  	</if>
+			<if test="yourFavouritesId != null ">
+			  and your_favourites_id = #{yourFavouritesId}
+		  	</if>
+			<if test="orderBy != null and orderBy != '' ">
+			  order by ${orderBy}
+			</if>
+			<if test="orderBy == null or orderBy == '' ">
+				order by id desc
+			</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="PlatformSpecialPojo">
+		update platform_special
+		<set>
+			<if test="type != null">
+			  type = #{type},
+			</if>
+			<if test="title != null and title != '' ">
+			  title = #{title},
+			</if>
+			<if test="banner != null and banner != '' ">
+			  banner = #{banner},
+			</if>
+			<if test="sketch != null and sketch != '' ">
+			  sketch = #{sketch},
+			</if>
+			<if test="content != null and content != '' ">
+			  content = #{content},
+			</if>
+			<if test="score != null and score != '' ">
+			  score = #{score},
+			</if>
+			<if test="ageType != null">
+			  age_type = #{ageType},
+			</if>
+			<if test="skillType != null">
+			  skill_type = #{skillType},
+			</if>
+			<if test="secSkillType != null">
+			  sec_skill_type = #{secSkillType},
+			</if>
+			<if test="optionType != null">
+			  option_type = #{optionType},
+			</if>
+			<if test="productType != null">
+			  product_type = #{productType},
+			</if>
+			<if test="specialCategories != null ">
+			  special_categories = #{specialCategories},
+		  	</if>
+			<if test="sorting != null">
+			  sorting = #{sorting},
+			</if>
+			<if test="status != null">
+			  status = #{status},
+			</if>
+			<if test="createDate != null">
+			  create_date = #{createDate},
+			</if>
+			<if test="createBy != null">
+			  create_by = #{createBy},
+			</if>
+			<if test="updateDate != null">
+			  update_date = #{updateDate},
+			</if>
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+			<if test="isHomePage != null">
+			  is_home_page = #{isHomePage},
+			</if>
+			<if test="version != null">
+			  version = #{version},
+			</if>
+			<if test="yourFavouritesId != null">
+			  your_favourites_id = #{yourFavouritesId},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<update id="updateOne" parameterType="PlatformSpecialPojo">
+		update platform_special p 
+		set p.status = #{status},
+		update_date = now()
+		where
+		p.id = #{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="int">
+		update platform_special p 
+		set p.status = 0,
+		update_date = now()
+		where
+		p.id = #{id}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="PlatformSpecialPojo">
+		insert into platform_special
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="title != null">
+				title,
+			</if>
+			<if test="banner != null">
+				banner,
+			</if>
+			<if test="sketch != null">
+				sketch,
+			</if>
+			<if test="content != null">
+				content,
+			</if>
+			<if test="ageType != null">
+				age_type,
+			</if>
+			<if test="skillType != null">
+				skill_type,
+			</if>
+			<if test="optionType != null">
+				option_type,
+			</if>
+			<if test="productType != null">
+				product_type,
+			</if>
+			<if test="score != null">
+				score,
+			</if>
+			<if test="specialCategories != null ">
+				special_categories,
+		  	</if>
+		  	<if test="secSkillType != null ">
+				sec_skill_type,
+		  	</if>
+			<if test="sorting != null">
+				sorting,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+			<if test="updateDate != null">
+				update_date,
+			</if>
+			<if test="updateBy != null">
+				update_by,
+			</if>
+			<if test="isHomePage != null">
+			  	is_home_page,
+			</if>
+			<if test="version != null">
+			  	version,
+			</if>
+			<if test="yourFavouritesId != null">
+			  	your_favourites_id,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="type != null">
+				#{type},
+			</if>
+			<if test="title != null">
+				#{title},
+			</if>
+			<if test="banner != null">
+				#{banner},
+			</if>
+			<if test="sketch != null">
+				#{sketch},
+			</if>
+			<if test="content != null">
+				#{content},
+			</if>
+			<if test="ageType != null">
+				#{ageType},
+			</if>
+			<if test="skillType != null">
+				#{skillType},
+			</if>
+			<if test="optionType != null">
+				#{optionType},
+			</if>
+			<if test="productType != null">
+				#{productType},
+			</if>
+			<if test="score != null">
+				#{score},
+			</if>
+			<if test="specialCategories != null">
+				#{specialCategories},
+			</if>
+			<if test="secSkillType != null ">
+				#{secSkillType},
+		  	</if>
+			<if test="sorting != null">
+				#{sorting},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+			<if test="createDate != null">
+				#{createDate},
+			</if>
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+			<if test="updateDate != null">
+				#{updateDate},
+			</if>
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+			<if test="isHomePage != null">
+				#{isHomePage},
+			</if>
+			<if test="version != null">
+				#{version},
+			</if>
+			<if test="yourFavouritesId != null">
+				#{yourFavouritesId},
+			</if>
+		</trim>
+	</insert>
+	<select id="getNewPlatformSpecial" parameterType="int" resultType="PlatformSpecialPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			platform_special
+		where
+			1=1
+			<if test="status != null">
+				and status = 1
+			</if>
+			<if test="ageType != null">
+				and age_type = #{ageType}
+			</if>
+			<if test="type != null">
+				and type = #{type}
+			</if>
+			order by create_date desc 
+			limit 1
+	</select>
+	<select id="findSpecialByParams" parameterType="int" resultType="PlatformSpecialPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			platform_special
+		where
+			1=1
+			<if test="id != null">
+				and id = #{id}
+			</if>
+			<if test="status != null">
+				and status = 1
+			</if>
+			<if test="ageType != null ">
+			  and age_type = #{ageType}
+			</if>
+			<if test="skillType != null ">
+			  and skill_type = #{skillType}
+			</if>
+			<if test="orderBy != null and orderBy == 'update_date desc,create_date desc' ">
+			  order by update_date desc,create_date desc
+		    </if>
+			limit 1
+	</select>
+	<update id="increaseCollectsById" parameterType="PlatformSpecialPojo">
+		update platform_special
+		<set>
+			<if test="collectNum != null">
+			  collect_num = collect_num + 1,
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<update id="decreaseCollectsById" parameterType="PlatformSpecialPojo">
+		update platform_special
+		<set>
+			<if test="collectNum != null">
+			  collect_num = collect_num - 1,
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+</mapper>

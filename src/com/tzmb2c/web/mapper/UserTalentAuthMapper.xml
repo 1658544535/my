@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tzmb2c.web.mapper.UserTalentAuthMapper">
+<select id="searchUserTalentAuth" resultType="UserTalentAuthPojo" parameterType="java.util.Map">
+		select 
+		    s.id		as	userId,
+		    s.image		as userImage,
+		    s.name		as userName,
+		    (SELECT COUNT(id) FROM user_circle_follow WHERE type_id = s.id AND is_follow = 1 AND type = 1) as fansNum,
+		    (SELECT COUNT(id) FROM user_circle_follow WHERE type_id = s.id AND is_follow = 1 AND type = 1 AND user_id = #{userId}) as followNum,
+		    (SELECT COUNT(id) FROM user_circle_post WHERE user_id = s.id AND is_delete = 0 AND status = 1) as postNum
+        from sys_login s
+	    where 1=1
+	    <if test="userType != null">
+			and s.type = #{userType}
+		</if>
+		<if test="userName != null and userName != '' ">
+			and s.name like CONCAT("%",#{userName},"%")
+		</if>
+		<if test="status != null">
+			and s.status = #{status}
+		</if>
+		<if test="orderBy != null and orderBy != '' ">
+			order by ${orderBy}
+		</if>
+		<if test="pageNo != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+</select>
+
+<select id="findUserTalentAuthList" resultType="UserTalentAuthPojo" parameterType="java.util.Map">
+		select 
+			u.id           as id,
+		    u.user_id      as userId,
+		    (SELECT COUNT(id) FROM user_circle_follow ucf WHERE ucf.type_id=u.user_id AND ucf.is_follow=1) followNum,
+		    <!-- (SELECT image FROM sys_login s WHERE s.id=u.user_id) userImage, -->
+		    s.image        as userImage,
+		    s.loginname    as loginname,
+		    s.name         as userName,
+		    u.status       as status,
+			(CASE WHEN u.status = 0 THEN '未审核' WHEN u.status = 1 THEN '审核成功' WHEN u.status = 2 THEN '审核失败' END) as statusName,
+			u.create_date  as createDate,
+			u.update_date  as updateDate
+			<if test="all != 0 ">
+			,u.identity            as identity,
+			u.platform             as platform,
+			u.fans_num             as fansNum,
+			(CASE WHEN u.fans_num = 1 THEN '2000≤粉丝数&lt;10000' WHEN u.fans_num = 2 THEN '1W≤粉丝数&lt;5W' WHEN u.fans_num = 3 THEN '5W≤粉丝数&lt;10W' WHEN u.fans_num = 4 THEN '10W≤粉丝数&lt;50W' WHEN u.fans_num = 5 THEN '50W≤粉丝数&lt;100W' WHEN u.fans_num = 6 THEN '100W≤粉丝数&lt;200W' WHEN u.fans_num = 7 THEN '粉丝数≥200W'END) as fansNumName,
+			u.cross_platform       as crossPlatform,
+			u.content_out_per      as contentOutPer,
+			(CASE WHEN u.content_out_per = 1 THEN '1' WHEN u.content_out_per = 2 THEN '2' WHEN u.content_out_per = 3 THEN '3' WHEN u.content_out_per = 4 THEN '4' WHEN u.content_out_per = 5 THEN '5' WHEN u.content_out_per = 6 THEN '6' WHEN u.content_out_per = 7 THEN '7' WHEN u.content_out_per = 8 THEN '8' WHEN u.content_out_per = 9 THEN '9' WHEN u.content_out_per = 10 THEN '10' WHEN u.content_out_per = 11 THEN '11-20' WHEN u.content_out_per = 12 THEN '21-30' WHEN u.content_out_per = 13 THEN '31-40' WHEN u.content_out_per = 14 THEN '40以上' END) as contentOutPerName,
+			u.orig_content_out_per as origContentOutPer,
+			(CASE WHEN u.orig_content_out_per = 1 THEN '1' WHEN u.orig_content_out_per = 2 THEN '2' WHEN u.orig_content_out_per = 3 THEN '3' WHEN u.orig_content_out_per = 4 THEN '4' WHEN u.orig_content_out_per = 5 THEN '5' WHEN u.orig_content_out_per = 6 THEN '6' WHEN u.orig_content_out_per = 7 THEN '7' WHEN u.orig_content_out_per = 8 THEN '8' WHEN u.orig_content_out_per = 9 THEN '9' WHEN u.orig_content_out_per = 10 THEN '10' WHEN u.orig_content_out_per = 11 THEN '11-20' WHEN u.orig_content_out_per = 12 THEN '21-30' WHEN u.orig_content_out_per = 13 THEN '31-40' WHEN u.orig_content_out_per = 14 THEN '40以上' END) as origContentOutPerName,
+			u.platform_user_name   as platformUserName,
+			u.coop_similar_plat    as coopSimilarPlat,
+			u.coop_brand           as coopBrand,
+			u.commercial_type      as commercialType,
+			u.commercial_price     as commercialPrice,
+			u.sample_title1        as sampleTitle1,
+			u.sample_url1          as sampleUrl1,
+			u.sample_title2    	   as sampleTitle2,
+			u.sample_url2    	   as sampleUrl2,
+			u.sample_title3        as sampleTitle3,
+			u.sample_url3          as sampleUrl3
+			</if>
+        from user_talent_auth u left join sys_login s on s.id = u.user_id 
+	    where 1=1
+	    <if test="loginname != null and loginname != '' ">
+			and s.loginname like concat("%",#{loginname},"%")
+		</if>
+	    <if test="userType != null">
+			and s.type = #{userType}
+		</if>
+		<if test="userName != null and userName != '' ">
+			and s.name like concat("%",#{userName},"%")
+		</if>
+		<if test="status!=null">
+			and u.status = #{status}
+		</if>
+		<if test="orderBy != null and orderBy != '' ">
+			<!--
+			<if test="orderBy == 'followNum desc'">
+				order by followNum desc
+			</if>
+			-->
+			order by ${orderBy}
+		</if>
+		<if test="orderBy == null or orderBy == ''">
+			order by u.create_date desc
+		</if>
+		<if test="pageNo != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+</select>
+
+<select id="findUserTalentAuthCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from user_talent_auth u left join sys_login s on s.id = u.user_id 
+		where 1=1
+		<if test="loginname != null and loginname != '' ">
+			and s.loginname like concat("%",#{loginname},"%")
+		</if>
+		<if test="userType != null">
+			and s.type = #{userType}
+		</if>
+		<if test="userName != null and userName != '' ">
+			and s.name like concat("%",#{userName},"%")
+		</if>
+		<if test="status!=null">
+			and u.status = #{status}
+		</if>
+</select>
+
+<!-- 查找单条(id) -->
+<select id="findUserTalentAuthById" resultType="UserTalentAuthPojo" parameterType="Long">
+		select
+		    u.id           as id,
+		    u.user_id      as userId,
+		    s.loginname    as loginname,
+		    s.name         as userName,
+		    u.status       as status,
+			(CASE WHEN u.status = 0 THEN '未审核' WHEN u.status = 1 THEN '审核成功' WHEN u.status = 2 THEN '审核失败' END) as statusName,
+			u.create_date  as createDate,
+			u.update_date  as updateDate,
+			u.identity     as identity,
+			u.platform     as platform,
+			u.fans_num     as fansNum,
+			(CASE WHEN u.fans_num = 1 THEN '2000≤粉丝数&lt;10000' WHEN u.fans_num = 2 THEN '1W≤粉丝数&lt;5W' WHEN u.fans_num = 3 THEN '5W≤粉丝数&lt;10W' WHEN u.fans_num = 4 THEN '10W≤粉丝数&lt;50W' WHEN u.fans_num = 5 THEN '50W≤粉丝数&lt;100W' WHEN u.fans_num = 6 THEN '100W≤粉丝数&lt;200W' WHEN u.fans_num = 7 THEN '粉丝数≥200W'END) as fansNumName,
+			u.cross_platform       as crossPlatform,
+			u.content_out_per      as contentOutPer,
+			(CASE WHEN u.content_out_per = 1 THEN '1' WHEN u.content_out_per = 2 THEN '2' WHEN u.content_out_per = 3 THEN '3' WHEN u.content_out_per = 4 THEN '4' WHEN u.content_out_per = 5 THEN '5' WHEN u.content_out_per = 6 THEN '6' WHEN u.content_out_per = 7 THEN '7' WHEN u.content_out_per = 8 THEN '8' WHEN u.content_out_per = 9 THEN '9' WHEN u.content_out_per = 10 THEN '10' WHEN u.content_out_per = 11 THEN '11-20' WHEN u.content_out_per = 12 THEN '21-30' WHEN u.content_out_per = 13 THEN '31-40' WHEN u.content_out_per = 14 THEN '40以上' END) as contentOutPerName,
+			u.orig_content_out_per as origContentOutPer,
+			(CASE WHEN u.orig_content_out_per = 1 THEN '1' WHEN u.orig_content_out_per = 2 THEN '2' WHEN u.orig_content_out_per = 3 THEN '3' WHEN u.orig_content_out_per = 4 THEN '4' WHEN u.orig_content_out_per = 5 THEN '5' WHEN u.orig_content_out_per = 6 THEN '6' WHEN u.orig_content_out_per = 7 THEN '7' WHEN u.orig_content_out_per = 8 THEN '8' WHEN u.orig_content_out_per = 9 THEN '9' WHEN u.orig_content_out_per = 10 THEN '10' WHEN u.orig_content_out_per = 11 THEN '11-20' WHEN u.orig_content_out_per = 12 THEN '21-30' WHEN u.orig_content_out_per = 13 THEN '31-40' WHEN u.orig_content_out_per = 14 THEN '40以上' END) as origContentOutPerName,
+			u.platform_user_name   as platformUserName,
+			u.coop_similar_plat    as coopSimilarPlat,
+			u.coop_brand           as coopBrand,
+			u.commercial_type      as commercialType,
+			u.commercial_price     as commercialPrice,
+			u.real_name            as realName,
+			u.id_card_image        as idCardImage,
+			u.sample_title1        as sampleTitle1,
+			u.sample_url1          as sampleUrl1,
+			u.sample_title2    	   as sampleTitle2,
+			u.sample_url2    	   as sampleUrl2,
+			u.sample_title3        as sampleTitle3,
+			u.sample_url3          as sampleUrl3
+        from user_talent_auth u left join sys_login s on s.id = u.user_id 
+		where
+		u.id=#{id}
+</select>
+<!-- 查找单条(uid) -->
+<select id="findUserTalentAuthByUid" resultType="UserTalentAuthPojo" parameterType="Long">
+		select
+		    u.id           as id,
+		    u.user_id      as userId,
+		    s.loginname    as loginname,
+		    s.name         as userName,
+		    u.status       as status,
+			(CASE WHEN u.status = 0 THEN '未审核' WHEN u.status = 1 THEN '审核成功' WHEN u.status = 2 THEN '审核失败' END) as statusName,
+			u.create_date  as createDate,
+			u.update_date  as updateDate,
+			u.identity     as identity,
+			u.platform     as platform,
+			u.fans_num     as fansNum,
+			(CASE WHEN u.fans_num = 1 THEN '2000≤粉丝数&lt;10000' WHEN u.fans_num = 2 THEN '1W≤粉丝数&lt;5W' WHEN u.fans_num = 3 THEN '5W≤粉丝数&lt;10W' WHEN u.fans_num = 4 THEN '10W≤粉丝数&lt;50W' WHEN u.fans_num = 5 THEN '50W≤粉丝数&lt;100W' WHEN u.fans_num = 6 THEN '100W≤粉丝数&lt;200W' WHEN u.fans_num = 7 THEN '粉丝数≥200W'END) as fansNumName,
+			u.cross_platform       as crossPlatform,
+			u.content_out_per      as contentOutPer,
+			(CASE WHEN u.content_out_per = 1 THEN '1' WHEN u.content_out_per = 2 THEN '2' WHEN u.content_out_per = 3 THEN '3' WHEN u.content_out_per = 4 THEN '4' WHEN u.content_out_per = 5 THEN '5' WHEN u.content_out_per = 6 THEN '6' WHEN u.content_out_per = 7 THEN '7' WHEN u.content_out_per = 8 THEN '8' WHEN u.content_out_per = 9 THEN '9' WHEN u.content_out_per = 10 THEN '10' WHEN u.content_out_per = 11 THEN '11-20' WHEN u.content_out_per = 12 THEN '21-30' WHEN u.content_out_per = 13 THEN '31-40' WHEN u.content_out_per = 14 THEN '40以上' END) as contentOutPerName,
+			u.orig_content_out_per as origContentOutPer,
+			(CASE WHEN u.orig_content_out_per = 1 THEN '1' WHEN u.orig_content_out_per = 2 THEN '2' WHEN u.orig_content_out_per = 3 THEN '3' WHEN u.orig_content_out_per = 4 THEN '4' WHEN u.orig_content_out_per = 5 THEN '5' WHEN u.orig_content_out_per = 6 THEN '6' WHEN u.orig_content_out_per = 7 THEN '7' WHEN u.orig_content_out_per = 8 THEN '8' WHEN u.orig_content_out_per = 9 THEN '9' WHEN u.orig_content_out_per = 10 THEN '10' WHEN u.orig_content_out_per = 11 THEN '11-20' WHEN u.orig_content_out_per = 12 THEN '21-30' WHEN u.orig_content_out_per = 13 THEN '31-40' WHEN u.orig_content_out_per = 14 THEN '40以上' END) as origContentOutPerName,
+			u.platform_user_name   as platformUserName,
+			u.coop_similar_plat    as coopSimilarPlat,
+			u.real_name            as realName,
+			u.id_card_image        as idCardImage,
+			u.coop_brand           as coopBrand,
+			u.commercial_type      as commercialType,
+			u.commercial_price     as commercialPrice,
+			u.sample_title1        as sampleTitle1,
+			u.sample_url1          as sampleUrl1,
+			u.sample_title2    	   as sampleTitle2,
+			u.sample_url2    	   as sampleUrl2,
+			u.sample_title3        as sampleTitle3,
+			u.sample_url3          as sampleUrl3
+        from user_talent_auth u left join sys_login s on s.id = u.user_id 
+		where
+		u.user_id=#{userId}
+</select>
+<!-- 更新 -->
+<update id="updateUserTalentAuth" parameterType="UserTalentAuthPojo">
+	update user_talent_auth
+	<set>
+		<if test="userId != null">
+		  user_id = #{userId},
+		</if>
+		<if test="platform != null">
+		  platform = #{platform},
+		</if>
+		<if test="platformUserName != null">
+		  platform_user_name = #{platformUserName},
+		</if>
+		<if test="identity != null">
+		  identity = #{identity},
+		</if>
+		<if test="fansNum != null">
+		  fans_num = #{fansNum},
+		</if>
+		<if test="crossPlatform != null">
+		  cross_platform = #{crossPlatform},
+		</if>
+		<if test="contentOutPer != null">
+		  content_out_per = #{contentOutPer},
+		</if>
+		<if test="origContentOutPer != null">
+		  orig_content_out_per = #{origContentOutPer},
+		</if>
+		<if test="coopSimilarPlat != null">
+		  coop_similar_plat = #{coopSimilarPlat},
+		</if>
+		<if test="coopBrand != null">
+		  coop_brand = #{coopBrand},
+		</if>
+		<if test="commercialType != null">
+		  commercial_type = #{commercialType},
+		</if>
+		<if test="commercialPrice != null">
+		  commercial_price = #{commercialPrice},
+		</if>
+		<if test="sampleTitle1 != null">
+		  sample_title1 = #{sampleTitle1},
+		</if>
+		<if test="sampleUrl1 != null">
+		  sample_url1 = #{sampleUrl1},
+		</if>
+		<if test="sampleTitle2 != null">
+		  sample_title2 = #{sampleTitle2},
+		</if>
+		<if test="sampleUrl2 != null">
+		  sample_url2 = #{sampleUrl2},
+		</if>
+		<if test="sampleTitle3 != null">
+		  sample_title3 = #{sampleTitle3},
+		</if>
+		<if test="sampleUrl3 != null">
+		  sample_url3 = #{sampleUrl3},
+		</if>
+		<if test="status != null">
+		  status = #{status},
+		</if>
+		<if test="realName != null and realName != ''">
+		  real_name = #{realName},
+		</if>
+		<if test="idCardImage != null and idCardImage != ''">
+		  id_card_image = #{idCardImage},
+		</if>
+		update_date = now(),
+		<if test="updateBy != null">
+		  update_by = #{updateBy},
+		</if>
+	</set>
+	where
+		id = #{id}
+</update>
+<!--加入某条-->
+<insert id="insertUserTalentAuth" useGeneratedKeys="true" keyProperty="id" parameterType="UserTalentAuthPojo">
+	insert into user_talent_auth
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+		<if test="id != null">
+			id,
+		</if>
+		<if test="userId != null">
+			user_id,
+		</if>
+		<if test="platform != null">
+			platform,
+		</if>
+		<if test="platformUserName != null">
+			platform_user_name,
+		</if>
+		<if test="identity != null">
+			identity,
+		</if>
+		<if test="fansNum != null">
+			fans_num,
+		</if>
+		<if test="crossPlatform != null">
+			cross_platform,
+		</if>
+		<if test="contentOutPer != null">
+			content_out_per,
+		</if>
+		<if test="origContentOutPer != null">
+			orig_content_out_per,
+		</if>
+		<if test="coopSimilarPlat != null">
+			coop_similar_plat,
+		</if>
+		<if test="coopBrand != null">
+			coop_brand,
+		</if>
+		<if test="commercialType != null">
+			commercial_type,
+		</if>
+		<if test="commercialPrice != null">
+			commercial_price,
+		</if>
+		<if test="sampleTitle1 != null">
+			sample_title1,
+		</if>
+		<if test="sampleUrl1 != null">
+			sample_url1,
+		</if>
+		<if test="sampleTitle2 != null">
+			sample_title2,
+		</if>
+		<if test="sampleUrl2 != null">
+			sample_url2,
+		</if>
+		<if test="sampleTitle3 != null">
+			sample_title3,
+		</if>
+		<if test="sampleUrl3 != null">
+			sample_url3,
+		</if>
+		<if test="status != null">
+			status,
+		</if>
+		<if test="realName != null">
+			real_name,
+		</if>
+		<if test="idCardImage != null">
+			id_card_image,
+		</if>
+		create_date,
+		create_by,
+		update_date,
+		update_by,
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+		<if test="id != null">
+			#{id},
+		</if>
+		<if test="userId != null">
+			#{userId},
+		</if>
+		<if test="platform != null">
+			#{platform},
+		</if>
+		<if test="platformUserName != null">
+			#{platformUserName},
+		</if>
+		<if test="identity != null">
+			#{identity},
+		</if>
+		<if test="fansNum != null">
+			#{fansNum},
+		</if>
+		<if test="crossPlatform != null">
+			#{crossPlatform},
+		</if>
+		<if test="contentOutPer != null">
+			#{contentOutPer},
+		</if>
+		<if test="origContentOutPer != null">
+			#{origContentOutPer},
+		</if>
+		<if test="coopSimilarPlat != null">
+			#{coopSimilarPlat},
+		</if>
+		<if test="coopBrand != null">
+			#{coopBrand},
+		</if>
+		<if test="commercialType != null">
+			#{commercialType},
+		</if>
+		<if test="commercialPrice != null">
+			#{commercialPrice},
+		</if>
+		<if test="sampleTitle1 != null">
+			#{sampleTitle1},
+		</if>
+		<if test="sampleUrl1 != null">
+			#{sampleUrl1},
+		</if>
+		<if test="sampleTitle2 != null">
+			#{sampleTitle2},
+		</if>
+		<if test="sampleUrl2 != null">
+			#{sampleUrl2},
+		</if>
+		<if test="sampleTitle3 != null">
+			#{sampleTitle3},
+		</if>
+		<if test="sampleUrl3 != null">
+			#{sampleUrl3},
+		</if>
+		<if test="status != null">
+			#{status},
+		</if>
+		<if test="realName != null">
+			#{realName},
+		</if>
+		<if test="idCardImage != null">
+			#{idCardImage},
+		</if>
+		now(),
+		#{createBy},
+		now(),
+		#{updateBy},
+	</trim>
+</insert>
+<!-- 审成单条(id) -->
+<update id="checkUserTalentAuth" parameterType="Long">
+		update user_talent_auth  set
+		status = 1,
+		update_date = now()
+		where 
+		id = #{id}
+</update>
+<!-- 审失单条(id) -->
+<update id="uncheckUserTalentAuth" parameterType="Long">
+		update user_talent_auth set
+		status =2,
+		update_date = now()
+		where 
+		id = #{id}
+</update>
+</mapper>

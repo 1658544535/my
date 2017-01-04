@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+	<package name="coupon" extends="default">
+
+		<!-- 优惠卷数量 -->
+		<action name="couponList" class="com.tzmb2c.web.action.CouponAction" method="couponListCount">
+			<result name="success">/page/system/coupon/couponList.jsp</result>
+		</action>
+		
+		<!-- 根据id批量删除优惠卷 -->
+		<action name="deletecouponAllById" class="com.tzmb2c.web.action.CouponAction" method="deletecouponAllById">
+			
+		</action>
+		
+		<!-- 根据id批量审核优惠卷 -->
+		<action name="checkcouponAllById" class="com.tzmb2c.web.action.CouponAction" method="checkcouponAllById">
+			
+		</action>
+		
+		<!-- 新增优惠卷 -->
+		<action name="addcoupon" class="com.tzmb2c.web.action.CouponAction" method="addcoupon">
+			<result name="success">/page/system/coupon/addcoupon.jsp</result>
+		</action>
+		
+		<!-- 提交新增优惠卷 -->
+		<action name="addcouponOk" class="com.tzmb2c.web.action.CouponAction" method="addcouponOk">
+			
+		</action>
+		
+		<!-- 修改优惠卷 -->
+		<action name="updatecoupon" class="com.tzmb2c.web.action.CouponAction" method="updatecoupon">
+			<result name="success">/page/system/coupon/addcoupon.jsp</result>
+		</action>
+		
+		<!-- 提交修改优惠卷 -->
+		<action name="updatecouponOk" class="com.tzmb2c.web.action.CouponAction" method="updatecouponOk">
+			
+		</action>
+		
+		<!-- 用户优惠卷数量 -->
+		<action name="userCouponList" class="com.tzmb2c.web.action.CouponAction" method="userCouponListCount">
+			<result name="success">/page/system/coupon/userCouponList.jsp</result>
+		</action>
+		
+		<!-- 新增优惠券 -->
+		<action name="goAddUserCoupon" class="com.tzmb2c.web.action.CouponAction" method="goAddUserCoupon">
+			<result name="success">/page/system/coupon/addUserCoupon.jsp</result>
+		</action>
+		<!-- 新增优惠券提交 -->
+		<action name="insertUserCoupon" class="com.tzmb2c.web.action.CouponAction" method="insertUserCoupon">
+		</action>
+		<!-- 批量新增优惠券 -->
+		<action name="goAddUserCouponBatch" class="com.tzmb2c.web.action.CouponAction" method="goAddUserCouponBatch">
+			<result name="success">/page/system/coupon/addUserCouponBatch.jsp</result>
+		</action>
+		<!-- 批量新增优惠券提交 -->
+		<action name="insertUserCouponBatch" class="com.tzmb2c.web.action.CouponAction" method="insertUserCouponBatch">
+		</action>
+		<!-- 编辑优惠券 -->
+		<action name="goUpdateUserCoupon" class="com.tzmb2c.web.action.CouponAction" method="goUpdateUserCoupon">
+			<result name="success">/page/system/coupon/updateUserCoupon.jsp</result>
+		</action>
+		<!-- 编辑优惠券提交 -->
+		<action name="updateUserCoupon" class="com.tzmb2c.web.action.CouponAction" method="updateUserCoupon">
+		</action>
+		
+		<!-- 抽奖记录 -->
+		<action name="lotteryLogList" class="com.tzmb2c.web.action.CouponAction" method="lotteryLogListCount">
+			<result name="success">/page/system/coupon/lotteryLogList.jsp</result>
+		</action>
+		
+		<!-- 转发抽奖记录 -->
+		<action name="lotteryForwardList" class="com.tzmb2c.web.action.CouponAction" method="lotteryForwardListCount">
+			<result name="success">/page/system/coupon/lotteryForawardList.jsp</result>
+		</action>
+		
+		<!-- 优惠券订单关联记录 -->
+		<action name="couponOrderList" class="com.tzmb2c.web.action.CouponAction" method="couponOrderListCount">
+			<result name="success">/page/system/coupon/couponOrderList.jsp</result>
+		</action>
+		
+		<!-- 抽奖 -->
+		<action name="lotteryList" class="com.tzmb2c.web.action.CouponAction" method="lotteryListCount">
+			<result name="success">/page/system/coupon/lotteryList.jsp</result>
+		</action>
+		
+		<!-- 红包记录 -->
+		<action name="hongbaoLogList" class="com.tzmb2c.web.action.CouponAction" method="hongbaoLogListCount">
+			<result name="success">/page/system/coupon/hongbaoLogList.jsp</result>
+		</action>
+		
+		
+	</package>
+	<package name="coupon-json" extends="json-default">
+
+		<!-- 优惠卷列表 -->
+		<action name="couponListAll" class="com.tzmb2c.web.action.CouponAction" method="couponListAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<!-- 优惠卷数量 -->
+		<action name="couponListCount" class="com.tzmb2c.web.action.CouponAction" method="couponListCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		
+		<!-- 根据id审核优惠卷 -->
+		<action name="checkcouponById" class="com.tzmb2c.web.action.CouponAction" method="checkcouponById">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 根据id取消审核优惠卷 -->
+		<action name="uncheckcouponById" class="com.tzmb2c.web.action.CouponAction" method="uncheckcouponById">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+				
+		<!-- 根据id删除优惠卷 -->
+		<action name="deletecouponById" class="com.tzmb2c.web.action.CouponAction" method="deletecouponById">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 验证优惠卷名称是否存在 -->
+		<action name="validCouponName" class="com.tzmb2c.web.action.CouponAction" method="validCouponName">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 用户优惠卷列表 -->
+		<action name="userCouponListAll" class="com.tzmb2c.web.action.CouponAction" method="userCouponListAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<!-- 用户优惠卷数量 -->
+		<action name="userCouponListCount" class="com.tzmb2c.web.action.CouponAction" method="userCouponListCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		
+		<!-- 抽奖记录列表 -->
+		<action name="lotteryLogListAll" class="com.tzmb2c.web.action.CouponAction" method="lotteryLogListAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<!-- 抽奖记录 -->
+		<action name="lotteryLogListCount" class="com.tzmb2c.web.action.CouponAction" method="lotteryLogListCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		
+		<!-- 转发抽奖记录列表 -->
+		<action name="lotteryForwardListAll" class="com.tzmb2c.web.action.CouponAction" method="lotteryForwardListAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<!-- 转发抽奖记录 -->
+		<action name="lotteryForwardListCount" class="com.tzmb2c.web.action.CouponAction" method="lotteryForwardListCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		
+		<!-- 优惠券订单关联列表 -->
+		<action name="couponOrderListAll" class="com.tzmb2c.web.action.CouponAction" method="couponOrderListAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<!-- 优惠券订单关联记录 -->
+		<action name="couponOrderListCount" class="com.tzmb2c.web.action.CouponAction" method="couponOrderListCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		
+		<!-- 抽奖列表 -->
+		<action name="lotteryListAll" class="com.tzmb2c.web.action.CouponAction" method="lotteryListAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<!-- 抽奖 -->
+		<action name="lotteryListCount" class="com.tzmb2c.web.action.CouponAction" method="lotteryListCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		
+		<!-- 红包记录列表 -->
+		<action name="hongbaoLogListAll" class="com.tzmb2c.web.action.CouponAction" method="hongbaoLogListAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<!-- 红包记录 -->
+		<action name="hongbaoLogListCount" class="com.tzmb2c.web.action.CouponAction" method="hongbaoLogListCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		<!-- 启用优惠券 -->
+		<action name="checkUserCoupon" class="com.tzmb2c.web.action.CouponAction" method="checkUserCoupon">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 禁用优惠券 -->
+		<action name="uncheckUserCoupon" class="com.tzmb2c.web.action.CouponAction" method="uncheckUserCoupon">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 删除优惠券 -->
+		<action name="delUserCoupon" class="com.tzmb2c.web.action.CouponAction" method="delUserCoupon">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		
+	</package>
+</struts>

@@ -1,0 +1,3313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.OrderMapper">
+ 
+	<!-- <cache/>  -->
+	<!-- 单订单重新付款重新生成out_trade_no -->
+	<update id="updateOutTradeNo" parameterType="java.util.Map">
+		update user_order set
+		out_trade_no = #{outTradeNo}
+		<if test="payMethod != null">
+			, pay_method = #{payMethod} 
+		</if>
+		where 
+		id = #{orderId} 
+	</update>
+	
+	
+	<!-- 自提方式直接改为已发货  -->
+	<update id="updateOrderPay" parameterType="java.util.Map">
+		update user_order set
+		order_status=3
+		where 
+		consignee_type=2
+		and is_delete_order=0
+		and is_cancel_order=0	
+		and out_trade_no = #{outTradeNo}
+		<if test="orderId!=null and orderId!=''">
+			and id = #{orderId} 
+		</if>
+	</update>
+
+	<!-- 改变支付状态  -->
+	<update id="orderPaySuccess" parameterType="java.util.Map">
+		update user_order set
+		order_status=2 , 
+		pay_status=1,
+		paymentDate = now(),
+		update_date =now()
+		<!--create_date =now()-->
+		where out_trade_no = #{outTradeNo}
+		<if test="orderId!=null and orderId!=''">
+			and id = #{orderId} 
+		</if>
+	</update>
+
+	<select id="getOrderAll" resultType="orderPojo">
+		select t.id as id, t.user_id as userId,t.suser_id as suserId, t.all_price as allPrice, 
+		t.fact_price as factPrice, 
+		t.consignee as consignee ,
+		t.consignee_address as consigneeAddress, 
+		t.consignee_phone as consigneePhone,
+		t.consignee_type as consigneeType,
+		(select name from sys_dict where value=t.consignee_type and type = 'consignee_type') as consigneeTypeName,
+		t.buyer_message as buyerMessage ,
+		t.order_status as orderStatus,
+		t.pay_status as payStatus,t.pay_method as payMethod,t.order_no as orderNo,t.serial_number as serialNumber,t.create_date as createDate,
+		t.wallet_price as walletPrice
+		from user_order t order by t.create_date desc
+	</select>
+	
+	<select id="getfindByIdOrder" parameterType="Long" resultType="orderPojo" >
+		select t.id as id,
+		t.confirmDate as confirmDate,
+		t.source as source,
+		t.sendDate as sendDate,
+		t.update_date as updateDate,
+		sl.name as userName,
+		(CASE WHEN t.source = 1 THEN '普通拼团' WHEN t.source = 2 THEN '团免' WHEN t.source = 3 THEN '猜价' WHEN t.source = 4 THEN '单独购'  WHEN t.source = 5 THEN '0.1夺宝'  WHEN t.source = 6 THEN '掌上秒杀'END)  as sourceName,
+		t.paymentDate as paymentDate,
+		t.remarks as remarks,a.order_id as orderId,
+		(select consignor from user_order_ship a where a.order_id=t.id)as consignor,
+		(select ship_phone from user_order_ship a where a.order_id=t.id)as shipPhone,
+		(select consignor_address from user_order_ship a where a.order_id=t.id)as consignorAddress,
+		(select sum(num) from user_order_detail where order_id=t.id) as count,
+		(case when t.pay_method = 1 then (select trade_no from alipay_order_info where out_trade_no=t.out_trade_no limit 1)
+		 when t.pay_method = 2 then (select transaction_id from wxpay_order_info where out_trade_no=t.out_trade_no limit 1)
+		 when t.pay_method = 5 then (select transaction_no from order_payinfo where out_trade_no=t.out_trade_no and channel = 'upacp' limit 1)
+		 when t.pay_method = 6 then (select transaction_no from order_payinfo where out_trade_no=t.out_trade_no and channel = 'applepay_upacp' limit 1)
+		 when t.pay_method = 8 then (select transaction_id from wxpay_order_info where out_trade_no=t.out_trade_no limit 1)
+		 end) as tradeNo,
+		t.out_trade_no as outTradeNo,
+		t.espress_price as espressPrice, 
+		t.user_id as userId, 
+		t.suser_id as suserId,
+		t.all_price as allPrice,
+		t.espress_price as espressPrice, 
+		t.consignee as consignee,
+		t.consignee_address as consigneeAddress,
+		t.consignee_phone as consigneePhone,
+		t.consignee_type as consigneeType,
+		(select name from sys_dict where value=t.consignee_type and type = 'consignee_type') as consigneeTypeName,
+		t.buyer_message as buyerMessage,
+		t.seller_message as sellerMessage,
+		t.order_status as orderStatus,
+		w.name as shopName,
+		w.id as shopId,
+		t.agency_user_id as agencyUserId,
+		t.city as cityId,
+		t.is_cancel_order as isCancelOrder,
+		(CASE WHEN t.is_cancel_order = 0 THEN '无售后' WHEN t.is_cancel_order = 1 THEN '取消订单' WHEN t.is_cancel_order = 2 THEN '等待审核' WHEN t.is_cancel_order = 3 THEN '审核成功' WHEN t.is_cancel_order = 4 THEN '审核失败'END) as isCancelOrderName,
+		t.pay_status as payStatus,
+		t.pay_method as payMethod,
+		t.order_no as orderNo,
+		CONCAT(s.name,':',a.logistics_no) as serialNumber,
+		s.name as name,
+		a.logistics_no as logisticsNo,
+		t.create_date as createDate,
+		s.name as logisticsName,
+		(case when c.status = 1 then t.fact_price - c.used_price else t.fact_price end) as factPrice,
+		IFNULL(c.used_price,0) as usedPrice,
+		c.coupon_no as couponNo,
+		t.activity_id as activityId,
+		t.activity_name as activityName,
+		t.discount_price as discountPrice,
+		(select name from sys_dict where value=t.order_status and type = 'order_status') orderStatusName,
+		t.wallet_price as walletPrice,
+		t.discount_context as discountContext,
+		t.group_num as groupNum,
+		t.group_date as groupDate,
+		t.is_success as isSuccess,
+		t.source_id as sourceId,
+		t.is_refund as isRefund,
+		t.province as province,
+		t.refund_date as refundDate,
+		t.province as province,
+		t.refund_date as refundDate,
+		t.pdk_uid as pdkUid,
+		t.is_rebate as isRebate,
+		t.rebate_price as rebatePrice,
+		t.rebate_time as rebateTime,
+		(select p.product_name from product p where uod.product_id = p.id limit 1) as productName,
+		(select p.image from product p where uod.product_id = p.id limit 1) as productImage,
+		uod.num as num,
+		uod.sku_link_id as skuLinkId,
+		uod.product_id as productId,
+		uod.id as orderDid
+		from user_order t 
+		left join user_order_detail uod on t.id =uod.order_id  
+		left join user_order_ship a on t.id =a.order_id  
+		left join sys_dict s on s.name_en = a.logistics_name and s.type='logistics_type' 
+		left join user_shop w on t.suser_id = w.user_id  
+		left join sys_login sl on sl.id=t.user_id
+		left join coupon_order c on c.order_id = t.id and c.status = 1
+		where t.id=#{id}
+	</select>
+	
+	<select id="getfindByIdOrderToPush" parameterType="Long" resultType="orderPojo" >
+		select t.id as id,
+		t.remarks as remarks,a.order_id as orderId,
+		(select consignor from user_order_ship a where a.order_id=t.id)as consignor,
+		(select ship_phone from user_order_ship a where a.order_id=t.id)as shipPhone,
+		(select consignor_address from user_order_ship a where a.order_id=t.id)as consignorAddress,
+		(select sum(num) from user_order_detail where order_id=t.id)as count,
+		(case when t.pay_method = 1 then (select trade_no from alipay_order_info where out_trade_no=t.out_trade_no limit 1)
+		 when t.pay_method = 2 then (select transaction_id from wxpay_order_info where out_trade_no=t.out_trade_no limit 1)
+		 end) as outTradeNo,
+		t.espress_price as espressPrice, t.user_id as userId, t.suser_id as suserId,t.all_price as allPrice,t.espress_price as espressPrice, 
+		t.fact_price as factPrice, t.consignee as consignee ,t.consignee_address as consigneeAddress, t.consignee_phone as consigneePhone,
+		t.consignee_type as consigneeType,(select name from sys_dict where value=t.consignee_type and type = 'consignee_type') as consigneeTypeName,
+		t.buyer_message as buyerMessage ,t.order_status as orderStatus,w.name as shopName,w.id as shopId,t.agency_user_id as agencyUserId,t.city as cityId,
+		t.is_cancel_order as isCancelOrder,t.pay_status as payStatus,t.pay_method as payMethod,t.order_no as orderNo,CONCAT(s.name,':',a.logistics_no) as serialNumber,t.create_date as createDate,a.logistics_no as logisticsNo,s.name as logisticsName ,l.loginname as loginname ,l.baidu_uid as baiduUid,
+		t.wallet_price as walletPrice
+		from user_order t left join user_order_ship a on
+		t.id =a.order_id  left join sys_dict  s on  s.name_en =a.logistics_name and s.type='logistics_type' left join user_shop w on t.suser_id = w.user_id left join sys_login l on l.id = w.user_id  where t.id=#{id} 
+	</select>
+	
+	<select id="getPushByUidOrder" parameterType="java.util.Map" resultType="orderPojo" >
+		select t.id as id,p.status as pushStatus,s.agency_id as agencyId,
+		s.user_id as agencyUid,t.remarks as remarks,
+		(select sum(num) from user_order_detail where order_id=t.id)as count,
+		(case when t.pay_method = 1 then (select trade_no from alipay_order_info where out_trade_no=t.out_trade_no limit 1)
+		 when t.pay_method = 2 then (select transaction_id from wxpay_order_info where out_trade_no=t.out_trade_no limit 1)
+		 end) as outTradeNo,
+		t.espress_price as espressPrice, t.user_id as userId, t.suser_id as suserId,t.all_price as allPrice,t.espress_price as espressPrice, 
+		t.fact_price as factPrice, t.consignee as consignee ,t.consignee_address as consigneeAddress, t.consignee_phone as consigneePhone,
+		t.consignee_type as consigneeType,(select name from sys_dict where value=t.consignee_type and type = 'consignee_type') as consigneeTypeName,
+		t.buyer_message as buyerMessage ,t.order_status as orderStatus,w.name as shopName,w.id as shopId,t.agency_user_id as agencyUserId,t.city as cityId,
+		t.is_cancel_order as isCancelOrder,t.pay_status as payStatus,t.pay_method as payMethod,t.order_no as orderNo,t.create_date as createDate,
+		t.wallet_price as walletPrice
+		from user_order t left join user_agency_push p on
+		t.id =p.orderId  left join user_agency  s on  s.agency_id =p.agencyId  left join user_shop w on t.suser_id = w.user_id  where  (p.status = 1 or p.status = 0) and s.user_id=#{pushAgencyUid}
+		
+		order by p.id desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<delete id="deleteOrdership" parameterType="java.util.Map" >
+	delete from user_order_ship  where order_id=#{orderId}
+	</delete>
+	
+	<select id="orderStatusNum" parameterType="Long" resultType="orderPojo" >
+		select 
+		<!-- (select count(a.id) from user_order a where a.user_id=#{id} and a.is_delete_order=0 and a.is_cancel_order=0) as allNum, -->
+		(select count(a.id) from user_order a left join user_order_detail d on d.order_id = a.id where a.user_id=#{id} and a.order_status=1 and a.is_delete_order=0 and a.is_cancel_order=0 and d.re_status not in (4,7)) as dfkNum,
+		<!-- (select count(a.id) from user_order a where a.user_id=#{id} and a.order_status=2 and a.is_delete_order=0 and a.is_cancel_order=0) as dfhNum, -->
+		(select count(a.id) from user_order a left join user_order_detail d on d.order_id = a.id where a.user_id=#{id} and a.order_status=2 and a.is_delete_order=0 and a.is_success = 0 and d.re_status not in (4,7) AND a.group_num > (SELECT COUNT(id) FROM groupon_user_record gur WHERE gur.attend_id = a.source_id)) as groupingNum,
+		(select count(a.id) from user_order a left join user_order_detail d on d.order_id = a.id where a.user_id=#{id} and a.order_status=2 and a.is_delete_order=0 and a.is_success = 1 and d.re_status not in (4,7)) as waitSendNum,
+		(select count(a.id) from user_order a left join user_order_detail d on d.order_id = a.id where a.user_id=#{id} and a.order_status=3 and a.is_delete_order=0 and d.re_status not in (4,7)) as dshNum,
+		(select count(a.id) from user_order a left join user_order_detail d on d.order_id = a.id where a.user_id=#{id} and a.order_status=4 and a.is_delete_order=0 and d.re_status not in (4,7)) as dplNum,
+		(select count(a.id) from user_order a left join user_order_detail d on d.order_id = a.id where a.user_id=#{id} and a.is_delete_order=0 and d.re_status &gt; 0 and d.re_status &lt; 4) as saleSerNum
+		<!-- from user_order t where 
+		t.user_id = #{id} 
+		limit 1 -->
+	</select>
+	
+	<select id="userIdOrder" parameterType="java.util.Map" resultType="orderPojo" >
+		select t.id as id, t.user_id as userId, t.suser_id as suserId,t.all_price as allPrice, 
+		t.fact_price as factPrice, t.consignee as consignee ,t.consignee_address as consigneeAddress, t.consignee_phone as consigneePhone,
+		t.consignee_type as consigneeType,(select name from sys_dict where value=t.consignee_type and type = 'consignee_type') as consigneeTypeName,
+		t.buyer_message as buyerMessage ,t.order_status as orderStatus,
+		(select count(id) from user_order a where a.user_id=t.user_id ) as allNum,
+		s.id as shopId,s.name as shopName,t.espress_price as espressPrice,
+		t.pay_status as payStatus,t.pay_method as payMethod,t.order_no as orderNo,t.serial_number as serialNumber,t.create_date as createDate,
+		t.wallet_price as walletPrice
+		from user_order t left join user_shop s on t.suser_id = s.user_id
+		where 1=1 and is_delete_order=0
+		<if test="userId!=null and userId!=''">
+			and t.user_id = #{userId} 
+		</if>
+		<if test="orderStatus!=null and orderStatus!=''">
+			and t.order_status = #{orderStatus} 
+		</if>
+		order by t.id desc
+	</select>
+	
+	
+	<select id="getOrderByoutTradeNo" parameterType="String" resultType="orderPojo" >
+		select
+		t.id as id,
+		t.user_id as userId,
+		t.suser_id as suserId,
+		t.all_price as allPrice,
+		t.fact_price as factPrice,
+		t.out_trade_no as outTradeNo,
+		t.consignee as consignee,
+		t.espress_price as espressPrice,
+		t.consignee_address as consigneeAddress,
+		t.consignee_phone as consigneePhone,
+		t.consignee_type as consigneeType,
+		(SELECT name FROM sys_dict WHERE VALUE = t.consignee_type AND TYPE = 'consignee_type') AS consigneeTypeName,
+		t.buyer_message as buyerMessage,
+		t.order_status as orderStatus,
+		t.pay_status as payStatus,
+		t.pay_method as payMethod,
+		t.order_no as orderNo,
+		t.serial_number as serialNumber,
+		t.create_date as createDate,
+		t.activity_id as activityId,
+		t.source_id as sourceId,
+		t.source as source,
+		s.name as shopName,
+		t.is_refund as isRefund,
+		t.wallet_price as walletPrice 
+		from user_order t left join user_shop s on t.suser_id = s.id
+		where t.out_trade_no = #{outTradeNo}
+		order by t.id desc
+	</select>
+	
+	<delete id="delOrder" parameterType="Long">
+		delete from user_order where id = #{id}
+	</delete>
+	
+	<update id="updateOrderStatus" parameterType="Long">
+		update user_order set
+		order_status =3,
+		update_date=now(),
+        sendDate=now()
+		where id = #{id}
+	</update>
+	
+	<!-- 是否删除 -->
+	<update id="isDelete" parameterType="orderPojo">
+		update user_order set
+		is_delete_order = 1
+		where id = #{id}
+	</update>
+	
+	<!-- 批量删除 -->
+	<update id="checkAllOrderById" parameterType="String">
+		update user_order uo set
+		uo.is_delete_order=1
+		where
+		uo.id = #{id}
+	</update>
+	
+	<!-- 是否取消订单 -->
+	<update id="isCancel" parameterType="orderPojo">
+		update user_order set
+		is_cancel_order = 1
+		where id = #{id}
+	</update>
+	
+	
+	<!-- 订单状态修改 -->
+	<update id="updateIsCancelOrder" parameterType="orderPojo">
+		update user_order set
+		is_cancel_order = #{isCancelOrder}
+		where id = #{id} and is_cancel_order = 0
+	</update>
+	
+	<update id="updateOrder" parameterType="orderPojo">
+		update user_order uo 
+		left join user_order_ship uop on uo.id = uop.order_id 
+		set
+		uo.update_by = #{updateBy},
+		uo.update_date = now(),
+		<!--
+		<if test="orderStatus==2">
+		uo.create_date = now(),
+		</if>
+		-->
+		<if test="sourceId != null">
+			uo.source_id = #{sourceId},
+		</if>
+		<if test="isSuccess != null">
+			uo.is_success = #{isSuccess},
+		</if>
+		<if test="sendDate != null and sendDate != ''">
+			uo.sendDate = now(),
+		</if>
+		<if test="paymentDate!=null and paymentDate !=''">
+		    uo.paymentDate= now(),
+		</if>
+		<if test="confirmDate!=null and confirmDate !=''">
+		    uo.confirmDate= now(),
+		</if>
+		<if test="logisticsNo != null and logisticsNo !=''">
+		    uo.confirmDate= now(),
+		</if>
+		<if test="consignee!=null and consignee !=''">
+		uo.consignee = #{consignee},
+		</if>
+		<if test="consigneeAddress!=null and consigneeAddress !=''">
+		uo.consignee_address =#{consigneeAddress},
+		</if>
+		<if test="consigneePhone!=null and consigneePhone !=''">
+		uo.consignee_phone =#{consigneePhone},
+		</if>
+		<if test="buyerMessage!=null and buyerMessage !=''">
+		uo.buyer_message =#{buyerMessage},
+		</if>
+		<if test="consigneeType != null">
+		uo.consignee_type =#{consigneeType},
+		</if>	
+		<if test="payStatus != null">
+		uo.pay_status =#{payStatus},
+		</if>
+		<if test="orderStatus != null">
+		uo.order_status=#{orderStatus},
+		</if>
+		<if test="factPrice != null">
+		uo.fact_price =#{factPrice},
+		</if>
+		<if test="remarks!=null and remarks !=''">
+		uo.remarks=#{remarks},
+		</if>
+		<if test="groupDate !=null and groupDate !=''">
+		uo.group_date=#{groupDate},
+		</if>
+		<if test="isRefund != null and isRefund != ''">
+		uo.is_refund =#{isRefund},
+		</if>
+		<if test="outRefundNo != null and outRefundNo != ''">
+		uo.out_refund_no =#{outRefundNo},
+		</if>
+		<if test="refundDate != null and refundDate != ''">
+		uo.refund_date =#{refundDate},
+		</if>
+		<if test="rebatePrice != null and rebatePrice != ''">
+		uo.rebate_price =#{rebatePrice},
+		</if>
+		<if test="isRebate != null and isRebate != ''">
+		uo.is_rebate =#{isRebate},
+		</if>
+		<if test="rebateTime != null and rebateTime != ''">
+		uo.rebate_time =#{rebateTime},
+		</if>
+		<if test="pdkUid != null and pdkUid != ''">
+		uo.pdk_uid =#{pdkUid},
+		</if>
+		<if test="consignor!=null and consignor !=''">
+		uop.consignor = #{consignor},
+		</if>
+		<if test="consignorAddress!=null and consignorAddress !=''">
+		uop.consignor_address =#{consignorAddress},
+		</if>
+		<if test="shipPhone!=null and shipPhone !=''">
+		uop.ship_phone =#{shipPhone},
+		</if>
+		<if test="logisticsName != null and logisticsName != ''">
+		uop.logistics_name =#{logisticsName},
+		</if>
+		<if test="logisticsNo != null and logisticsNo != ''">
+		uop.logistics_no =#{logisticsNo},
+		</if>
+		uop.update_by = #{updateBy},
+		uop.update_date = now()
+		where uo.id = #{id}
+	</update>
+	
+	<update id="updateOrderPush" parameterType="orderPojo">
+		update user_order set
+		agency_user_id=#{agencyUserId}
+		where id = #{id}
+	</update>
+	
+	<select id="orderAllCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from user_order as t left join user_order_ship s on s.order_id = t.id where is_delete_order=0
+		<if test="orderStatus!=null  ">
+			and is_cancel_order=0 and t.order_status = #{orderStatus}
+		</if>
+		<if test="orderNo!=null and orderNo!=''">
+			and t.order_no like concat("%",#{orderNo},"%")
+		</if>
+		<if test="consignee!=null and consignee!=''">
+			and t.consignee like concat("%",#{consignee},"%")
+		</if>
+		<if test="consigneePhone !=null and consigneePhone !=''">
+			and t.consignee_phone like concat("%",#{consigneePhone},"%")
+		</if>
+		<if test="consigneeAddress !=null and consigneeAddress !=''">
+			and t.consignee_address like concat("%",#{consigneeAddress},"%")
+		</if>
+		<if test="payStatus!=null  ">
+			and t.pay_status = #{payStatus}
+		</if>
+		<if test="overdue==1 and orderStatus==3">
+			and s.create_date&lt;date_sub(now(),interval 15 day)
+		</if>
+		<if test="createDate !=null and createDate !=''">
+			and str_to_date(t.create_date,'%Y-%m-%d')=#{createDate}
+		</if>
+		
+	</select>
+	
+    <select id="getOrderAllCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from user_order_detail a 
+		left join product e on a.product_id=e.id 
+		left join user_order b on a.order_id=b.id
+		left join user_shop c on b.suser_id=c.user_id
+		left join user_manufacturer d on c.user_id=d.user_id
+		left join sys_area f on b.province=f.id
+		where 1=1
+        <if test="createDateStartStr!=null and createDateStartStr!=''">
+             and str_to_date(b.create_date,'%Y-%m-%d %H:%i:%s') &gt;= #{createDateStartStr}
+		</if>
+		<if test="createDateEndStr!=null and createDateEndStr!=''">
+		    and str_to_date(b.create_date,'%Y-%m-%d %H:%i:%s') &lt;= #{createDateEndStr}
+		</if>
+
+
+      
+		
+	</select>
+	<select id="getOrderAllList" resultType="orderPojo"
+		parameterType="java.util.Map">
+		select
+		a.id,
+		b.create_date as createDate,
+	    b.order_no as orderNo,
+	    a.product_id as productId,
+	    d.brand as brand,
+	    c.name as name,
+	    a.product_name as productName,
+	    e.product_num as productNum,
+	    a.stock_price as stockPrice,
+	    a.num as num,
+	    a.order_id as orderId,
+	    f.name as provinces 
+	    
+		from user_order_detail a 
+		left join product e on a.product_id=e.id 
+		left join user_order b on a.order_id=b.id
+		left join user_shop c on b.suser_id=c.user_id
+		left join user_manufacturer d on c.user_id=d.user_id
+		left join sys_area f on b.province=f.id
+		where 1=1
+        <if test="createDateStartStr!=null and createDateStartStr!=''">
+             and str_to_date(b.create_date,'%Y-%m-%d %H:%i:%s') &gt;= #{createDateStartStr}
+		</if>
+		<if test="createDateEndStr!=null and createDateEndStr!=''">
+		     and str_to_date(b.create_date,'%Y-%m-%d %H:%i:%s') &lt;= #{createDateEndStr}
+		</if>
+		<if test="tids !=null and tids !=''">
+			and a.id in 
+			<foreach collection="tids" item="tids" index="index" open="(" separator="," close=")">
+				#{tids}
+			</foreach>
+		</if>
+        order by a.order_id,b.create_date
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+ 
+	</select>
+	
+	<select id="orderAllList" resultType="orderPojo"
+		parameterType="java.util.Map">
+		select t.id as id,
+		(select name from sys_area where id=(select province from user_address where id=t.user_address_id)) as province,
+		(select name from sys_area where id=(select city from user_address where id=t.user_address_id)) as city, 
+		(select name from sys_area where id=(select area from user_address where id=t.user_address_id)) as area,
+		(select create_date from user_order_ship s where order_id=t.id and s.create_date&lt;date_sub(now(),interval 15 day))as times,
+		(select create_date from user_order_ship s where order_id=t.id) as sendTimes,
+		(select sum(num) from user_order_detail where order_id=t.id)as count,
+		(select product_image from user_order_detail where order_id=t.id group by order_id)as productImages,
+		t.user_id as userId,
+		t.update_by as updateBy,
+		(select name from sys_login where id=t.update_by) as updateByName,
+		t.channel as channel, 
+		t.suser_id as suserId,
+		t.all_price as allPrice, 
+		t.fact_price as factPrice, 
+		t.consignee as consignee ,
+		t.consignee_address as consigneeAddress, 
+		t.consignee_phone as consigneePhone,
+		t.consignee_type as consigneeType,
+		(select name from sys_dict where value=t.consignee_type and type = 'consignee_type') as consigneeTypeName,
+		t.buyer_message as buyerMessage ,
+		t.order_status as orderStatus,
+		(select name from sys_dict where value=t.order_status and type = 'order_status') orderStatusName,
+		t.pay_status as payStatus,
+		(select name from sys_dict where value=t.pay_status and type = 'pay_status') payStatusName,
+		t.pay_method as payMethod,
+		(select name from sys_dict where value=t.pay_method and type = 'pay_method_type') payMethodName,
+		t.order_no as orderNo,
+		t.serial_number as serialNumber,
+		t.create_date as createDate,
+		t.update_date as updateDateStr,
+		t.is_cancel_order as isCancelOrder,
+		t.espress_price as espressPrice,
+		(select name from sys_login where id=t.user_id ) userName,
+		t.wallet_price as walletPrice
+		from user_order as t left join user_order_ship s on s.order_id = t.id
+		where 1=1 and is_delete_order=0
+		<if test="orderStatus!=null  ">
+			 and is_cancel_order=0	 and t.order_status = #{orderStatus}
+		</if>
+		<if test="orderNo!=null and orderNo!=''">
+			and t.order_no like concat("%",#{orderNo},"%")
+		</if>
+		<if test="consignee!=null and consignee!=''">
+			and t.consignee like concat("%",#{consignee},"%")
+		</if>
+		<if test="consigneePhone !=null and consigneePhone !=''">
+			and t.consignee_phone like concat("%",#{consigneePhone},"%")
+		</if>
+		<if test="consigneeAddress !=null and consigneeAddress !=''">
+			and t.consignee_address like concat("%",#{consigneeAddress},"%")
+		</if>
+		<if test="payStatus!=null  ">
+			and t.pay_status = #{payStatus}
+		</if>
+		<if test="overdue==1 and orderStatus==3">
+			and s.create_date&lt;date_sub(now(),interval 15 day)
+		</if>
+		<if test="createDate !=null and createDate !=''">
+			and str_to_date(t.create_date,'%Y-%m-%d')=#{createDate}
+		</if>
+		<if test="tids !=null and tids !=''">
+		and t.id in 
+		<foreach collection="tids" item="tids" index="index" open="(" separator="," close=")">
+		#{tids}
+		</foreach>
+		</if>
+		order by t.id desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	
+	
+	<select id="orderAllCount2" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from user_order as t 
+	    left join user_order_ship s on s.order_id = t.id 
+		<!--left join user_agency ua on ua.user_id=t.agency_user_id	-->
+		left join sys_login a on  t.user_id= a.id 
+		<!--
+		left join sys_login e on t.agency_user_id = e.id
+		-->
+		<!-- left join user_shop us on t.suser_id = us.user_id -->
+		left join user_order_detail uod on t.id = uod.order_id
+		<!-- left join groupon_user_record gur on gur.attend_id=t.source_id and gur.is_head=1 and gur.activity_id = t.activity_id -->
+		where t.is_delete_order=0
+		<if test="groupBeginDateStr != null and groupBeginDateStr != '' and groupEndDateStr != null and groupEndDateStr != '' ">
+			and t.group_date between #{groupBeginDateStr} and #{groupEndDateStr}
+		</if>
+		<if test="isRefund != null ">
+			and t.is_refund = #{isRefund}
+		</if>
+		<if test="refundStatus != null ">
+			and uod.re_status = #{refundStatus}
+		</if>
+		<if test="notShip ==1 ">
+			and t.order_status =2 
+			and UNIX_TIMESTAMP(now())-86400 > UNIX_TIMESTAMP(t.group_date)    
+		</if>
+		<if test="attendId != null ">
+			and t.source_id = #{attendId}
+		</if>
+		<if test="loginname != null and loginname != '' ">
+			and a.loginname = #{loginname}
+		</if>
+		<if test="source != null">
+			and t.source = #{source}
+		</if>
+		<if test="productId!=null and productId!=''">
+			and uod.product_id like concat("%",#{productId},"%")
+		</if>
+		<if test="a != null">
+			and (t.order_type != 1 or (t.order_type = 1 and t.order_status != 1))
+		</if>
+		<if test="activityId != null">
+			and t.activity_id = #{activityId}
+		</if>
+		<if test="shopName!=null and shopName!=''">
+			and us.name like concat("%",#{shopName},"%")
+		</if>
+		<if test="orderStatus != null  ">
+			and t.is_cancel_order = 0
+			and t.order_status = #{orderStatus}
+			<if test="orderStatus == 2 and option == null">
+				and (select ifnull(sum(num),0) from user_order_detail where order_id = t.id) != 
+				(select ifnull(sum(refund_num),0) from user_order_refund where order_id = t.id and status = 7)
+				and t.is_success = 1
+			</if>
+			<if test="orderStatus == 2 and option == 1">
+				and (select ifnull(sum(num),0) from user_order_detail where order_id = t.id) != 
+				(select ifnull(sum(refund_num),0) from user_order_refund where order_id = t.id and status in(7,6,5,4))
+				and t.is_success = 1
+			</if>
+		</if>
+		<if test="os != null and os==6">
+			and t.is_success =0
+			and t.order_status=2
+			and (select count(*) from groupon_user_record where attend_id=t.source_id) &lt; t.group_num
+		</if>
+		<if test="os != null and os==7">
+			and t.is_success =2
+			and t.order_status=2
+		</if>
+		<if test="userName !=null and userName !=''">
+			and a.name like concat("%",#{userName},"%")
+		</if>
+		<if test="orderNo!=null and orderNo!=''">
+			and t.order_no like concat("%",#{orderNo},"%")
+		</if>
+		<if test="consignee!=null and consignee!=''">
+			and t.consignee like concat("%",#{consignee},"%")
+		</if>
+		<if test="consigneePhone !=null and consigneePhone !=''">
+			and t.consignee_phone like concat("%",#{consigneePhone},"%")
+		</if>
+		<if test="consigneeAddress !=null and consigneeAddress !=''">
+			and t.consignee_address like concat("%",#{consigneeAddress},"%")
+		</if>
+		<!--
+		<if test="pushName!=null and pushName!=''">
+			and e.name like concat("%",#{pushName},"%")
+		</if>
+		-->		
+		<if test="payStatus!=null  ">
+			and t.pay_status = #{payStatus}
+		</if>
+		<if test="pdkLoginname != null and pdkLoginname != ''">
+			and t.pdk_uid = (select sl.id from sys_login sl where sl.loginname=#{pdkLoginname} )
+		</if>
+		<if test="overdue==1 and orderStatus==3">
+			and s.create_date&lt;date_sub(now(),interval 15 day)
+		</if>
+		<if test="createDate !=null and createDate !=''">
+			and str_to_date(t.create_date,'%Y-%m-%d')=#{createDate}
+		</if>
+	    <if test="beganday !=null and beganday !=''">
+			and UNIX_TIMESTAMP(t.create_date) >= UNIX_TIMESTAMP(CONCAT(#{beganday},':00'))
+		</if>
+		<if test="endday !=null and endday !=''">
+			and  UNIX_TIMESTAMP(CONCAT(#{endday},':00')) >= UNIX_TIMESTAMP(t.create_date)
+		</if>
+		<!-- <if test="beganday1 !=null and beganday1 !=''">
+			and UNIX_TIMESTAMP(gur.attend_time) >= UNIX_TIMESTAMP(CONCAT(#{beganday1},':00'))
+		</if> -->
+		<!-- <if test="endday1 !=null and endday1 !=''">
+			and  UNIX_TIMESTAMP(CONCAT(#{endday1},':00')) >= UNIX_TIMESTAMP(gur.attend_time)
+		</if> -->
+	    <if test="beganSendDate !=null and beganSendDate !=''">
+			and UNIX_TIMESTAMP(t.sendDate) >= UNIX_TIMESTAMP(CONCAT(#{beganSendDate},':00'))
+		</if>
+		<if test="endSendDate !=null and endSendDate !=''">
+			and  UNIX_TIMESTAMP(CONCAT(#{endSendDate},':00')) >= UNIX_TIMESTAMP(t.sendDate)
+		</if>
+		<if test="sendDate !=null and sendDate !=''">
+			and str_to_date(t.sendDate,'%Y-%m-%d')=#{sendDate}
+		</if>
+		<!--
+		<if test="agencyId!=null and agencyId!=''">
+        and ua.agencyId = #{agencyId} 
+	    </if> 
+	    -->
+		<if test="userIds !=null and userIds !=''">
+		and t.user_id  in 
+		<foreach collection="userIds" item="userIds" index="index" open="(" separator="," close=")">
+		#{userIds}
+		</foreach>
+		</if>
+		<if test="consigneeType!=null and consigneeType!=''">
+			and t.consignee_type = #{consigneeType}
+		</if>
+		<if test="payMethod!=null  ">
+			and t.pay_method = #{payMethod}
+		</if>
+		<if test="channel!=null  ">
+			and t.channel = #{channel}
+		</if>
+		<if test="logisticsName!=null and logisticsName!=''">
+			and (s.logistics_name like concat("%",(SELECT name_en FROM sys_dict WHERE NAME LIKE concat("%",#{logisticsName},"%") AND TYPE = 'logistics_type'),"%")
+			 or s.logistics_name like concat("%",#{logisticsName},"%"))
+		</if>
+		<if test="logisticsNo!=null and logisticsNo!=''">
+			and s.logistics_no = #{logisticsNo}
+		</if>
+		<if test="notuserIds !=null and notuserIds !=''">
+		and t.user_id  not in 
+		<foreach collection="notuserIds" item="notuserIds" index="index" open="(" separator="," close=")">
+		#{notuserIds}
+		</foreach>
+		</if>
+		<if test="userId != null and userId != ''">
+			and t.user_id = #{userId}
+		</if>
+		<if test="suserId != null and suserId != ''">
+			and t.suser_id = #{suserId}
+		</if>
+		<if test="orderType != null ">
+			and t.order_type = #{orderType}
+		</if>
+		<if test="orderTypes != null ">
+			and t.order_type != #{orderTypes}
+		</if>
+	</select>
+	
+	<select id="orderAllList2" resultType="orderPojo"
+		parameterType="java.util.Map">
+		select t.id as id,
+		t.paymentDate as paymentDate, 
+		t.group_date as groupDate,
+		t.is_success as isSuccess,
+		uod.product_id as productId,
+		uod.product_name as productName,
+		uod.product_image as productImage,
+		t.source as source,
+		(case when t.source=1 then "普通拼团" 
+		when t.source=2 then "团免" 
+		when t.source=3 then "猜价" 
+		when t.source=4 then "单独购" 
+		when t.source=5 then "0.1夺宝" 
+		when t.source=6 then "掌上秒杀" 
+		when t.source=7 then "免费抽奖" 
+		when t.source=8 then "拼得客" end) as sourceName,
+		(select product_num from product where id=uod.product_id) as productNum,
+		t.remarks as remarks,
+		(select name from sys_area where id=t.province) as province,
+		(select name from sys_area where id=t.city) as city, 
+		(select name from sys_area where id=t.area) as area,
+		<!--(select create_date from user_order_ship s where order_id=t.id and s.create_date&lt;date_sub(now(),interval 15 day))as times,-->
+		(case when s.create_date&lt;date_sub(now(),interval 15 day) then s.create_date end) as times,
+		t.sendDate as sendDate,
+		(select sum(num) from user_order_detail where order_id=t.id)as count,
+		(select product_image from user_order_detail where order_id=t.id limit 1)as productImages,
+		t.user_id as userId,
+		t.update_by as updateBy,
+		(select name from sys_login where id=t.update_by) as updateByName,
+		t.channel as channel, 
+		(select name from sys_dict where value=cast(t.channel as char) and type = 'channel') as channelName,
+		t.suser_id as suserId,
+		t.all_price as allPrice, 
+		t.fact_price as price,
+		(case when c.status = 1 then t.fact_price - c.used_price else t.fact_price end) as factPrice,
+		t.consignee as consignee ,
+		t.consignee_address as consigneeAddress, 
+		t.consignee_phone as consigneePhone,
+		t.consignee_type as consigneeType,
+		(select name from sys_dict where value=cast(t.consignee_type as char) and type = 'consignee_type') as consigneeTypeName,
+		t.buyer_message as buyerMessage ,
+		t.order_status as orderStatus,
+		(select name from sys_dict where value=cast(t.order_status as char) and type = 'order_status') orderStatusName,
+		t.pay_status as payStatus,
+		(select name from sys_dict where value=cast(t.pay_status as char) and type = 'pay_status') payStatusName,
+		t.pay_method as payMethod,
+		(select name from sys_dict where value=cast(t.pay_method as char) and type = 'pay_method_type') payMethodName,
+		<!--e.name as pushName,-->
+		<!--ua.user_id as agencyUserId,-->
+		t.agency_user_id as agencyUserId,
+		t.order_no as orderNo,
+		t.serial_number as serialNumber,
+		t.create_date as createDate,
+		t.update_date as updateDateStr,
+		t.is_cancel_order as isCancelOrder,
+		t.espress_price as espressPrice,
+		(select sl.loginname from sys_login sl where t.pdk_uid = sl.id) as pdkLoginname,
+		s.logistics_no as logisticsNo,
+		(select name from sys_dict where name_en=s.logistics_name and type = 'logistics_type') as logisticsName,
+		a.name  as  userName,
+		a.loginname as loginname,
+		(select name from user_shop us where us.user_id =t.suser_id ) as shopName,
+		(select count(*) from user_order_refund where order_id = t.id and status in (1,2,3,4,7)) as refundStatus,
+		t.activity_id as activityId,
+		t.activity_name as activityName,
+		<!--
+		ums.settle_date as settleDateStr,
+		ums.settle_amount as settleAmount,
+		ums.status as settleStatus,
+		-->
+		t.wallet_price as walletPrice,
+		t.order_type as orderType,
+		t.ip,
+		t.seller_message as sellerMessage,
+		(select status from user_order_refund where order_id = t.id) as refundStatus1,
+		(select attend_time from groupon_user_record where attend_id=t.source_id and user_id=t.user_id and activity_id = t.activity_id limit 1) as attendTime,
+		(select attend_time from groupon_user_record where attend_id=t.source_id and is_head=1 and activity_id = t.activity_id limit 1) as headAttendTime,
+		(select is_head from groupon_user_record where attend_id=t.source_id and user_id=t.user_id limit 1) as isHead,
+		t.source_id as attendId,
+		t.is_refund as isRefund
+		from user_order as t 
+		left join user_order_ship s on s.order_id = t.id
+		<!--left join user_agency ua on ua.user_id=t.agency_user_id-->
+		left join sys_login  a on t.user_id = a.id
+		<!--left join sys_login  e on t.agency_user_id = e.id-->
+		left join coupon_order c on c.order_id = t.id and c.status = 1
+		<!-- left join user_shop us on t.suser_id = us.user_id	 -->
+		<!--left join user_manufacturer_settle ums on ums.id = t.settle_id-->
+		left join user_order_detail uod on t.id = uod.order_id
+		<!-- left join groupon_user_record gur on gur.attend_id=t.source_id and gur.is_head=1 and gur.activity_id = t.activity_id -->
+		where 1=1 and t.is_delete_order=0
+		<if test="groupBeginDateStr != null and groupBeginDateStr != '' and groupEndDateStr != null and groupEndDateStr != '' ">
+			and t.group_date between #{groupBeginDateStr} and #{groupEndDateStr}
+		</if>
+		<if test="isRefund != null ">
+			and t.is_refund = #{isRefund}
+		</if>
+		<if test="refundStatus != null ">
+			and uod.re_status = #{refundStatus}
+		</if>
+		<if test="notShip ==1 ">
+			and t.order_status =2 
+		    and UNIX_TIMESTAMP(now())-86400 > UNIX_TIMESTAMP(t.group_date)    
+		</if>
+		<if test="attendId != null ">
+			and t.source_id = #{attendId}
+		</if>
+		<if test="loginname != null and loginname != '' ">
+			and a.loginname = #{loginname}
+		</if>
+		<if test="source != null">
+			and t.source = #{source}
+		</if>
+		<if test="productId!=null  and productId!=''">
+			and uod.product_id like concat("%",#{productId},"%")
+		</if>
+		<if test="a != null">
+			and (t.order_type != 1 or (t.order_type = 1 and t.order_status != 1))
+		</if>
+		<if test="settleId != null">
+			and t.settle_id = #{settleId}
+		</if>
+		<if test="activityId != null">
+			and t.activity_id = #{activityId}
+		</if>
+		<if test="orderStatus != null  ">
+			and t.is_cancel_order = 0
+			and t.order_status = #{orderStatus}
+			<if test="orderStatus == 2 and option == null">
+				and (select ifnull(sum(num),0) from user_order_detail where order_id = t.id) != 
+				(select ifnull(sum(refund_num),0) from user_order_refund where order_id = t.id and status = 7)
+				and t.is_success = 1
+			</if>
+			<if test="orderStatus == 2 and option == 1">
+				and (select ifnull(sum(num),0) from user_order_detail where order_id = t.id) != 
+				(select ifnull(sum(refund_num),0) from user_order_refund where order_id = t.id and status in(7,6,5,4))
+				and t.is_success = 1
+			</if>
+		</if>
+		<if test="os==6">
+			and t.is_success =0
+			and t.order_status=2
+			and (select count(*) from groupon_user_record where attend_id=t.source_id) &lt; t.group_num
+		</if>
+		<if test="os==7">
+			and t.is_success =2
+			and t.order_status=2
+		</if>
+		<!-- <if test="shopName!=null and shopName!=''">
+			and us.name like concat("%",#{shopName},"%")
+		</if> -->
+		<if test="orderNo!=null and orderNo!=''">
+			and t.order_no like concat("%",#{orderNo},"%")
+		</if>
+		<if test="consignee!=null and consignee!=''">
+			and t.consignee like concat("%",#{consignee},"%")
+		</if>
+		<if test="consigneePhone !=null and consigneePhone !=''">
+			and t.consignee_phone like concat("%",#{consigneePhone},"%")
+		</if>
+		<if test="consigneeAddress !=null and consigneeAddress !=''">
+			and t.consignee_address like concat("%",#{consigneeAddress},"%")
+		</if>
+		<!--
+		<if test="pushName!=null and pushName!=''">
+			and e.name like concat("%",#{pushName},"%")
+		</if>	
+		-->
+		<if test="payStatus!=null  ">
+			and t.pay_status = #{payStatus}
+		</if>
+		<!--
+		<if test="agencyId!=null and agencyId!=''">
+        and ua.agencyId = #{agencyId} 
+	    </if> 
+	    -->
+		 <if test="beganday !=null and beganday !=''">
+			and UNIX_TIMESTAMP(t.create_date) >= UNIX_TIMESTAMP(CONCAT(#{beganday},':00'))
+		</if>
+		<if test="endday !=null and endday !=''">
+			and  UNIX_TIMESTAMP(CONCAT(#{endday},':00')) >= UNIX_TIMESTAMP(t.create_date)
+		</if>
+		<!-- <if test="beganday1 !=null and beganday1 !=''">
+			and UNIX_TIMESTAMP(gur.attend_time) >= UNIX_TIMESTAMP(CONCAT(#{beganday1},':00'))
+		</if> -->
+		<!-- <if test="endday1 !=null and endday1 !=''">
+			and  UNIX_TIMESTAMP(CONCAT(#{endday1},':00')) >= UNIX_TIMESTAMP(gur.attend_time)
+		</if> -->
+		 <if test="beganSendDate !=null and beganSendDate !=''">
+			and UNIX_TIMESTAMP(t.sendDate) >= UNIX_TIMESTAMP(CONCAT(#{beganSendDate},':00'))
+		</if>
+		<if test="endSendDate !=null and endSendDate !=''">
+			and  UNIX_TIMESTAMP(CONCAT(#{endSendDate},':00')) >= UNIX_TIMESTAMP(t.sendDate)
+		</if>
+	   <if test="createDate !=null and createDate !=''">
+		and str_to_date(t.create_date,'%Y-%m-%d')=#{createDate}
+	   </if>
+		<if test="sendDate !=null and sendDate !=''">
+			and str_to_date(t.sendDate,'%Y-%m-%d')=#{sendDate}
+		</if>
+		<if test="userName !=null and userName !=''">
+			and a.name like concat("%",#{userName},"%")
+		</if>
+		<if test="consigneeType!=null and consigneeType!=''">
+			and t.consignee_type = #{consigneeType}
+		</if>
+		<if test="payMethod!=null  ">
+			and t.pay_method = #{payMethod}
+		</if>
+		<if test="channel!=null  ">
+			and t.channel = #{channel}
+		</if>
+		<if test="logisticsName!=null and logisticsName!=''">
+			and (s.logistics_name like concat("%",(SELECT name_en FROM sys_dict WHERE NAME LIKE concat("%",#{logisticsName},"%") AND TYPE = 'logistics_type'),"%")
+			 or s.logistics_name like concat("%",#{logisticsName},"%"))
+		</if>
+		<if test="logisticsNo!=null and logisticsNo!=''">
+			and s.logistics_no = #{logisticsNo}
+		</if>
+		<if test="tids !=null and tids !=''">
+		and t.id in 
+		<foreach collection="tids" item="tids" index="index" open="(" separator="," close=")">
+		#{tids}
+		</foreach>
+		</if>
+		<if test="notuserIds !=null and notuserIds !=''">
+		and t.user_id  not in 
+		<foreach collection="notuserIds" item="notuserIds" index="index" open="(" separator="," close=")">
+		#{notuserIds}
+		</foreach>
+		</if>
+		<if test="userIds !=null and userIds !=''">
+		and t.user_id in 
+		<foreach collection="userIds" item="userIds" index="index" open="(" separator="," close=")">
+		#{userIds}
+		</foreach>
+		</if>
+		<if test="userId != null and userId != ''">
+			and t.user_id = #{userId}
+		</if>
+		<if test="suserId != null and suserId != ''">
+			and t.suser_id = #{suserId}
+		</if>
+		<if test="overdue==1 and orderStatus==3">
+			and s.create_date&lt;date_sub(now(),interval 15 day)
+		</if>
+		<if test="orderType != null ">
+			and t.order_type = #{orderType}
+		</if>
+		<if test="orderTypes != null ">
+			and t.order_type != #{orderTypes}
+		</if>
+		<if test="pdkLoginname != null and pdkLoginname != ''">
+			and t.pdk_uid = (select sl.id from sys_login sl where sl.loginname=#{pdkLoginname} )
+		</if>
+		<if test="orderStatus==3 and orderType != 1">
+			order by t.update_date desc
+		</if>
+		<if test="orderStatus!=3 and orderType != 1">
+			order by t.id desc
+		</if>
+		<if test="orderType==1">
+			order by t.create_date desc
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+		
+	</select>
+	
+	<!-- 为导出Execl所用，请勿随意改动（添加或删除字段等等） -->
+	<select id="orderAllListExcel" resultType="orderPojo"
+		parameterType="java.util.Map">
+		select t.id as id,
+		t.group_date as groupDate,
+		(select name from sys_area where id=t.province) as province,
+		(select name from sys_area where id=t.city) as city, 
+		(select name from sys_area where id=t.area) as area,
+		(select name from sys_dict where value=t.channel and type = 'channel') as channelName,
+		(case when c.status = 1 then t.fact_price - c.used_price else t.fact_price end) as factPrice,
+		t.consignee as consignee ,
+		t.consignee_address as consigneeAddress, 
+		t.consignee_phone as consigneePhone,
+		(select name from sys_dict where value=t.consignee_type and type = 'consignee_type') as consigneeTypeName,
+		t.buyer_message as buyerMessage ,
+		(select name from sys_dict where value=t.order_status and type = 'order_status') orderStatusName,
+		(select name from sys_dict where value=t.pay_status and type = 'pay_status') payStatusName,
+		t.pay_method as payMethod,
+		(select name from sys_dict where value=t.pay_method and type = 'pay_method_type') payMethodName,
+		t.order_no as orderNo,
+		t.create_date as createDate,
+		t.espress_price as espressPrice,
+		s.logistics_no as logisticsNo,
+		(select name from sys_dict where name_en=s.logistics_name and type = 'logistics_type') as logisticsName,
+		a.name  as  userName,
+		a.loginname as loginname,
+		t.is_cancel_order as isCancelOrder,
+		(CASE WHEN t.is_cancel_order = 0 THEN '无售后' WHEN t.is_cancel_order = 1 THEN '取消订单' WHEN t.is_cancel_order = 2 THEN '等待审核' WHEN t.is_cancel_order = 3 THEN '审核成功' WHEN t.is_cancel_order = 4 THEN '审核失败'END)  as isCancelOrderName,
+		t.is_success as isSuccess,
+		t.source as source,
+		(case when t.source=1 then "普通拼团" when t.source=2 then "团免" when t.source=3 then "猜价" when t.source=4 then "单独购" when t.source=5 then "0.1夺宝" when t.source=6 then "掌上秒杀"end) as sourceName,
+		t.remarks as remarks
+		from user_order as t 
+		left join user_order_ship s on s.order_id = t.id
+		<!--left join user_agency ua on ua.user_id=t.agency_user_id-->
+		left join sys_login  a on t.user_id = a.id
+		<!--left join sys_login  e on t.agency_user_id = e.id-->
+		left join coupon_order c on c.order_id = t.id and c.status = 1
+		<if test="shopName!=null and shopName!=''">
+			left join user_shop us on t.suser_id = us.user_id	
+		</if>
+		<!--left join user_manufacturer_settle ums on ums.id = t.settle_id-->
+		<if test="productId!=null  and productId!=''">
+			left join user_order_detail uod on t.id = uod.order_id
+		</if>
+		where 1=1 and t.is_delete_order=0
+		<if test="groupBeginDateStr != null and groupBeginDateStr != '' and groupEndDateStr != null and groupEndDateStr != '' ">
+			and t.group_date between #{groupBeginDateStr} and #{groupEndDateStr}
+		</if>
+		<if test="isRefund != null ">
+			and t.is_refund = #{isRefund}
+		</if>
+		<if test="attendId != null ">
+			and t.source_id = #{attendId}
+		</if>
+		<if test="loginname != null and loginname != '' ">
+			and a.loginname = #{loginname}
+		</if>
+		<if test="productId!=null  and productId!=''">
+			and uod.product_id like concat("%",#{productId},"%")
+		</if>
+		<if test="a != null">
+			and (t.order_type != 1 or (t.order_type = 1 and t.order_status != 1))
+		</if>
+		<if test="settleId != null">
+			and t.settle_id = #{settleId}
+		</if>
+		<if test="activityId != null">
+			and t.activity_id = #{activityId}
+		</if>
+		
+		<if test="orderStatus != null  ">
+			and t.is_cancel_order = 0
+			and t.order_status = #{orderStatus}
+			<if test="orderStatus == 2 and option == null">
+				and (select ifnull(sum(num),0) from user_order_detail where order_id = t.id) != 
+				(select ifnull(sum(refund_num),0) from user_order_refund where order_id = t.id and status = 7)
+				and t.is_success = 1
+			</if>
+			<if test="orderStatus == 2 and option == 1">
+				and (select ifnull(sum(num),0) from user_order_detail where order_id = t.id) != 
+				(select ifnull(sum(refund_num),0) from user_order_refund where order_id = t.id and status in(7,6,5,4))
+				and t.is_success = 1
+			</if>
+		</if>
+		<if test="os==6">
+			and t.is_success =0
+			and t.order_status=2
+			and (select count(*) from groupon_user_record where attend_id=t.source_id) &lt; t.group_num
+		</if>
+		<if test="os==7">
+			and t.is_success =2
+			and t.order_status=2
+		</if>
+		<if test="shopName!=null and shopName!=''">
+			and us.name like concat("%",#{shopName},"%")
+		</if>
+		<if test="orderNo!=null and orderNo!=''">
+			and t.order_no like concat("%",#{orderNo},"%")
+		</if>
+		<if test="consignee!=null and consignee!=''">
+			and t.consignee like concat("%",#{consignee},"%")
+		</if>
+		<if test="consigneePhone !=null and consigneePhone !=''">
+			and t.consignee_phone like concat("%",#{consigneePhone},"%")
+		</if>
+		<if test="consigneeAddress !=null and consigneeAddress !=''">
+			and t.consignee_address like concat("%",#{consigneeAddress},"%")
+		</if>
+		<!--
+		<if test="pushName!=null and pushName!=''">
+			and e.name like concat("%",#{pushName},"%")
+		</if>	
+		-->
+		<if test="payStatus!=null  ">
+			and t.pay_status = #{payStatus}
+		</if>
+		<!--
+		<if test="agencyId!=null and agencyId!=''">
+        and ua.agencyId = #{agencyId} 
+	    </if> 
+	    -->
+		 <if test="beganday !=null and beganday !=''">
+			and UNIX_TIMESTAMP(t.create_date) >= UNIX_TIMESTAMP(CONCAT(#{beganday},':00'))
+		</if>
+		<if test="endday !=null and endday !=''">
+			and  UNIX_TIMESTAMP(CONCAT(#{endday},':00')) >= UNIX_TIMESTAMP(t.create_date)
+		</if>
+	   <if test="createDate !=null and createDate !=''">
+		and str_to_date(t.create_date,'%Y-%m-%d')=#{createDate}
+	   </if>
+		<if test="sendDate !=null and sendDate !=''">
+			and str_to_date(t.sendDate,'%Y-%m-%d')=#{sendDate}
+		</if>
+		<if test="userName !=null and userName !=''">
+			and a.name like concat("%",#{userName},"%")
+		</if>
+		<if test="consigneeType!=null and consigneeType!=''">
+			and t.consignee_type = #{consigneeType}
+		</if>
+		<if test="payMethod!=null  ">
+			and t.pay_method = #{payMethod}
+		</if>
+		<if test="channel!=null  ">
+			and t.channel = #{channel}
+		</if>
+		<if test="logisticsName!=null and logisticsName!=''">
+			and (s.logistics_name like concat("%",(SELECT name_en FROM sys_dict WHERE NAME LIKE concat("%",#{logisticsName},"%") AND TYPE = 'logistics_type'),"%")
+			 or s.logistics_name like concat("%",#{logisticsName},"%"))
+		</if>
+		<if test="logisticsNo!=null and logisticsNo!=''">
+			and s.logistics_no = #{logisticsNo}
+		</if>
+		<if test="tids !=null and tids !=''">
+		and t.id in 
+		<foreach collection="tids" item="tids" index="index" open="(" separator="," close=")">
+		#{tids}
+		</foreach>
+		</if>
+		<if test="notuserIds !=null and notuserIds !=''">
+		and t.user_id  not in 
+		<foreach collection="notuserIds" item="notuserIds" index="index" open="(" separator="," close=")">
+		#{notuserIds}
+		</foreach>
+		</if>
+		<if test="userIds !=null and userIds !=''">
+		and t.user_id in 
+		<foreach collection="userIds" item="userIds" index="index" open="(" separator="," close=")">
+		#{userIds}
+		</foreach>
+		</if>
+		<if test="userId != null and userId != ''">
+			and t.user_id = #{userId}
+		</if>
+		<if test="suserId != null and suserId != ''">
+			and t.suser_id = #{suserId}
+		</if>
+		<if test="overdue==1 and orderStatus==3">
+			and s.create_date&lt;date_sub(now(),interval 15 day)
+		</if>
+		<if test="orderType != null ">
+			and t.order_type = #{orderType}
+		</if>
+		<if test="orderTypes != null ">
+			and t.order_type != #{orderTypes}
+		</if>
+		<if test="orderStatus==3 and orderType != 1">
+			order by t.update_date desc
+		</if>
+		<if test="orderStatus!=3 and orderType != 1">
+			order by t.id desc
+		</if>
+		<if test="orderType==1">
+			order by t.create_date desc
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+		
+	</select>
+	<!-- 导出Execl -->
+	<select id="exportOrderExcel" resultType="orderPojo" parameterType="java.util.Map">
+		select
+		    sl.loginname as loginname,
+		    uo.order_no as orderNo,
+		    uo.order_status as orderStatus,
+		    uo.all_price as allPrice,
+		    uo.fact_price - ifnull(co.used_price,0) as factPrice,
+		    uod.num,
+		    uo.consignee,
+		    uo.consignee_phone as consigneePhone,
+		    (select name from sys_area where id=uo.province) as province,
+		    (select name from sys_area where id=uo.city) as city, 
+		    (select name from sys_area where id=uo.area) as area,
+		    uo.consignee_address as consigneeAddress,
+		    uo.create_date as createDate,
+		    uo.group_date as groupDate,
+		    uo.source,
+		    uod.product_id as productId,
+		    uod.product_name as productName,
+		    psl.sku_color as skuColor,
+		    psl.sku_format as skuFormat,
+		    psl.business_code as businessCode,
+		    (select name from sys_dict where name_en=uos.logistics_name and type = 'logistics_type') as logisticsName,
+		    uos.logistics_no as logisticsNo,
+		    uo.is_success as isSuccess,
+		    uo.pay_status as payStatus,
+		    uo.pay_method as payMethod,
+		    (select aoi.trade_no from alipay_order_info aoi where aoi.out_trade_no = uo.out_trade_no limit 1) as tradeNo,
+		    (select woi.transaction_id from wxpay_order_info woi where woi.out_trade_no = uo.out_trade_no  limit 1) as tradeNos,
+		    (select loginname from sys_login where uo.pdk_uid = id) as pdkLoginname,
+		    uo.remarks,
+		    uod.re_status as reStatus,
+		    uo.is_refund as isRefund,
+		    uo.buyer_message as buyerMessage,
+		    p.product_num as productNum
+		from user_order uo
+		left join coupon_order co       on uo.id = co.order_id and co.status =1
+		left join user_order_detail uod on uo.id = uod.order_id
+		left join product p             on uod.product_id = p.id
+		left join product_sku_link psl  on psl.id = uod.sku_link_id
+		left join user_order_ship uos   on uo.id = uos.order_id
+		left join sys_login sl          on uo.user_id = sl.id
+		left join groupon_user_record gur on gur.attend_id=uo.source_id and gur.is_head=1 and gur.activity_id = uo.activity_id
+		where 1=1 and uo.is_delete_order=0
+			<if test="productId != null and productId != ''">
+				and uod.product_id = #{productId}
+			</if>
+			<if test="loginname !=null and loginname != ''">
+				and sl.loginname = #{loginname}
+			</if>
+			<if test="a != null">
+				and (uo.order_type != 1 or (uo.order_type = 1 and uo.order_status != 1))
+			</if>
+			<if test="activityId != null">
+				and uo.activity_id = #{activityId}
+			</if>
+			<if test="orderStatus != null">
+				and uo.is_cancel_order = 0
+				and uo.order_status = #{orderStatus}
+				<if test="orderStatus == 2 and option == null">
+					and (select ifnull(sum(num),0) from user_order_detail where order_id = uo.id) != 
+					(select ifnull(sum(refund_num),0) from user_order_refund where order_id = uo.id and status = 7)
+					and uo.is_success = 1
+				</if>
+				<if test="orderStatus == 2 and option == 1">
+					and (select ifnull(sum(num),0) from user_order_detail where order_id = uo.id) != 
+					(select ifnull(sum(refund_num),0) from user_order_refund where order_id = uo.id and status in(7,6,5,4))
+					and uo.is_success = 1
+				</if>
+			</if>
+			<if test="os==6">
+				and uo.is_success =0
+				and uo.order_status=2
+				and (select count(*) from groupon_user_record where attend_id=uo.source_id) &lt; uo.group_num
+			</if>
+			<if test="os==7">
+				and uo.is_success =2
+				and uo.order_status=2
+			</if>
+			<if test="orderNo != null and orderNo != ''">
+				and uo.order_no like concat("%",#{orderNo},"%")
+			</if>
+			<if test="outTradeNo != null and outTradeNo != ''">
+				and uo.out_trade_no like concat("%",#{outTradeNo},"%")
+			</if>
+			<if test="consignee!=null and consignee!=''">
+				and uo.consignee like concat("%",#{consignee},"%")
+			</if>
+			<if test="consigneePhone !=null and consigneePhone !=''">
+				and uo.consignee_phone like concat("%",#{consigneePhone},"%")
+			</if>
+			<if test="consigneeAddress !=null and consigneeAddress !=''">
+				and uo.consignee_address like concat("%",#{consigneeAddress},"%")
+			</if>
+			<if test="payStatus!=null">
+				and uo.pay_status = #{payStatus}
+			</if>
+			<if test="beganday != null and beganday != ''">
+				and UNIX_TIMESTAMP(uo.create_date) &gt;= UNIX_TIMESTAMP(CONCAT(#{beganday},':00'))
+			</if>
+			<if test="endday !=null and endday !=''">
+				and  UNIX_TIMESTAMP(CONCAT(#{endday},':00')) &gt;= UNIX_TIMESTAMP(uo.create_date)
+			</if>
+			<if test="beganday1 !=null and beganday1 !=''">
+			and UNIX_TIMESTAMP(gur.attend_time) >= UNIX_TIMESTAMP(CONCAT(#{beganday1},':00'))
+		    </if>
+		    <if test="endday1 !=null and endday1 !=''">
+			and  UNIX_TIMESTAMP(CONCAT(#{endday1},':00')) >= UNIX_TIMESTAMP(gur.attend_time)
+		    </if>
+		    <if test="createDate != null and createDate != ''">
+			    and str_to_date(uo.create_date,'%Y-%m-%d')=#{createDate}
+		    </if>
+			<if test="sendDate != null and sendDate != ''">
+				and str_to_date(uo.sendDate,'%Y-%m-%d')=#{sendDate}
+			</if>
+			<if test="consigneeType != null">
+				and uo.consignee_type = #{consigneeType}
+			</if>
+			<if test="payMethod != null  ">
+				and uo.pay_method = #{payMethod}
+			</if>
+			<if test="channel != null  ">
+				and uo.channel = #{channel}
+			</if>
+			<if test="logisticsName != null and logisticsName!=''">
+				and uos.logistics_name in (select name_en from sys_dict where name like concat("%",#{logisticsname},"%") and type = 'logistics_type')
+			</if>
+			<if test="logisticsNo != null and logisticsNo != ''">
+				and uos.logistics_no = #{logisticsNo}
+			</if>
+			<if test="tids !=null and tids !=''">
+				and uo.id in 
+				<foreach collection="tids" item="tids" index="index" open="(" separator="," close=")">
+					#{tids}
+				</foreach>
+			</if>
+			<if test="notuserIds !=null and notuserIds !=''">
+				and uo.user_id  not in 
+				<foreach collection="notuserIds" item="notuserIds" index="index" open="(" separator="," close=")">
+					#{notuserIds}
+				</foreach>
+			</if>
+			<if test="userIds !=null and userIds !=''">
+				and uo.user_id in 
+				<foreach collection="userIds" item="userIds" index="index" open="(" separator="," close=")">
+					#{userIds}
+				</foreach>
+			</if>
+			<if test="userId != null and userId != ''">
+				and uo.user_id = #{userId}
+			</if>
+			<if test="suserId != null and suserId != ''">
+				and uo.suser_id = #{suserId}
+			</if>
+			<if test="overdue == 1 and orderStatus == 3">
+				and s.create_date &lt; date_sub(now(),interval 15 day)
+			</if>
+			<if test="orderType != null ">
+				and uo.order_type = #{orderType}
+			</if>
+			<if test="orderTypes != null ">
+				and uo.order_type != #{orderTypes}
+			</if>
+			<if test="groupBeginDateStr != null and groupBeginDateStr != ''">
+				and uo.group_date &gt;= #{groupBeginDateStr}
+			</if>
+			<if test="groupEndDateStr != null and groupEndDateStr != '' ">
+				and uo.group_date &lt;= #{groupEndDateStr}
+			</if>
+			<if test="beginSendDateStr != null and beginSendDateStr != ''">
+				and uo.sendDate &gt;= #{beginSendDateStr}
+			</if>
+			<if test="endSendDateStr != null and endSendDateStr != '' ">
+				and uo.sendDate &lt;= #{endSendDateStr}
+			</if>
+			<if test="isRefund != null ">
+				and uo.is_refund = #{isRefund}
+			</if>
+			<if test="attendId != null ">
+				and uo.source_id = #{attendId}
+			</if>
+			<if test="source != null ">
+				and uo.source = #{source}
+			</if>
+			<if test="pdkLoginname != null and pdkLoginname != ''">
+				and uo.pdk_uid = (select sl.id from sys_login sl where sl.loginname=#{pdkLoginname} )
+			</if>
+			
+		order by uo.id desc
+	</select>
+
+	
+	<select id="orderAllListSettle" resultType="orderPojo"
+		parameterType="java.util.Map">
+ 
+ 		select 
+ 		(select sum(fact_price) from user_order where pay_status=0) as payN,
+ 		(select sum(fact_price) from user_order where pay_status=1) as payY 
+ 		from user_order t 
+		where 1=1
+		
+		<if test="beganday!=null and beganday !='' ">
+			and UNIX_TIMESTAMP(t.create_date) >= UNIX_TIMESTAMP(CONCAT(#{beganday},' 00:00:00'))
+		</if>
+		<if test="endday!=null and endday !='' ">
+			and UNIX_TIMESTAMP(CONCAT(#{endday},' 00:00:00')) >= UNIX_TIMESTAMP(t.create_date)
+		</if>
+		
+		group by t.user_id limit 1
+		
+	</select>
+	<select id="orderAllListSettleOne" resultType="orderPojo"
+		parameterType="java.util.Map">
+ 		select 
+ 		t.user_id as userId,
+ 		(select name from sys_login where id=t.user_id ) userName,
+ 		(select sum(fact_price) from user_order a where a.user_id=t.user_id and a.pay_status=0) as payN,
+ 		(select sum(fact_price) from user_order b where b.user_id=t.user_id and b.pay_status=1) as payY 
+ 		from user_order t left join sys_login s on t.user_id = s.id
+		where 1=1
+		<if test="beganday!=null and beganday !='' ">
+			and UNIX_TIMESTAMP(t.create_date) >= UNIX_TIMESTAMP(CONCAT(#{beganday},' 00:00:00'))
+		</if>
+		<if test="endday!=null and endday !='' ">
+			and UNIX_TIMESTAMP(CONCAT(#{endday},' 23:59:59')) >= UNIX_TIMESTAMP(t.create_date)
+		</if>
+		<if test="userName!=null and userName !='' ">
+			and s.name = #{userName}
+		</if>
+		group by t.user_id 
+		limit 1
+	</select>
+	<select id="orderAllListSettleMF" resultType="orderPojo"
+		parameterType="java.util.Map">
+ 
+ 		select 
+ 		(select name from sys_login where id=t.user_id ) userName,
+ 		(select sum(fact_price) from user_order a where a.user_id=t.user_id and a.pay_status=0) as payN,
+ 		(select sum(fact_price) from user_order b where b.user_id=t.user_id and b.pay_status=1) as payY 
+ 		from user_order t left join sys_login s on t.user_id = s.id
+		where 1=1
+		
+		<if test="beganday!=null and beganday !='' ">
+			and UNIX_TIMESTAMP(t.create_date) >= UNIX_TIMESTAMP(CONCAT(#{beganday},' 00:00:00'))
+		</if>
+		<if test="endday!=null and endday !='' ">
+			and UNIX_TIMESTAMP(CONCAT(#{endday},' 00:00:00')) >= UNIX_TIMESTAMP(t.create_date)
+		</if>
+		<if test="userName!=null and userName !='' ">
+			and s.name = #{userName}
+		</if>
+		
+		group by t.user_id 
+		
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<select id="supplyOrderListWebCount" resultType="int"
+		parameterType="java.util.Map">
+		select count(*) 
+		from user_order as t  
+		where t.suser_id = #{suerID} and is_delete_order=0 and is_cancel_order=0
+		<if test="consignee !=null and consignee !=''">
+			and t.consignee like concat("%",#{consignee},"%")
+		</if>
+		<if test="orderNo !=null and orderNo !='' ">
+			and t.order_no = #{orderNo}
+		</if>
+		<if test="orderStatus !=null and statusok == null">
+			and t.order_status = #{orderStatus}
+		</if>
+		<if test="orderStatus !=null and statusok != null">
+			and t.order_status in (4,5)
+		</if>
+	</select>
+	
+	
+	<select id="agentOrderListWebCount" resultType="int"
+		parameterType="java.util.Map">
+		select count(*) 
+		from user_order as t  
+		where t.agency_user_id = #{suerID} and is_delete_order=0 and is_cancel_order=0
+		<if test="consignee !=null and consignee !=''">
+			and t.consignee like concat("%",#{consignee},"%")
+		</if>
+		<if test="orderNo !=null and orderNo !='' ">
+			and t.order_no = #{orderNo}
+		</if>
+		<if test="orderStatus !=null and statusok == null">
+			and t.order_status = #{orderStatus}
+		</if>
+		<if test="orderStatus !=null and statusok != null">
+			and t.order_status in (4,5)
+		</if>
+
+	</select>
+	
+	<select id="supplyOrderListWeb" resultType="orderPojo"
+		parameterType="java.util.Map">
+		select t.id as id, 
+		t.user_id as userId, 
+		t.suser_id as suserId,
+		t.all_price as allPrice, 
+		t.fact_price as factPrice, 
+		t.consignee as consignee ,
+		t.consignee_address as consigneeAddress, 
+		t.consignee_phone as consigneePhone,
+		t.consignee_type as consigneeType,
+		(select name from sys_dict where value=t.consignee_type and type = 'consignee_type') as consigneeTypeName,
+		t.buyer_message as buyerMessage ,
+		t.order_status as orderStatus,
+		(select name from sys_dict where value=t.order_status and type = 'order_status') orderStatusName,
+		t.pay_status as payStatus,
+		(select name from sys_dict where value=t.pay_status and type = 'pay_status') payStatusName,
+		t.pay_method as payMethod,
+		(select name from sys_dict where value=t.pay_method and type = 'pay_method_type') payMethodName,
+		t.order_no as orderNo,
+		t.serial_number as serialNumber,
+		t.create_date as createDate,
+		t.espress_price as espressPrice,
+		(select count(id) from user_order a where a.user_id=t.user_id ) as allNum,
+		s.id as shopId,s.name as shopName,
+		(select name from sys_login where id=t.user_id ) userName,
+		t.wallet_price as walletPrice
+		from user_order as t  left join user_shop s on t.suser_id = s.user_id
+		where t.suser_id = #{suerID} and is_delete_order=0 and is_cancel_order=0
+		<if test="consignee !=null and consignee !=''">
+			and t.consignee like concat("%",#{consignee},"%")
+		</if>
+		<if test="orderNo !=null and orderNo !='' ">
+			and t.order_no = #{orderNo}
+		</if>
+		<if test="orderStatus !=null and statusok == null">
+			and t.order_status = #{orderStatus}
+		</if>
+		<if test="orderStatus !=null and statusok != null">
+			and t.order_status in (4,5)
+		</if>
+		order by t.id desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<select id="agentOrderListWeb" resultType="orderPojo"
+		parameterType="java.util.Map">
+		select t.id as id, 
+		t.user_id as userId, 
+		t.suser_id as suserId,
+		t.all_price as allPrice, 
+		t.fact_price as factPrice, 
+		t.consignee as consignee ,
+		t.consignee_address as consigneeAddress, 
+		t.consignee_phone as consigneePhone,
+		t.consignee_type as consigneeType,
+		(select name from sys_dict where value=t.consignee_type and type = 'consignee_type') as consigneeTypeName,
+		t.buyer_message as buyerMessage ,
+		t.order_status as orderStatus,
+		(select name from sys_dict where value=t.order_status and type = 'order_status') orderStatusName,
+		t.pay_status as payStatus,
+		(select name from sys_dict where value=t.pay_status and type = 'pay_status') payStatusName,
+		t.pay_method as payMethod,
+		(select name from sys_dict where value=t.pay_method and type = 'pay_method_type') payMethodName,
+		t.order_no as orderNo,
+		t.serial_number as serialNumber,
+		t.create_date as createDate,
+		t.espress_price as espressPrice,
+		(select count(id) from user_order a where a.user_id=t.user_id ) as allNum,
+		s.id as shopId,s.name as shopName,
+		(select name from sys_login where id=t.user_id ) userName
+		from user_order as t  left join user_shop s on t.suser_id = s.user_id
+		where t.agency_user_id = #{suerID} and is_delete_order=0 and is_cancel_order=0
+		<if test="consignee !=null and consignee !=''">
+			and t.consignee like concat("%",#{consignee},"%")
+		</if>
+		<if test="orderNo !=null and orderNo !='' ">
+			and t.order_no = #{orderNo}
+		</if>
+		<if test="orderStatus ==null and statusok == null">
+			and t.order_status &gt; 1
+		</if>
+		<if test="orderStatus !=null and statusok == null">
+			and t.order_status = #{orderStatus}
+		</if>
+		<if test="orderStatus !=null and statusok != null">
+			and t.order_status in (4,5)
+		</if>
+		order by t.id desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<update id="updateOrderStatusWeb" parameterType="orderPojo">
+		update user_order set
+		<if test="orderStatus!=null and orderStatus !=''">
+		order_status =#{orderStatus},
+		</if>
+		<if test="updateBy!=null">
+		update_by=#{updateBy},
+		</if>
+		<if test="sendDate!=null and sendDate !=''">
+		sendDate=sysdate(),
+		</if>
+		<if test="paymentDate!=null and paymentDate !=''">
+		paymentDate=sysdate(),
+		</if>
+		<if test="confirmDate!=null and confirmDate !=''">
+		confirmDate=sysdate(),
+		</if>
+		<if test="remarks!=null and remarks !=''">
+		remarks=#{remarks},
+		</if>
+		update_date=sysdate()
+		where id = #{id}
+	</update>
+	<update id="updateOrderStatusDelivery" parameterType="orderPojo">
+		update user_order set
+		<if test="orderStatus != null">
+		order_status =#{orderStatus},
+		</if>
+		<if test="updateBy != null">
+		update_by=#{updateBy},
+		</if>
+		<if test="remarks != null and remarks != ''">
+		remarks=#{remarks},
+		</if>
+		update_date = now()
+		where id = #{id}
+	</update>
+	<update id="updateOrderStatus2" parameterType="orderPojo">
+		update user_order set
+		order_status =#{orderStatus},
+		confirmDate = now(),
+		update_date=sysdate() 
+		where id = #{id} 
+		<if test="userId != null">
+			and user_id=#{userId}
+		</if>
+		<if test="oldOrderStatus !=null">
+			and order_status = #{oldOrderStatus}
+		</if>
+	</update>
+	<select id="findOrderByOrderNo" resultType="orderPojo"
+		parameterType="String">
+		select t.id as id, 
+		t.user_id as userId, 
+		t.suser_id as suserId,
+		t.all_price as allPrice, 
+		t.fact_price as factPrice, 
+		t.consignee as consignee ,
+		t.consignee_address as consigneeAddress, 
+		t.consignee_phone as consigneePhone,
+		t.consignee_type as consigneeType,
+		(select name from sys_dict where value=t.consignee_type and type = 'consignee_type') as consigneeTypeName,
+		t.buyer_message as buyerMessage ,
+		t.order_status as orderStatus,
+		(select name from sys_dict where value=t.order_status and type = 'order_status') orderStatusName,
+		t.pay_status as payStatus,
+		(select name from sys_dict where value=t.pay_status and type = 'pay_status') payStatusName,
+		t.pay_method as payMethod,
+		(select name from sys_dict where value=t.pay_method and type = 'pay_method_type') payMethodName,
+		t.order_no as orderNo,
+		t.serial_number as serialNumber,
+		t.create_date as createDate,
+		t.espress_price as espressPrice,
+		(select name from sys_login where id=t.user_id ) userName,
+		(select address from user_info where user_id=t.user_id ) consignorAddress,
+		(select phone from user_info where user_id=t.user_id ) shipPhone,
+		t.out_trade_no as outTradeNo,
+		t.wallet_price as walletPrice,
+		t.activity_id as activityId,
+		t.source as source,
+		t.source_id as sourceId,
+		uod.product_id as productId,
+		uod.num as num,
+		p.max_num as maxNum
+		from user_order as t
+		left join user_order_detail uod on uod.order_id = t.id 
+		left join product p on p.id = uod.product_id
+		where
+		1=1 and order_no = #{orderNo} 
+	</select>
+	<!--
+	<insert id="insertOrder" parameterType="orderPojo" useGeneratedKeys="true" keyProperty="id">
+		insert into user_order(user_id,suser_id,all_price,fact_price,espress_price,consignee,consignee_address,consignee_phone,consignee_type,buyer_message,
+		order_status,is_delete_order,is_cancel_order,pay_status,order_no,serial_number,create_by,create_date,update_by,update_date,remarks,version,out_trade_no,
+		user_address_id,province,city,area,channel,pay_method,activity_id,activity_name,discount_type,discount_context,discount_price)
+		values(#{userId},#{suserId},#{allPrice},#{factPrice},#{espressPrice},#{consignee},#{consigneeAddress},#{consigneePhone},#{consigneeType},#{buyerMessage},
+		#{orderStatus},#{isDeleteOrder},#{isCancelOrder},#{payStatus},#{orderNo},#{serialNumber},#{createBy},sysdate(),#{updateBy},sysdate(),#{remarks},#{version},#{outTradeNo},
+		#{userAddressId},#{province},#{city},#{area},#{channel},#{payMethod},#{activityId},#{activityName},#{discountType},#{discountContext},#{discountPrice})
+	</insert>
+	-->
+	
+	<!-- 前端调用 -->
+	<select id="shipOrderCountWeb" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from user_order where
+		1=1
+	</select>
+	
+	<select id="getShipOrderAllListWeb" resultType="orderPojo"
+		parameterType="java.util.Map">
+		select t.id as id, 
+		t.user_id as userId, 
+		t.suser_id as suserId,
+		t.all_price as allPrice, 
+		t.fact_price as factPrice, 
+		t.consignee as consignee ,
+		t.consignee_address as consigneeAddress, 
+		t.consignee_phone as consigneePhone,
+		t.consignee_type as consigneeType,
+		(select name from sys_dict where value=t.consignee_type and type = 'consignee_type') as consigneeTypeName,
+		t.buyer_message as buyerMessage ,
+		t.order_status as orderStatus,
+		(select name from sys_dict where value=t.order_status and type = 'order_status') orderStatusName,
+		t.pay_status as payStatus,
+		(select name from sys_dict where value=t.pay_status and type = 'pay_status') payStatusName,
+		t.pay_method as payMethod,
+		(select name from sys_dict where value=t.pay_method and type = 'pay_method_type') payMethodName,
+		t.order_no as orderNo,
+		t.serial_number as serialNumber,
+		t.create_date as createDate,
+		t.espress_price as espressPrice,
+		(select name from sys_login where id=t.user_id ) userName,
+		t.wallet_price as walletPrice
+		from user_order as t
+		where
+		1=1
+		<if test="orderNo!=null and orderNo!=''">
+			and order_no like CONCAT("%",#{orderNo},"%")
+		</if>
+		<if test="consignee!=null and consignee!=''">
+			and consignee like CONCAT("%",#{consignee},"%")
+		</if>
+		<if test="orderStatus!=null  ">
+			and order_status = #{orderStatus}
+		</if>
+		<if test="payStatus!=null  ">
+			and pay_status = #{payStatus}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<select id="getfindByIdOrderWeb" parameterType="Long" resultType="orderPojo" >
+		select 
+		t.id as id, 
+		t.user_id as userId, 
+		t.suser_id as suserId,
+		t.all_price as allPrice, 
+		t.fact_price as factPrice, 
+		t.consignee as consignee ,
+		t.consignee_address as consigneeAddress,
+		t.consignee_phone as consigneePhone,
+		t.consignee_type as consigneeType,
+		(select name from sys_dict where value=t.consignee_type and type = 'consignee_type') as consigneeTypeName,
+		t.buyer_message as buyerMessage ,
+		t.order_status as orderStatus,
+		(select name from sys_dict where value=t.order_status and type = 'order_status') orderStatusName,
+		t.pay_status as payStatus,
+		t.pay_method as payMethod,
+		(select name from sys_dict where value=t.pay_method and type = 'pay_method_type') payMethodName,
+		t.order_no as orderNo,
+		t.out_trade_no as outTradeNo,
+		t.serial_number as serialNumber,
+		t.espress_price as espressPrice,
+		t.create_date as createDate,
+		t.agency_user_id as agencyUserId,
+		t.activity_id as activityId,
+		t.first_flag as firstFlag,
+		t.remarks as remarks
+		from user_order t where
+		t.id = #{id} 
+	</select>
+	
+	<!-- 我的物流 -->
+	<select id="myWuLiuWeb" parameterType="orderPojo" resultType="orderPojo" >
+		select 
+		t.id as id, 
+		p.id as productId,
+		t.user_id as userId, 
+		t.suser_id as suserId,
+		t.all_price as allPrice, 
+		t.fact_price as factPrice, 
+		t.consignee as consignee ,
+		t.consignee_address as consigneeAddress,
+		t.consignee_phone as consigneePhone,
+		t.consignee_type as consigneeType,
+		(select name from sys_dict where value=t.consignee_type and type = 'consignee_type') as consigneeTypeName,
+		t.buyer_message as buyerMessage ,
+		t.order_status as orderStatus,
+		(select name from sys_dict where value=t.order_status and type = 'order_status') orderStatusName,
+		t.pay_status as payStatus,
+		t.pay_method as payMethod,
+		(select name from sys_dict where value=t.pay_method and type = 'pay_method_type') payMethodName,
+		t.order_no as orderNo,
+		t.serial_number as serialNumber,
+		t.create_date as createDate,
+		t.espress_price as espressPrice,
+		p.image as productImages
+		from user_order t left join user_order_detail d on t.id=d.order_id left join product p on d.product_id=p.id 
+		where
+		t.user_id = #{userId} and is_delete_order=0 and is_cancel_order=0
+		order by t.id  desc
+	</select>
+	
+	<!-- 采购商：退货 -->
+	<select id="consumerOrderListWeb" resultType="orderPojo"
+		parameterType="java.util.Map">
+		select t.id as id, 
+		t.user_id as userId, 
+		t.suser_id as suserId,
+		t.all_price as allPrice, 
+		t.fact_price as factPrice, 
+		t.consignee as consignee ,
+		t.consignee_address as consigneeAddress, 
+		t.consignee_phone as consigneePhone,
+		t.consignee_type as consigneeType,
+		(select name from sys_dict where value=t.consignee_type and type = 'consignee_type') as consigneeTypeName,
+		t.buyer_message as buyerMessage ,
+		t.order_status as orderStatus,
+		(select name from sys_dict where value=t.order_status and type = 'order_status') orderStatusName,
+		t.pay_status as payStatus,
+		(select name from sys_dict where value=t.pay_status and type = 'pay_status') payStatusName,
+		t.pay_method as payMethod,
+		(select name from sys_dict where value=t.pay_method and type = 'pay_method_type') payMethodName,
+		t.order_no as orderNo,
+		t.serial_number as serialNumber,
+		t.create_date as createDate,
+		t.espress_price as espressPrice,
+		(select name from sys_login where id=t.user_id ) userName
+		from user_order as t  
+		where t.user_id = #{userId}
+		<if test="orderNo !=null and orderNo !='' ">
+			and t.order_no = #{orderNo}
+		</if>
+		and t.order_status in (3,4,5)
+	</select>
+	
+	
+	<!-- 销售记录统计：查询所有的记录 -->
+	<select id="productMonthSaleList" resultType="orderPojo"
+		parameterType="java.util.Map">
+			select 
+		uo.id as id,  
+		uo.suser_id as suserId,
+		(select id from user_shop us where uo.suser_id = us.user_id) shopId,
+		sum(fact_price)  as sumprice,
+		us.name as shopName,
+		uo.create_date as createDate
+		from user_order uo left join user_shop us on uo.suser_id = us.user_id
+		where 1=1
+		<if test="(beganday == '' and endday =='') ||(beganday == null and endday ==null)">
+			and date_format(uo.create_date,'%Y-%m')=date_format(now(),'%Y-%m') 
+		</if>
+		<if test="shopName !=null and shopName !='' ">
+			and us.name like CONCAT("%",#{shopName},"%")
+		</if>
+   		<if test="beganday!=null and beganday !='' ">
+			and UNIX_TIMESTAMP(uo.create_date) >= UNIX_TIMESTAMP(CONCAT(#{beganday},' 00:00:00'))
+		</if>
+		<if test="endday!=null and endday !='' ">
+			and UNIX_TIMESTAMP(CONCAT(#{endday},' 00:00:00')) >= UNIX_TIMESTAMP(uo.create_date)
+		</if>
+   		and order_status in(4,5) 
+   		group by uo.suser_id
+		 order by uo.create_date desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+
+	<!--  商家每月销售记录统计：返回信息记录的数目count -->
+	<select id="productMonthSaleCount" resultType="int" parameterType="java.util.Map">
+	
+		 select count(*) from(
+		 select   suser_id,
+		sum(fact_price)  from
+		 user_order uo left join user_shop us on uo.suser_id = us.user_id 
+		where  1=1
+		<if test="(beganday == '' and endday =='') ||(beganday == null and endday ==null) ">
+			and date_format(uo.create_date,'%Y-%m')=date_format(now(),'%Y-%m') 
+		</if>
+		<if test="shopName !=null and shopName !='' ">
+			and us.name like CONCAT("%",#{shopName},"%")
+		</if>
+		<if test="beganday!=null and beganday !='' ">
+			and UNIX_TIMESTAMP(uo.create_date) >= UNIX_TIMESTAMP(CONCAT(#{beganday},' 00:00:00'))
+		</if>
+		<if test="endday!=null and endday !='' ">
+			and UNIX_TIMESTAMP(CONCAT(#{endday},' 00:00:00')) >= UNIX_TIMESTAMP(uo.create_date)
+		</if>
+		
+		and uo.order_status in(4,5) 
+		group by uo.suser_id) aa
+	
+	</select>
+	
+	<!-- 订单数 -->
+	<select id="orderCount" resultType="int" parameterType="java.util.Map">
+	
+		 select count(*) 
+		 from
+		 user_order uo left join user_shop us on uo.suser_id = us.user_id 
+		where  1=1
+		<if test="month != null and month != ''">
+			and date_format(uo.create_date,'%Y-%m')=date_format(now(),'%Y-%m') 
+		</if>
+		and uo.order_status in(4,5) 
+	</select>
+	
+	<!-- 根据订单ID查询订单并分页-->
+	<!--<select id="userIdOrderByPage" parameterType="java.util.Map" resultType="orderPojo" >
+		select t.id as id, t.user_id as userId, t.suser_id as suserId,t.all_price as allPrice, 
+		t.fact_price as factPrice, t.consignee as consignee ,t.consignee_address as consigneeAddress, t.consignee_phone as consigneePhone,
+		t.consignee_type as consigneeType,(select name from sys_dict where value=t.consignee_type and type = 'consignee_type') as consigneeTypeName,
+		t.buyer_message as buyerMessage ,t.order_status as orderStatus,
+		(select count(id) from user_order a where a.user_id=t.user_id ) as allNum,
+		s.id as shopId,s.name as shopName,t.espress_price as espressPrice,
+		t.pay_status as payStatus,t.order_no as orderNo,t.serial_number as serialNumber,t.create_date as createDate,
+		t.pay_method as payMethod
+		from user_order t left join user_shop s on t.suser_id = s.user_id
+		where 1=1 and is_delete_order=0 and is_cancel_order=0 
+		<if test="userId!=null and userId!=''">
+			and t.user_id = #{userId} 
+		</if>
+		<if test="orderStatus!=null and orderStatus!=''">
+			and t.order_status = #{orderStatus} 
+		</if>
+			order by t.create_date DESC 
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>-->
+	<select id="userIdOrderByPage" parameterType="java.util.Map" resultType="orderPojo" >
+		select t.id as id, t.user_id as userId, t.suser_id as suserId,t.all_price as allPrice, 
+		t.fact_price as factPrice, t.consignee as consignee ,t.consignee_address as consigneeAddress, t.consignee_phone as consigneePhone,
+		t.consignee_type as consigneeType,(select name from sys_dict where value=t.consignee_type and type = 'consignee_type') as consigneeTypeName,
+		t.buyer_message as buyerMessage ,t.order_status as orderStatus,
+		(select count(id) from user_order a where a.user_id=t.user_id ) as allNum,
+		s.id as shopId,s.name as shopName,t.espress_price as espressPrice,
+		t.pay_status as payStatus,t.order_no as orderNo,t.serial_number as serialNumber,t.create_date as createDate,
+		t.pay_method as payMethod,
+		c.used_price as usedPrice,
+		t.activity_id as activityId,
+		t.activity_name as activityName,
+		t.wallet_price as walletPrice
+		from user_order t left join user_shop s on t.suser_id = s.user_id
+		left join coupon_order c on c.order_id = t.id and c.status = 1
+		where 1=1 and is_delete_order=0 and is_cancel_order=0
+		<if test="userId!=null and userId!=''">
+			and t.user_id = #{userId} 
+		</if>
+		<if test="orderStatus!=null and orderStatus!=''">
+			and t.order_status = #{orderStatus} 
+			and exists (select * from user_order_detail d where d.order_id = t.id and d.re_status in (0,1,2,3,5,6))
+		</if>
+		<if test="orderStatus!=null and (orderStatus==2 or orderStatus==3 or orderStatus==4)">
+			order by IFNULL(t.update_date,t.create_date) desc
+		</if>
+		<if test="orderStatus==null or (orderStatus!=2 and orderStatus!=3 and orderStatus!=4)">
+			order by t.create_date DESC 
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	<!-- 今天成交量(支付状态为已支付)-->
+	<select id="todayBargainNum" resultType="int" >
+		SELECT count(*) from user_order where date(create_date)=curdate()
+		and is_delete_order = 0
+		and is_cancel_order = 0
+		and order_status &gt;= 2
+	</select>
+	<select id="orderEleAllListCount" resultType="int" parameterType="java.util.Map">
+		select count(*) 
+		from user_order as t 
+		where 1=1 and is_delete_order=0 and is_cancel_order=0
+		and t.order_status in (4,5)
+		<if test="notuserIds !=null and notuserIds.size != 0">
+			and t.user_id  not in 
+			<foreach collection="notuserIds" item="notuserIds" index="index" open="(" separator="," close=")">
+			#{notuserIds}
+			</foreach>
+		</if>
+		<if test="beganday!=null and beganday!='' and endday!=null and endday!=''">
+			and str_to_date(t.create_date,'%Y-%m-%d') between #{beganday} and #{endday}
+		</if>
+		order by t.id asc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	<select id="orderEleAllList" resultType="orderPojo" parameterType="java.util.Map">
+		select t.id as id,
+		t.user_id as userId,
+		(select sum(num) from user_order_detail where order_id=t.id)as count,
+		t.order_status as orderStatus,
+		t.consignee as consignee,
+		t.all_price as allPrice,
+		t.consignee_phone as consigneePhone,
+		t.consignee_address as consigneeAddress,
+		t.order_no as orderNo,
+		t.create_date as createDate
+		from user_order as t 
+		where 1=1 and is_delete_order=0 and is_cancel_order=0
+		and t.order_status in (4,5)
+		<if test="beganday!=null and beganday!='' and endday!=null and endday!=''">
+			and str_to_date(t.create_date,'%Y-%m-%d') between #{beganday} and #{endday}
+		</if>
+		order by t.id asc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<!-- 总成交额-->
+	<select id="transactionPriceSum" resultType="double">
+		select sum(fact_price) from user_order where order_status>=2
+	</select>
+	
+	<update id="updateorders" parameterType="java.util.Map">
+		update user_order 
+		<set>
+		<if test="remarks!=null and remarks!=''">
+		remarks=#{remarks},
+		</if>
+		<if test="sellerMessage!=null and sellerMessage!=''">
+		seller_message=#{sellerMessage},
+		</if>
+		<if test="walletPrice != null">
+		wallet_price = #{walletPrice},
+		</if>
+		<if test="payMethod != null">
+		pay_method = #{payMethod},
+		</if>
+		<if test="orderType != null">
+		order_type = #{orderType},
+		</if>
+		<if test="walletPrice != null ">
+		wallet_price = #{walletPrice},
+		</if>
+		</set>
+		where id=#{id}
+	</update>
+	
+	<!-- 判断是否有首单 -->
+	<select id="checkUserFirstOrder" resultType="int" parameterType="Long">
+		select count(*) from user_order where user_id = #{userId} and (first_flag = 1 or first_flag =2)
+	</select>
+	<!-- 判断是否首单 -->
+	<select id="isUserFirstOrder" resultType="int" parameterType="Long">
+		select count(*) from user_order where id = #{id} and first_flag = 1
+	</select>
+	<!-- 更新为首单标志 -->
+	<update id="updateFirstOrder" parameterType="String">
+		update user_order set 
+		first_flag = 1
+		where out_trade_no=#{outTradeNo}
+	</update>
+	<!-- 更改订单实收金额 -->
+	<update id="updateOrderPrice" parameterType="java.util.Map">
+		update user_order set 
+		fact_price = #{factPrice}
+		where order_no=#{orderNo}
+	</update>
+	
+	<!-- 查询结算订单 -->
+	<select id="queryOrderSettleInfo" parameterType="java.util.Map" resultType="orderPojo">
+		select t.id as id, t.user_id as userId, t.suser_id as suserId,t.all_price as allPrice, 
+		t.fact_price as factPrice, t.consignee as consignee ,t.consignee_address as consigneeAddress, t.consignee_phone as consigneePhone,
+		t.consignee_type as consigneeType,(select name from sys_dict where value=t.consignee_type and type = 'consignee_type') as consigneeTypeName,
+		t.buyer_message as buyerMessage ,t.order_status as orderStatus,
+		(select count(id) from user_order a where a.user_id=t.user_id ) as allNum,
+		s.id as shopId,s.name as shopName,t.espress_price as espressPrice,
+		t.pay_status as payStatus,t.order_no as orderNo,t.serial_number as serialNumber,t.create_date as createDate,
+		t.pay_method as payMethod,
+		c.used_price as usedPrice,
+		t.activity_id as activityId,
+		t.activity_name as activityName,
+		t.is_settle as isSettle,
+		t.settle_date as settleDate,
+		t.settle_amount as settleAmount,
+		t.settle_id as settleId,
+		t.wallet_price as walletPrice
+		from user_order t left join user_shop s on t.suser_id = s.user_id
+		left join coupon_order c on c.order_id = t.id and c.status = 1
+		where 1=1 and t.is_delete_order=0 and t.is_cancel_order=0 and t.order_status >= 4
+		<if test="suserId != null">
+			and t.suser_id = #{suserId} 
+		</if>
+		<if test="isSettle != null">
+			and t.is_settle = #{isSettle} 
+		</if>
+		<if test="settleId != null">
+			and t.settle_id = #{settleId} 
+		</if>
+		order by t.create_date desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	<!-- 查询结算订单 -->
+	<select id="groupOrderSettleBySuserId" parameterType="java.util.Map" resultType="orderPojo">
+		select 
+		t.suser_id as suserId,
+		sum(IFNULL(t.fact_price,0)) settleAmount
+		from user_order t 
+		where t.is_delete_order=0 and t.is_cancel_order=0 and t.order_status >= 4 and t.suser_id is not null
+		<if test="isSettle != null">
+			and t.is_settle = #{isSettle} 
+		</if>
+		<if test="orderType != null">
+			and t.order_type = #{orderType} 
+		</if>
+		<if test="notuserIds !=null and notuserIds !=''">
+			and t.user_id  not in 
+			<foreach collection="notuserIds" item="notuserIds" index="index" open="(" separator="," close=")">
+				#{notuserIds}
+			</foreach>
+		</if>
+		group by t.suser_id
+	</select>
+	<!-- 商家结算 -->
+	<update id="settleOrderByUserId" parameterType="orderPojo">
+		update user_order t set
+		t.is_settle = 1,
+		t.settle_date = #{settleDate},
+		t.settle_amount = IFNULL(fact_price,0),
+		t.settle_id = #{settleId}
+		where t.suser_id = #{suserId} and t.is_settle = 0  and t.is_delete_order=0 and t.is_cancel_order=0 and t.order_status >= 4 and t.order_type = 0
+		<if test="notuserIds !=null and notuserIds !=''">
+			and t.user_id  not in 
+			<foreach collection="notuserIds" item="notuserIds" index="index" open="(" separator="," close=")">
+				#{notuserIds}
+			</foreach>
+		</if>
+	</update>
+	<!-- 商家结算 -->
+	<update id="settleOrderById" parameterType="orderPojo">
+		update user_order set
+		is_settle = 1,
+		settle_date = #{settleDate},
+		settle_amount = #{settleAmount},
+		settle_id = #{settleId}
+		where id = #{id} and is_settle = 0
+	</update>
+	<!-- 更新订单发货审核 -->
+	<update id="updateOrderType" parameterType="java.util.Map">
+		update user_order set 
+		order_type = #{orderType}
+		where id=#{id}
+		<if test="orderTypeOld != null">
+			and order_type = #{orderTypeOld} 
+		</if>
+	</update>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="orderPojo">
+		select
+			t.id as id,
+			t.user_id as userId,
+			t.suser_id as suserId,
+			t.all_price as allPrice,
+			t.fact_price as factPrice,
+			ifnull(c.used_price,0) as usedPrice,
+			t.out_trade_no as outTradeNo,
+			t.espress_price as espressPrice,
+			t.consignee as consignee,
+			t.consignee_address as consigneeAddress,
+			t.consignee_phone as consigneePhone,
+			t.consignee_type as consigneeType,
+			t.buyer_message as buyerMessage,
+			t.order_status as orderStatus,
+			t.is_cancel_order as isCancelOrder,
+			t.pay_status as payStatus,
+			t.order_no as orderNo,
+			t.serial_number as serialNumber,
+			t.create_by as createBy,
+			t.create_date as createDate,
+			t.update_by as updateBy,
+			t.update_date as updateDate,
+			t.remarks as remarks,
+			t.channel as channel,
+			t.user_address_id as userAddressId,
+			t.sendDate as sendDate,
+			t.province as province,
+			t.city as city,
+			t.area as area,
+			t.pay_method as payMethod,
+			t.activity_name as activityName,
+			t.activity_id as activityId,
+			t.is_settle as isSettle,
+			t.wallet_price as walletPrice,
+			t.seller_message as sellerMessage,
+			t.paymentDate as paymentDate,
+			t.confirmDate as confirmDate,
+			t.source as source,
+			t.is_success as isSuccess,
+			t.source_id as sourceId,
+			t.group_num as groupNum,
+			t.group_date as groupDate,
+			t.is_refund as isRefund,
+			t.ip,
+			t.pdk_uid as pdkUid,
+			t.is_rebate as isRebate,
+			t.rebate_price as rebatePrice,
+			t.rebate_time as rebateTime,
+			c.used_price as usedPrice,
+			d.id as orderDid,
+			d.product_id as productId,
+			d.product_name as productName,
+			d.product_image as productImage,
+			d.sku_link_id as skuLinkId,
+			d.num as num,
+		    d.re_status as refundStatus,
+		    p.product_name as productName,
+		    p.image as productImage,
+		    ga.num as gaNum,
+		    gur.attend_id as attendId,
+		    gur.prize as prize,
+		    gur.status as gurStatus,
+		    (select sl.loginname from sys_login sl where sl.id = t.user_id) as loginname
+		from user_order t
+		left join user_order_detail d on d.order_id = t.id
+		left join coupon_order c on c.order_id = t.id and c.status = 1
+		left join groupon_activity ga on ga.id = t.activity_id
+		left join groupon_user_record gur on gur.activity_id = t.activity_id and gur.user_id = t.user_id and t.source_id = gur.attend_id
+		left join groupon_activity_record gar on gar.id = gur.attend_id
+		left join product p on p.id = d.product_id
+		where 1=1
+			<if test="orderType != null ">
+				and t.order_type = #{orderType}
+			</if>
+			<if test="id != null ">
+			  and t.id = #{id}
+			</if>
+			<if test="userId != null ">
+			  and t.user_id = #{userId}
+			</if>
+			<if test="suserId != null ">
+			  and t.suser_id = #{suserId}
+			</if>
+			<if test="allPrice != null ">
+			  and t.all_price = #{allPrice}
+			</if>
+			<if test="factPrice != null ">
+			  and t.fact_price = #{factPrice}
+			</if>
+			<if test="outTradeNo != null and outTradeNo != '' ">
+			  and t.out_trade_no = #{outTradeNo}
+			</if>
+			<if test="espressPrice != null ">
+			  and t.espress_price = #{espressPrice}
+			</if>
+			<if test="consignee != null and consignee != '' ">
+			  and t.consignee = #{consignee}
+			</if>
+			<if test="consigneeAddress != null and consigneeAddress != '' ">
+			  and t.consignee_address = #{consigneeAddress}
+			</if>
+			<if test="consigneePhone != null and consigneePhone != '' ">
+			  and t.consignee_phone = #{consigneePhone}
+			</if>
+			<if test="consigneeType != null ">
+			  and t.consignee_type = #{consigneeType}
+			</if>
+			<if test="buyerMessage != null and buyerMessage != '' ">
+			  and t.buyer_message = #{buyerMessage}
+			</if>
+			<if test="orderStatus != null ">
+			  and t.order_status = #{orderStatus}
+			</if>
+			<if test="isDeleteOrder != null ">
+			  and t.is_delete_order = #{isDeleteOrder}
+			</if>
+			<if test="isCancelOrder != null ">
+			  and t.is_cancel_order = #{isCancelOrder}
+			</if>
+			<if test="payStatus != null ">
+			  and t.pay_status = #{payStatus}
+			</if>
+			<if test="orderNo != null and orderNo != '' ">
+			  and t.order_no = #{orderNo}
+			</if>
+			<if test="serialNumber != null and serialNumber != '' ">
+			  and t.serial_number = #{serialNumber}
+			</if>
+			<if test="createBy != null ">
+			  and t.create_by = #{createBy}
+			</if>
+			<if test="createDate != null ">
+			  and t.create_date = #{createDate}
+			</if>
+			<if test="updateBy != null ">
+			  and t.update_by = #{updateBy}
+			</if>
+			<if test="updateDate != null ">
+			  and t.update_date = #{updateDate}
+			</if>
+			<if test="remarks != null and remarks != '' ">
+			  and t.remarks = #{remarks}
+			</if>
+			<if test="version != null ">
+			  and t.version = #{version}
+			</if>
+			<if test="channel != null ">
+			  and t.channel = #{channel}
+			</if>
+			<if test="userAddressId != null ">
+			  and t.user_address_id = #{userAddressId}
+			</if>
+			<if test="sendDate != null ">
+			  and t.sendDate = #{sendDate}
+			</if>
+			<if test="province != null ">
+			  and t.province = #{province}
+			</if>
+			<if test="city != null ">
+			  and t.city = #{city}
+			</if>
+			<if test="area != null ">
+			  and t.area = #{area}
+			</if>
+			<if test="agencyUserId != null ">
+			  and t.agency_user_id = #{agencyUserId}
+			</if>
+			<if test="payMethod != null ">
+			  and t.pay_method = #{payMethod}
+			</if>
+			<if test="activityName != null and activityName != '' ">
+			  and t.activity_name = #{activityName}
+			</if>
+			<if test="activityId != null ">
+			  and t.activity_id = #{activityId}
+			</if>
+			<if test="walletPrice != null ">
+			  and t.wallet_price = #{walletPrice}
+			</if>
+			<if test="sellerMessage != null and sellerMessage != '' ">
+			  and t.seller_message = #{sellerMessage}
+			</if>
+			<if test="paymentDate != null ">
+			  and t.paymentDate = #{paymentDate}
+			</if>
+			<if test="confirmDate != null ">
+			  and t.confirmDate = #{confirmDate}
+			</if>
+			<if test="source != null ">
+			  and t.source = #{source}
+			</if>
+			<if test="isSuccess != null ">
+			  and t.is_success = #{isSuccess}
+			</if>
+			<if test="sourceId != null ">
+			  and t.source_id = #{sourceId}
+			</if>
+			<if test="isNotSource != null ">
+			  and t.source != #{isNotSource}
+			</if>
+			<if test="isFreeDraw != null ">
+			  and ga.num > (select count(*) from groupon_user_record where attend_id=t.source_id) 
+			</if>
+			<if test="refund != null and refund == 0 ">
+			  and d.re_status not in (4,7)
+			</if>
+			<if test="refund != null and refund == 1">
+			  and d.re_status > 0
+			</if>
+			<if test="userIds != null">
+				and t.user_id not in
+			   <foreach item="item" index="index" collection="userIds" open="(" separator="," close=")">  
+				 #{item}
+			   </foreach>
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select
+			count(*)
+		from user_order t
+		left join user_order_detail d on d.order_id = t.id
+		left join coupon_order c on c.order_id = t.id and c.status = 1
+		where 1=1
+			<if test="id != null ">
+			  and t.id = #{id}
+			</if>
+			<if test="userId != null ">
+			  and t.user_id = #{userId}
+			</if>
+			<if test="suserId != null ">
+			  and t.suser_id = #{suserId}
+			</if>
+			<if test="allPrice != null ">
+			  and t.all_price = #{allPrice}
+			</if>
+			<if test="factPrice != null ">
+			  and t.fact_price = #{factPrice}
+			</if>
+			<if test="outTradeNo != null and outTradeNo != '' ">
+			  and t.out_trade_no = #{outTradeNo}
+			</if>
+			<if test="espressPrice != null ">
+			  and t.espress_price = #{espressPrice}
+			</if>
+			<if test="consignee != null and consignee != '' ">
+			  and t.consignee = #{consignee}
+			</if>
+			<if test="consigneeAddress != null and consigneeAddress != '' ">
+			  and t.consignee_address = #{consigneeAddress}
+			</if>
+			<if test="consigneePhone != null and consigneePhone != '' ">
+			  and t.consignee_phone = #{consigneePhone}
+			</if>
+			<if test="consigneeType != null ">
+			  and t.consignee_type = #{consigneeType}
+			</if>
+			<if test="buyerMessage != null and buyerMessage != '' ">
+			  and t.buyer_message = #{buyerMessage}
+			</if>
+			<if test="orderStatus != null ">
+			  and t.order_status = #{orderStatus}
+			</if>
+			<if test="isDeleteOrder != null ">
+			  and t.is_delete_order = #{isDeleteOrder}
+			</if>
+			<if test="isCancelOrder != null ">
+			  and t.is_cancel_order = #{isCancelOrder}
+			</if>
+			<if test="payStatus != null ">
+			  and t.pay_status = #{payStatus}
+			</if>
+			<if test="orderNo != null and orderNo != '' ">
+			  and t.order_no = #{orderNo}
+			</if>
+			<if test="serialNumber != null and serialNumber != '' ">
+			  and t.serial_number = #{serialNumber}
+			</if>
+			<if test="createBy != null ">
+			  and t.create_by = #{createBy}
+			</if>
+			<if test="createDate != null ">
+			  and t.create_date = #{createDate}
+			</if>
+			<if test="updateBy != null ">
+			  and t.update_by = #{updateBy}
+			</if>
+			<if test="updateDate != null ">
+			  and t.update_date = #{updateDate}
+			</if>
+			<if test="remarks != null and remarks != '' ">
+			  and t.remarks = #{remarks}
+			</if>
+			<if test="version != null ">
+			  and t.version = #{version}
+			</if>
+			<if test="channel != null ">
+			  and t.channel = #{channel}
+			</if>
+			<if test="userAddressId != null ">
+			  and t.user_address_id = #{userAddressId}
+			</if>
+			<if test="sendDate != null ">
+			  and t.sendDate = #{sendDate}
+			</if>
+			<if test="province != null ">
+			  and t.province = #{province}
+			</if>
+			<if test="city != null ">
+			  and t.city = #{city}
+			</if>
+			<if test="area != null ">
+			  and t.area = #{area}
+			</if>
+			<if test="agencyUserId != null ">
+			  and t.agency_user_id = #{agencyUserId}
+			</if>
+			<if test="payMethod != null ">
+			  and t.pay_method = #{payMethod}
+			</if>
+			<if test="activityName != null and activityName != '' ">
+			  and t.activity_name = #{activityName}
+			</if>
+			<if test="activityId != null ">
+			  and t.activity_id = #{activityId}
+			</if>
+			<if test="walletPrice != null ">
+			  and t.wallet_price = #{walletPrice}
+			</if>
+			<if test="sellerMessage != null and sellerMessage != '' ">
+			  and t.seller_message = #{sellerMessage}
+			</if>
+			<if test="paymentDate != null ">
+			  and t.paymentDate = #{paymentDate}
+			</if>
+			<if test="confirmDate != null ">
+			  and t.confirmDate = #{confirmDate}
+			</if>
+			<if test="source != null ">
+			  and t.source = #{source}
+			</if>
+			<if test="isSuccess != null ">
+			  and t.is_success = #{isSuccess}
+			</if>
+			<if test="sourceId != null ">
+			  and t.source_id = #{sourceId}
+			</if>
+			<if test="refund != null and refund == 0 ">
+			  and d.re_status = 0
+			</if>
+			<if test="refund != null and refund == 1">
+			  and d.re_status > 0
+			</if>
+	</select>
+	<insert id="insertOrder" useGeneratedKeys="true" keyProperty="id" parameterType="OrderPojo">
+		insert into user_order
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="suserId != null">
+				suser_id,
+			</if>
+			<if test="allPrice != null">
+				all_price,
+			</if>
+			<if test="factPrice != null">
+				fact_price,
+			</if>
+			<if test="outTradeNo != null">
+				out_trade_no,
+			</if>
+			<if test="espressPrice != null">
+				espress_price,
+			</if>
+			<if test="consignee != null">
+				consignee,
+			</if>
+			<if test="consigneeAddress != null">
+				consignee_address,
+			</if>
+			<if test="consigneePhone != null">
+				consignee_phone,
+			</if>
+			<if test="consigneeType != null">
+				consignee_type,
+			</if>
+			<if test="buyerMessage != null">
+				buyer_message,
+			</if>
+			<if test="orderStatus != null">
+				order_status,
+			</if>
+			<if test="isDeleteOrder != null">
+				is_delete_order,
+			</if>
+			<if test="isCancelOrder != null">
+				is_cancel_order,
+			</if>
+			<if test="payStatus != null">
+				pay_status,
+			</if>
+			<if test="orderNo != null">
+				order_no,
+			</if>
+			<if test="serialNumber != null">
+				serial_number,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="updateBy != null">
+				update_by,
+			</if>
+			<if test="updateDate != null">
+				update_date,
+			</if>
+			<if test="remarks != null">
+				remarks,
+			</if>
+			<if test="version != null">
+				version,
+			</if>
+			<if test="channel != null">
+				channel,
+			</if>
+			<if test="userAddressId != null">
+				user_address_id,
+			</if>
+			<if test="sendDate != null">
+				sendDate,
+			</if>
+			<if test="province != null">
+				province,
+			</if>
+			<if test="city != null">
+				city,
+			</if>
+			<if test="area != null">
+				area,
+			</if>
+			<if test="agencyUserId != null">
+				agency_user_id,
+			</if>
+			<if test="payMethod != null">
+				pay_method,
+			</if>
+			<if test="firstFlag != null">
+				first_flag,
+			</if>
+			<if test="activityName != null">
+				activity_name,
+			</if>
+			<if test="activityId != null">
+				activity_id,
+			</if>
+			<if test="discountType != null">
+				discount_type,
+			</if>
+			<if test="discountContext != null">
+				discount_context,
+			</if>
+			<if test="discountPrice != null">
+				discount_price,
+			</if>
+			<if test="isSettle != null">
+				is_settle,
+			</if>
+			<if test="settleDate != null">
+				settle_date,
+			</if>
+			<if test="settleAmount != null">
+				settle_amount,
+			</if>
+			<if test="settleId != null">
+				settle_id,
+			</if>
+			<if test="walletPrice != null">
+				wallet_price,
+			</if>
+			<if test="orderType != null">
+				order_type,
+			</if>
+			<if test="sellerMessage != null">
+				seller_message,
+			</if>
+			<if test="paymentDate != null">
+				paymentDate,
+			</if>
+			<if test="confirmDate != null">
+				confirmDate,
+			</if>
+			<if test="source != null">
+				source,
+			</if>
+			<if test="isSuccess != null">
+				is_success,
+			</if>
+			<if test="sourceId != null">
+				source_id,
+			</if>
+			<if test="groupNum != null">
+				group_num,
+			</if>
+			<if test="ip != null and ip != ''">
+				ip,
+			</if>
+			<if test="pdkUid != null and pdkUid != ''">
+				pdk_uid,
+			</if>
+			
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="userId != null">
+				#{userId},
+			</if>
+			<if test="suserId != null">
+				#{suserId},
+			</if>
+			<if test="allPrice != null">
+				#{allPrice},
+			</if>
+			<if test="factPrice != null">
+				#{factPrice},
+			</if>
+			<if test="outTradeNo != null">
+				#{outTradeNo},
+			</if>
+			<if test="espressPrice != null">
+				#{espressPrice},
+			</if>
+			<if test="consignee != null">
+				#{consignee},
+			</if>
+			<if test="consigneeAddress != null">
+				#{consigneeAddress},
+			</if>
+			<if test="consigneePhone != null">
+				#{consigneePhone},
+			</if>
+			<if test="consigneeType != null">
+				#{consigneeType},
+			</if>
+			<if test="buyerMessage != null">
+				#{buyerMessage},
+			</if>
+			<if test="orderStatus != null">
+				#{orderStatus},
+			</if>
+			<if test="isDeleteOrder != null">
+				#{isDeleteOrder},
+			</if>
+			<if test="isCancelOrder != null">
+				#{isCancelOrder},
+			</if>
+			<if test="payStatus != null">
+				#{payStatus},
+			</if>
+			<if test="orderNo != null">
+				#{orderNo},
+			</if>
+			<if test="serialNumber != null">
+				#{serialNumber},
+			</if>
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+			<if test="createDate != null">
+				now(),
+			</if>
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+			<if test="updateDate != null">
+				now(),
+			</if>
+			<if test="remarks != null">
+				#{remarks},
+			</if>
+			<if test="version != null">
+				#{version},
+			</if>
+			<if test="channel != null">
+				#{channel},
+			</if>
+			<if test="userAddressId != null">
+				#{userAddressId},
+			</if>
+			<if test="sendDate != null">
+				#{sendDate},
+			</if>
+			<if test="province != null">
+				#{province},
+			</if>
+			<if test="city != null">
+				#{city},
+			</if>
+			<if test="area != null">
+				#{area},
+			</if>
+			<if test="agencyUserId != null">
+				#{agencyUserId},
+			</if>
+			<if test="payMethod != null">
+				#{payMethod},
+			</if>
+			<if test="firstFlag != null">
+				#{firstFlag},
+			</if>
+			<if test="activityName != null">
+				#{activityName},
+			</if>
+			<if test="activityId != null">
+				#{activityId},
+			</if>
+			<if test="discountType != null">
+				#{discountType},
+			</if>
+			<if test="discountContext != null">
+				#{discountContext},
+			</if>
+			<if test="discountPrice != null">
+				#{discountPrice},
+			</if>
+			<if test="isSettle != null">
+				#{isSettle},
+			</if>
+			<if test="settleDate != null">
+				#{settleDate},
+			</if>
+			<if test="settleAmount != null">
+				#{settleAmount},
+			</if>
+			<if test="settleId != null">
+				#{settleId},
+			</if>
+			<if test="walletPrice != null">
+				#{walletPrice},
+			</if>
+			<if test="orderType != null">
+				#{orderType},
+			</if>
+			<if test="sellerMessage != null">
+				#{sellerMessage},
+			</if>
+			<if test="paymentDate != null">
+				#{paymentDate},
+			</if>
+			<if test="confirmDate != null">
+				#{confirmDate},
+			</if>
+			<if test="source != null">
+				#{source},
+			</if>
+			<if test="isSuccess != null">
+				#{isSuccess},
+			</if>
+			<if test="sourceId != null">
+				#{sourceId},
+			</if>
+			<if test="groupNum != null">
+				#{groupNum},
+			</if>
+			<if test="ip != null and ip != ''">
+				#{ip},
+			</if>
+			<if test="pdkUid != null and pdkUid != ''">
+				#{pdkUid},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateOrderRefund" parameterType="java.util.Map">
+		update user_order 
+		<set> 
+			<if test="isRefund != null">
+			is_refund = #{isRefund},
+			</if>
+			update_date = now(),
+			<if test="outRefundNo != null and outRefundNo != ''">
+			out_refund_no = #{outRefundNo},
+			</if>
+			<if test="refundDate != null and refundDate != ''">
+			refund_date = #{refundDate},
+			</if>
+			<if test="updateBy != null">
+			update_by = #{updateBy},
+			</if>
+		</set>
+		where is_refund != #{oldRefund}
+			<if test="orderNo != null">
+			and order_no = #{orderNo}
+			</if>
+			<if test="outTradeNo != null">
+			and out_trade_no = #{outTradeNo}
+			</if>
+			<if test="outRefundNumber != null">
+			and out_refund_no = #{outRefundNumber}
+			</if>
+			<if test="orderNo == null and outTradeNo == null and outRefundNumber == null">
+			and id = #{id}
+			</if>
+	</update>
+	
+	
+	<select id="groupRefundListPage" parameterType="java.util.Map" resultType="orderPojo">
+		select
+			t.id as id,
+			t.user_id as userId,
+			(select name from sys_login sl where sl.id=t.user_id) as userName,
+			t.suser_id as suserId,
+			t.all_price as allPrice,
+			(case when c.status = 1 then t.fact_price - c.used_price else t.fact_price end) as factPrice,
+			t.fact_price as factPrice,
+			t.out_trade_no as outTradeNo,
+			t.espress_price as espressPrice,
+			t.consignee as consignee,
+			t.consignee_address as consigneeAddress,
+			t.consignee_phone as consigneePhone,
+			t.consignee_type as consigneeType,
+			t.buyer_message as buyerMessage,
+			t.order_status as orderStatus,
+			t.is_cancel_order as isCancelOrder,
+			t.pay_status as payStatus,
+			t.order_no as orderNo,
+			t.serial_number as serialNumber,
+			t.create_by as createBy,
+			t.create_date as createDate,
+			t.update_by as updateBy,
+			t.update_date as updateDate,
+			t.remarks as remarks,
+			t.channel as channel,
+			t.user_address_id as userAddressId,
+			t.sendDate as sendDate,
+			t.province as province,
+			t.city as city,
+			t.area as area,
+			t.pay_method as payMethod,
+			t.activity_name as activityName,
+			t.activity_id as activityId,
+			t.is_settle as isSettle,
+			t.wallet_price as walletPrice,
+			t.seller_message as sellerMessage,
+			t.paymentDate as paymentDate,
+			t.confirmDate as confirmDate,
+			t.source as source,
+			t.is_success as isSuccess,
+			t.source_id as sourceId,
+			t.group_num as groupNum,
+			t.group_date as groupDate,
+			t.is_refund as isRefund,
+			t.out_refund_no as outRefundNo,
+			t.refund_date as refundDate,
+			c.used_price as usedPrice,
+			d.id as orderDid,
+			d.product_id as productId,
+			d.product_name as productName,
+			d.product_image as productImage,
+			d.sku_link_id as skuLinkId,
+			d.num as num,
+			d.loginname as loginname,
+		    d.re_status as refundStatus,
+		    p.product_num as productNum,
+		    p.image as productImage,
+		    gur.attend_id as attendId
+		from user_order t
+		left join user_order_detail d on d.order_id = t.id
+		left join product p on p.id = d.product_id
+		left join groupon_user_record gur on gur.id = t.source_id
+		left join coupon_order c on c.order_id = t.id and c.status = 1
+		where 1=1
+			<if test="loginname != null and loginname != '' ">
+			  and d.loginname = #{loginname}
+			</if>
+			<if test="id != null ">
+			  and t.id = #{id}
+			</if>
+			<if test="userId != null ">
+			  and t.user_id = #{userId}
+			</if>
+			<if test="suserId != null ">
+			  and t.suser_id = #{suserId}
+			</if>
+			<if test="allPrice != null ">
+			  and t.all_price = #{allPrice}
+			</if>
+			<if test="factPrice != null ">
+			  and t.fact_price = #{factPrice}
+			</if>
+			<if test="isNotZero != null ">
+			  and (t.fact_price - ifnull(c.used_price,0.0)) > 0.0
+			</if>
+			<if test="outTradeNo != null and outTradeNo != '' ">
+			  and t.out_trade_no = #{outTradeNo}
+			</if>
+			<if test="espressPrice != null ">
+			  and t.espress_price = #{espressPrice}
+			</if>
+			<if test="consignee != null and consignee != '' ">
+			  and t.consignee = #{consignee}
+			</if>
+			<if test="consigneeAddress != null and consigneeAddress != '' ">
+			  and t.consignee_address = #{consigneeAddress}
+			</if>
+			<if test="consigneePhone != null and consigneePhone != '' ">
+			  and t.consignee_phone = #{consigneePhone}
+			</if>
+			<if test="consigneeType != null ">
+			  and t.consignee_type = #{consigneeType}
+			</if>
+			<if test="buyerMessage != null and buyerMessage != '' ">
+			  and t.buyer_message = #{buyerMessage}
+			</if>
+			<if test="orderStatus != null ">
+			  and t.order_status = #{orderStatus}
+			</if>
+			<if test="isDeleteOrder != null ">
+			  and t.is_delete_order = #{isDeleteOrder}
+			</if>
+			<if test="isCancelOrder != null ">
+			  and t.is_cancel_order = #{isCancelOrder}
+			</if>
+			<if test="payStatus != null ">
+			  and t.pay_status = #{payStatus}
+			</if>
+			<if test="orderNo != null and orderNo != '' ">
+			  and t.order_no = #{orderNo}
+			</if>
+			<if test="serialNumber != null and serialNumber != '' ">
+			  and t.serial_number = #{serialNumber}
+			</if>
+			<if test="createBy != null ">
+			  and t.create_by = #{createBy}
+			</if>
+			<if test="createDate != null ">
+			  and t.create_date = #{createDate}
+			</if>
+			<if test="updateBy != null ">
+			  and t.update_by = #{updateBy}
+			</if>
+			<if test="updateDate != null ">
+			  and t.update_date = #{updateDate}
+			</if>
+			<if test="remarks != null and remarks != '' ">
+			  and t.remarks = #{remarks}
+			</if>
+			<if test="version != null ">
+			  and t.version = #{version}
+			</if>
+			<if test="channel != null ">
+			  and t.channel = #{channel}
+			</if>
+			<if test="userAddressId != null ">
+			  and t.user_address_id = #{userAddressId}
+			</if>
+			<if test="sendDate != null ">
+			  and t.sendDate = #{sendDate}
+			</if>
+			<if test="province != null ">
+			  and t.province = #{province}
+			</if>
+			<if test="city != null ">
+			  and t.city = #{city}
+			</if>
+			<if test="area != null ">
+			  and t.area = #{area}
+			</if>
+			<if test="agencyUserId != null ">
+			  and t.agency_user_id = #{agencyUserId}
+			</if>
+			<if test="payMethod != null and payMethod ==1 ">
+			  and t.pay_method = #{payMethod}
+			</if>
+			<if test="payMethod != null and payMethod ==2 ">
+			  and t.pay_method in (2,8)
+			</if>
+			<if test="activityName != null and activityName != '' ">
+			  and t.activity_name = #{activityName}
+			</if>
+			<if test="activityId != null ">
+			  and t.activity_id = #{activityId}
+			</if>
+			<if test="walletPrice != null ">
+			  and t.wallet_price = #{walletPrice}
+			</if>
+			<if test="sellerMessage != null and sellerMessage != '' ">
+			  and t.seller_message = #{sellerMessage}
+			</if>
+			<if test="paymentDate != null ">
+			  and t.paymentDate = #{paymentDate}
+			</if>
+			<if test="confirmDate != null ">
+			  and t.confirmDate = #{confirmDate}
+			</if>
+			<if test="source != null ">
+			  and t.source = #{source}
+			</if>
+			<if test="isSuccess != null ">
+			  and t.is_success = #{isSuccess}
+			</if>
+			<if test="sourceId != null ">
+			  and t.source_id = #{sourceId}
+			</if>
+			<if test="isRefund != null ">
+			  and t.is_refund = #{isRefund}
+			</if>
+			<if test="refund != null and refund == 0 ">
+			  and d.re_status not in (4,7)
+			</if>
+			<if test="refund != null and refund == 1">
+			  and d.re_status in (4,7)
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	<select id="groupRefundCountBy" parameterType="java.util.Map" resultType="int">
+		select
+			count(*)
+		from user_order t
+		left join user_order_detail d on d.order_id = t.id
+		left join product p on p.id = d.product_id
+		left join groupon_user_record gur on gur.id = t.source_id
+		left join coupon_order c on c.order_id = t.id and c.status = 1
+		where 1=1
+			<if test="loginname != null and loginname != '' ">
+			  and d.loginname = #{loginname}
+			</if>
+			<if test="id != null ">
+			  and t.id = #{id}
+			</if>
+			<if test="userId != null ">
+			  and t.user_id = #{userId}
+			</if>
+			<if test="suserId != null ">
+			  and t.suser_id = #{suserId}
+			</if>
+			<if test="allPrice != null ">
+			  and t.all_price = #{allPrice}
+			</if>
+			<if test="factPrice != null ">
+			  and t.fact_price = #{factPrice}
+			</if>
+			<if test="isNotZero != null ">
+			  and (t.fact_price - ifnull(c.used_price,0.0)) > 0.0
+			</if>
+			<if test="outTradeNo != null and outTradeNo != '' ">
+			  and t.out_trade_no = #{outTradeNo}
+			</if>
+			<if test="espressPrice != null ">
+			  and t.espress_price = #{espressPrice}
+			</if>
+			<if test="consignee != null and consignee != '' ">
+			  and t.consignee = #{consignee}
+			</if>
+			<if test="consigneeAddress != null and consigneeAddress != '' ">
+			  and t.consignee_address = #{consigneeAddress}
+			</if>
+			<if test="consigneePhone != null and consigneePhone != '' ">
+			  and t.consignee_phone = #{consigneePhone}
+			</if>
+			<if test="consigneeType != null ">
+			  and t.consignee_type = #{consigneeType}
+			</if>
+			<if test="buyerMessage != null and buyerMessage != '' ">
+			  and t.buyer_message = #{buyerMessage}
+			</if>
+			<if test="orderStatus != null ">
+			  and t.order_status = #{orderStatus}
+			</if>
+			<if test="isDeleteOrder != null ">
+			  and t.is_delete_order = #{isDeleteOrder}
+			</if>
+			<if test="isCancelOrder != null ">
+			  and t.is_cancel_order = #{isCancelOrder}
+			</if>
+			<if test="payStatus != null ">
+			  and t.pay_status = #{payStatus}
+			</if>
+			<if test="orderNo != null and orderNo != '' ">
+			  and t.order_no = #{orderNo}
+			</if>
+			<if test="serialNumber != null and serialNumber != '' ">
+			  and t.serial_number = #{serialNumber}
+			</if>
+			<if test="createBy != null ">
+			  and t.create_by = #{createBy}
+			</if>
+			<if test="createDate != null ">
+			  and t.create_date = #{createDate}
+			</if>
+			<if test="updateBy != null ">
+			  and t.update_by = #{updateBy}
+			</if>
+			<if test="updateDate != null ">
+			  and t.update_date = #{updateDate}
+			</if>
+			<if test="remarks != null and remarks != '' ">
+			  and t.remarks = #{remarks}
+			</if>
+			<if test="version != null ">
+			  and t.version = #{version}
+			</if>
+			<if test="channel != null ">
+			  and t.channel = #{channel}
+			</if>
+			<if test="userAddressId != null ">
+			  and t.user_address_id = #{userAddressId}
+			</if>
+			<if test="sendDate != null ">
+			  and t.sendDate = #{sendDate}
+			</if>
+			<if test="province != null ">
+			  and t.province = #{province}
+			</if>
+			<if test="city != null ">
+			  and t.city = #{city}
+			</if>
+			<if test="area != null ">
+			  and t.area = #{area}
+			</if>
+			<if test="agencyUserId != null ">
+			  and t.agency_user_id = #{agencyUserId}
+			</if>
+			<if test="payMethod != null and payMethod ==1 ">
+			  and t.pay_method = #{payMethod}
+			</if>
+			<if test="payMethod != null and payMethod ==2 ">
+			  and t.pay_method in (2,8)
+			</if>
+			<if test="activityName != null and activityName != '' ">
+			  and t.activity_name = #{activityName}
+			</if>
+			<if test="activityId != null ">
+			  and t.activity_id = #{activityId}
+			</if>
+			<if test="walletPrice != null ">
+			  and t.wallet_price = #{walletPrice}
+			</if>
+			<if test="sellerMessage != null and sellerMessage != '' ">
+			  and t.seller_message = #{sellerMessage}
+			</if>
+			<if test="paymentDate != null ">
+			  and t.paymentDate = #{paymentDate}
+			</if>
+			<if test="confirmDate != null ">
+			  and t.confirmDate = #{confirmDate}
+			</if>
+			<if test="source != null ">
+			  and t.source = #{source}
+			</if>
+			<if test="isSuccess != null ">
+			  and t.is_success = #{isSuccess}
+			</if>
+			<if test="sourceId != null ">
+			  and t.source_id = #{sourceId}
+			</if>
+			<if test="isRefund != null ">
+			  and t.is_refund = #{isRefund}
+			</if>
+			<if test="refund != null and refund == 0 ">
+			  and d.re_status = 0
+			</if>
+			<if test="refund != null and refund == 1">
+			  and d.re_status > 0
+			</if>
+	</select>
+	<!-- 根据批次号查询订单 -->
+	<select id="findOrderByBatchNo" parameterType="string" resultType="orderPojo">
+		select
+			uo.is_refund as isRefund,
+			uo.out_refund_no as outRefundNo,
+			uo.refund_date as refundDate
+		from user_order uo
+		where 
+		uo.out_refund_no=#{outRefundNo}
+	</select>
+	<!-- 查询当天已付款已成团订单数 -->
+	<select id="orderCnt" resultType="int">
+		select count(*) from user_order 
+		where 
+		1 = 1
+		<if test="beginTime != null and endTime != null">
+			and create_date between #{beginTime} and #{endTime} and order_status > 1 and is_cancel_order=0 and is_delete_order =0 and is_success = 1
+		</if>
+		<if test="beginTime == null or endTime == null">
+			and to_days(create_date) = to_days(now()) and order_status > 1 and is_cancel_order=0 and is_delete_order =0 and is_success = 1
+		</if>
+		<if test="isOne != null">
+			and source = 5
+		</if>
+	</select>
+	<!-- 查询当天已付款已成团订单销售金额 -->
+	<select id="totalSale" resultType="String">
+		select Round(sum(a.fact_price - ifnull(b.used_price,0)),2) total from user_order a left join coupon_order b on a.id =b.order_id and b.status=1 
+		where 
+		1 = 1
+		<if test="beginTime != null and endTime != null">
+			and a.group_date between #{beginTime} and #{endTime} and a.order_status > 1 and a.is_cancel_order=0 and a.is_delete_order =0 and a.is_success = 1
+		</if>
+		<if test="beginTime == null or endTime == null">
+			and to_days(a.group_date) = to_days(now()) and a.order_status > 1 and a.is_cancel_order=0 and a.is_delete_order =0 and a.is_success = 1
+		</if>
+		<if test="isOne != null">
+			and a.source = 5
+		</if>
+	</select>
+</mapper>

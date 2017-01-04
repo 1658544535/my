@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+	<package name="manufacturerWithdraw" extends="default">
+		<action name="manufacturerWithdraw" class="com.tzmb2c.web.action.ManufacturerWithdrawAction" method="manufacturerWithdrawCount">
+			<result>/page/system/manufacturerWithdraw/manufacturerWithdrawList.jsp</result>
+		</action>
+	</package>
+	<package name="manufacturerWithdraw-json" extends="json-default">
+		<action name="manufacturerWithdrawList" class="com.tzmb2c.web.action.ManufacturerWithdrawAction" method="manufacturerWithdrawList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="manufacturerWithdrawCount" class="com.tzmb2c.web.action.ManufacturerWithdrawAction" method="manufacturerWithdrawCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		
+		<action name="checkManufacturerWithdraw" class="com.tzmb2c.web.action.ManufacturerWithdrawAction" method="checkManufacturerWithdraw">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		
+<!-- 	 	<action name="uncheckManufacturerWithdraw" class="com.tzmb2c.web.action.ManufacturerWithdrawAction" method="uncheckManufacturerWithdraw">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action> -->
+		
+	    <action name="finishManufacturerWithdraw" class="com.tzmb2c.web.action.ManufacturerWithdrawAction" method="finishManufacturerWithdraw">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.UserOrderDetailMapper">
+
+	<!-- 插入
+	<insert id="addInfo" parameterType="InfoPojo">
+		insert into info
+		(id,status,display_order,type,title,content,image,author,create_by,create_date,update_by,update_date,remarks,version)
+		values
+		(#{id}, #{status},#{display_order},
+		#{type},#{title},#{content},#{image},#{author},#{create_by},
+		#{create_date},#{update_by},#{update_date},#{version},#{remarks})
+	</insert>
+ 	-->
+	<!-- 更新 -->
+	<select id="findUserOrderDetailById" resultType="UserOrderDetailPojo" parameterType="Long">
+		select 
+		uod.id as id,
+		uod.order_id as orderId,
+		uod.user_id as userId,
+		uod.loginname as loginName ,
+		uod.shop_id as shopId,
+		(select p.name from user_shop p where p.id=uod.shop_id) as shopName,
+		uod.product_id as productId,
+		uod.product_name as productName,
+		uod.product_model as productModel ,
+		uod.stock_id as stockId,
+		uod.stock_price_old as stockPriceOld,
+		uod.stock_price as stockPrice,
+		uod.num as num,
+		uod.type as type,
+		uod.channel as channel,
+		uod.status as status,
+		(select name from sys_dict where value=uod.status and type="status") as statusName,
+		uod.create_by as createBy,
+		uod.create_date as createDate,
+		uod.update_by as updateBy,
+		uod.update_date as updateDate,
+		uod.remarks as remarks,
+		uod.version as version
+		from user_order_detail as uod
+		where
+		id=#{id}
+	</select>
+
+	<!--更新 
+	<update id="updateInfo" parameterType="InfoPojo">
+		update info i set
+		id=#{id}, status=#{status},display_order=#{display_order},
+		type=#{type},title=#{title},content=#{content},image=#{image},author=#{author},create_by=#{create_by},
+		create_date=#{create_date},update_by=#{update_by},update_date=#{update_date},version=#{version},remarks=#{remarks}
+		where
+		i.id = #{id}
+	</update>
+	-->
+	<!-- 审核 -->
+	<update id="checkUserOrderDetail" parameterType="userOrderDetailPojo">
+		update user_order_detail uod set
+		status=1
+		where
+		uod.id = #{id}
+	</update>
+
+	<!-- 审核全部 -->
+	<update id="checkAllUserOrderDetailById" parameterType="String">
+		update user_order_detail uod set
+		status=1
+		where
+		uod.id = #{id}
+	</update>
+
+	<!-- 删除全部 
+	<delete id="delAllInfoById" parameterType="String">
+		delete from info
+		where
+		id = #{id}
+	</delete>
+	-->
+	<!-- 删除单个 
+	<delete id="delInfo" parameterType="InfoPojo">
+		delete from info
+		where
+		id =
+		#{id}
+	</delete>
+	-->
+	<!-- 查询所有的记录 -->
+	<select id="userOrderDetailAllList" resultType="UserOrderDetailPojo"
+		parameterType="java.util.Map">
+		select 
+		uod.id as id,
+		uod.order_id as orderId,
+		uod.user_id as userId,
+		uod.loginname as loginName ,
+		uod.shop_id as shopId,
+		us.name as shopName,
+		uod.product_id as productId,
+		p.image as productImage,
+		uod.product_name as productName,
+		uod.product_model as productModel ,
+		uod.stock_id as stockId,
+		uod.stock_price_old as stockPriceOld,
+		uod.stock_price as stockPrice,
+		uod.num as num,
+		p.product_num as productNum,
+		uod.type as type,
+		uod.channel as channel,
+		uod.status as status,
+		(select name from sys_dict where value=uod.status and type="status") as statusName,
+		uod.create_by as createBy,
+		uod.create_date as createDate,
+		uod.update_by as updateBy,
+		uod.update_date as updateDate,
+		uo.create_date as createDateString,
+		uod.remarks as remarks,
+		uod.version as version,
+		uo.consignee as consignee,
+		uo.consignee_phone as consigneePhone,
+		uo.consignee_address as consigneeAddress
+		from user_order_detail  uod left join user_order uo on uod.order_id=uo.id
+		left join user_shop us on uod.shop_id = us.id left join product p on p.id=uod.product_id
+		where
+		1=1
+		<if test=" shopName !=null and shopName !='' ">
+			and us.name like CONCAT("%",#{shopName},"%" )
+		</if>
+		<if test=" loginName !=null and loginName !='' ">
+			and uod.loginname like CONCAT("%",#{loginName},"%" )
+		</if>
+		<if test=" productName !=null and productName !='' ">
+			and uod.product_name like CONCAT("%",#{productName},"%" )
+		</if>
+		<if test=" productNum !=null and productNum !='' ">
+			and p.product_num like CONCAT("%",#{productNum},"%" )
+		</if>
+		<if test="beganday!=null and beganday!='' and endday!=null and endday!=''">
+			and uo.create_date between #{beganday} and #{endday}
+		</if>
+			and uo.order_status in (4,5)
+		<if test="notuserIds !=null and notuserIds.size != 0">
+			and uo.user_id  not in 
+			<foreach collection="notuserIds" item="notuserIds" index="index" open="(" separator="," close=")">
+			#{notuserIds}
+			</foreach>
+		</if>
+			order by uo.create_date desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+
+	<!-- 返回信息记录的数目count -->
+	<select id="userOrderDetailAllCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from user_order_detail  uod left join user_order uo on uod.order_id=uo.id
+		left join user_shop us on uod.shop_id = us.id left join product p on p.id=uod.product_id
+		where
+		1=1
+		<if test=" shopName !=null and shopName !='' ">
+			and us.name like CONCAT("%",#{shopName},"%" )
+		</if>
+		<if test=" loginName !=null and loginName !='' ">
+			and uod.loginname like CONCAT("%",#{loginName},"%" )
+		</if>
+		<if test=" productName !=null and productName !='' ">
+			and uod.product_name like CONCAT("%",#{productName},"%" )
+		</if>
+		<if test=" productNum !=null and productNum !='' ">
+			and p.product_num like CONCAT("%",#{productNum},"%" )
+		</if>	
+			and uo.order_status in (4,5)
+		<if test="notuserIds !=null and notuserIds.size != 0">
+			and uo.user_id  not in 
+			<foreach collection="notuserIds" item="notuserIds" index="index" open="(" separator="," close=")">
+			#{notuserIds}
+			</foreach>
+		</if>
+		<if test="beganday!=null and beganday!='' and endday!=null and endday!=''">
+			and uo.create_date between #{beganday} and #{endday}
+		</if>
+	</select>
+	
+	<!-- 销售记录统计：查询所有的记录 -->
+	<select id="productSaleCountAllList" resultType="UserOrderDetailPojo"
+		parameterType="java.util.Map">
+		select 
+		uo.id as id,  
+		uo.suser_id as suserId,
+		sum(fact_price)  as sumprice,
+		(select name from user_shop us where us.user_id = uo.suser_id ) as shopName,
+		uo.create_date as createDate
+		from user_order uo
+		where  date_format(create_date,'%Y-%m')=date_format(now(),'%Y-%m') 
+		and order_status in(4,5) group by uo.suser_id
+        order by uo.create_date desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+
+	<!--  商家每月销售记录统计：返回信息记录的数目count -->
+	<select id="productSaleCountAllCount" resultType="int" parameterType="java.util.Map">
+	
+		 select count(*) from(select   suser_id,
+		sum(fact_price)  from user_order 
+		
+		where  date_format(create_date,'%Y-%m')=date_format(now(),'%Y-%m') 
+		
+		and order_status in(4,5) group by suser_id) aa
+	
+	</select>
+	
+	<!--  商家每月销售记录统计二级页面：返回信息记录的数目count -->
+	<select id="shopSaleListCount" resultType="int" parameterType="java.util.Map">
+	
+		select  count(*) from
+		user_order_detail uod left join user_order uo on uod.order_id=uo.id 
+		where 1=1
+		<if test="(beganday == '' and endday =='') ||(beganday == null and endday ==null)">
+			and  date_format(uo.create_date,'%Y-%m')=date_format(now(),'%Y-%m') 
+		</if>
+		<if test="shopId != null and shopId != ''">
+			and  uod.shop_id = #{shopId} 
+		</if>
+		<if test="beganday!=null and beganday !='' ">
+			and UNIX_TIMESTAMP(uo.create_date) >= UNIX_TIMESTAMP(CONCAT(#{beganday},' 00:00:00'))
+		</if>
+		<if test="endday!=null and endday !='' ">
+			and UNIX_TIMESTAMP(CONCAT(#{endday},' 00:00:00')) >= UNIX_TIMESTAMP(uo.create_date)
+		</if>
+		and uo.order_status in(4,5)
+	
+	</select>
+	
+	
+	<!-- 商家销售记录统计二级页面：查询所有的记录 -->
+	<select id="shopSaleList" resultType="userOrderDetailPojo"
+		parameterType="java.util.Map">
+		select  
+		uod.id as id,
+		uod.product_name as productName,
+		uod.num as num,
+		uod.stock_price as stockPrice,
+		uod.loginname as loginName,
+		uo.create_date as createDateString,
+		(select name from sys_login sl where uod.user_id = sl.id ) as userName,
+		(select product_num from product p where p.id = uod.product_id ) as productNum,
+		(select name from user_shop us where us.id = uod.shop_id ) as shopName
+		from
+		user_order_detail uod left join user_order uo on uod.order_id=uo.id 
+		where 1=1
+		<if test="(beganday == '' and endday =='') ||(beganday == null and endday ==null)">
+			and  date_format(uo.create_date,'%Y-%m')=date_format(now(),'%Y-%m') 
+		</if>
+		<if test="shopId != null and shopId != ''">
+			and  uod.shop_id = #{shopId} 
+		</if>
+		<if test="beganday!=null and beganday !='' ">
+			and UNIX_TIMESTAMP(uo.create_date) >= UNIX_TIMESTAMP(CONCAT(#{beganday},' 00:00:00'))
+		</if>
+		<if test="endday!=null and endday !='' ">
+			and UNIX_TIMESTAMP(CONCAT(#{endday},' 00:00:00')) >= UNIX_TIMESTAMP(uo.create_date)
+		</if>
+		and uo.order_status in(4,5)
+		 order by uo.create_date desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+
+	<!-- 成交总数 -->
+	<select id="sellSumNum" resultType="int"
+		parameterType="Long">
+		select ifnull(sum(num),0) from user_order_detail as u left join user_order as o on u.order_id=o.id where product_id= #{productId} and o.order_status >= 2 
+	</select>
+</mapper>

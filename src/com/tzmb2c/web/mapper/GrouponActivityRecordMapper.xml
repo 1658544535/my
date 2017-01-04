@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.GrouponActivityRecordMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id as id,
+		activity_type as activityType,
+		activity_id as activityId,
+		begin_time as beginTime,
+		end_time as endTime,
+		user_id as userId,
+		invitation_user_id as invitationUserId,
+		num as num,
+		surplus_num as surplusNum,
+		status as status,
+		version as version,
+		create_date as createDate,
+		create_by as createBy,
+		update_date as updateDate,
+		update_by as updateBy,
+		pdk_uid as pdkUid
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="GrouponActivityRecordPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			groupon_activity_record
+		where
+			id = #{id}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from groupon_activity_record gar
+		where 1=1
+		  <if test="id != null ">
+			and gar.id = #{id}
+		  </if>
+		  <if test="activityType != null ">
+			and gar.activity_type = #{activityType}
+		  </if>
+		  <if test="activityId != null ">
+			and gar.activity_id = #{activityId}
+		  </if>
+		  <if test="userId != null ">
+			and gar.user_id = #{userId}
+		  </if>
+		  <if test="num != null ">
+			and gar.num = #{num}
+		  </if>
+		  <if test="surplusNum != null ">
+			and gar.surplus_num = #{surplusNum}
+		  </if>
+		  <if test="status != null ">
+			and gar.status = #{status}
+		  </if>
+		  <if test="version != null ">
+			and gar.version = #{version}
+		  </if>
+		  <if test="createDate != null ">
+			and gar.create_date = #{createDate}
+		  </if>
+		  <if test="createBy != null ">
+			and gar.create_by = #{createBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and gar.update_date = #{updateDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and gar.update_by = #{updateBy}
+		  </if>
+		  <if test="pdkUid != null ">
+			and gar.pdk_uid = #{pdkUid}
+		  </if>
+		  <if test="invitationUserId != null">
+			 and gar.invitation_user_id = #{invitationUserId}
+		  </if>
+		  <if test="openNum != null">
+			 and (select count(id) from groupon_user_record where attend_id = gar.id) > 1
+		  </if>
+		  <if test="beginTimeStr != null and beginTimeStr != '' and endTimeStr != null and endTimeStr != '' ">
+			 and gar.create_date between #{beginTimeStr} and #{endTimeStr}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="GrouponActivityRecordPojo">
+		select
+			gar.id as id,
+			gar.activity_type as activityType,
+			gar.activity_id as activityId,
+			gar.begin_time as beginTime,
+			gar.end_time as endTime,
+			gar.user_id as userId,
+			gar.num as num,
+			gar.surplus_num as surplusNum,
+			gar.status as status,
+			gar.invitation_user_id as invitationUserId,
+			gar.version as version,
+			gar.create_date as createDate,
+			gar.create_by as createBy,
+			gar.update_date as updateDate,
+			gar.update_by as updateBy,
+			gar.pdk_uid as pdkUid,
+			sl.name as userName,
+			sl.image as userLogo,
+			p.distribution_price as distributionPrice,
+			ga.product_id as productId,
+			ga.num as groupNum,
+			ga.price as groupPrice,
+			ga.id as groupId,
+			ga.status as groupStatus,
+			ga.activity_status as activityStatus,
+			(select count(id) from groupon_user_record gur where gur.attend_id=gar.id) as joinNum,
+			p.product_name as productName,
+			p.image as productImage,
+			p.image_main as imageMain,
+			p.image_small as imageSmall,
+			p.status as productStatus,
+			p.product_sketch as productSketch
+		from groupon_activity_record gar
+			left join groupon_activity ga on ga.id = gar.activity_id
+			left join sys_login sl on sl.id = gar.user_id
+			left join product p on p.id = ga.product_id
+		where 1=1
+			<if test="activityTypes != null ">
+				and gar.activity_type in
+				<foreach item="item" index="index" collection="activityTypes" open="(" separator="," close=")">  
+				  #{item}
+				</foreach> 
+			</if>
+			<if test="grouponIds != null ">
+				and gar.id not in
+				<foreach item="item" index="index" collection="grouponIds" open="(" separator="," close=")">  
+				  #{item}
+				</foreach> 
+			</if>
+			<if test="id != null ">
+			  and gar.id = #{id}
+			</if>
+			<if test="activityType != null ">
+			  and gar.activity_type = #{activityType}
+			</if>
+			<if test="activityId != null ">
+			  and gar.activity_id = #{activityId}
+			</if>
+			<if test="userId != null ">
+			  and gar.user_id = #{userId}
+			</if>
+			<if test="num != null ">
+			  and gar.num = #{num}
+			</if>
+			<if test="surplusNum != null ">
+			  and gar.surplus_num = #{surplusNum}
+			</if>
+			<if test="status != null ">
+			  and gar.status = #{status}
+			</if>
+			<if test="version != null ">
+			  and gar.version = #{version}
+			</if>
+			<if test="createDate != null ">
+			  and gar.create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and gar.create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and gar.update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and gar.update_by = #{updateBy}
+			</if>
+			<if test="pdkUid != null ">
+			  and gar.pdk_uid = #{pdkUid}
+			</if>
+			<if test="currentTime !=null and currentTime !='' ">
+				and #{currentTime} &gt;= str_to_date(gar.begin_time,'%Y-%m-%d %H:%i:%s')
+				and #{currentTime} &lt; str_to_date(gar.end_time,'%Y-%m-%d %H:%i:%s')
+		  	</if>
+			<if test="overTime !=null and overTime !='' ">
+				and #{overTime} &gt;= str_to_date(gar.end_time,'%Y-%m-%d %H:%i:%s')
+		  	</if>
+		  	<if test="overTime2 != null and overTime2 != '' ">
+		  		<!-- and CURRENT_TIMESTAMP -->
+				and #{overTime2} 
+				between date_sub(str_to_date(gar.end_time,'%Y-%m-%d %H:%i:%s'), interval #{second} SECOND) 
+				and str_to_date(gar.end_time,'%Y-%m-%d %H:%i:%s')
+		  	</if>
+		  	<if test="isNotType != null">
+		  		<!-- and CURRENT_TIMESTAMP -->
+				and activity_type not in (#{isNotType})
+		  	</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="GrouponActivityRecordPojo">
+		update groupon_activity_record
+		<set>
+			<if test="activityType != null">
+			  activity_type = #{activityType},
+			</if>
+			<if test="activityId != null">
+			  activity_id = #{activityId},
+			</if>
+			<if test="userId != null">
+			  user_id = #{userId},
+			</if>
+			<if test="num != null">
+			  num = #{num},
+			</if>
+			<if test="surplusNum != null">
+			  surplus_num = #{surplusNum},
+			</if>
+			<if test="status != null">
+			  status = #{status},
+			</if>
+			<if test="version != null">
+			  version = #{version},
+			</if>
+			<if test="createDate != null">
+			  create_date = #{createDate},
+			</if>
+			<if test="createBy != null">
+			  create_by = #{createBy},
+			</if>
+			<if test="updateDate != null">
+			  update_date = #{updateDate},
+			</if>
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+			<if test="isRebate != null">
+			  is_rebate = #{isRebate},
+			</if>
+			<if test="rebateTime != null">
+			  rebate_time = #{rebateTime},
+			</if>
+			<if test="pdkUid != null">
+			  pdk_uid = #{pdkUid},
+			</if>
+			<if test="invitationUserId != null">
+			  invitation_user_id = #{invitationUserId},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from groupon_activity_record 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="GrouponActivityRecordPojo">
+		insert into groupon_activity_record
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="activityType != null">
+				activity_type,
+			</if>
+			<if test="activityId != null">
+				activity_id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="num != null">
+				num,
+			</if>
+			<if test="surplusNum != null">
+				surplus_num,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="pdkUid != null">
+				pdk_uid,
+			</if>
+			<if test="version != null">
+				version,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+			<if test="updateDate != null">
+				update_date,
+			</if>
+			<if test="updateBy != null">
+				update_by,
+			</if>
+			<if test="beginTime != null">
+				begin_time,
+			</if>
+			<if test="endTime != null">
+				end_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="activityType != null">
+				#{activityType},
+			</if>
+			<if test="activityId != null">
+				#{activityId},
+			</if>
+			<if test="userId != null">
+				#{userId},
+			</if>
+			<if test="num != null">
+				#{num},
+			</if>
+			<if test="surplusNum != null">
+				#{surplusNum},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+			<if test="pdkUid != null">
+				#{pdkUid},
+			</if>
+			<if test="version != null">
+				#{version},
+			</if>
+			<if test="createDate != null">
+				#{createDate},
+			</if>
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+			<if test="updateDate != null">
+				#{updateDate},
+			</if>
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+			<if test="beginTime != null">
+				#{beginTime},
+			</if>
+			<if test="endTime != null">
+				#{endTime},
+			</if>
+		</trim>
+	</insert>
+	
+</mapper>

@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.PagePushMapper">
+
+	<!--根据类型查找-->
+	<select id="findAdByType" resultType="PagePushPojo"
+		parameterType="Integer">
+		select
+		d.id as id,
+		d.status as status,
+		d.type as type,
+		d.title as title,
+		d.url as url,
+		d.images as images,
+		d.location as location,
+		d.create_by as createBy,
+		d.create_date as createDate,
+		d.update_by as updateBy,
+		d.update_date as updateDate,
+		d.remarks as remarks,
+		d.version as version,
+		d.size_tips as sizeTips,
+		d.subType as subType,
+		d.sorting  as sorting,
+		d.background_color as backgroundColor
+		from ad d
+		where
+		type=#{type}
+		order by d.sorting asc
+	</select>
+	
+	<select id="findAdByTypeApi" resultType="PagePushPojo"
+		parameterType="java.util.Map">
+		select
+		d.id as id,
+		d.status as status,
+		d.type as type,
+		d.title as title,
+		d.url as url,
+		d.images as images,
+		d.location as location,
+		d.create_by as createBy,
+		d.create_date as createDate,
+		d.update_by as updateBy,
+		d.update_date as updateDate,
+		d.remarks as remarks,
+		d.version as version,
+		d.size_tips as sizeTips,
+		d.subType as subType,
+		d.sorting  as sorting,
+		d.background_color as backgroundColor
+		from ad d
+		where 1 = 1
+		<if test="type != null">
+			and type = #{type}
+		</if>
+		<if test="status != null">
+			and status = #{status}
+		</if>
+		order by d.sorting asc
+	</select>
+
+
+	<!-- 插入 -->
+	<insert id="addPushNotice" parameterType="PagePushPojo">
+		insert into ad
+		(background_color,size_tips,id,status,type,title,url,images,create_by,create_date,update_by,update_date,remarks,version,sorting)
+		values
+		(#{backgroundColor},#{sizeTips},#{id}, #{status},
+		#{type},#{title},#{url},#{images},#{createBy},
+		#{createDate},#{updateBy},#{updateDate},#{version},#{remarks},0)
+	</insert>
+
+	<!-- 查找单条 -->
+	<select id="findNoticeById" resultType="PagePushPojo"
+		parameterType="Long">
+		select
+		d.id as id,
+		d.status as status,
+		(select name from sys_dict where value=d.status and type="status") as statusName,
+		d.type as type,
+		(select name from sys_dict where value=d.type and type="ad_type") as typeName,
+		d.title as title,
+		d.url as url,
+		d.images as images,
+		d.create_by as createBy,
+		d.create_date as createDate,
+		d.update_by as updateBy,
+		d.update_date as updateDate,
+		d.remarks as remarks,
+		d.version as version,
+		d.size_tips as sizeTips,
+		d.background_color as backgroundColor,
+		d.sorting as sorting
+		from ad d
+		where
+		id=#{id}
+		order by d.sorting asc
+	</select>
+
+	<!--更新单条-->
+	<update id="updatePushNotice" parameterType="PagePushPojo">
+		update ad d set
+		title=#{title},type=#{type},status=#{status},url=#{url},images=#{images},
+		update_date=#{updateDate},background_color=#{backgroundColor},sorting=#{sorting}
+		where
+		d.id = #{id}
+	</update>
+
+	<!-- 审核单条 -->
+	<update id="verifyNotice" parameterType="PagePushPojo">
+		update ad d set
+		d.status=1
+		where
+		d.id = #{id}
+	</update>
+
+	<!-- 批量审核 -->
+	<update id="checkAllNoticeById" parameterType="String">
+		update ad d set
+		d.status=1
+		where
+		d.id = #{id}
+	</update>
+
+	<!-- 删除全部 -->
+	<delete id="delAllNoticeById" parameterType="String">
+		delete from ad
+		where
+		id = #{id}
+	</delete>
+
+	<!-- 删除单条 -->
+	<delete id="delNotice" parameterType="pagePushPojo">
+		delete from ad
+		where
+		id = #{id}
+	</delete>
+
+	<!-- 查找所有记录 -->
+	<select id="pushNoticeAllList" resultType="PagePushPojo"
+		parameterType="java.util.Map">
+		select
+		d.id as id,
+		d.status as status,
+		(select name from sys_dict where value=d.status and type="status") as statusName,
+		d.type as type,
+		(select name from sys_dict where value=d.type and type="ad_type") as typeName,
+		d.title as title,
+		d.url as url,
+		d.images as images,
+		d.create_by as createBy,
+		d.create_date as createDate,
+		d.update_by as updateBy,
+		d.update_date as updateDate,
+		d.remarks as remarks,
+		d.version as version,
+		d.background_color as backgroundColor,
+		d.sorting as sorting
+		from ad d
+		where
+		1=1
+		<if test="type == 1">
+			and d.type=1
+		</if>
+		<if test="type == 2">
+			and d.type=2
+		</if>
+		<if test="noticeTitle!=null and noticeTitle !='' ">
+			and d.title like concat("%",#{noticeTitle},"%" )
+		</if>
+		<if test="noticeType !=null and noticeType !='' ">
+			and d.type=#{noticeType}
+		</if>
+		order by d.type,d.sorting asc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+
+	<!-- 获取所有记录数目 -->
+	<select id="pushNoticeAllCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from ad
+		where 1=1
+		<if test="type == 1">
+			and type=1
+		</if>
+		<if test="type == 2">
+			and type=2
+		</if>
+		<if test="noticeTitle!=null and noticeTitle !='' ">
+			and title like concat("%",#{noticeTitle},"%" )
+		</if>
+		<if test="noticeType !=null and noticeType !='' ">
+			and type=#{noticeType}
+		</if>
+	</select>
+
+	
+	<!-- APP端获取最新三张首页焦点图 -->
+	<select id="findTopThreeDate" resultType="PagePushPojo" parameterType="Integer">
+		select
+		d.id as id,
+		d.status as status,
+		d.type as type,
+		d.title as title,
+		d.url as url,
+		d.images as images,
+		d.location as location,
+		d.create_by as createBy,
+		d.create_date as createDate,
+		d.update_by as updateBy,
+		d.update_date as updateDate,
+		d.remarks as remarks,
+		d.version as version,
+		d.size_tips as sizeTips,
+		d.subType as subType,
+		d.sorting  as sorting,
+		d.background_color as backgroundColor
+		from ad d
+		where
+		d.type=#{type}
+		and d.status = 1
+		order by d.sorting asc
+	</select>
+</mapper>

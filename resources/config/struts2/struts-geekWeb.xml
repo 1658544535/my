@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="geekWebLogin" extends="struts-default">
+		
+		<global-results>
+			<result name="gkloginweb">/geek/page/login.jsp</result>
+			<result name="gkregweb">/geek/page/reg.jsp</result>
+			<result name="errorpage">/page/common/error.jsp</result>
+		</global-results>
+		<!-- 创客中心登录前端显示 -->
+		<action name="geekLogin" class="com.tzmb2c.web.action.GeekWebAction" method="geekLogin">
+			<result name="success">/geek/page/login.jsp</result>
+		</action>
+		<!-- 创客中心登录验证 -->
+		<action name="doGeekLogin" method="getLoginValidate" class="com.tzmb2c.web.action.GeekWebAction">
+			<result name="success" type="redirectAction">geekWeb</result>
+		</action>
+		<!-- 跳转到创客注册页面 -->
+		<action name="goGeekRegWeb" method="goGeekRegWeb" class="com.tzmb2c.web.action.GeekWebAction">
+			<result>/geek/page/reg.jsp</result>
+		</action>
+		<!-- 创客注册 -->
+		<action name="doGeekRegWeb" method="doGeekRegWeb" class="com.tzmb2c.web.action.GeekWebAction">
+		</action>
+		<!-- 创客退出 -->
+		<action name="doGeekLogout" method="doGeekLogoutWeb" class="com.tzmb2c.web.action.GeekWebAction">
+			<result>/geek/page/login.jsp</result>
+		</action>
+		<!--  跳转店铺管理   -->
+		<action name="geekShopWeb" class="com.tzmb2c.web.action.GeekWebAction" method="geekShopWeb">
+			<result name="success">/geek/page/geekshop/geekShop.jsp</result>			
+		</action>
+		<!--  跳转店铺管理（新增）   -->
+		<action name="goAddGeekShopWeb" class="com.tzmb2c.web.action.GeekWebAction" method="goAddGeekShopWeb">
+			<result name="success">/geek/page/geekshop/addGeekShop.jsp</result>
+		</action>
+		<!--  跳转店铺管理（编辑）   -->
+		<action name="goUpdateGeekShopWeb" class="com.tzmb2c.web.action.GeekWebAction" method="goUpdateGeekShopWeb">
+			<result name="success">/geek/page/geekshop/updateGeekShop.jsp</result>
+		</action>	
+		<!--  提交店铺管理（新增）   -->
+		<action name="addGeekShopWeb" class="com.tzmb2c.web.action.GeekWebAction" method="addGeekShopWeb">
+		</action>	
+		<!--  提交店铺管理（编辑）   -->
+		<action name="updateGeekShopWeb" class="com.tzmb2c.web.action.GeekWebAction" method="updateGeekShopWeb">
+		</action>
+		
+		
+	<!--提交信息-->
+	    <action name="insertGeekInfo" class="com.tzmb2c.web.action.GeekWebAction" method="insertGeekInfo">
+		</action>
+			<!--跳转添加创客信息页面-->
+	    <action name="addGeekInfo" class="com.tzmb2c.web.action.GeekWebAction" method="addGeekInfo">
+			<result name="success">/geek/page/baseinfo/baseinfo.jsp</result>
+		</action>
+		
+		
+		<!--创客中心基本信息页面-->
+		<!--<action name="geekBaseInfo" class="com.tzmb2c.web.action.GeekWebAction" method="baseinfo">
+		<result>/geek/page/baseinfo/baseinfo.jsp</result></action>-->
+		
+		
+		<!--跳转创客中心基本信息修改页面-->
+		<action name="baseInfoEdit" class="com.tzmb2c.web.action.GeekWebAction" method="baseinfo">
+		<result>/geek/page/baseinfo/baseinfo-edit.jsp</result>
+		</action>
+		<!--提交修改-->
+		<action name="updateBaseInfo" class="com.tzmb2c.web.action.GeekWebAction" method="updateBaseInfo">
+		</action>
+		<!--修改密码页面-->
+		<action name="baseInfoPasswd" class="com.tzmb2c.web.action.GeekWebAction" method="baseInfoPasswd">
+		<result>/geek/page/baseinfo/baseinfo-passwd.jsp</result>
+		</action>
+		<action name="passChangeGeekWeb" class="com.tzmb2c.web.action.GeekWebAction" method="passChangeGeekWeb">
+		</action>
+						
+		<!-- 创客中心品牌管理页面显示  
+		<action name="geekBrandManage" class="com.tzmb2c.web.action.GeekWebAction" method="geekBrandManage">
+			<result name="input">/geek/page/geekbrand/addBrand.jsp</result>
+			<result name="success">/geek/page/geekbrand/brand.jsp</result>
+		</action>
+		-->
+		
+		<!-- 创客中心品牌管理页面显示  -->
+		<action name="geekBrandManage" class="com.tzmb2c.web.action.GeekWebAction" method="geekBrandManageCount">
+		<result>/geek/page/geekbrand/brandList.jsp</result>
+		</action>
+		<!-- 跳转创客中心品牌增加页面  -->
+		<action name="goAddGeekBrand" class="com.tzmb2c.web.action.GeekWebAction" method="goAddGeekBrand">
+		<result>/geek/page/geekbrand/addBrand.jsp</result>
+		</action>
+				<!--删除品牌 -->
+		<action name="delGeekBrand" class="com.tzmb2c.web.action.GeekWebAction"
+			method="delGeekBrand">
+		</action>
+		
+		<!-- 创客中心品牌增加  -->
+		<action name="addGeekBrand" class="com.tzmb2c.web.action.GeekWebAction" method="addGeekBrand">
+		</action>
+		
+		<!-- 跳转至创客中心品牌编辑页面  -->
+		<action name="goEditGeekBrand" class="com.tzmb2c.web.action.GeekWebAction" method="goEditGeekBrand">
+			<result name="success">/geek/page/geekbrand/updateBrand.jsp</result>
+		</action>
+		
+		<!-- 创客中心品牌编辑  -->
+		<action name="editGeekBrand" class="com.tzmb2c.web.action.GeekWebAction" method="editGeekBrand">
+		</action>
+		
+		
+		
+		<!-- 专题列表前端显示 -->
+		<action name="getGeekThemeListWeb" class="com.tzmb2c.web.action.GeekWebAction" method="getGeekThemeListWeb">
+			<result name="success">/geek/page/geektheme/geekThemeList.jsp</result>
+		</action>
+		<!-- 跳转到专题列表前端显示 -->
+		<action name="goAddGeekTheme" class="com.tzmb2c.web.action.GeekWebAction" method="goAddGeekTheme">
+			<result name="success">/geek/page/geektheme/addGeekTheme.jsp</result>
+		</action>
+		<!--删除专题 -->
+		<action name="delGeekTheme" class="com.tzmb2c.web.action.GeekWebAction"
+			method="delGeekTheme">
+		</action>
+		<!-- 跳转到编辑专题-->
+		<action name="goUpdateGeekTheme" class="com.tzmb2c.web.action.GeekWebAction" method="goUpdateGeekTheme">
+			<result>/geek/page/geektheme/updateGeekTheme.jsp</result>
+		</action>
+
+		<!-- 笔记列表前端显示 -->
+		<action name="getUserCirclePostListWebGeek" class="com.tzmb2c.web.action.GeekWebAction" method="getUserCirclePostListWebGeek">
+			<result name="success">/geek/page/userCirclePost/userCirclePostList.jsp</result>
+		</action>
+		
+		<!-- 跳转到新增笔记页面 -->
+		<action name="goAddUCPostGeek" class="com.tzmb2c.web.action.GeekWebAction" method="goAddUCPostGeek">
+			<result name="success">/geek/page/userCirclePost/addUserCirclePost.jsp</result>
+		</action>
+		
+		<!-- 跳转到编辑笔记页面-->
+		<action name="goUpdateUCPostGeek" class="com.tzmb2c.web.action.GeekWebAction" method="goUpdateUCPostGeek">
+			<result name="success">/geek/page/userCirclePost/updateUserCirclePost.jsp</result>
+			<result name="oldVersion">/geek/page/userCirclePost/oldUpdateUserCirclePost.jsp</result>
+		</action>
+        <!-- 产品图片集 -->
+		<action name="productImagesManageGeekWeb" class="com.tzmb2c.web.action.GeekWebAction" method="getCountProductImages">
+			<result>/geek/page/productmng/productImagesWebList.jsp</result>
+		</action>
+		
+		<!-- 商家发票信息填写 -->
+		<action name="goInvoiceWeb" method="goInvoiceWeb" class="com.tzmb2c.web.action.GeekRegWebAction">
+			<result name="success">/geek/page/baseinfo/invoice.jsp</result>
+		</action>
+
+		<!-- 产品图片集批量删除 -->
+		<action name="productImagesDeleteIdGeekWeb" class="com.tzmb2c.web.action.GeekWebAction" method="productImagesDeleteId">
+		</action>
+
+		<!-- 产品图片集批量审核 -->
+		<action name="productImagescheckAllGeekWeb" class="com.tzmb2c.web.action.GeekWebAction" method="productImagescheckAll">
+		</action>
+		
+		<!--  跳转到产品图片集修改图片-->
+		<action name="goFindProductImagesGeekWeb" class="com.tzmb2c.web.action.GeekWebAction" method="goFindProductImages">
+			<result>/geek/page/productmng/updateProductImages.jsp</result>
+		</action>
+		
+		<!-- 产品图片集修改图片-->
+		<action name="productImagesUpdateGeekWeb" class="com.tzmb2c.web.action.GeekWebAction" method="productImagesUpdate">
+				<result name="success" type="redirectAction">
+					<param name="actionName">productImagesManageGeekWeb</param>  
+        			<param name="productImagesPojo.productId">${productImagesPojo.productId}</param>
+        			<param name="productImagesPojo.userId">${productImagesPojo.userId}</param>
+        		</result>
+		</action>
+		
+		<!--  跳转到产品图片集添加图片-->
+		<action name="goproductImagesAddGeekWeb" class="com.tzmb2c.web.action.GeekWebAction" method="goproductImagesAddWeb">
+			<result>/geek/page/productmng/batchAddProductImages.jsp</result>
+		</action>
+	
+		<!--  跳转到产品图片集添加图片-->	
+		<action name="productImagesAddGeekWeb" class="com.tzmb2c.web.action.GeekWebAction" method="productImagesAddWeb">
+				<result name="success" type="redirectAction">
+					<param name="actionName">productImagesManageGeekWeb</param>  
+        			<param name="productImagesPojo.productId">${productImagesPojo.productId}</param>
+        			<param name="productImagesPojo.userId">${productImagesPojo.userId}</param>
+        		</result>
+		</action>      
+		<!--  跳转到产品图片集添加图片(批量增加)-->	
+		<action name="productImgBatchAddWeb" class="com.tzmb2c.web.action.GeekWebAction" method="productImgBatchAddWeb">
+		</action>      
+
+
+
+          	<!-- 商家中心商品库列表 -->
+		<action name="productManageGeekWeb" class="com.tzmb2c.web.action.GeekWebAction"
+			method="productAllCountWeb">
+			<result>/geek/page/productmng/plist.jsp</result>
+		</action>
+		
+		<!--跳转到添加商品 
+		<action name="goProductAddGeekWeb" class="com.tzmb2c.web.action.GeekWebAction"
+			method="goProductAddWeb">
+			<result>/geek/page/productmng/add_v2.jsp</result>
+		</action>   -->
+		
+		<!--跳转到添加商品 -->
+		<action name="goProductAddGeekWeb" class="com.tzmb2c.web.action.GeekWebAction"
+			method="goProductAddWeb">
+			<result>/geek/page/productmng/addProduct.jsp</result>
+		</action>   
+		<!--添加商品
+		<action name="productAddGeekWeb" class="com.tzmb2c.web.action.GeekWebAction"
+			method="productAddWeb">
+			<result>/geek/page/productmng/plist.jsp</result>
+		</action> -->
+		
+		<!--添加商品详情介绍-->
+		<action name="productAddContentGeek" class="com.tzmb2c.web.action.GeekWebAction"
+			method="productAddContentGeek">
+		</action> 
+		<!-- 跳转到修改产品
+		<action name="goFindProductGeekWeb" class="com.tzmb2c.web.action.GeekWebAction" method="goFindProduct">
+			<result>/geek/page/productmng/update_v2.jsp</result>
+		</action>-->
+		<!-- 跳转到修改产品-->
+		<action name="goFindProductGeekWeb" class="com.tzmb2c.web.action.GeekWebAction" method="goFindProduct">
+			<result>/geek/page/productmng/updateProduct.jsp</result>
+		</action>
+		
+		<!-- 修改产品-->
+		<action name="productUpdateGeek" class="com.tzmb2c.web.action.GeekWebAction" method="productUpdate">
+		</action>  
+		
+		<!-- 产品信息批量删除 -->
+		<action name="productDeleteIdSelllerWeb" class="com.tzmb2c.web.action.GeekWebAction"
+			method="productDeleteIdWeb">
+		</action>
+		
+		<!-- 产品信息批量审核 -->
+		<action name="productCheckSelllerWeb" class="com.tzmb2c.web.action.GeekWebAction"
+			method="productCheckWeb">
+		</action>
+		
+		<!-- 产品信息批量取消审核 -->
+		<action name="productUncheckSelllerWeb" class="com.tzmb2c.web.action.GeekWebAction"
+			method="productUncheckWeb">
+		</action>
+			    <!-- 商品预览页面 -->
+		<action name="goPreviewGeekWeb" method="goPreviewWeb" class="com.tzmb2c.web.action.GeekWebAction">
+			<result name="success">/geek/page/productmng/preview.jsp</result>
+		</action>	
+	</package>	
+	<!-- 前端页面 -->
+	<package name="geekWeb" extends="geekweb-default">	
+		<global-results>
+			<result name="gkloginweb">/geek/page/login.jsp</result>
+			<result name="gkregweb">/geek/page/reg.jsp</result>
+			<result name="errorpage">/page/common/error.jsp</result>
+			<result name="inforPerfect">/geek/page/baseinfo/addGeekInfo.jsp</result>
+			<result name="geekWeb">/geek/page/index.jsp</result>
+		</global-results>
+			
+		<!-- 创客中心首页 -->
+		
+	    <action name="geekWeb" class="com.tzmb2c.web.action.GeekWebAction" method="geekWebHomePage">
+			<result>/geek/page/index.jsp</result>
+		</action>
+		
+			<action name="goAddGeekInfo" class="com.tzmb2c.web.action.GeekWebAction" method="geekWebHomePage">
+			<result>/geek/page/baseinfo/addGeekInfo.jsp</result>
+		</action>
+
+	
+		
+	</package>
+	
+	<package name="geekWeb-json" extends="json-default">
+		<!-- 专题列表数据前端显示-->
+		<action name="getGeekThemeListData" class="com.tzmb2c.web.action.GeekWebAction" method="getGeekThemeListData">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<!-- 专题列表数据条数前端显示-->
+		<action name="getGeekThemeListCount" class="com.tzmb2c.web.action.GeekWebAction" method="getGeekThemeListWeb">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		
+		<!-- 品牌列表数据前端显示-->
+		<action name="geekBrandManageList" class="com.tzmb2c.web.action.GeekWebAction" method="geekBrandManageList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<!-- 品牌列表数据条数前端显示-->
+		<action name="geekBrandManageCount" class="com.tzmb2c.web.action.GeekWebAction" method="geekBrandManageCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		
+		<!--添加专题 -->
+		<action name="addGeekTheme" class="com.tzmb2c.web.action.GeekWebAction" method="addGeekTheme">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 编辑专题 -->
+		<action name="updateGeekTheme" class="com.tzmb2c.web.action.GeekWebAction" method="updateGeekTheme">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action> 
+		
+		<!-- 添加自定义内容-->
+		<action name="addGeekThemeTemplatePageData" class="com.tzmb2c.web.action.GeekWebAction" method="addGeekThemeTemplatePageData">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 修改自定义内容-->
+		<action name="updateGeekThemeTemplatePageData" class="com.tzmb2c.web.action.GeekWebAction" method="updateGeekThemeTemplatePageData">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="getMainCategory" class="com.tzmb2c.web.action.GeekWebAction"
+			method="getMainCategory">
+			<result type="json">
+				<param name="root">jsonStr</param>
+			</result>
+		</action>
+		<!-- 笔记列表数据前端显示-->
+		<action name="getUserCirclePostListDataGeek" class="com.tzmb2c.web.action.GeekWebAction" method="getUserCirclePostListDataGeek">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<!-- 笔记列表条数前端显示-->
+		<action name="getUserCirclePostListCountGeek" class="com.tzmb2c.web.action.GeekWebAction" method="getUserCirclePostListWebGeek">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		
+		<!--添加笔记 -->
+		<action name="addUCPostGeek" class="com.tzmb2c.web.action.GeekWebAction" method="addUCPostGeek">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 编辑笔记 -->
+		<action name="updateUCPostGeek" class="com.tzmb2c.web.action.GeekWebAction" method="updateUCPostGeek">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!--添加商品 -->
+		<action name="productAddGeekWeb" class="com.tzmb2c.web.action.GeekWebAction" method="productAddWeb">
+		<result type="json">
+				<param name="root">result</param>
+		</result>
+		</action>
+				<!--产品图片集条数-->
+		<action name="getCountProductImagesGeekWeb" class="com.tzmb2c.web.action.GeekWebAction" method="getCountProductImages">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+
+		<!-- 产品图片集列表 -->
+		<action name="getProductImagesAllGeekWeb" class="com.tzmb2c.web.action.GeekWebAction"
+			method="getProductImagesAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<!-- 产品图片集审核 -->
+		<action name="checkProductImagesGeekWeb" class="com.tzmb2c.web.action.GeekWebAction" method="checkProductImages">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 产品图片集取消审核 -->
+		<action name="unCheckProductImagesGeekWeb" class="com.tzmb2c.web.action.GeekWebAction" method="unCheckProductImages">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 产品图片集删除-->
+		<action name="deleProductImagesGeekWeb" class="com.tzmb2c.web.action.GeekWebAction"
+			method="deleProductImages">
+			<result type="json">
+	       		 <param name="root">result</param>
+	       		 <param name="productImagesPojo.productId">${productImagesPojo.productId}</param>
+			</result>
+		</action>
+		<action name="productAllCountGeekWeb" class="com.tzmb2c.web.action.GeekWebAction"
+			method="productAllCountWeb">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+
+		<action name="getProductAllListGeekWeb" class="com.tzmb2c.web.action.GeekWebAction"
+			method="productAllListWeb">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+	</package>
+</struts>

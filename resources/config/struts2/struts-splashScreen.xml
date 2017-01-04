@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="splashScreen" extends="default">
+		<!-- 闪屏设置管理 -->
+		<action name="splashScreen" class="com.tzmb2c.web.action.SplashScreenAction" method="splashScreenCount">
+			<result name="success">/page/system/splashScreen/splashScreen.jsp</result>
+		</action>	
+		<!-- 删除 -->
+		<action name="delSplashScreen" class="com.tzmb2c.web.action.SplashScreenAction" method="delSplashScreen">
+		</action>
+		<!-- 批量删除 -->
+		<action name="delSplashScreenAll" class="com.tzmb2c.web.action.SplashScreenAction" method="delSplashScreenAll">
+		</action>		
+		<!-- 通过审核 -->
+		<action name="checkSplashScreen" class="com.tzmb2c.web.action.SplashScreenAction" method="checkSplashScreen">
+		</action>
+		<!-- 取消审核 -->
+		<action name="uncheckSplashScreen" class="com.tzmb2c.web.action.SplashScreenAction" method="uncheckSplashScreen">
+		</action>
+		<!-- 批量通过审核 -->
+		<action name="checkSplashScreenAll" class="com.tzmb2c.web.action.SplashScreenAction" method="checkSplashScreenAll">
+		</action>		
+		<!-- 编辑(跳转) -->
+		<action name="goUpdateSplashScreen" class="com.tzmb2c.web.action.SplashScreenAction" method="goUpdateSplashScreen">
+			<result name="success">/page/system/splashScreen/updateSplashScreen.jsp</result>
+		</action>
+	    <!-- 编辑 -->
+		<action name="updateSplashScreen" class="com.tzmb2c.web.action.SplashScreenAction" method="updateSplashScreen">
+		</action>
+		<!-- （跳转）新增专场 -->
+		<action name="goAddSplashScreen" class="com.tzmb2c.web.action.SplashScreenAction" method="goAddSplashScreen">
+			<result name="success">/page/system/splashScreen/addSplashScreen.jsp</result>
+		</action>	
+		<!-- 提交新增专场 -->
+		<action name="addSplashScreen" class="com.tzmb2c.web.action.SplashScreenAction" method="addSplashScreen">			
+		</action>
+	</package>
+	<package name="splashScreen-json" extends="json-default">
+		<!-- 积分明细列表 -->
+		<action name="splashScreenAll" class="com.tzmb2c.web.action.SplashScreenAction" method="splashScreenAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 积分明细条数 -->
+		<action name="splashScreenCount" class="com.tzmb2c.web.action.SplashScreenAction" method="splashScreenCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>		
+	</package>
+</struts>

@@ -1,0 +1,65 @@
+@CHARSET "UTF-8";
+
+table,tr,td {
+	text-align: center;
+	border-style: solid;
+	border-width: thin;
+	border-color: #c0c0c0;
+}
+
+.user-info-table {
+	width: 100%;
+}
+
+.user-info-td1-pic {
+	width: 80px;
+}
+
+.user-info-td2 {
+	width: 50px;
+}
+
+.user-info-td3-name {
+	width: 90px;
+	text-align: left;
+}
+
+.user-info-td4-sex {
+	width: 38px;
+}
+
+.user-info-td3-cont {
+	text-align: left;
+}
+
+.user-info-cont {
+	padding-left: 8px;
+}
+
+.header-main-title-div {
+	margin: auto;
+	width: 20%;
+	height: 60%;
+	text-align: center;
+	vertical-align: middle;
+	/**border-style : solid;*/
+	overflow: hidden;
+	position: relative;
+	top: 8px;
+}
+
+.header-main-title {
+	font: 28px 宋体, Arial, sans-serif;
+	font-weight: bold;
+}
+
+.exit-div {
+	position: absolute;
+	right: 0;
+	width: 10%;
+	height: 60%;
+	padding-top: 1%;
+	text-align: center;
+	font-weight: bold;
+	/**border-style : solid;*/
+}

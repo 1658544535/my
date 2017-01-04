@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="grouponExcel" extends="default">   
+		<!--拼团信息导出列表-->
+		<action name="grouponExcel" class="com.tzmb2c.web.action.GrouponExcelAction" method="goGrouponExcel">
+			<result name="success">/page/system/grouponExcel/grouponExcel.jsp</result>
+		</action>
+		<!--导出EXCEL-->
+		<action name="getGrouponExcel" class="com.tzmb2c.web.action.GrouponExcelAction" method="getGrouponExcel">
+			<result name="success" type="stream">  
+				<param name="contentType">application/vnd.ms-excel</param>  
+				<param name="inputName">inputStream</param>  
+				<param name="contentDisposition">attachment;filename="${downloadFileName}"</param>  
+				<param name="bufferSize">4096</param>
+			</result>  
+		</action>
+	</package>
+	
+	<package name="grouponExcel-json" extends="json-default">
+		<action name="grouponExcelList" class="com.tzmb2c.web.action.GrouponExcelAction" method="grouponExcelList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+	    </action>
+	    
+	    <action name="grouponExcelCount" class="com.tzmb2c.web.action.GrouponExcelAction" method="grouponExcelCount">
+			<result type="json">
+			     <param name="root">page.rowCount</param>
+		    </result>
+	   </action>
+	</package>
+</struts>

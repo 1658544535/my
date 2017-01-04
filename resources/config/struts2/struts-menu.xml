@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="menu" extends="default">
+
+		<result-types>
+			<result-type name="json" class="org.apache.struts2.json.JSONResult" />
+		</result-types>
+		<!-- 弹到开发中 -->
+		<action name="goErrorPage" class="com.tzmb2c.web.action.MenuAction">
+			<result>/page/common/error.jsp</result>
+		</action>
+
+		<!-- 菜单管理页 -->
+		<action name="gomanagemenu" class="com.tzmb2c.web.action.MenuAction">
+			<result>/page/system/menu/managemenu.jsp</result>
+		</action>
+
+		<!-- 查看所有父菜单 -->
+		<action name="findMenuByFatherAll" class="com.tzmb2c.web.action.MenuAction"
+			method="findMenuByFatherAll">
+			<result>/page/system/menu/addMenu.jsp</result>
+		</action>
+
+		<!-- 查看子菜单 -->
+		<action name="findMenuBySon" class="com.tzmb2c.web.action.MenuAction"
+			method="findMenuBySon">
+			<result type="json">
+				<param name="includeProperties">jsonStr</param>
+			</result>
+		</action>
+
+		<!-- 添加菜单成功回调 -->
+		<action name="addMenu" class="com.tzmb2c.web.action.MenuAction"
+			method="addMenu">
+			<result name="success" type="redirectAction">menuManage</result>
+		</action>
+
+		<!-- 更新菜单回调 -->
+		<action name="updateMenuByHost" class="com.tzmb2c.web.action.MenuAction"
+			method="updateMenuByHost">
+			<result name="success" type="redirectAction">menuManage
+			</result>
+		</action>
+
+		<!-- 返回菜单管理 -->
+		<action name="menuManage" class="com.tzmb2c.web.action.MenuAction"
+			method="findMenulesect">
+			<result>/page/system/menu/managemenu.jsp</result>
+		</action>
+
+		<!-- 更新菜单 -->
+		<action name="findByIdMenu" class="com.tzmb2c.web.action.MenuAction"
+			method="findByIdMenu">
+			<result>/page/system/menu/updatemenu.jsp</result>
+		</action>
+
+		<!-- 添加菜单 -->
+		<action name="goAddPage" class="com.tzmb2c.web.action.MenuAction"
+			method="goAddPage">
+			<result>/page/system/menu/addMenu.jsp</result>
+		</action>
+		<!-- 删除菜单 -->
+		<action name="deleteMenu" class="com.tzmb2c.web.action.MenuAction"
+			method="deleteMenu">
+			<result name="success" type="redirectAction">menuManage
+			</result>
+		</action>
+		<!-- 添加子菜单 -->
+		<action name="goSonAddPage" class="com.tzmb2c.web.action.MenuAction"
+			method="goSonAddPage">
+			<result>/page/system/menu/addSonMenu.jsp</result>
+		</action>
+		<!-- 更新子菜单 -->
+		<action name="goSonUpdateMenu" class="com.tzmb2c.web.action.MenuAction"
+			method="goSonUpdateMenu">
+			<result>/page/system/menu/updateSonmenu.jsp</result>
+		</action>
+
+
+	</package>
+</struts>

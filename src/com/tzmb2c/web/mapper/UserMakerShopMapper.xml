@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tzmb2c.web.mapper.UserMakerShopMapper">
+<select id="findUserMakerShopList" resultType="UserMakerShopPojo" parameterType="java.util.Map">
+		select
+			u.id                       as id,
+			u.user_id                  as userId,
+			sl.name                    as userName,
+			u.shop_id                  as shopId,
+			us.name                    as shopName,
+			u.age_type                 as ageType,
+			(select sd.name from sys_dict sd where sd.value=u.age_type and type="user_age") as ageTypeName,
+			u.ability                  as ability,
+			(select sd.name from sys_dict sd where sd.value=u.ability and type="ability") as abilityName,
+			u.status                   as status,
+		    (CASE WHEN u.status = 0 THEN '未审核' WHEN u.status = 1 THEN '审核成功' WHEN u.status = 2 THEN '审核失败' END) as statusName,
+		    u.content_output           as contentOutput,
+		    (CASE WHEN u.content_output = 0 THEN '1/7天' WHEN u.content_output = 1 THEN '1/5天' WHEN u.content_output = 2 THEN '1/3天'
+		     WHEN u.content_output = 3 THEN '1/1天' WHEN u.content_output = 4 THEN '2/1天' WHEN u.content_output = 5 THEN '3/1天以上' END) as contentOutputName,
+		    u.content_output_original as contentOutputOriginal,
+		    (CASE WHEN u.content_output_original = 0 THEN '1/7天' WHEN u.content_output_original = 1 THEN '1/5天' WHEN u.content_output_original = 2 THEN '1/3天'
+		     WHEN u.content_output_original = 3 THEN '1/1天' WHEN u.content_output_original = 4 THEN '2/1天' 
+		     WHEN u.content_output_original = 5 THEN '3/1天以上' END) as contentOutputOriginalName,
+		    u.create_date             as createDate,
+		    us.images as shopMainImage,
+		    sl.image as userImage,
+		    (CASE WHEN u.is_genCabinet = 0 THEN '非创阁' WHEN u.is_genCabinet = 1 THEN '创阁' END) as isGenCabinetStr,
+		    u.update_date as updateDate
+        from user_maker_shop u 
+        left join sys_login sl on sl.id = u.user_id 
+        left join user_shop us on us.id = u.shop_id
+	    where 1=1
+	    and sl.type = 12
+	    <if test="userId != null">
+			and u.user_id = #{userId}
+		</if>
+	    <if test="shopId != null">
+			and u.shop_id = #{shopId}
+		</if>
+		<if test="shopType != null">
+			and u.shop_type = #{shopType}
+		</if>
+	    <if test="userName != null and userName != '' ">
+			and sl.name like concat("%",#{userName},"%")
+		</if>
+		<if test="shopName != null and shopName != '' ">
+			and us.name like concat("%",#{shopName},"%")
+		</if>
+		<if test="status != null">
+			and u.status = #{status}
+		</if>
+        order by u.update_date desc,u.create_date desc 
+		<if test="pageNo != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+</select>
+
+<select id="findMakerShopList" resultType="UserMakerShopPojo" parameterType="java.util.Map">
+		select
+			u.user_id                  as userId,
+			u.shop_id                  as shopId,
+			sl.name                    as userName,
+			sl.image                   as userImage,
+			us.images                  as shopMainImage,
+			us.name                    as shopName
+		from user_maker_shop u 
+		left join (
+			select id,type_id,count(type_id) as num from user_circle_follow
+			where type = 1 and is_follow = 1
+			group by type_id) uc 
+			on u.user_id = uc.type_id 
+		left join sys_login sl on sl.id = u.user_id 
+		left join user_shop us on us.id = u.shop_id
+		where 1=1
+		<if test="shopType != null">
+			and u.shop_type = #{shopType}
+		</if>
+		<if test="status != null">
+			and u.status = #{status}
+		</if>
+		<if test="isGenCabinet != null">
+			and u.is_genCabinet = #{isGenCabinet}
+		</if>
+		and sl.type = 12
+		and sl.status = 1
+		and us.status = 1
+		order by uc.num desc,uc.id desc
+		<if test="pageNo != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+</select>
+
+<select id="findUserMakerShopCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from user_maker_shop u 
+        left join sys_login sl on sl.id = u.user_id 
+        left join user_shop us on us.id = u.shop_id
+		where 1=1
+		and sl.type = 12
+		<if test="userName != null and userName != '' ">
+			and sl.name like concat("%",#{userName},"%")
+		</if>
+		<if test="shopName != null and shopName != '' ">
+			and us.name like concat("%",#{shopName},"%")
+		</if>
+		<if test="status != null">
+			and u.status = #{status}
+		</if>
+</select>
+<!-- 查找单条(id) -->
+<select id="findUserMakerShopById" resultType="UserMakerShopPojo" parameterType="Long">
+		select
+		    u.id                       as id,
+			u.user_id                  as userId,
+			sl.name                    as userName,
+			u.shop_id                  as shopId,
+			us.name                    as shopName,
+			us.phone                   as phone,
+			us.top_image               as shopLOGO,
+			us.images                  as shopMainImage,
+			us.province                as province,
+			(select name from sys_area sa where sa.id=us.province) as provinceName,
+			us.city                    as city,
+			(select name from sys_area sa where sa.id=us.city) as cityName,
+			us.area                    as area,
+			(select name from sys_area sa where sa.id=us.area) as areaName,
+			us.address                 as detailedAddress,
+			u.contact                  as contact,
+			u.age_type                 as ageType,
+			(select sd.name from sys_dict sd where sd.value=u.age_type and type="user_age") as ageTypeName,
+			u.ability                  as ability,
+			(select sd.name from sys_dict sd where sd.value=u.ability and type="ability") as abilityName,
+			u.status                   as status,
+			u.service_phone            as servicePhone,
+			u.alipay_account           as alipayAccount,
+			u.alipay_name              as alipayName,
+			u.shop_type                as shopType,
+			(CASE WHEN u.shop_type = 0 THEN '企业' WHEN u.shop_type = 1 THEN '平台' END) as shopTypeNames,
+			u.shop_type_name           as shopTypeName,
+			u.shop_type_url            as shopTypeUrl,
+			u.image_original           as imageOriginal,
+			u.image_copy               as imageCopy,
+		    u.content_output           as contentOutput,
+		    (CASE WHEN u.content_output = 0 THEN '1/7天' WHEN u.content_output = 1 THEN '1/5天' WHEN u.content_output = 2 THEN '1/3天'
+		     WHEN u.content_output = 3 THEN '1/1天' WHEN u.content_output = 4 THEN '2/1天' WHEN u.content_output = 5 THEN '3/1天以上' END) as contentOutputName,
+		    u.content_output_original as contentOutputOriginal,
+		    (CASE WHEN u.content_output_original = 0 THEN '1/7天' WHEN u.content_output_original = 1 THEN '1/5天' WHEN u.content_output_original = 2 THEN '1/3天'
+		     WHEN u.content_output_original = 3 THEN '1/1天' WHEN u.content_output_original = 4 THEN '2/1天' 
+		     WHEN u.content_output_original = 5 THEN '3/1天以上' END) as contentOutputOriginalName,
+		     (CASE WHEN u.is_genCabinet = 0 THEN ' ' WHEN u.is_genCabinet = 1 THEN '创阁' END) as isGenCabinetStr,
+		     u.is_genCabinet as isGenCabinet
+        from user_maker_shop u 
+        left join sys_login sl on sl.id = u.user_id 
+        left join user_shop us on us.id = u.shop_id
+		where 1=1
+		and sl.type = 12
+        and u.id=#{id}
+</select>
+<!-- 查找单条(id) -->
+<select id="findUserMakerShopByUid" resultType="UserMakerShopPojo" parameterType="Long">
+		select
+		    u.id                       as id,
+			u.user_id                  as userId,
+			sl.name                    as userName,
+			u.shop_id                  as shopId,
+			us.name                    as shopName,
+			us.phone                   as phone,
+			us.top_image               as shopLOGO,
+			us.images                  as shopMainImage,
+			us.province                as province,
+			(select name from sys_area sa where sa.id=us.province) as provinceName,
+			us.city                    as city,
+			(select name from sys_area sa where sa.id=us.city) as cityName,
+			us.area                    as area,
+			(select name from sys_area sa where sa.id=us.area) as areaName,
+			us.address                 as detailedAddress,
+			u.contact                  as contact,
+			u.age_type                 as ageType,
+			(select sd.name from sys_dict sd where sd.value=u.age_type and type="user_age") as ageTypeName,
+			u.ability                  as ability,
+			(select sd.name from sys_dict sd where sd.value=u.ability and type="ability") as abilityName,
+			u.status                   as status,
+			u.service_phone            as servicePhone,
+			u.alipay_account           as alipayAccount,
+			u.alipay_name              as alipayName,
+			u.shop_type                as shopType,
+			(CASE WHEN u.shop_type = 0 THEN '企业' WHEN u.shop_type = 1 THEN '平台' END) as shopTypeNames,
+			u.shop_type_name           as shopTypeName,
+			u.shop_type_url            as shopTypeUrl,
+			u.image_original           as imageOriginal,
+			u.image_copy               as imageCopy,
+		    u.content_output           as contentOutput,
+		    (CASE WHEN u.content_output = 0 THEN '1/7天' WHEN u.content_output = 1 THEN '1/5天' WHEN u.content_output = 2 THEN '1/3天'
+		     WHEN u.content_output = 3 THEN '1/1天' WHEN u.content_output = 4 THEN '2/1天' WHEN u.content_output = 5 THEN '3/1天以上' END) as contentOutputName,
+		    u.content_output_original as contentOutputOriginal,
+		    (CASE WHEN u.content_output_original = 0 THEN '1/7天' WHEN u.content_output_original = 1 THEN '1/5天' WHEN u.content_output_original = 2 THEN '1/3天'
+		     WHEN u.content_output_original = 3 THEN '1/1天' WHEN u.content_output_original = 4 THEN '2/1天' 
+		     WHEN u.content_output_original = 5 THEN '3/1天以上' END) as contentOutputOriginalName
+        from user_maker_shop u 
+        left join sys_login sl on sl.id = u.user_id 
+        left join user_shop us on us.id = u.shop_id
+		where 1=1
+		and sl.type = 12
+        and u.user_id=#{userId} limit 1
+</select>
+<!-- 审成单条(id) -->
+<update id="checkUserMakerShop" parameterType="Long">
+		update user_maker_shop  set
+		status = 1,
+		update_date = now()
+		where 
+		id = #{id}
+<!-- 审失单条(id) -->
+</update>
+<update id="uncheckUserMakerShop" parameterType="Long">
+		update user_maker_shop set
+		status = 2,
+		update_date = now()
+		where 
+		id = #{id}
+</update>
+<!--加入某条-->
+<insert id="insertUserMakerShop" parameterType="UserMakerShopPojo">
+	insert into user_maker_shop (user_id,shop_id,age_type,ability,status,create_by,create_date,update_by,update_date,contact,service_phone,
+	alipay_account,alipay_name,shop_type,image_original,image_copy,shop_type_name,shop_type_url,content_output,content_output_original)
+	values(#{userId},#{shopId},#{ageType},#{ability},#{status},#{createBy},now(),#{updateBy},now(),#{contact},#{servicePhone},
+	#{alipayAccount},#{alipayName},#{shopType},#{imageOriginal},#{imageCopy},#{shopTypeName},#{shopTypeUrl},#{contentOutput},#{contentOutputOriginal})
+</insert>	
+<!-- 删除单条(id) -->
+<delete id="delUserMakerShop" parameterType="Long">
+	delete from user_maker_shop where id = #{id}
+</delete>
+<!-- 编辑单条(id) -->
+<update id="updateUserMakerShop" parameterType="UserMakerShopPojo">
+		update user_maker_shop set
+		<if test="userId != null">
+		user_id = #{userId},
+		</if>
+		<if test="shopId != null">
+		shop_id = #{shopId},
+		</if>
+		<if test="ageType != null">
+		age_type = #{ageType},
+		</if>
+		<if test="ability != null">
+		ability = #{ability},
+		</if>
+		<if test="status != null">
+		status = #{status},
+		</if>
+		<if test="contact != null and contact !=''">
+		contact = #{contact},
+		</if>
+		<if test="servicePhone != null and servicePhone !=''">
+		service_phone = #{servicePhone},
+		</if>
+		<if test="alipayAccount != null and alipayAccount !=''">
+		alipay_account = #{alipayAccount},
+		</if>
+		<if test="alipayName != null and alipayName !=''">
+		alipay_name = #{alipayName},
+		</if>
+		<if test="shopType != null">
+		shop_type = #{shopType},
+		</if>
+		<if test="imageOriginal != null and imageOriginal !=''">
+		image_original = #{imageOriginal},
+		</if>
+		<if test="imageCopy != null and imageCopy !=''">
+		image_copy = #{imageCopy},
+		</if>
+		<if test="shopTypeName != null and shopTypeName !=''">
+		shop_type_name = #{shopTypeName},
+		</if>
+		<if test="shopTypeUrl != null and shopTypeUrl !=''">
+		shop_type_url = #{shopTypeUrl},
+		</if>
+		<if test="contentOutput != null and contentOutput !=''">
+		content_output = #{contentOutput},
+		</if>
+		<if test="contentOutputOriginal != null and contentOutputOriginal !=''">
+		content_output_original = #{contentOutputOriginal},
+		</if>
+		<if test="isGenCabinet != null">
+		is_genCabinet = #{isGenCabinet},
+		</if>
+		update_date = now()
+		where id = #{id}
+	</update>
+</mapper>

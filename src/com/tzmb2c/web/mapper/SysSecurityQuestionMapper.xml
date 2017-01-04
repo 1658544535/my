@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.SysSecurityQuestionMapper">
+   
+	<!-- 查询所有的记录 -->
+	<select id="sysSecurityQuestionListWeb" resultType="SysSecurityQuestionPojo"
+		parameterType="java.util.Map">
+		select 
+			ssq.id as id,
+			ssq.quesion as quesion,
+			ssq.quesion_en as quesionEn,
+			ssq.sorting as sorting,
+			ssq.status as status,
+			ssq.create_by as createBy,
+			ssq.create_date as createDate,
+			ssq.update_by as updateBy,
+			ssq.update_date as updateDate,
+			ssq.remarks as remarks,
+			ssq.version as version
+		from sys_security_question ssq
+	</select>
+
+</mapper>

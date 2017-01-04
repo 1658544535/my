@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="pindekeTaskProduct" extends="default">
+		<!-- 进入拼得客任务页面 -->
+		<action name="goPindekeTaskProductList" class="com.tzmb2c.web.action.PindekeTaskProductAction" method="pindekeTaskProductCount">
+			<result name="success">/page/system/pindekeTaskProduct/pindekeTaskProductList.jsp</result>
+		</action>
+		<!-- 进入新增拼得客任务页面 -->
+		<action name="goAddPindekeTaskProduct" class="com.tzmb2c.web.action.PindekeTaskProductAction" method="goAddPindekeTaskProduct">
+			<result name="success">/page/system/pindekeTaskProduct/addPindekeTaskProduct.jsp</result>
+		</action>
+		<!-- 新增拼得客任务 -->
+		<action name="addPindekeTaskProduct" class="com.tzmb2c.web.action.PindekeTaskProductAction" method="addPindekeTaskProduct">
+		</action>
+		<!-- 进入选择拼得客任务商品页面 -->
+		<action name="goSelectPindekeTaskProduct" class="com.tzmb2c.web.action.PindekeTaskProductAction" method="selectPindekeTaskProductCount">
+			<result name="success">/page/system/pindekeTaskProduct/selectPindekeTaskProduct.jsp</result>
+		</action>
+		<!-- 进入选择拼得客任务编辑页面 -->
+		<action name="goUpdatePindekeTaskProduct" class="com.tzmb2c.web.action.PindekeTaskProductAction" method="goUpdatePindekeTaskProduct">
+			<result name="success">/page/system/pindekeTaskProduct/updatePindekeTaskProduct.jsp</result>
+		</action>
+		<!-- 进入选择拼得客任务编辑页面 -->
+		<action name="updatePindekeTaskProduct" class="com.tzmb2c.web.action.PindekeTaskProductAction" method="updatePindekeTaskProduct">
+		</action>
+		<!-- 参加拼得客任务团列表 -->
+		<action name="goPindekeTaskGroRec" class="com.tzmb2c.web.action.PindekeTaskProductAction" method="pindekeTaskGroRecCount">
+			<result name="success">/page/system/pindekeTaskProduct/pindekeTaskGroRecList.jsp</result>
+		</action>
+		<!-- 参加拼得客任务人列表 -->
+		<action name="goPindekeTaskGroUserRec" class="com.tzmb2c.web.action.PindekeTaskProductAction" method="pindekeTaskGroUserRecCount">
+			<result name="success">/page/system/pindekeTaskProduct/pindekeTaskGroUserRecList.jsp</result>
+		</action>
+		
+	</package>
+	<package name="pindekeTaskProduct-json" extends="json-default">
+		<!-- 拼得客任务count -->
+		<action name="pindekeTaskProductCount" class="com.tzmb2c.web.action.PindekeTaskProductAction" method="pindekeTaskProductCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>			
+		<!-- 拼得客任务list -->
+		<action name="pindekeTaskProductList" class="com.tzmb2c.web.action.PindekeTaskProductAction" method="pindekeTaskProductList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>			
+		<!-- 选择拼得客任务商品count -->
+		<action name="selectPindekeTaskProductCount" class="com.tzmb2c.web.action.PindekeTaskProductAction" method="selectPindekeTaskProductCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>			
+		<!-- 选择拼得客任务商品list -->
+		<action name="selectPindekeTaskProductList" class="com.tzmb2c.web.action.PindekeTaskProductAction" method="selectPindekeTaskProductList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>			
+		<!-- 根据id查找替换商品 -->
+		<action name="findPindekeTaskProductById" class="com.tzmb2c.web.action.PindekeTaskProductAction" method="findPindekeTaskProductById">
+			<result type="json">
+				<param name="root">dataMap</param>
+			</result>
+		</action>		
+		<!-- 根据id删除活动 -->
+		<action name="delPindekeTaskProductById" class="com.tzmb2c.web.action.PindekeTaskProductAction" method="delPindekeTaskProductById">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>	
+		
+		<!-- 根据ids删除活动 -->
+		<action name="delPindekeTaskProductByIds" class="com.tzmb2c.web.action.PindekeTaskProductAction" method="delPindekeTaskProductByIds">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>	
+		
+		<!-- 选中审核 -->
+		<action name="checkPindekeTaskProduct" class="com.tzmb2c.web.action.PindekeTaskProductAction" method="checkPindekeTaskProduct">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>	
+		<!-- 选中取消审核 -->
+		<action name="uncheckPindekeTaskProduct" class="com.tzmb2c.web.action.PindekeTaskProductAction" method="uncheckPindekeTaskProduct">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 选中审核 -->
+		<action name="checkAllPindekeTaskProduct" class="com.tzmb2c.web.action.PindekeTaskProductAction" method="checkAllPindekeTaskProduct">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>	
+		<!-- 选中取消审核 -->
+		<action name="uncheckAllPindekeTaskProduct" class="com.tzmb2c.web.action.PindekeTaskProductAction" method="uncheckAllPindekeTaskProduct">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 拼得客任务团列表count -->
+		<action name="pindekeTaskGroRecCount" class="com.tzmb2c.web.action.PindekeTaskProductAction" method="pindekeTaskGroRecCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>			
+		<!-- 拼得客任务团列表list -->
+		<action name="pindekeTaskGroRecList" class="com.tzmb2c.web.action.PindekeTaskProductAction" method="pindekeTaskGroRecList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<!-- 拼得客任务参团人列表count -->
+		<action name="pindekeTaskGroUserRecCount" class="com.tzmb2c.web.action.PindekeTaskProductAction" method="pindekeTaskGroUserRecCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>			
+		<!-- 拼得客任务参团人列表list -->
+		<action name="pindekeTaskGroUserRecList" class="com.tzmb2c.web.action.PindekeTaskProductAction" method="pindekeTaskGroUserRecList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		
+	</package>
+</struts>

@@ -1,0 +1,50 @@
+@charset "utf-8";
+/* CSS Document */
+.ui-state-default,.ui-widget-content .ui-state-default,.ui-widget-header .ui-state-default {
+	font-weight:normal;
+	color:#4c4c4c;
+	font-size:12px;
+}
+.ui-state-default a,.ui-state-default a:link,.ui-state-default a:visited {
+	color:#4c4c4c;
+	font-size:12px;
+	text-decoration:none;
+	width:66px;
+	height:40px;
+	display:block;
+	border:#ececec 1px solid;
+	border-left:none;
+	border-right:none;
+	background:#f4f8fb;
+	text-align:center;
+	line-height:40px;
+}
+.ui-state-hover,.ui-widget-content .ui-state-hover,.ui-widget-header .ui-state-hover,.ui-state-focus,.ui-widget-content .ui-state-focus,.ui-widget-header .ui-state-focus {
+	font-weight:normal;
+	color:#4c4c4c;
+	font-size:12px;
+}
+.ui-state-hover a,.ui-state-hover a:hover,.ui-state-hover a:link,.ui-state-hover a:visited,.ui-state-focus a,.ui-state-focus a:hover,.ui-state-focus a:link,.ui-state-focus a:visited{
+	color:#4c4c4c;
+	font-size:12px;
+	text-decoration:none;
+}
+.ui-state-active,.ui-widget-content .ui-state-active,.ui-widget-header .ui-state-active {
+	font-weight: normal;
+	color:#4c4c4c;
+	font-size:12px;
+}
+.ui-state-active a,.ui-state-active a:link,.ui-state-active a:visited{
+	color:#4c4c4c;
+	font-size:12px;
+	text-decoration:none;
+	background-color:#fff;
+	width:66px;
+	height:40px;
+	display:block;
+	border:#ececec 1px solid;
+	border-bottom:none;
+	text-align:center;
+	line-height:40px;
+	padding-bottom:1px;
+}

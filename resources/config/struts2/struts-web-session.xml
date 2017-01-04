@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+	<package name="struts-web-session" extends="web-default">
+	
+		<!--支付-->
+		<action name="goOrderDetailPay" method="goOrderDetailPay"
+			class="com.tzmb2c.web.action.OrderAction">
+			<result>/web/orderpay2.jsp</result>
+		</action>
+	
+	
+		<!-- 采购商系统消息 前端 -->
+		<action name="systemInfoConWeb" class="com.tzmb2c.web.action.InfoAction"
+			method="systemInfoWeb">
+			<result>/web/myConsumerSyetemList.jsp</result>
+		</action>
+		<!-- 采购商系统消息 详情 -->
+		<action name="infoDetailCon" class="com.tzmb2c.web.action.InfoAction"
+			method="infoDetail">
+			<result name="success">/web/myConsumerSyetemDetail.jsp</result>
+		</action>
+		<!-- 供应商系统消息 前端 -->
+		<action name="systemInfoWeb" class="com.tzmb2c.web.action.InfoAction"
+			method="systemInfoWeb">
+			<result>/web/my_supplier_system_list.jsp</result>
+		</action>
+		<!-- 供应商系统消息 详情 -->
+		<action name="infoDetailMuf" class="com.tzmb2c.web.action.InfoAction"
+			method="infoDetail">
+			<result name="success">/web/my_supplier_system_detail.jsp</result>
+		</action>
+		
+		<!-- 店铺认证 前端 -->
+		<action name="userAttestationWeb" class="com.tzmb2c.web.action.UserAttestationAction"
+			method="goFindUserAttestation">
+			<result>/web/my_supplier_user_attestation.jsp</result>
+		</action>
+		<!--店铺认证 更新 -->
+		<action name="updateUserAttestationWeb" class="com.tzmb2c.web.action.UserAttestationAction"
+			method="updateUserAttestation">
+		</action>
+		<!--店铺认证 add -->
+		<action name="addUserAttestationWeb" class="com.tzmb2c.web.action.UserAttestationAction"
+			method="addUserAttestation">
+		</action>
+
+		<!-- 我的-采购商页面 -->
+		<action name="myConsumerWeb" class="com.tzmb2c.web.action.SysLoginAction"
+			method="myConsumerWeb">
+			<result>/web/myConsumerWeb.jsp</result>
+		</action>
+		<!-- 购物车页面 -->
+		<action name="cartWeb" class="com.tzmb2c.web.action.CartAction"
+			method="cartWeb">
+			<result>/web/cartWeb.jsp</result>
+		</action>
+
+		<!-- 加入购物车提示 -->
+		<action name="cartShow" class="com.tzmb2c.web.action.CartAction"
+			method="cartShow">
+			<result>/web/cartShow.jsp</result>
+		</action>
+		<!-- 产品收藏页面 -->
+		<action name="userCollectWeb" class="com.tzmb2c.web.action.UserCollectAction"
+			method="userCollectWeb">
+			<result>/web/userCollectWeb.jsp</result>
+		</action>
+
+		<!-- 店铺收藏页面 -->
+		<action name="userShopCollectWeb" class="com.tzmb2c.web.action.UserShopCollectAction"
+			method="userShopCollectWeb">
+			<result>/web/userShopCollectWeb.jsp</result>
+		</action>
+		<!-- 分销商申请页面 -->
+		<action name="applyConsumer" class="com.tzmb2c.web.action.ConsumerAction"
+			method="applyConsumer">
+			<result>/web/applyConsumer.jsp</result>
+		</action>
+		<action name="addConsumer" class="com.tzmb2c.web.action.ConsumerAction"
+			method="addConsumer">
+		</action>
+		<!-- 供应商申请页面 -->
+		<action name="applyManufacturer" class="com.tzmb2c.web.action.ManufacturerAction"
+			method="applyManufacturer">
+			<result>/web/applyManufacturer.jsp</result>
+		</action>
+		<action name="addManufacturer" class="com.tzmb2c.web.action.ManufacturerAction"
+			method="addManufacturer">
+		</action>
+
+		<!-- 前台实名认证 -->
+		<action name="goAddUserAttestation" class="com.tzmb2c.web.action.UserAttestationAction"
+			method="goAddUserAttestation">
+			<result>/web/index.jsp</result>
+		</action>
+
+		<!-- 前台实名认证 -->
+		<action name="addUserAttestation" class="com.tzmb2c.web.action.UserAttestationAction"
+			method="addUserAttestation">
+		</action>
+		<!-- 供应商我的 -->
+		<action name="gomySupplier" class="com.tzmb2c.web.action.ProductAction"
+			method="gomySupplier">
+			<result>/web/my_supplier.jsp</result>
+		</action>
+
+		<!-- 订单管理 -->
+		<action name="supplyOrderListWeb" class="com.tzmb2c.web.action.ProductAction"
+			method="getProductCountWeb">
+			<result name="success">/web/my_supplier.jsp</result>
+		</action>
+		
+		<!-- 退货管理 -->
+		<action name="userOrderRefundWeb" class="com.tzmb2c.web.action.ProductAction"
+			method="userOrderRefundWeb">
+			<result name="success">/web/userOrderRefundWeb.jsp</result>
+		</action>
+		
+		<!-- 跳到退货的订单的产品详情页 -->
+		<action name="goFindOrderWeb" class="com.tzmb2c.web.action.OrderAction"
+			method="goFindOrderWeb">
+			<result name="success">/web/userOrderRefundDetailWeb.jsp</result>
+		</action>
+		
+		<!-- 前台：退货申请页面 -->
+		<action name="goReturnGoodsWeb" class="com.tzmb2c.web.action.OrderAction"
+			method="goReturnGoodsWeb">
+			<result name="success">/web/returnApply.jsp</result>
+		</action>
+		
+		<!-- 添加一条退货申请 -->
+		<action name="addOrderRefundWeb" class="com.tzmb2c.web.action.OrderRefundAction" method="addOrderRefundWeb">
+		<result name="success">/web/doReturnApply.jsp</result>
+		</action>
+		
+		<!-- 前台：退货申请成功跳转页面 -->
+		<action name="goReturnSuccessWeb" class="com.tzmb2c.web.action.OrderRefundAction"
+			method="refundListByorderId">
+			<result name="success">/web/doReturnApply.jsp</result>
+		</action>
+		
+		<!-- 前台：退货审核成功 -->
+		<action name="goReturnsSellerWeb" class="com.tzmb2c.web.action.OrderRefundAction"
+			method="returnsSeller">
+			<result name="success">/web/returnsSeller.jsp</result>
+		</action>
+		
+		<!-- 前台：退货买家发货跳转 -->
+		<action name="goReturnsSellerSuccessWeb" class="com.tzmb2c.web.action.OrderRefundAction"
+			method="returnsSellerSuccess">
+			<result name="success">/web/orderWeb.jsp</result>
+		</action>
+		
+		<!-- 采购商的订单详情 -->
+		<action name="goOrderDetailWeb" class="com.tzmb2c.web.action.OrderDetailAction"
+			method="getOrderDetailByIdWeb">
+			<result name="success">/web/myConsumerOrderDetail.jsp</result>
+		</action>
+		
+		<!-- 供应商的订单详情 -->
+		<action name="goSupplyOrderDetailWeb" class="com.tzmb2c.web.action.OrderDetailAction"
+			method="getSupplyOrderDetailByIdWeb">
+			<result name="success">/web/my_supplier_order_detail.jsp</result>
+		</action>
+
+		<action name="goAddUserAttestation" class="com.tzmb2c.web.action.UserAttestationAction"
+			method="goAddUserAttestation">
+			<result>/web/index.jsp</result>
+		</action>
+
+		<!-- 产品信息批量删除 -->
+		<action name="productDeleteIdWeb" class="com.tzmb2c.web.action.ProductAction"
+			method="productDeleteIdWeb">
+		</action>
+
+		<!-- go添加产品信息 -->
+		<action name="goProductAddWeb" class="com.tzmb2c.web.action.ProductAction"
+			method="goProductAddWeb">
+			<result>/web/my_supplier_Upload.jsp</result>
+		</action>
+
+		<!-- 添加产品信息 -->
+		<action name="productAddWeb" class="com.tzmb2c.web.action.ProductAction"
+			method="productAddWeb">
+			<result>/web/my_supplier_Upload.jsp</result>
+		</action>
+
+		<!-- 产品图集管理:yang -->
+		<action name="productImagesManageWeb" class="com.tzmb2c.web.action.ProductImagesAction"
+			method="getCountProductImagesWeb">
+			<result>/web/my_supplier_ProductImages_list.jsp</result>
+		</action>
+
+		<!-- 添加产品图集 -->
+		<action name="goproductImagesAddWeb" class="com.tzmb2c.web.action.ProductImagesAction"
+			method="goproductImagesAddWeb">
+			<result>/web/my_supplier_productImagesAdd.jsp</result>
+		</action>
+
+		<action name="productImagesAddWeb" class="com.tzmb2c.web.action.ProductImagesAction"
+			method="productImagesAddWeb">
+			<result name="success" type="redirectAction">
+				<param name="actionName">productImagesManageWeb</param>
+				<param name="productImagesPojo.productId">${productImagesPojo.productId}</param>
+			</result>
+		</action>
+
+		<!-- 删除全部产品图集 -->
+		<action name="productImagesDeleteIdWeb" class="com.tzmb2c.web.action.ProductImagesAction"
+			method="productImagesDeleteIdWeb">
+		</action>
+
+		<!-- 店铺设置:yang -->
+		<action name="goFindShopWeb" class="com.tzmb2c.web.action.ShopAction"
+			method="goFindShopWeb">
+			<result>/web/my_supplier_shop_update.jsp</result>
+		</action>
+
+		<action name="updateShopWeb" class="com.tzmb2c.web.action.ShopAction"
+			method="updateShopWeb">
+		</action>
+
+		<!-- 发货管理:yang -->
+		<action name="shipManageWeb" class="com.tzmb2c.web.action.OrderAction"
+			method="shipOrderCountWeb">
+			<result name="success">/web/my_supplier_ship.jsp</result>
+		</action>
+		<!-- 已购买的宝贝-订单页面 -->
+		<action name="orderWeb" class="com.tzmb2c.web.action.OrderAction"
+			method="orderWeb">
+			<result>/web/orderWeb.jsp</result>
+		</action>
+		
+		<!-- 采购商：退货页面 -->
+		<action name="userOrderRefund" class="com.tzmb2c.web.action.OrderAction"
+			method="userOrderRefund">
+			<result>/web/userOrderRefund.jsp</result>
+		</action>
+		
+		<!-- 修改订单状态 -->
+		<action name="updateOrderStatus" class="com.tzmb2c.web.action.OrderAction"
+			method="updateOrderStatus">
+			<result name="success" type="redirectAction">orderWeb</result>
+		</action>
+
+		<!-- 选择地址 -->
+		<action name="goSelectAddress" class="com.tzmb2c.web.action.OrderAction"
+			method="goSelectAddress">
+			 <result>/web/submit-orders.jsp</result> 
+		</action>
+		<!-- 使用新地址 -->
+		<action name="goAddAddress" class="com.tzmb2c.web.action.OrderAction"
+			method="goAddAddress">
+			 <result>/web/goAddAddress.jsp</result> 
+		</action>
+
+		<!-- 创建订单 -->
+		<action name="confirmOrder" class="com.tzmb2c.web.action.OrderAction"
+			method="confirmOrder">
+			<!--<result>/web/orderpay.jsp</result>
+			<result name="success" type="redirectAction">mergeOrder</result>-->
+			 <result name="success" type="redirect">/mergeOrder.do?outTradeNo=${outTradeNo}</result>
+		</action>
+		
+		<!-- 合并订单订单 -->
+		<action name="mergeOrder" class="com.tzmb2c.web.action.OrderAction"
+			method="mergeOrder">
+			<result>/web/orderpay.jsp</result>
+			<!--<result name="success" type="redirectAction">orderWeb</result>-->
+		</action>
+
+		<!-- 分销产品库 -->
+		<action name="goConsumerProductWeb" class="com.tzmb2c.web.action.UserConsumerCollectAction"
+			method="goConsumerProductWeb">
+			<result>/web/consumer_product.jsp</result>
+		</action>
+		<action name="deluserConsumerCollectWeb" class="com.tzmb2c.web.action.UserConsumerCollectAction"
+			method="deluserConsumerCollectWeb">
+		</action>
+		
+		<!-- 收货地址列表 -->
+		<action name="deliveryAddressListWeb" class="com.tzmb2c.web.action.DeliveryAddressAction"
+			method="deliveryAddressListWeb">
+			<result>/web/deliveryAddressList.jsp</result>
+		</action>
+		
+		<!-- 修改我的收货地址的页面 -->
+		<action name="goUpdateDeliveryAddressWeb" class="com.tzmb2c.web.action.DeliveryAddressAction"
+			method="goUpdateDeliveryAddressWeb">
+			<result>/web/updateDeliveryAddress.jsp</result>
+		</action>
+		
+		<!-- 删除收货地址 -->
+		<action name="delAddress" class="com.tzmb2c.web.action.DeliveryAddressAction"
+			method="delAddress">
+		</action>
+		
+		<!-- 商品评价页面 -->
+		<action name="goUserCommentWeb" class="com.tzmb2c.web.action.OrderDetailAction"
+			method="goUserCommentWeb">
+			<result>/web/assess.jsp</result>
+		</action>
+		
+		<!--订单详情 -->
+		<action name="goMyOrderDetailWeb" class="com.tzmb2c.web.action.OrderDetailAction"
+			method="goMyOrderDetailWeb">
+			<result>/web/orders-detail.jsp</result>
+		</action>
+		
+		<!-- 分销商:我的：我的评价 -->
+		<action name="userCommentAllListWeb" class="com.tzmb2c.web.action.ProductCommentAction"
+			method="userCommentAllListWeb">
+			<result>/web/userCommentList.jsp</result>
+		</action>
+		
+		<!-- 采购商:go密保问题设置 -->
+		<action name="goSetAccountSecurityQuestion" class="com.tzmb2c.web.action.AccountSecurityAction"
+			method="goToSetAccountSecurityQuestion">
+			<result>/web/userSecurityQuestion.jsp</result>
+		</action>
+		
+		<!-- 供应商:go密保问题设置 -->
+		<action name="goToSetManufacturerAccountSecurityQuestion" class="com.tzmb2c.web.action.AccountSecurityAction"
+			method="goToSetManufacturerAccountSecurityQuestion">
+			<result>/web/userManufacturerSecurityQuestion.jsp</result>
+		</action>
+		
+		<!-- 设置密保问题设置 -->
+		<action name="setAccountSecurityQuestion" class="com.tzmb2c.web.action.AccountSecurityAction"
+			method="setAccountSecurityQuestion">
+		</action>
+		
+		<!-- go采购商面板:修改个人信息 -->
+		<action name="goUpdateConsumerWeb" class="com.tzmb2c.web.action.ConsumerAction"
+			method="goUpdateConsumerWeb">
+			<result>/web/updateConsumerWeb.jsp</result>
+		</action>
+		
+		<!-- 采购商面板:查看个人信息 -->
+		<action name="goConsumerWeb" class="com.tzmb2c.web.action.ConsumerAction"
+			method="goUpdateConsumerWeb">
+			<result>/web/userConsumerInfo.jsp</result>
+		</action>
+		
+		<!-- 采购商面板:修改个人信息 -->
+		<action name="updateConsumerWeb" class="com.tzmb2c.web.action.ConsumerAction"
+			method="updateConsumerWeb">
+		</action>
+		
+		<!-- go供应商面板:修改个人信息 -->
+		<action name="goUpdateManufacturerWeb" class="com.tzmb2c.web.action.ManufacturerAction"
+			method="goUpdateManufacturerWeb">
+			<result>/web/updateManufacturer.jsp</result>
+		</action>
+		
+		<!-- 供应商面板:查看个人信息 -->
+		<action name="goManufacturerWeb" class="com.tzmb2c.web.action.ManufacturerAction"
+			method="goUpdateManufacturerWeb">
+			<result>/web/userManufactureInfo.jsp</result>
+		</action>
+		
+		<!-- 供应商面板:修改个人信息 -->
+		<action name="updateManufacturerWeb" class="com.tzmb2c.web.action.ManufacturerAction"
+			method="updateManufacturerWeb">
+		</action>
+		
+		<!-- 导出分销产品库产品 -->
+		<action name="getConsumerProductExcel" class="com.tzmb2c.web.action.UserConsumerCollectAction" method="getConsumerProductExcel">
+			<result name="success" type="stream">  
+				<param name="contentType">application/vnd.ms-excel</param>  
+				<param name="inputName">inputStream</param>  
+				<param name="contentDisposition">attachment;filename="${downloadFileName}"</param>  
+				<param name="bufferSize">4096</param>  
+			</result>  
+		</action>
+	</package>
+</struts>

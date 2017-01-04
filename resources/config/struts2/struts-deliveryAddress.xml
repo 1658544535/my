@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+	<package name="deliveryAddress" extends="default">
+
+		<action name="deliveryAddressManage" class="com.tzmb2c.web.action.DeliveryAddressAction"
+			method="getDeliveryAddressCount">
+			<result name="success">/page/system/purchaser/manageDeliveryAddress.jsp
+			</result>
+		</action>
+
+		<!-- 添加信息 <action name="goAddPushNotice" class="com.tzmb2c.web.action.DeliveryAddressAction" 
+			method="goAddAttention"> <result>/page/system/notice/addnotice.jsp</result> 
+			</action> -->
+		<!-- 添加信息 <action name="addPushNotice" class="com.tzmb2c.web.action.DeliveryAddressAction" 
+			method="addAttention"> <result>/page/system/notice/addnotice.jsp</result> 
+			</action> -->
+		<!-- 更新 <action name="goUpdatePushNotice" class="com.tzmb2c.web.action.DeliveryAddressAction" 
+			method="goFindAttention"> <result>/page/system/purchaser/updatenotice.jsp</result> 
+			</action> -->
+		<!-- 更新 <action name="updatePushnotice" class="com.tzmb2c.web.action.DeliveryAddressAction" 
+			method="updateAttention"> </action> -->
+
+		<!-- go审核 -->
+		<action name="goCheckDeliveryAddress" class="com.tzmb2c.web.action.DeliveryAddressAction"
+			method="goFindDeliveryAddress">
+			<result>/page/system/purchaser/checkDeliveryAddress.jsp</result>
+		</action>
+
+		<!-- 审核单条-->
+		<action name="verifyDeliveryAddress" class="com.tzmb2c.web.action.DeliveryAddressAction"
+			method="verifyDeliveryAddress">
+		</action>
+
+		<!-- 批量审核-->
+		<action name="checkAllDeliveryAddressById" class="com.tzmb2c.web.action.DeliveryAddressAction"
+			method="checkAllDeliveryAddressById">
+		</action>
+		
+		<!-- 删除单条 -->
+		<action name="delDeliveryAddress" class="com.tzmb2c.web.action.DeliveryAddressAction"
+			method="delDeliveryAddress">
+		</action>
+
+		<!-- 删除全部 -->
+		<action name="deliveryAddressDeleteId" class="com.tzmb2c.web.action.DeliveryAddressAction"
+			method="delAllDeliveryAddressById">
+		</action>
+
+	</package>
+
+	<package name="deliveryAddress-json" extends="json-default">
+		
+
+		
+		
+
+		<!-- <action name="verifyPushNotice" class="com.tzmb2c.web.action.DeliveryAddressAction" 
+			method="verifyPushNotice"> <result type="json"> <param name="root">result</param> 
+			</result> </action> -->
+
+	</package>
+
+	<package name="iveryAddress-json" extends="json-default">
+		<!--平台入口 -->
+		<action name="getDeliveryAddressCount" class="com.tzmb2c.web.action.DeliveryAddressAction"
+			method="getDeliveryAddressCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+
+		<action name="deliveryAddressAllList" class="com.tzmb2c.web.action.DeliveryAddressAction"
+			method="deliveryAddressAllList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="delDeliveryAddress" class="com.tzmb2c.web.action.DeliveryAddressAction"
+			method="delDeliveryAddress">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

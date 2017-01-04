@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.UserScoreMapper">
+	<!-- 查询所有的记录 -->
+	<select id="findUserScoreList" resultType="UserScorePojo" parameterType="java.util.Map">
+		select
+			s.id as id,
+			s.user_id as userId,
+			s.name as name,
+			s.score as score,
+			s.shake_date as shakeDate,
+			s.shake_num as shakeNum,
+			s.bunding as bunding,
+			s.upload as upload,
+			s.improve as improve,
+			(CASE WHEN bunding = 0 THEN '未完成' WHEN bunding = 1 THEN '已完成' END) as bundingName,
+			(CASE WHEN upload = 0 THEN '未完成' WHEN upload = 1 THEN '已完成' END) as uploadName,
+			(CASE WHEN improve = 0 THEN '未完成' WHEN improve = 1 THEN '已完成' END) as improveName,
+			s.create_by as createBy,
+			s.create_date as createDate,
+			s.update_by as updateBy,
+			s.update_date as updateDate
+	   	from user_score s
+		where 1=1
+		<if test="userId != null and userId != '' ">
+			and s.user_id = #{userId}
+		</if>
+		<if test="name != null and name != '' ">
+			and s.name like concat("%",#{name},"%")
+		</if>
+		<if test="shakeNum != null ">
+			and s.shake_num = #{shakeNum}
+		</if>
+		<if test="shakeDateStr != null and shakeDateStr != ''">
+			and s.shake_date != #{shakeDateStr}
+		</if>
+		order by s.create_date desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<select id="findUserScoreCount" resultType="int" parameterType="java.util.Map">
+		select count(*)
+	   	from user_score s
+		where 1=1
+		<if test="userId != null and userId != '' ">
+			and s.user_id = #{userId}
+		</if>
+		<if test="name != null and name != '' ">
+			and s.name like concat("%",#{name},"%")
+		</if>
+		<if test="shakeNum != null ">
+			and s.shake_num = #{shakeNum}
+		</if>
+		<if test="shakeDateStr != null and shakeDateStr != ''">
+			and s.shake_date != #{shakeDateStr}
+		</if>
+	</select>
+	
+	<select id="findUserScoreById" resultType="UserScorePojo" parameterType="Long">
+		select
+			s.id as id,
+			s.user_id as userId,
+			s.name as name,
+			s.score as score,
+			s.shake_date as shakeDate,
+			s.shake_num as shakeNum,
+			s.bunding as bunding,
+			s.upload as upload,
+			s.improve as improve,
+			s.create_by as createBy,
+			s.create_date as createDate,
+			s.update_by as updateBy,
+			s.update_date as updateDate
+	   	from user_score s
+		where s.id = #{id}
+	</select>
+	
+	<select id="findUserScoreByUid" resultType="UserScorePojo" parameterType="Long">
+		select
+			s.id as id,
+			s.user_id as userId,
+			s.name as name,
+			s.score as score,
+			s.shake_date as shakeDate,
+			s.shake_num as shakeNum,
+			s.bunding as bunding,
+			s.upload as upload,
+			s.improve as improve,
+			s.create_by as createBy,
+			s.create_date as createDate,
+			s.update_by as updateBy,
+			s.update_date as updateDate
+	   	from user_score s
+		where s.user_id = #{userId}
+	</select>
+	<!-- 插入单条 -->
+	<insert id="insertUserScore" parameterType="UserScorePojo">
+		insert into user_score 
+		(user_id,name,score,shake_date,shake_num,bunding,upload,improve,create_by,create_date,update_by,update_date) 
+		select #{userId},#{name},#{score},#{shakeDate},#{shakeNum},#{bunding},#{upload},#{improve},#{createBy},now(),#{updateBy},now() from dual
+		where (select count(*) from user_score where user_id = #{userId}) = 0
+	</insert>
+	
+	<!-- 删除单条 -->
+	<delete id="delUserScoreById" parameterType="Long">
+		delete from user_score where id = #{id}
+	</delete>
+	<!-- 删除单条 -->
+	<delete id="delUserScoreByUid" parameterType="Long">
+		delete from user_score where user_id = #{userId}
+	</delete>
+	
+	<!--更新单条-->
+	<update id="updateUserScoreByUid" parameterType="UserScorePojo">
+		update user_score set
+		<if test="name != null and name != ''">
+			name = #{name},
+		</if>
+		<if test="score != null">
+			score = #{score},
+		</if>
+		<if test="shakeDate != null and shakeDate != ''">
+			shake_date = #{shakeDate},
+		</if>
+		<if test="shakeDateStr != null and shakeDateStr != ''">
+			shake_date = #{shakeDateStr},
+		</if>
+		<if test="shakeNum != null">
+			shake_num = #{shakeNum},
+		</if>
+		<if test="bunding != null">
+			bunding = #{bunding},
+		</if>
+		<if test="upload != null">
+			upload = #{upload},
+		</if>
+		<if test="improve != null">
+			improve = #{improve},
+		</if>
+		<if test="updateBy != null and updateBy!='' ">
+			update_by = #{updateBy},
+		</if>
+		update_date = now()
+		where user_id = #{userId}
+	</update>
+	
+</mapper>

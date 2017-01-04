@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.ActivityGoodsMapper">
+	<!-- 查询所有的记录 -->
+	<select id="findActivityGoodsList" resultType="ActivityGoodsPojo" parameterType="java.util.Map">
+		select
+			g.id as id,
+			g.product_id as productId,
+			b.brand_name as brandName,
+			p.product_no as productNo,
+			p.product_name as productName,
+			p.product_num as productNum,
+			p.status as proStatus,
+			p.user_id as userId,
+			p.image as productImage,
+			g.sorting as sorting,
+			g.time_id as timeId,
+			g.sell_price as sellPrice,
+			g.active_price as activePrice,
+			g.tips as tips,
+			g.activity_stock as activityStock,
+			g.activity_num as activityNum,
+			g.status as status,
+			(select name from sys_dict where value = g.status and type="status") as statusName,
+			g.create_by as createBy,
+			g.create_date as createDate,
+			g.update_by as updateBy,
+			g.update_date as updateDate,
+			t.activity_date as activityDate,
+			CONCAT(t.begin_time,'至',t.end_time) as activityTime
+			<!--(select CONCAT("颜色:",a.value,";尺寸:",b.value) from product_sku_link c
+			left join sku_attribute a on c.sku_color_id =a.id
+			left join sku_attribute d on c.sku_format_id =d.id
+			where c.id=g.sku_link_id) as skuLinkStr,
+			g.sku_link_id as skuLinkId-->
+	   	from activity_goods g
+	   	left join product p on g.product_id = p.id
+	   	left join activity_time t on g.time_id = t.id
+	   	<if test="type != null and type == 3 and special != null">
+	   	left join special_show ss on ss.activity_id = g.time_id
+	   	</if>
+	   	left join user_brand b on p.user_brand_id = b.id
+		where 1=1 and t.isdelete = '0'
+	    <if test="specDelete!=null and specDelete!=''">
+			and ss.isdelete = #{specDelete}
+		</if>
+	    <if test="specStatus !=null">
+			and ss.status = #{specStatus}
+		</if>
+	    <if test="productNo!=null and productNo!=''">
+			and p.product_no = #{productNo}
+		</if>
+		<if test="brandName!=null and brandName!='' ">
+			and b.brand_name like concat("%",#{brandName},"%")
+		</if>
+		<if test="type != null">
+			and t.type = #{type}
+		</if>
+		<if test="beginTime != null and beginTime != '' ">
+			and t.begin_time &lt;= #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != '' ">
+			and t.end_time &gt;= #{endTime}
+		</if>
+		<if test="productName!=null and productName!='' ">
+			and p.product_name like concat("%",#{productName},"%")
+		</if>
+		<if test="productNum!=null and productNum!=''">
+			and p.product_num = #{productNum}
+		</if>
+		<if test="userId!=null and userId!=''">
+			and p.user_id = #{userId}
+		</if>
+		<if test="status!=null">
+			and g.status = #{status}
+		</if>
+		<if test="timeId!=null">
+			and g.time_id = #{timeId}
+		</if>
+		<if test="productId!=null">
+			and g.product_id = #{productId}
+		</if>
+		<if test="proStatus!=null">
+			and p.status = #{proStatus}
+		</if>
+		<if test="sort!=null and sort==1">
+			order by p.sell_number+p.base_number desc
+		</if>
+		<if test="sort!=null and sort==11">
+			order by p.sell_number+p.base_number asc
+		</if>
+		<if test="sort!=null and sort==2">
+			order by g.active_price desc
+		</if>
+		<if test="sort!=null and sort==22">
+			order by g.active_price asc
+		</if>
+		<if test="sort!=null and sort==3">
+			order by p.hits desc
+		</if>
+		<if test="sort!=null and sort==33">
+			order by p.hits asc
+		</if>
+		<if test="sort==null">
+			order by g.sorting desc,g.create_date desc
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<select id="findActivityGoodsCount" resultType="int" parameterType="java.util.Map">
+		select count(*)
+	   	from activity_goods g
+	   	left join product p on g.product_id = p.id
+	   	left join activity_time t on g.time_id = t.id
+	   	left join user_brand b on p.user_brand_id = b.id
+		where 1=1 and t.isdelete = '0'
+		<if test="productNo!=null and productNo!=''">
+			and p.product_no = #{productNo}
+		</if>
+		<if test="brandName!=null and brandName!='' ">
+			and b.brand_name like concat("%",#{brandName},"%")
+		</if>
+		<if test="productName!=null and productName!='' ">
+			and p.product_name like concat("%",#{productName},"%")
+		</if>
+		<if test="productNum!=null and productNum!=''">
+			and p.product_num = #{productNum}
+		</if>
+		<if test="status!=null">
+			and g.status = #{status}
+		</if>
+		<if test="timeId!=null">
+			and g.time_id = #{timeId}
+		</if>
+		<if test="proStatus!=null">
+			and p.status = #{proStatus}
+		</if>
+	</select>
+	
+	<select id="findActivityGoodsById" resultType="ActivityGoodsPojo" parameterType="java.util.Map">
+		select
+			g.id as id,
+			g.product_id as productId,
+			p.product_name as productName,
+			p.product_num as productNum,
+			p.image as productImage,
+			p.status as proStatus,
+			g.sorting as sorting,
+			g.time_id as timeId,
+			g.sell_price as sellPrice,
+			g.active_price as activePrice,
+			g.activity_stock as activityStock,
+			g.activity_num as activityNum,
+			g.tips as tips,
+			g.status as status,
+			(select name from sys_dict where value = g.status and type="status") as statusName,
+			g.create_by as createBy,
+			g.create_date as createDate,
+			g.update_by as updateBy,
+			g.update_date as updateDate
+	   	from activity_goods g
+	   	left join product p on g.product_id = p.id
+		where g.id = #{id}
+	</select>
+	<!-- 查询商品是否在活动中 -->
+	<select id="findActivityGoodsByPid" resultType="ActivityGoodsPojo" parameterType="java.util.Map">
+		select
+			g.id as id,
+			g.product_id as productId,
+			p.product_name as productName,
+			p.product_num as productNum,
+			p.image as productImage,
+			p.status as proStatus,
+			g.sorting as sorting,
+			g.time_id as timeId,
+			g.sell_price as sellPrice,
+			g.active_price as activePrice,
+			g.activity_stock as activityStock,
+			g.activity_num as activityNum,
+			g.tips as tips,
+			g.status as status,
+			(select name from sys_dict where value = g.status and type="status") as statusName,
+			g.create_by as createBy,
+			g.create_date as createDate,
+			g.update_by as updateBy,
+			g.update_date as updateDate,
+			t.begin_time as beginTime,
+			t.end_time as endTime,
+			t.activity_date as activityDate,
+			t.type as activityType,
+			t.title as activityTitle
+	   	from activity_goods g
+	   	left join activity_time t on g.time_id = t.id
+	   	left join product p on g.product_id = p.id
+		where 
+		g.product_id = #{productId}
+		and g.time_id = #{activityId}
+		and g.status = 1
+		and t.isdelete = '0'
+		<if test="stockStatus != null">
+			and g.activity_stock > 0
+		</if>
+		<if test="checkActive != null">
+			and ((t.type = 0
+			and date_format(now(),'%Y-%m-%d') = date_format(t.activity_date,'%Y-%m-%d')
+			and date_format(now(),'%H:%i') &gt;= t.begin_time 
+			and date_format(now(),'%H:%i') &lt; t.end_time)
+			or (t.type > 0
+			and date_format(now(),'%Y-%m-%d %T') &gt;= date_format(t.begin_time,'%Y-%m-%d %T')
+			and date_format(now(),'%Y-%m-%d %T') &lt; date_format(t.end_time,'%Y-%m-%d %T')))
+		</if>
+		and t.channel = 1
+	
+	</select>
+	<select id="findActivityGoodsByPidTmp" resultType="ActivityGoodsPojo" parameterType="java.util.Map">
+		select
+			g.id as id,
+			g.product_id as productId,
+			p.product_name as productName,
+			p.product_num as productNum,
+			p.image as productImage,
+			p.status as proStatus,
+			g.sorting as sorting,
+			g.time_id as timeId,
+			g.sell_price as sellPrice,
+			g.active_price as activePrice,
+			g.activity_stock as activityStock,
+			g.activity_num as activityNum,
+			g.tips as tips,
+			g.status as status,
+			(select name from sys_dict where value = g.status and type="status") as statusName,
+			g.create_by as createBy,
+			g.create_date as createDate,
+			g.update_by as updateBy,
+			g.update_date as updateDate,
+			t.begin_time as beginTime,
+			t.end_time as endTime,
+			t.activity_date as activityDate,
+			t.type as activityType
+			<!--g.sku_link_id as skuLinkId-->
+	   	from activity_goods g
+	   	left join activity_time t on g.time_id = t.id
+	   	left join product p on g.product_id = p.id
+		where 
+		g.product_id = #{productId}
+		and g.status = 1
+		and g.activity_stock > 0
+		and t.type = 0
+		and date_format(now(),'%Y-%m-%d') = date_format(t.activity_date,'%Y-%m-%d')
+		and date_format(now(),'%H:%i') &gt;= t.begin_time 
+		and date_format(now(),'%H:%i') &lt; t.end_time
+		and t.channel = 1
+		and t.isdelete = '0'
+	</select>
+	<!-- 查询商品的秒杀时间 -->
+	<select id="getActivityGoodsTimeByPid" resultType="ActivityGoodsPojo" parameterType="Long">
+		select
+			g.product_id as productId,
+			p.product_name as productName,
+			p.product_num as productNum,
+			p.image as productImage,
+			g.time_id as timeId,
+			t.begin_time as beginTime,
+			t.end_time as endTime,
+			t.activity_date as activityDate
+	   	from activity_goods g
+	   	left join activity_time t on g.time_id = t.id
+	   	left join product p on g.product_id = p.id
+		where 
+		g.product_id = #{productId}
+		and g.status = 1
+		and g.activity_stock > 0
+		and t.type = 0
+		and date_format(now(),'%Y-%m-%d') = date_format(t.activity_date,'%Y-%m-%d')
+		and date_format(now(),'%H:%i') &gt;= t.begin_time 
+		and date_format(now(),'%H:%i') &lt; t.end_time
+		and t.channel = 1
+		and t.isdelete = '0'
+		group by g.product_id
+	</select>
+	<!-- 查询商品是否活动商品 -->
+	<select id="checkActivityGoodsByPid" resultType="ActivityGoodsPojo" parameterType="java.util.Map">
+		select
+			g.id as id,
+			g.product_id as productId,
+			p.product_name as productName,
+			p.product_num as productNum,
+			p.image as productImage,
+			p.status as proStatus,
+			g.sorting as sorting,
+			g.time_id as timeId,
+			g.sell_price as sellPrice,
+			g.active_price as activePrice,
+			g.activity_stock as activityStock,
+			g.activity_num as activityNum,
+			g.tips as tips,
+			g.status as status,
+			(select name from sys_dict where value = g.status and type="status") as statusName,
+			g.create_by as createBy,
+			g.create_date as createDate,
+			g.update_by as updateBy,
+			g.update_date as updateDate,
+			t.begin_time as beginTime,
+			t.end_time as endTime,
+			t.activity_date as activityDate,
+			t.type as activityType,
+			t.title as activityTitle
+	   	from activity_goods g
+	   	left join activity_time t on g.time_id = t.id
+	   	left join product p on g.product_id = p.id
+		where 1=1
+		<if test="productId != null">
+			and g.product_id = #{productId}
+		</if>
+		and g.status = 1
+		<if test="stockStatus != null">
+			and g.activity_stock > 0
+		</if>
+		<if test="type != null">
+			and t.type = #{type}
+		</if>
+		and ((t.type = 0
+		and date_format(now(),'%Y-%m-%d') = date_format(t.activity_date,'%Y-%m-%d')
+		and date_format(now(),'%H:%i') &gt;= t.begin_time 
+		and date_format(now(),'%H:%i') &lt; t.end_time)
+		or (t.type > 0
+		and date_format(now(),'%Y-%m-%d %T') &gt;= date_format(t.begin_time,'%Y-%m-%d %T')
+		and date_format(now(),'%Y-%m-%d %T') &lt; date_format(t.end_time,'%Y-%m-%d %T')))
+		and t.channel = 1
+		and t.isdelete = '0'
+	</select>
+	<!-- 查询商品是否活动商品 -->
+	<select id="checkActivityGoodsByPidCount" resultType="int" parameterType="java.util.Map">
+		select
+			count(*)
+	   	from activity_goods g
+	   	left join activity_time t on g.time_id = t.id
+	   	left join product p on g.product_id = p.id
+		where 
+		g.product_id = #{productId}
+		and g.status = 1
+		<if test="stockStatus != null">
+			and g.activity_stock > 0
+		</if>
+		<if test="type != null">
+			and t.type = #{type}
+		</if>
+		and (
+		(t.type = 0
+		and date_format(now(),'%Y-%m-%d') = date_format(t.activity_date,'%Y-%m-%d')
+		and date_format(now(),'%H:%i') &gt;= t.begin_time 
+		and date_format(now(),'%H:%i') &lt; t.end_time)
+		or (t.type > 0
+		and date_format(now(),'%Y-%m-%d %T') &gt;= date_format(t.begin_time,'%Y-%m-%d %T')
+		and date_format(now(),'%Y-%m-%d %T') &lt; date_format(t.end_time,'%Y-%m-%d %T'))
+		)
+		and t.channel = 1
+		and t.isdelete = '0'
+	</select>
+	<!-- 查询商品是否在該時間段活动中 -->
+	<select id="findActivityGoodsByProductId" resultType="ActivityGoodsPojo" parameterType="java.util.Map">
+		select
+			g.id as id,
+			g.product_id as productId,
+			p.product_name as productName,
+			p.product_num as productNum,
+			p.image as productImage,
+			p.status as proStatus,
+			g.sorting as sorting,
+			g.time_id as timeId,
+			g.sell_price as sellPrice,
+			g.active_price as activePrice,
+			g.tips as tips,
+			g.activity_stock as activityStock,
+			g.activity_num as activityNum,
+			g.status as status,
+			(select name from sys_dict where value = g.status and type="status") as statusName,
+			g.create_by as createBy,
+			g.create_date as createDate,
+			g.update_by as updateBy,
+			g.update_date as updateDate,
+			t.begin_time as beginTime,
+			t.end_time as endTime,
+			t.activity_date as activityDate,
+			t.type as activityType,
+			t.title as activityTitle
+	   	from activity_goods g
+	   	left join activity_time t on g.time_id = t.id
+	   	left join product p on g.product_id = p.id
+		where 
+		g.product_id = #{productId}
+		and g.time_id=#{timeId}
+		and t.isdelete = '0'
+	</select>
+	<!-- 查询商品是否在钱包专区中 -->
+	<select id="findWalletGoodsByProductId" resultType="ActivityGoodsPojo" parameterType="java.util.Map">
+		select
+			g.id as id,
+			g.product_id as productId,
+			p.product_name as productName,
+			p.product_num as productNum,
+			p.image as productImage,
+			p.status as proStatus,
+			g.sorting as sorting,
+			g.time_id as timeId,
+			g.sell_price as sellPrice,
+			g.active_price as activePrice,
+			g.tips as tips,
+			g.activity_stock as activityStock,
+			g.activity_num as activityNum,
+			g.status as status,
+			(select name from sys_dict where value = g.status and type="status") as statusName,
+			g.create_by as createBy,
+			g.create_date as createDate,
+			g.update_by as updateBy,
+			g.update_date as updateDate,
+			t.begin_time as beginTime,
+			t.end_time as endTime,
+			t.activity_date as activityDate,
+			t.type as activityType,
+			t.title as activityTitle
+	   	from activity_goods g
+	   	left join activity_time t on g.time_id = t.id
+	   	left join product p on g.product_id = p.id
+		where 1=1
+		<if test="productId!=null">
+		and g.product_id = #{productId}
+		</if>
+		<if test="timeId!=null">
+		and g.time_id=#{timeId}
+		</if>
+		and t.isdelete = '0'
+	</select>
+	<!-- 插入单条 -->
+	<insert id="insertActivityGoods" parameterType="ActivityGoodsPojo" useGeneratedKeys="true" keyProperty="id">
+		insert into activity_goods 
+		(product_id,sorting,time_id,sell_price,active_price,tips,activity_stock,activity_num,status,create_by,create_date,update_by,update_date)
+		values(#{productId},#{sorting},#{timeId},#{sellPrice},#{activePrice},#{tips},#{activityStock},#{activityNum},#{status},#{createBy},now(),#{updateBy},now())
+	</insert>
+	
+	<!-- 删除单条 -->
+	<delete id="delActivityGoods" parameterType="Long">
+		delete from activity_goods where id = #{id}
+	</delete>
+	
+	<!--更新单条-->
+	<update id="updateActivityGoods" parameterType="ActivityGoodsPojo">
+		update activity_goods set
+		sorting = #{sorting},
+		active_price = #{activePrice},
+		tips = #{tips},
+		activity_num = #{activityNum},
+		activity_stock = #{activityStock},
+		status = #{status},
+		<if test="updateBy!=null and updateBy!='' ">
+			update_by = #{updateBy},
+		</if>
+		update_date = now()
+		<!--sku_link_id = #{skuLinkId}-->
+		where id = #{id}
+	</update>
+	
+	<!--减少库存-->
+	<update id="updateActivityGoodsStock" parameterType="ActivityGoodsPojo">
+		update activity_goods set
+		activity_stock = activity_stock - #{minusStock},
+		update_date = now()
+		where id = #{id} and activity_stock &gt;= #{minusStock}
+	</update>
+	
+	<!--更新单条状态-->
+	<update id="checkActivityGoods" parameterType="Long">
+		update activity_goods set status = 1,update_date = now() where id = #{id}
+	</update>
+	<!--更新单条状态-->
+	<update id="uncheckActivityGoods" parameterType="Long">
+		update activity_goods set status = 0,update_date = now() where id = #{id}
+	</update>
+	<!-- 删除多条 -->
+	<delete id="delActivityGoodsByTimeId" parameterType="Long">
+		delete from activity_goods 
+		where time_id = #{id}
+	</delete>
+</mapper>

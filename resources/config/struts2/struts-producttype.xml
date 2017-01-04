@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="producttype" extends="default">
+		<!-- 全部产品类型 -->
+		<action name="allProductTypeManage" class="com.tzmb2c.web.action.ProductTypeAction" method="getCountAllProductType">
+			<result>/page/system/product/allProductTypeList.jsp</result>
+		</action>
+
+		<!-- 产品类型 -->
+		<action name="productTypeManage" class="com.tzmb2c.web.action.ProductTypeAction" method="getCountProductType">
+			<result>/page/system/product/productTypeList.jsp</result>
+		</action>
+		
+		<!-- 产品类型 -->
+		<action name="productTypeManage2" class="com.tzmb2c.web.action.ProductTypeAction" method="getCountProductType">
+			<result>/page/system/product/productTypeList2.jsp</result>
+		</action>
+		
+		<!-- 添加产品类型-->
+		<action name="goproductTypeAdd" class="com.tzmb2c.web.action.ProductTypeAction" method="goproductTypeAdd">
+			<result>/page/system/product/productTypeAdd.jsp</result>
+		</action>
+		
+		<action name="productTypeAdd" class="com.tzmb2c.web.action.ProductTypeAction" method="productTypeAdd">
+				<result name="success" type="redirectAction" >
+				<param name="actionName">allProductTypeManage</param>
+				<!-- <param name="pid">${pid}</param>
+				<param name="level">${level}</param>
+				<param name="typeName">${typeName}</param> -->
+				</result>
+		</action> 
+		
+		<!-- 添加产品类型  三级-->
+		<action name="goproductTypeAdd2" class="com.tzmb2c.web.action.ProductTypeAction" method="goproductTypeAdd">
+			<result>/page/system/product/productTypeAdd2.jsp</result>
+		</action>
+		
+		<action name="productTypeAdd2" class="com.tzmb2c.web.action.ProductTypeAction" method="productTypeAdd">
+				<result name="success" type="redirectAction" >
+				<param name="actionName">productTypeManage2</param>
+				<param name="pid">${pid}</param>
+				<param name="level">${level}</param>
+				<param name="typeName">${typeName}</param>
+				</result>
+		</action> 
+		
+		<!-- 修改产品类型一级分类-->
+		<action name="goFindProductType1" class="com.tzmb2c.web.action.ProductTypeAction" method="goFindProductType1">
+			<result>/page/system/product/productTypeUpdate1.jsp</result>
+		</action>
+		
+		<action name="productTypeUpdate1" class="com.tzmb2c.web.action.ProductTypeAction" method="productTypeUpdate1">
+				<result name="success" type="redirectAction" >
+				<param name="actionName">allProductTypeManage</param>
+				</result>
+		</action>
+		
+		<!-- 修改产品类型-->
+		<action name="goFindProductType" class="com.tzmb2c.web.action.ProductTypeAction" method="goFindProductType">
+			<result>/page/system/product/productTypeUpdate.jsp</result>
+		</action>
+		
+		<action name="productTypeUpdate" class="com.tzmb2c.web.action.ProductTypeAction" method="productTypeUpdate">
+				<result name="success" type="redirectAction" >
+				<param name="actionName">productTypeManage</param>
+				<param name="pid">${pid}</param>
+				<param name="level">${level}</param>
+				<param name="typeName">${typeName}</param>
+				</result>
+		</action> 
+		
+		
+		<action name="ProductTypeDeleteId" class="com.tzmb2c.web.action.ProductTypeAction" method="ProductTypeDeleteId">
+		
+		</action>
+		
+		
+	</package>
+	<package name="ProductType-json" extends="json-default">
+		<!-- 删除产品类型成功回调 -->
+		<action name="deleProductType" class="com.tzmb2c.web.action.ProductTypeAction"
+			method="deleProductType">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		
+		<!--平台入口-->
+		<action name="getCountAllProductType" class="com.tzmb2c.web.action.ProductTypeAction" method="getCountAllProductType">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+
+		<!-- 根据父类查找对应类型 -->
+		<action name="getAllProductTypeByPid" class="com.tzmb2c.web.action.ProductTypeAction"
+			method="getAllProductTypeByPid">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<action name="getCountProductType" class="com.tzmb2c.web.action.ProductTypeAction" method="getCountProductType">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+
+		<!-- 根据父类查找对应类型 -->
+		<action name="getProductTypeByPid" class="com.tzmb2c.web.action.ProductTypeAction"
+			method="getProductTypeByPid">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<!-- 审核 -->
+		<action name="checkProductType" class="com.tzmb2c.web.action.ProductTypeAction" method="checkProductType">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		<!-- APP显示 -->
+		<action name="visableProductType" class="com.tzmb2c.web.action.ProductTypeAction" method="visableProductType">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		<!-- APP不显示 -->
+		<action name="invisableProductType" class="com.tzmb2c.web.action.ProductTypeAction" method="invisableProductType">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 获取产品类型 -->
+		<action name="getAllProductTypes" class="com.tzmb2c.web.action.ProductTypeAction" method="getAllProductTypes">
+			<result type="json">
+	       		 <param name="root">productTypes</param>
+			</result>
+		</action>
+		<!--  返回productType 名称-->	
+		<action name="typeName" class="com.tzmb2c.web.action.ProductTypeAction"
+			method="typeName">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!--批量删除-->
+		<action name="delAllProductTypeById" class="com.tzmb2c.web.action.ProductTypeAction" method="delAllProductTypeById">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!--批量审核-->
+		<action name="checkAllProductTypeById" class="com.tzmb2c.web.action.ProductTypeAction" method="checkAllProductTypeById">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

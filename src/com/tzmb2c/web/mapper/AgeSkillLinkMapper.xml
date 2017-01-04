@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tzmb2c.web.mapper.AgeSkillLinkMapper">
+
+
+	
+	<!-- 通过年龄查询年龄相对应的能力 -->
+	<select id="findAgeSkillLinkByAge" resultType="AgeSkillLinkPojo" parameterType="Long">
+		select DISTINCT
+		a.skill_id					as skillId,
+		a.age_id						as ageId,
+		(select name from sys_dict s where a.skill_id = s.id) as skillName,
+		(select value from sys_dict s WHERE a.skill_id = s.id) as skillValue 
+	    from age_skill_link a left join sys_dict s on a.skill_id = s.id
+	    where 1=1 and a.age_id = #{ageId}
+
+	</select>
+	
+	<!-- 通过能力查询相对应的次能力 -->
+	<select id="findSecondSkillBySkill" resultType="AgeSkillLinkPojo" parameterType="AgeSkillLinkPojo">
+		select DISTINCT
+		a.second_skill_id						as secondSkillId,
+		a.skill_id					as skillId,
+		(select name from sys_dict s where a.second_skill_id = s.id) as secondSkillName,
+		(select value from sys_dict s WHERE a.second_skill_id = s.id) as secondSkillValue 
+	    from age_skill_link a left join sys_dict s on a.second_skill_id = s.id
+	    where 1=1
+	    <if test="skillId != null">
+			 and a.skill_id = #{skillId} 
+		</if>
+	    <if test="ageId != null">
+			 and a.age_id = #{ageId}
+		</if>
+
+	</select>
+	
+	<!-- 通过次能力查询相对应的商品类型 -->
+	<select id="findProductBySecondSkill" resultType="AgeSkillLinkPojo" parameterType="AgeSkillLinkPojo">
+		select
+		a.id               as id,
+		a.second_skill_id						as secondSkillId,
+		a.skill_id					as skillId,
+		a.product_id				as productId,
+		(select name from sys_dict s where a.second_skill_id = s.id) as secondSkillName,
+		(select name from product_type p where a.product_id = p.id) as productName,
+		(select value from sys_dict s WHERE a.second_skill_id = s.id) as secondSkillValue 
+	    from age_skill_link a left join sys_dict s on a.second_skill_id = s.id
+	    where 1=1 and a.skill_id = #{skillId} and a.age_id = #{ageId} and a.second_skill_id = #{secondSkillId}
+
+	</select>
+	
+	<!-- 通过年龄ID查询年龄相对应的能力 -->
+	<select id="findSkillByAgeType" resultType="AgeSkillLinkPojo" parameterType="int">
+		select
+		DISTINCT
+		a.age_id		as ageId,
+		a.skill_id		as skillId,
+		(select name from sys_dict s where a.skill_id = s.id) as skillName,
+		(select value from sys_dict s WHERE a.skill_id = s.id) as skillValue 
+	    from age_skill_link a left join sys_dict s on a.skill_id = s.id
+	    where 1=1 
+	    	and a.age_id = 
+	    		(select d.id from sys_dict d where d.type='user_age' and d.value = #{ageId})
+
+	</select>
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id,age_id,skill_id,second_skill_id,product_id
+	</sql>
+	
+	<!-- 根据ID查询记录 -->
+	<select id="getById" parameterType="int" resultType="AgeSkillLinkPojo">
+		select
+			id as id,
+			age_id as ageId,
+			skill_id as skillId,
+			second_skill_id as secondSkillId,
+			product_id as productId
+		from
+			age_skill_link
+		where
+			id = #{id}
+	</select>
+	
+	<!-- 查询记录条数 -->
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from age_skill_link
+		where 1=1
+		  <if test="id != null ">
+			and id = #{id}
+		  </if>
+		  <if test="ageId != null ">
+			and age_id = #{ageId}
+		  </if>
+		  <if test="skillId != null ">
+			and skill_id = #{skillId}
+		  </if>
+		  <if test="secondSkillId != null ">
+			and second_skill_id = #{secondSkillId}
+		  </if>
+		  <if test="productId != null ">
+			and product_id = #{productId}
+		  </if>
+	</select>
+	
+	<!-- 查询记录信息 -->
+	<select id="listPage" parameterType="java.util.Map" resultType="AgeSkillLinkPojo">
+		select
+			ask.id as id,
+			(select name from sys_dict sd where sd.id = ask.age_id)as ageName,
+			(select name from sys_dict sd where sd.id = ask.skill_id)as skillName,
+			(select name from sys_dict sd where sd.id = ask.second_skill_id) as secondSkillName,
+			(select name from product_type pt where pt.id = ask.product_id) as productName
+		from age_skill_link ask
+		where 1=1
+			<if test="id != null ">
+			  and ask.id = #{id}
+			</if>
+			<if test="ageId != null ">
+			  and ask.age_id = #{ageId}
+			</if>
+			<if test="skillId != null ">
+			  and ask.skill_id = #{skillId}
+			</if>
+			<if test="secondSkillId != null ">
+			  and ask.second_skill_id = #{secondSkillId}
+			</if>
+			<if test="productId != null ">
+			  and ask.product_id = #{productId}
+			</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<!-- 根据ID更新记录 -->
+	<update id="update" parameterType="AgeSkillLinkPojo">
+		update age_skill_link
+		<set>
+			<if test="ageId != null">
+			  age_id = #{ageId},
+			</if>
+			<if test="skillId != null">
+			  skill_id = #{skillId},
+			</if>
+			<if test="secondSkillId != null">
+			  second_skill_id = #{secondSkillId},
+			</if>
+			<if test="productId != null">
+			  product_id = #{productId}
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<!-- 根据ID删除记录 -->
+	<delete id="deleteById" parameterType="int">
+		delete from age_skill_link 
+		where
+			id = #{id}
+	</delete>
+	
+	
+	<!-- 插入记录 -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="AgeSkillLinkPojo">
+		insert into age_skill_link
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="ageId != null">
+				age_id,
+			</if>
+			<if test="skillId != null">
+				skill_id,
+			</if>
+			<if test="secondSkillId != null">
+				second_skill_id,
+			</if>
+			<if test="productId != null">
+				product_id,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="ageId != null">
+				#{ageId},
+			</if>
+			<if test="skillId != null">
+				#{skillId},
+			</if>
+			<if test="secondSkillId != null">
+				#{secondSkillId},
+			</if>
+			<if test="productId != null">
+				#{productId},
+			</if>
+		</trim>
+	</insert>
+	
+</mapper>

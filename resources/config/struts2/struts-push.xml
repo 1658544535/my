@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="pushmsg" extends="default">
+		<!-- <action name="orderPush" class="com.tzmb2c.web.push.PushAction" method="startPush"> 
+			</action> -->
+
+		<!--<action name="pushOrderManage" class="com.tzmb2c.web.push.PushAction"
+			method="agencyCountForPush">
+			<result>/page/system/push/pushForAgency.jsp</result>
+		</action>
+        	<action name="updatePushName" class="com.tzmb2c.web.push.PushAction"
+			method="updatePushName">
+		
+		</action>
+		<action name="startPushForTag" class="com.tzmb2c.web.push.PushAction"
+			method="startPushForTag">
+		</action>-->
+		<action name="pushOrderManage" class="com.tzmb2c.web.push.UmengPushAction"
+			method="agencyCountForPush">
+			<result>/page/system/push/pushForAgency.jsp</result>
+		</action>
+        	<action name="updatePushName" class="com.tzmb2c.web.push.UmengPushAction"
+			method="updatePushName">
+		
+		</action>
+		<action name="startPushForTag" class="com.tzmb2c.web.push.UmengPushAction"
+			method="startPushForTag">
+		</action>
+	</package>
+
+	<package name="pushmsg-json" extends="json-default">
+		<!--<action name="startPushForSingleAgency" class="com.tzmb2c.web.push.PushAction"
+			method="startPushForSingleAgency">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="agencyAllListForPush" class="com.tzmb2c.web.push.PushAction"
+			method="agencyAllListForPush">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="agencyCountForPush" class="com.tzmb2c.web.push.PushAction"
+			method="agencyCountForPush">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>-->
+		
+		<action name="startPushForSingleAgency" class="com.tzmb2c.web.push.UmengPushAction"
+			method="startPushForSingleAgency">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="agencyAllListForPush" class="com.tzmb2c.web.push.UmengPushAction"
+			method="agencyAllListForPush">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="agencyCountForPush" class="com.tzmb2c.web.push.UmengPushAction"
+			method="agencyCountForPush">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+	</package>
+</struts>

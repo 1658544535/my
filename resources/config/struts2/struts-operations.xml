@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+	<package name="operations" extends="default">
+
+		<!-- 入口 -->
+		<action name="operationsManage" class="com.tzmb2c.web.action.OperationsAction"
+			method="getOperationsCount">
+			<result name="success">/page/system/operations/operationsStatistics.jsp
+			</result>
+		</action>
+		
+        <!--运营数据导出 -->
+		<action name="getOperationsExcel" class="com.tzmb2c.web.action.OperationsAction" method="getOperationsExcel">			
+		</action>
+	</package>
+	<package name="operations-json" extends="json-default">
+		<action name="getOperationsCount" class="com.tzmb2c.web.action.OperationsAction"
+			method="getOperationsCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		<action name="operationsAllList" class="com.tzmb2c.web.action.OperationsAction"
+			method="operationsAllList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+	</package>
+
+</struts>

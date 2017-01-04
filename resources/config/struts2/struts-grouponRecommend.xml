@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="grouponRecommend" extends="default">
+		<!-- 进入列表页面 -->
+		<action name="goGrouponRecommend" class="com.tzmb2c.web.action.GrouponRecommendAction" method="goGrouponRecommend">
+			<result name="success">/page/system/grouponRecommend/grouponRecommendList.jsp</result>
+		</action>
+		<!-- 进入挑选首页商品列表页面 -->
+		<action name="goGrouponActivityProduct" class="com.tzmb2c.web.action.GrouponRecommendAction" method="goGrouponActivityProduct">
+			<result name="success">/page/system/grouponRecommend/grouponActivityProduct.jsp</result>
+		</action>
+		<!-- 新增 -->
+		<action name="goAddGrouponRecommend" class="com.tzmb2c.web.action.GrouponRecommendAction" method="goAddGrouponRecommend">
+		    <result name="success">/page/system/grouponRecommend/addGrouponRecommend.jsp</result>
+		</action>
+		<!-- 新增提交 -->
+		<action name="addGrouponRecommend" class="com.tzmb2c.web.action.GrouponRecommendAction" method="add">
+		</action>		
+		<!-- 编辑页面 -->
+		<action name="goEditGrouponRecommend" class="com.tzmb2c.web.action.GrouponRecommendAction" method="goEditGrouponRecommend">
+			<result name="success">/page/system/grouponRecommend/updateGrouponRecommend.jsp</result>
+		</action>
+	</package>
+	<package name="grouponRecommend-json" extends="json-default">
+		<!-- 内容 -->
+		<action name="grouponRecommendList" class="com.tzmb2c.web.action.GrouponRecommendAction" method="grouponRecommendList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="grouponRecommendCnt" class="com.tzmb2c.web.action.GrouponRecommendAction" method="grouponRecommendRowCnt">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+		<!-- 内容 -->
+		<action name="grouponActivityProductList" class="com.tzmb2c.web.action.GrouponRecommendAction" method="grouponActivityProductList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="grouponActivityProductCnt" class="com.tzmb2c.web.action.GrouponRecommendAction" method="goGrouponActivityProduct">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+		<!-- 根据ID删除 -->
+		<action name="delGrouponRecommend" class="com.tzmb2c.web.action.GrouponRecommendAction" method="delete">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+		<!-- 删除选中 -->
+		<action name="delGrouponRecommendAll" class="com.tzmb2c.web.action.GrouponRecommendAction" method="deleteAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 通过审核 -->
+		<action name="checkGrouponRecommend" class="com.tzmb2c.web.action.GrouponRecommendAction" method="check">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 取消审核 -->
+		<action name="uncheckGrouponRecommend" class="com.tzmb2c.web.action.GrouponRecommendAction" method="uncheck">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中通过审核 -->
+		<action name="checkGrouponRecommendAll" class="com.tzmb2c.web.action.GrouponRecommendAction" method="checkAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中取消审核 -->
+		<action name="uncheckGrouponRecommendAll" class="com.tzmb2c.web.action.GrouponRecommendAction" method="uncheckAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 编辑排序 -->
+		<action name="updateGrouponRecommend" class="com.tzmb2c.web.action.GrouponRecommendAction"
+			method="update">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>	
+	</package>
+</struts>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="message" extends="default">
+
+		<action name="message" class="com.tzmb2c.web.action.MessageAction" method="getMessageCount">
+			<result>/page/system/user/message.jsp</result>
+		</action>
+		
+		<action name="MessageDeleteId" class="com.tzmb2c.web.action.MessageAction" method="messageDeleteId">
+		
+		</action>
+		
+		<action name="goFindMessage" class="com.tzmb2c.web.action.MessageAction" method="goFindMessage">
+			<result>/page/system/user/messageupdate.jsp</result>
+		</action>
+		<action name="updateMessage" class="com.tzmb2c.web.action.MessageAction" method="updateMessage">
+		</action>
+		
+	</package>
+	
+	<package name="message-json" extends="json-default">
+		<!--平台入口-->
+		<action name="getMessageCount" class="com.tzmb2c.web.action.MessageAction" method="getMessageCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+			<action name="messageAllList" class="com.tzmb2c.web.action.MessageAction" method="messageAllList">
+			<result type="json">
+				<param name="root">page.result</param>.
+			</result>
+		</action>
+		<action name="deleMessage" class="com.tzmb2c.web.action.MessageAction" method="deleMessage">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

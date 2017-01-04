@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="userrole" extends="default">
+
+
+		<action name="gomanageuserrole" class="com.tzmb2c.web.action.UserRoleAction" method="getTicketRuleCount">
+			<result>/page/system/userrole/list.jsp</result>
+		</action>
+		
+		<action name="goadduserrole" class="com.tzmb2c.web.action.UserRoleAction" method="goAddUserRole">
+			<result>/page/system/userrole/updateuserrole.jsp</result>
+		
+		</action>
+			<action name="userRuleDeleteId" class="com.tzmb2c.web.action.UserRoleAction" method="ticketRuleDeleteId">
+			
+		</action>
+		
+		<action name="updateUserRole" class="com.tzmb2c.web.action.UserRoleAction" method="updateUserRole">
+	
+			
+					<result name="success" type="redirect">gomanageuserrole.do</result>
+		</action>
+		<action name="addtouserrole" class="com.tzmb2c.web.action.UserRoleAction" method="addtoUserRole">
+
+				<result>/page/system/userrole/adduserrole.jsp</result>
+		</action>
+			<action name="addUserRole" class="com.tzmb2c.web.action.UserRoleAction" method="addUserRole">
+	
+			
+				<result name="success" type="redirect">gomanageuserrole.do</result>
+		</action>
+	
+			<action name="queryUserRole" class="com.tzmb2c.web.action.UserRoleAction" method="queryUserRole">
+	
+			
+				<result>/page/system/userrole/list.jsp</result>
+		</action>
+		
+	</package>
+	<package name="userrole-json" extends="json-default">
+		<!--平台入口-->
+		<action name="getUserRuleCount" class="com.tzmb2c.web.action.UserRoleAction" method="getTicketRuleCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+			<action name="userRuleAllList" class="com.tzmb2c.web.action.UserRoleAction" method="ticketRuleAllList">
+			
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+			
+		</action>
+			<action name="delUserRole" class="com.tzmb2c.web.action.UserRoleAction"
+			method="delUserRole">
+			<result type="json">
+	        <param name="root">result</param>
+		</result>
+		</action>
+	</package>
+	
+</struts>

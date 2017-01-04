@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+	<package name="productTypeRecommend" extends="default">
+	    <action name="goProductTypeRecommend" class="com.tzmb2c.web.action.ProductTypeRecommendAction"
+			method="goProductTypeRecommend">
+			<result name="success">/page/system/productTypeRecommend/productTypeRecommend.jsp</result>
+		</action>
+		
+		<action name="goProductTypeThree" class="com.tzmb2c.web.action.ProductTypeAction"
+			method="getCountProductTypeThree">
+			<result name="success">/page/system/productTypeRecommend/productTypeThree.jsp</result>
+		</action>
+		
+		<!--添加品类推荐-->
+		<action name="selectProductTypeRecommend" class="com.tzmb2c.web.action.ProductTypeRecommendAction"
+			method="selectProductTypeRecommend">
+		</action>
+		 <!-- 更新 -->
+		<action name="goUpdateProductTypeRecommend" class="com.tzmb2c.web.action.ProductTypeRecommendAction"
+			method="goUpdateProductTypeRecommend">
+			<result>/page/system/productTypeRecommend/updateProductTypeRecommend.jsp</result>
+		</action>
+
+		<!-- 更新 -->
+		<action name="updateProductTypeRecommend" class="com.tzmb2c.web.action.ProductTypeRecommendAction"
+			method="updateProductTypeRecommend">
+		</action>
+	</package>
+	<package name="productTypeRecommend-json" extends="json-default">
+		<!--平台入口 -->
+		<action name="getProductTypeRecommendCount" class="com.tzmb2c.web.action.ProductTypeRecommendAction"
+			method="goProductTypeRecommend">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+
+		<action name="productTypeRecommendAllList" class="com.tzmb2c.web.action.ProductTypeRecommendAction"
+			method="productTypeRecommendAllList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<action name="getCountProductTypeThree" class="com.tzmb2c.web.action.ProductTypeAction"
+			method="getCountProductTypeThree">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+
+		<action name="getProductTypeThree" class="com.tzmb2c.web.action.ProductTypeAction"
+			method="getProductTypeThree">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="delProductTypeRecommend" class="com.tzmb2c.web.action.ProductTypeRecommendAction"
+			method="delProductTypeRecommend">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 获取二级类目 -->
+		<action name="getProductTypeBySecond" class="com.tzmb2c.web.action.ProductTypeAction"
+			method="getProductTypeBySecond">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+	</package>
+
+</struts>

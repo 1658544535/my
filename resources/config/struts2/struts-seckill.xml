@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="seckill" extends="default">
+		<!-- 进入列表页面 -->
+		<action name="goSeckill" class="com.tzmb2c.web.action.SeckillAction" method="goSeckill">
+			<result name="success">/page/system/seckill/seckillList.jsp</result>
+		</action>
+		<!-- 新增 -->
+		<action name="goAddSeckill" class="com.tzmb2c.web.action.SeckillAction" method="goAddSeckill">
+		    <result name="success">/page/system/seckill/addSeckill.jsp</result>
+		</action>
+		<!-- 新增提交 -->
+		<action name="addSeckill" class="com.tzmb2c.web.action.SeckillAction" method="add">
+		</action>		
+		<!-- 编辑页面 -->
+		<action name="goEditSeckill" class="com.tzmb2c.web.action.SeckillAction" method="goEditSeckill">
+			<result name="success">/page/system/seckill/updateSeckill.jsp</result>
+		</action>
+		<!-- 编辑提交 -->
+		<action name="updateSeckill" class="com.tzmb2c.web.action.SeckillAction" method="update">
+		</action>
+	</package>
+	<package name="seckill-json" extends="json-default">
+		<!-- 内容 -->
+		<action name="seckillList" class="com.tzmb2c.web.action.SeckillAction" method="seckillList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="seckillCnt" class="com.tzmb2c.web.action.SeckillAction" method="goSeckill">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+		<!-- 根据ID删除 -->
+		<action name="delSeckill" class="com.tzmb2c.web.action.SeckillAction" method="delete">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+		<!-- 删除选中 -->
+		<action name="delSeckillAll" class="com.tzmb2c.web.action.SeckillAction" method="deleteAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 通过审核 -->
+		<action name="checkSeckill" class="com.tzmb2c.web.action.SeckillAction" method="check">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 取消审核 -->
+		<action name="uncheckSeckill" class="com.tzmb2c.web.action.SeckillAction" method="uncheck">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中通过审核 -->
+		<action name="checkSeckillAll" class="com.tzmb2c.web.action.SeckillAction" method="checkAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中取消审核 -->
+		<action name="uncheckSeckillAll" class="com.tzmb2c.web.action.SeckillAction" method="uncheckAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+	</package>
+</struts>

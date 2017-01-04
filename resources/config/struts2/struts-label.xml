@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="label" extends="default">
+		<!-- 页面（全部）  -->
+		<action name="labelList" class="com.tzmb2c.web.action.LabelAction" method="labelListCount">
+			<result name="success">/page/system/label/labelList.jsp</result>
+		</action>	
+		<!-- 根据ID删除    -->
+		<action name="delLabel" class="com.tzmb2c.web.action.LabelAction" method="delLabel">
+		</action>
+		<!-- 跳转编辑         -->
+		<action name="goUpdateLabel" class="com.tzmb2c.web.action.LabelAction" method="goUpdateLabel">
+		    <result name="success">/page/system/label/updateLabel.jsp</result>
+		</action>
+		<!-- 编辑提交          -->
+		<action name="updateLabel" class="com.tzmb2c.web.action.LabelAction" method="updateLabel">
+		</action>
+		<!-- 通过审核         -->
+		<action name="checkLabel" class="com.tzmb2c.web.action.LabelAction" method="checkLabel">
+		</action>
+		<!-- 取消审核         -->
+		<action name="uncheckLabel" class="com.tzmb2c.web.action.LabelAction" method="uncheckLabel">
+		</action>
+		<!-- 跳转新增        -->
+		<action name="goAddLabel" class="com.tzmb2c.web.action.LabelAction" method="goAddLabel">
+		    <result name="success">/page/system/label/addLabel.jsp</result>
+		</action>
+		<!-- 新增提交         -->
+		<action name="addLabel" class="com.tzmb2c.web.action.LabelAction" method="addLabel">
+		</action>
+	</package>
+	<package name="label-json" extends="json-default">
+		<!-- 内容 -->
+		<action name="labelListAll" class="com.tzmb2c.web.action.LabelAction" method="labelListAll">
+			<result type="json">
+			<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="labelListCount" class="com.tzmb2c.web.action.LabelAction" method="labelListCount">
+			<result type="json">
+			<param name="root">page.rowCount</param>
+			</result>
+		</action>		
+	</package>
+</struts>

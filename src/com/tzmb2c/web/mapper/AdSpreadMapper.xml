@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.AdSpreadMapper">
+	<!-- 查询所有的记录 -->
+	<select id="findAdSpreadList" resultType="AdSpreadPojo" parameterType="java.util.Map">
+		select
+			a.id           as id,
+			a.ad_type      as adType,
+			(CASE WHEN a.ad_type = 1 THEN 'youmi' END) as adTypeName,
+			a.channel      as channel,
+			(CASE WHEN a.channel = 1 THEN 'ios' WHEN a.channel = 2 THEN 'android' END) as channelName,
+			a.mac          as mac,
+			a.imei         as imei,
+			(CASE WHEN a.imei = 1 THEN 'ifa' WHEN a.imei = 2 THEN 'imei' END) as imeiName,
+			a.callback_url as callbackUrl,
+			a.status       as status,
+			(CASE WHEN a.status = 0 THEN '未激活' WHEN a.status = 1 THEN '已激活' END) as statusName,
+			a.result       as result,
+			a.user_id      as userId,
+			a.create_date  as createDate
+	   	from ad_spread a
+		where 1=1
+		<if test="adType != null">
+			and a.ad_type = #{adType}
+		</if>
+		<if test="channel != null">
+			and a.channel = #{channel}
+		</if>
+		<if test="imei != null and imei != ''">
+			and a.imei = #{imei}
+		</if>
+		<if test="status != null">
+			and a.status = #{status}
+		</if>
+		<if test="userId != null">
+			and a.user_id = #{userId}
+		</if>
+		<if test="createStartDateStr !=null and createStartDateStr !=''">
+			and str_to_date(a.create_date,'%Y-%m-%d %H:%i:%s') &gt;= #{createStartDateStr}
+		</if>
+		<if test="createEndDateStr !=null and createEndDateStr !=''">
+			and str_to_date(a.create_date,'%Y-%m-%d %H:%i:%s') &lt;= #{createEndDateStr}
+		</if>
+		order by a.id
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<select id="findAdSpreadCount" resultType="int" parameterType="java.util.Map">
+		select
+			count(*)
+	   	from ad_spread a
+		where 1=1
+		<if test="adType != null">
+			and a.ad_type = #{adType}
+		</if>
+		<if test="channel != null">
+			and a.channel = #{channel}
+		</if>
+		<if test="imei != null and imei != ''">
+			and a.imei = #{imei}
+		</if>
+		<if test="status != null">
+			and a.status = #{status}
+		</if>
+		<if test="userId != null">
+			and a.user_id = #{userId}
+		</if>
+		<if test="createStartDateStr !=null and createStartDateStr !=''">
+			and str_to_date(a.create_date,'%Y-%m-%d %H:%i:%s') &gt;= #{createStartDateStr}
+		</if>
+		<if test="createEndDateStr !=null and createEndDateStr !=''">
+			and str_to_date(a.create_date,'%Y-%m-%d %H:%i:%s') &lt;= #{createEndDateStr}
+		</if>
+	</select>
+	
+	<select id="findAdSpreadById" resultType="AdSpreadPojo" parameterType="Long">
+		select
+			a.id as id,
+			a.ad_type as adType,
+			a.channel as channel,
+			a.mac as mac,
+			a.imei as imei,
+			a.callback_url as callbackUrl,
+			a.status as status,
+			a.result as result,
+			a.user_id as userId,
+			a.create_date  as createDate
+	   	from ad_spread a
+		where a.id = #{id}
+	</select>
+	
+	<select id="findAdSpreadByImei" resultType="AdSpreadPojo" parameterType="java.util.Map">
+		select
+			a.id as id,
+			a.ad_type as adType,
+			a.channel as channel,
+			a.mac as mac,
+			a.imei as imei,
+			a.callback_url as callbackUrl,
+			a.status as status,
+			a.result as result,
+			a.user_id as userId,
+			a.create_date  as createDate
+	   	from ad_spread a
+		where a.imei = #{imei}
+		<if test="channel != null">
+		and a.channel = #{channel}
+		</if>
+		<if test="adType != null">
+		and a.ad_type = #{adType}
+		</if>
+		<if test="status != null">
+		and a.status = #{status}
+		</if>
+	</select>
+	
+	<!-- 插入单条 -->
+	<insert id="insertAdSpread" parameterType="AdSpreadPojo" useGeneratedKeys="true" keyProperty="id">
+		insert into ad_spread 
+		(ad_type,channel,mac,imei,callback_url,status,result,user_id,android_id,advertising_id,tracking,package_id,create_date)
+		values(#{adType},#{channel},#{mac},#{imei},#{callbackUrl},#{status},#{result},#{userId},#{androidId},#{advertisingId},#{tracking},#{packageId},now())
+	</insert>
+	
+	<!-- 删除单条 -->
+	<delete id="delAdSpreadById" parameterType="Long">
+		delete from ad_spread where id = #{id}
+	</delete>
+	<!-- 删除单条 -->
+	<delete id="delAdSpreadByImei" parameterType="String">
+		delete from ad_spread where imei = #{imei}
+	</delete>
+	
+	<!--更新单条-->
+	<update id="updateAdSpread" parameterType="AdSpreadPojo">
+		update ad_spread set
+		<if test="result != null and result != ''">
+		result = #{result},
+		</if>
+		status = #{status},
+		user_id = #{userId}
+		where id = #{id}
+	</update>
+</mapper>

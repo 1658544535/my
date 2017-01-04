@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tzmb2c.web.mapper.TaskTypeLinkMapper"> 
+
+
+	
+	<!-- 通过年龄查询年龄相对应的能力 -->
+	<select id="findTaskTypeLinkByTaskType" resultType="TaskTypeLinkPojo" parameterType="Long">
+		select
+		a.id               as id,
+		a.taskType_id						as taskTypeId,
+		a.taskTypeLink_id					as taskTypeLinkId,
+		(select name from sys_dict s where a.taskTypeLink_id = s.id) as taskTypeLinkName,
+		(select value from sys_dict s WHERE a.taskTypeLink_id = s.id) as taskTypeLinkValue 
+	    from task_type_link a left join sys_dict s on a.taskTypeLink_id = s.id
+	    where 1=1 and a.taskType_id = #{taskTypeId}
+
+	</select>
+	
+
+	
+	
+	
+	
+</mapper>

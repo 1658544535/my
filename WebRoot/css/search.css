@@ -1,0 +1,35 @@
+@charset "utf-8";
+/* CSS Document */
+.ui-state-default,.ui-widget-content .ui-state-default,.ui-widget-header .ui-state-default {
+	font-weight:normal;
+	font-size:12px; font-weight:bold; color:#a2a1a1;margin-bottom:5px;
+}
+.ui-state-default a,.ui-state-default a:link,.ui-state-default a:visited {
+	font-size:12px; font-weight:bold; color:#a2a1a1;
+	text-decoration:none;
+	/*padding:15px 30px;
+	display:block;
+	background-color:#ececec;
+	border:#d9d9d9 1px solid;*/
+}
+.ui-state-hover,.ui-widget-content .ui-state-hover,.ui-widget-header .ui-state-hover,.ui-state-focus,.ui-widget-content .ui-state-focus,.ui-widget-header .ui-state-focus {
+	font-weight:normal;
+	font-size:12px; font-weight:bold; color:#a2a1a1;
+}
+.ui-state-hover a,.ui-state-hover a:hover,.ui-state-hover a:link,.ui-state-hover a:visited,.ui-state-focus a,.ui-state-focus a:hover,.ui-state-focus a:link,.ui-state-focus a:visited{
+	font-size:12px; font-weight:bold; color:#a2a1a1;
+	text-decoration:underline;
+}
+.ui-state-active,.ui-widget-content .ui-state-active,.ui-widget-header .ui-state-active {
+	font-weight: normal;
+	font-size:12px; font-weight:bold; color:#a2a1a1;
+}
+.ui-state-active a,.ui-state-active a:link,.ui-state-active a:visited{
+	font-size:12px; font-weight:bold; color:#df434e;
+	text-decoration:none;
+	/*background-color:#fff;*/
+	/*border:#d9d9d9 1px solid;*/
+	/*border-bottom:none;*/
+	/*padding:16px 30px;*/
+}
+

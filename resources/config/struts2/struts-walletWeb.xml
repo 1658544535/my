@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+	<package name="strust-walletWeb" extends="iface-default">
+
+		<global-results>
+			<result name="loginweb">/web/login.jsp</result>
+			<result name="registerweb">/web/register.jsp</result>
+			<result name="errorpage">/page/common/error.jsp</result>
+		</global-results>
+		
+		<!-- 钱包邀请好友赚钱 -->
+		<action name="goInviteFriend" method="goInviteFriend"
+			class="com.tzmb2c.web.action.WalletWebAction">
+			<result>/wallet/page/invitation.jsp</result>
+		</action>
+		
+		<!-- 钱包赚钱细则 -->
+		<action name="goStep" method="goStep"
+			class="com.tzmb2c.web.action.WalletWebAction">
+			<result>/wallet/page/step.jsp</result>
+		</action>
+		
+		<!-- 钱包邀请成功 -->
+		<action name="goShare" method="goShare"
+			class="com.tzmb2c.web.action.WalletWebAction">
+			<result>/wallet/page/share.jsp</result>
+		</action>
+	</package>
+	<package name="walletWeb-json" extends="json-default">
+		<!--分页JSON写到这里 -->
+		
+	</package>
+
+</struts>

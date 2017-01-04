@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.DataAuditMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id as id,type as type,table_name as tableName,tableLink_id as tableLinkId,operation_user_id as operationUserId,operation_type as operationType,operation_data as operationData,simple_data as simpleData
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="DataAuditPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			data_audit
+		where
+			id = #{id}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from data_audit
+		where 1=1
+		  <if test="id != null ">
+			and id = #{id}
+		  </if>
+		  <if test="type != null and type != '' ">
+			and type = #{type}
+		  </if>
+		  <if test="tableName != null and tableName != '' ">
+			and table_name = #{tableName}
+		  </if>
+		  <if test="tableLinkId != null ">
+			and tableLink_id = #{tableLinkId}
+		  </if>
+		  <if test="operationUserId != null ">
+			and operation_user_id = #{operationUserId}
+		  </if>
+		  <if test="operationType != null and operationType != '' ">
+			and operation_type = #{operationType}
+		  </if>
+		  <if test="operationData != null ">
+			and operation_data = #{operationData}
+		  </if>
+		  <if test="simpleData != null and simpleData != '' ">
+			and simple_data = #{simpleData}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="DataAuditPojo">
+		select
+			<include refid="Base_Column_List" />
+		from data_audit
+		where 1=1
+			<if test="id != null ">
+			  and id = #{id}
+			</if>
+			<if test="type != null and type != '' ">
+			  and type = #{type}
+			</if>
+			<if test="tableName != null and tableName != '' ">
+			  and table_name = #{tableName}
+			</if>
+			<if test="tableLinkId != null ">
+			  and tableLink_id = #{tableLinkId}
+			</if>
+			<if test="operationUserId != null ">
+			  and operation_user_id = #{operationUserId}
+			</if>
+			<if test="operationType != null and operationType != '' ">
+			  and operation_type = #{operationType}
+			</if>
+			<if test="operationData != null ">
+			  and operation_data = #{operationData}
+			</if>
+			<if test="simpleData != null and simpleData != '' ">
+			  and simple_data = #{simpleData}
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="DataAuditPojo">
+		update data_audit
+		<set>
+			<if test="type != null">
+			  type = #{type},
+			</if>
+			<if test="tableName != null">
+			  table_name = #{tableName},
+			</if>
+			<if test="tableLinkId != null">
+			  tableLink_id = #{tableLinkId},
+			</if>
+			<if test="operationUserId != null">
+			  operation_user_id = #{operationUserId},
+			</if>
+			<if test="operationType != null">
+			  operation_type = #{operationType},
+			</if>
+			<if test="operationData != null">
+			  operation_data = #{operationData},
+			</if>
+			<if test="simpleData != null">
+			  simple_data = #{simpleData},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from data_audit 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="DataAuditPojo">
+		insert into data_audit
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="tableName != null">
+				table_name,
+			</if>
+			<if test="tableLinkId != null">
+				tableLink_id,
+			</if>
+			<if test="operationUserId != null">
+				operation_user_id,
+			</if>
+			<if test="operationType != null">
+				operation_type,
+			</if>
+			<if test="operationData != null">
+				operation_data,
+			</if>
+			<if test="simpleData != null">
+				simple_data,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="type != null">
+				#{type},
+			</if>
+			<if test="tableName != null">
+				#{tableName},
+			</if>
+			<if test="tableLinkId != null">
+				#{tableLinkId},
+			</if>
+			<if test="operationUserId != null">
+				#{operationUserId},
+			</if>
+			<if test="operationType != null">
+				#{operationType},
+			</if>
+			<if test="operationData != null">
+				#{operationData},
+			</if>
+			<if test="simpleData != null">
+				#{simpleData},
+			</if>
+		</trim>
+	</insert>
+	<!--===================================================================================-->
+	<!--视频审核结果日志List-->
+	<select id="dataAuditList" parameterType="java.util.Map" resultType="DataAuditPojo">
+			SELECT 
+				v.label as videoTitle,
+				v.url as url,
+				(CASE WHEN l.operation_type = 1 THEN '通过' WHEN l.operation_type = 2 THEN '不通过' WHEN l.operation_type = 3 THEN '待编辑' END) as operationType,
+				s.name as operationUserName,
+				(CASE WHEN v.is_delete = 1 THEN '删除' END) as isDelete,
+				l.operation_data as operationData
+				FROM 
+				data_audit l 
+				LEFT JOIN video v on v.id = l.tableLink_id 
+				LEFT JOIN sys_login s on s.id = l.operation_user_id
+				WHERE 1=1 
+			<if test="videoTitle != null and videoTitle != ''">
+				and v.label like CONCAT("%",#{videoTitle},"%")
+			</if>
+			<if test="isDelete != null and isDelete != ''">
+				and v.is_delete = #{isDelete}
+				and l.operation_type = 4
+			</if>
+			<if test="operationUserId != nulll and operationUserId != ''">
+				and l.operation_user_id = #{operationUserId}
+			</if>
+			<if test="url != null and url != ''">
+				and v.url like CONCAT("%",#{url},"%")
+			</if>
+			<if test="operationUserName != null and operationUserName != ''">
+				and s.name like CONCAT("%",#{operationUserName},"%")
+			</if>
+			<if test="operationType != null and operationType != '' and isDelete == null">
+				and l.operation_type= #{operationType}
+				and v.is_delete = 0
+			</if>
+			<!--<if test="operationDataStartStr!=null and createDateStartStr!='' and operationDataEndStr!=null and operationDataEndStr!=''">
+				and l.operation_data &gt;= #{operationDataStartStr} and l.operation_data &lt;= #{operationDataEndStr}
+			</if>-->
+			<if test="operationDataStartStr!=null and operationDataStartStr!=''">
+             	and str_to_date(l.operation_data,'%Y-%m-%d %H:%i:%s') &gt;= #{operationDataStartStr}
+			</if>
+			<if test="operationDataEndStr!=null and operationDataEndStr!=''">
+			    and str_to_date(l.operation_data,'%Y-%m-%d %H:%i:%s') &lt;= #{operationDataEndStr}
+			</if>
+			order by l.operation_data desc
+			<if test="pageSize != null">
+				limit #{pageNo}, #{pageSize}
+			</if>
+	</select>
+	<!--视频审核结果日志Count-->
+	<select id="dataAuditCount" parameterType="java.util.Map" resultType="int">
+			SELECT 
+				count(*)
+				FROM 
+				data_audit l 
+				LEFT JOIN video v on v.id = l.tableLink_id 
+				LEFT JOIN sys_login s on s.id = l.operation_user_id
+				WHERE 1=1  
+			<if test="videoTitle != null and videoTitle != ''">
+				and v.label like CONCAT("%",#{videoTitle},"%")
+			</if>
+			<if test="isDelete != null and isDelete != ''">
+				and v.is_delete = #{isDelete}
+				and l.operation_type = 4
+			</if>
+			<if test="operationUserId != nulll and operationUserId != ''">
+				and l.operation_user_id = #{operationUserId}
+			</if>
+			<if test="url != null and url != ''">
+				and v.url like CONCAT("%",#{url},"%")
+			</if>
+			<if test="operationUserName != null and operationUserName != ''">
+				and s.name like CONCAT("%",#{operationUserName},"%")
+			</if>
+			<if test="operationType != null and operationType != '' and isDelete == null">
+				and l.operation_type= #{operationType}
+				and v.is_delete = 0
+			</if>
+			<!--<if test="operationDataStartStr!=null and createDateStartStr!='' and operationDataEndStr!=null and operationDataEndStr!=''">
+				and l.operation_data &gt;= #{operationDataStartStr} and l.operation_data &lt;= #{operationDataEndStr}
+			</if>-->
+			
+			<if test="operationDataStartStr!=null and operationDataStartStr!=''">
+             	and str_to_date(l.operation_data,'%Y-%m-%d %H:%i:%s') &gt;= #{operationDataStartStr}
+			</if>
+			<if test="operationDataEndStr!=null and operationDataEndStr!=''">
+			    and str_to_date(l.operation_data,'%Y-%m-%d %H:%i:%s') &lt;= #{operationDataEndStr}
+			</if>
+			
+			order by l.operation_data desc
+			<if test="pageSize != null">
+				limit #{pageNo}, #{pageSize}
+			</if>
+	</select>
+	
+	<!--审核数据总计List-->
+	<select id="dataAuditTotalList" parameterType="java.util.Map" resultType="DataAuditPojo">
+			select 
+				count(distinct l.operation_user_id) as operationPeopleNo,
+				count(l.id) as operationTotalByDay,
+				count(if(l.operation_type=1 or l.operation_type=3 ,true,null)) as operationTypeTrueByDay,
+				count(if(l.operation_type=2,true,null)) as operationTypeFalseByDay,
+				l.simple_data as simpleData
+				from 
+				data_audit l 
+				WHERE 1=1  
+			<!--<if test="operationDataStartStr!=null and createDateStartStr!='' and operationDataEndStr!=null and operationDataEndStr!=''">
+				and l.simple_data between #{operationDataStartStr} and #{operationDataEndStr}  
+			</if>-->
+			
+			<if test="operationDataStartStr!=null and operationDataStartStr!=''">
+             	and str_to_date(l.simple_data,'%Y-%m-%d') &gt;= #{operationDataStartStr}
+			</if>
+			<if test="operationDataEndStr!=null and operationDataEndStr!=''">
+			    and str_to_date(l.simple_data,'%Y-%m-%d') &lt;= #{operationDataEndStr}
+			</if>
+				group by  simple_data
+			<if test="pageSize != null">
+				limit #{pageNo}, #{pageSize}
+			</if>
+	</select>
+	<!--审核数据总计Count-->
+	<select id="dataAuditTotalCount" parameterType="java.util.Map" resultType="int">
+			select 
+				count(distinct l.simple_data)
+				from 
+				data_audit l 
+				WHERE 1=1  
+			<!--<if test="operationDataStartStr!=null and createDateStartStr!='' and operationDataEndStr!=null and operationDataEndStr!=''">
+				and l.simple_data between #{operationDataStartStr} and #{operationDataEndStr}  
+			</if>-->
+			<if test="operationDataStartStr!=null and operationDataStartStr!=''">
+             	and str_to_date(l.simple_data,'%Y-%m-%d') &gt;= #{operationDataStartStr}
+			</if>
+			<if test="operationDataEndStr!=null and operationDataEndStr!=''">
+			    and str_to_date(l.simple_data,'%Y-%m-%d') &lt;= #{operationDataEndStr}
+			</if>
+			<if test="pageSize != null">
+				limit #{pageNo}, #{pageSize}
+			</if>
+	</select>
+	<!--平均量Count-->
+	<select id="dataAuditAverageCount" parameterType="java.util.Map" resultType="Double">
+			select FORMAT((count(*)/ #{averageDay}),2) 
+				FROM data_audit l 
+				where 1=1
+			<if test="operationUserId != null and operationUserId != ''">
+				and operation_user_id = #{operationUserId}
+			</if>
+			<if test="operationType != null and operationType == 1">
+				and operation_type in(1,3)
+			</if>
+			<if test="operationType != null and operationType == 2">
+				and operation_type = 2
+			</if>
+			<if test="operationDataStartStr!=null and createDateStartStr!='' and operationDataEndStr!=null and operationDataEndStr!=''">
+				and l.simple_data between #{operationDataStartStr} and #{operationDataEndStr}  
+			</if>
+	</select>
+	
+	<!--个人审核数据List-->
+	<select id="dataAuditPeopleList" parameterType="java.util.Map" resultType="DataAuditPojo">
+				select 
+				s.name as operationUserName,
+				count(l.id) as operationTotalByDay,
+				count(if(l.operation_type=1 or l.operation_type=3,true,null)) as operationTypeTrueByDay,
+				count(if(l.operation_type=2,true,null)) as operationTypeFalseByDay,
+				l.simple_data as simpleData
+				FROM 
+				data_audit l LEFT JOIN sys_login s on s.id = l.operation_user_id
+				WHERE 1=1  
+			<if test="operationUserId != null and operationUserId != ''">
+				and l.operation_user_id = #{operationUserId}
+			</if>
+			<!--<if test="operationDataStartStr!=null and createDateStartStr!='' and operationDataEndStr!=null and operationDataEndStr!=''">
+				and l.simple_data between #{operationDataStartStr} and #{operationDataEndStr}  
+			</if>-->
+			
+			<if test="operationDataStartStr!=null and operationDataStartStr!=''">
+             	and str_to_date(l.simple_data,'%Y-%m-%d') &gt;= #{operationDataStartStr}
+			</if>
+			<if test="operationDataEndStr!=null and operationDataEndStr!=''">
+			    and str_to_date(l.simple_data,'%Y-%m-%d') &lt;= #{operationDataEndStr}
+			</if>
+			
+				group by simple_data,s.name
+			<if test="pageSize != null">
+				limit #{pageNo}, #{pageSize}
+			</if>
+	</select>
+	
+	<!--个人审核数据Count-->
+	<select id="dataAuditPeopleCount" parameterType="java.util.Map" resultType="int">
+		select
+			count(DISTINCT l.simple_data,s.name)
+			from 
+			data_audit l left join sys_login s on s.id = l.operation_user_id
+			where 1=1
+		<if test="operationUserId != null and operationUserId != ''">
+			and l.operation_user_id = #{operationUserId}
+		</if>    
+		<if test="operationDataStartStr!=null and createDateStartStr!='' and operationDataEndStr!=null and operationDataEndStr!=''">
+			and l.simple_data between #{operationDataStartStr} and #{operationDataEndStr}  
+		</if>
+
+	</select>
+	
+	<!--查询杭州账号-->
+	<select id="findUserAsHangzhouList" parameterType="java.util.Map" resultType="DataAuditPojo">
+	select
+		sl.name as operationUserName,
+		sl.id as id
+		from sys_login sl 
+		left join sys_user_role sur on sur.user_id=sl.id
+		left join sys_role sr on sr.id = sur.role_id
+		where 1 = 1
+		and sr.name like '%杭州%'
+	</select>
+	
+	<!--计算数据库中日均量数据是否超过5天-->
+	<select id="IsMoreThanFiveDay" parameterType="java.util.Map" resultType="int">
+		select count(*)  from 
+			(select count(l.simple_data)
+				FROM data_audit l 
+				where 1=1
+			<if test="operationUserId != null and operationUserId != ''">
+				and operation_user_id = #{operationUserId}
+			</if>
+			<if test="operationType != null and operationType == 1">
+				and operation_type in(1,3)
+			</if>
+			<if test="operationType != null and operationType == 2">
+				and operation_type = 2
+			</if>
+			<if test="operationDataStartStr!=null and createDateStartStr!='' and operationDataEndStr!=null and operationDataEndStr!=''">
+				and l.simple_data between #{operationDataStartStr} and #{operationDataEndStr}  
+			</if>
+			 GROUP BY l.simple_data)data_audit
+	</select>
+	
+</mapper>

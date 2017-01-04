@@ -1,0 +1,612 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.UserOrderRefundMapper">
+
+	<!-- 插入 
+	<insert id="addInfo" parameterType="InfoPojo">
+		insert into info
+		(id,status,display_order,type,title,content,image,author,create_by,create_date,update_by,update_date,remarks,version)
+		values
+		(#{id}, #{status},#{display_order},
+		#{type},#{title},#{content},#{image},#{author},#{create_by},
+		#{create_date},#{update_by},#{update_date},#{version},#{remarks})
+	</insert>
+	-->
+	<!-- 查询单条记录  -->
+	<select id="findUserOrderRefundById" resultType="UserOrderRefundPojo" parameterType="Long">
+		select uor.id as id,
+		uor.order_id as orderId,
+		(select u.order_no from user_order u where u.id=uor.order_id) as orderNo,
+		uor.user_id as userId,
+		uor.loginname as loginName ,
+		uor.shop_id as shopId,
+		uor.product_id as productId,
+		uor.product_name as productName,
+		uor.product_model as productModel ,
+		uor.stock_id as stockId,
+		uor.stock_price_old as stockPriceOld,
+		uor.stock_price as stockPrice,
+		uor.refund_num as refundNum,
+		uor.refund_reason as refundReason,
+		uor.status as status,
+		(select name from sys_dict where value=uor.status and type="refund_status") as statusName,
+		uor.create_by as createBy,
+		uor.create_date as createDate,
+		uor.update_by as updateBy,
+		uor.update_date as updateDate,
+		uor.remarks as remarks,
+		uor.version as version,
+		uor.sku_link_id as skuLinkId,
+		u.out_trade_no as outTradeNo,
+		uor.coupon_price as couponPrice,
+		uor.refund_money as refundMoney
+		from user_order_refund as uor left join user_order u on uor.order_id = u.id
+		where
+		uor.id=#{id}
+	</select>
+	
+	<!-- 查询单条记录  -->
+	<select id="findUserOrderRefundByOid" resultType="UserOrderRefundPojo" parameterType="Long">
+		select uor.id as id,
+		uor.order_id as orderId,
+		(select u.order_no from user_order u where u.id=uor.order_id) as orderNo,
+		uor.user_id as userId,
+		uor.loginname as loginName ,
+		uor.shop_id as shopId,
+		uor.product_id as productId,
+		uor.product_name as productName,
+		uor.product_model as productModel ,
+		uor.stock_id as stockId,
+		uor.stock_price_old as stockPriceOld,
+		uor.stock_price as stockPrice,
+		uor.refund_num as refundNum,
+		uor.coupon_price as couponPrice,
+		(uor.stock_price*uor.refund_num) as sumPrice,
+		(uor.stock_price*uor.refund_num-uor.coupon_price) as refundSumPrice,
+		uor.refund_reason as refundReason,
+		uor.status as status,
+		(case when uor.status=1 then "审核" when uor.status=2 then "请退货" when uor.status=3 then "退货中" when uor.status=4 then "退货成功" when uor.status=5 then "退货失败"  when uor.status=6 then "审核不成功" when uor.status=7 then "退款成功" end) as statusName,
+		uor.create_by as createBy,
+		uor.create_date as createDate,
+		uor.update_by as updateBy,
+		uor.update_date as updateDate,
+		uor.remarks as remarks,
+		uor.version as version,
+		uor.sku_link_id as skuLinkId,
+		uor.images as images,
+		t.image as productImage,
+		uor.logistics as logistics,
+		uor.logType as logType,
+		d.name as logisticsNameCN,
+		uor.refund_Type as refundType,
+		(case when uor.refund_Type=1 then "不喜欢" when uor.refund_Type=2 then "质量不好" when uor.refund_Type=3 then "尺码不对" when uor.refund_Type=4 then "颜色不对" when uor.refund_Type=5 then "其他" end) as refundTypeName,
+		uor.address as address,
+		uor.detail_id as detailId,
+		uor.type as type,
+		(case when uor.type=1 then "退款" when uor.type=2 then "退货" when uor.type=3 then "售后服务" end) as typeName,
+		uor.refund_money as refundMoney,
+		uor.reject_images as rejectImages,
+		uor.reject_reason as rejectReason
+		from user_order_refund as uor left join user_order u on uor.order_id = u.id
+		left join sys_dict d on uor.logType=d.name_en 
+		left join product t on t.id=uor.product_id
+		where
+		uor.detail_id=#{oid}
+	</select>
+ 	
+	<!--更新 
+	<update id="updateInfo" parameterType="InfoPojo">
+		update info i set
+		id=#{id}, status=#{status},display_order=#{display_order},
+		type=#{type},title=#{title},content=#{content},image=#{image},author=#{author},create_by=#{create_by},
+		create_date=#{create_date},update_by=#{update_by},update_date=#{update_date},version=#{version},remarks=#{remarks}
+		where
+		i.id = #{id}
+	</update>
+	-->
+	
+	<!-- 批量改变status状态  -->
+	<update id="checkAllUserOrderRefundById" parameterType="userOrderRefundPojo">
+		update user_order_refund set
+		status = #{status}
+		where
+		id = #{id}
+	</update>
+	
+	
+	<!-- 审核单条 -->
+	<update id="checkUserOrderRefund" parameterType="userOrderRefundPojo">
+		update user_order_refund as uor set
+		<if test="status != null ">
+			uor.status=#{status},
+		</if>
+		<if test="isRefund != null ">
+			uor.is_refund=#{isRefund},
+		</if>
+		<if test="outRefundNo != null ">
+			uor.out_refund_no=#{outRefundNo},
+		</if>
+		<if test="refundDate != null ">
+			uor.refund_date=#{refundDate},
+		</if>	
+		<if test="refundMoney != null ">
+			uor.refund_money=#{refundMoney},
+		</if>	
+			uor.update_date=now()
+		where
+			uor.id=#{id}
+		<if test="oldRefund != null ">
+			and uor.is_refund != #{oldRefund}
+		</if>
+	</update>
+	
+	<!-- 删除全部  -->
+	<delete id="delAllUserOrderRefundById" parameterType="String">
+		delete from user_order_refund
+		where
+		id = #{id}
+	</delete>
+	
+	<!-- 删除单个  -->
+	<delete id="delUserOrderRefund" parameterType="userOrderRefundPojo">
+		delete from user_order_refund
+		where
+		id =
+		#{id}
+	</delete>
+	
+	<!-- 查询所有的记录 -->
+	<select id="userOrderRefundAllList" resultType="UserOrderRefundPojo"
+		parameterType="java.util.Map">
+		select uor.id as id,
+		uor.reject_images as rejectImages,
+		uor.reject_reason as rejectReason,
+		uor.order_id as orderId,
+		uor.images as images,
+		uor.images2 as images2,
+		uor.images3 as images3,
+		(select u.order_no from user_order u where u.id=uor.order_id) as orderNo,
+		sl.loginname as loginname1,
+		uor.user_id as userId,
+		uor.loginname as loginName ,
+		uor.shop_id as shopId,
+		uor.product_id as productId,
+		uor.product_name as productName,
+		uor.product_model as productModel ,
+		uor.stock_id as stockId,
+		uor.stock_price_old as stockPriceOld,
+		uor.stock_price as stockPrice,
+		uor.refund_num as refundNum,
+		uor.refund_reason as refundReason,
+		uor.status as status,
+		(select name from sys_dict where value=uor.status and type="refund") as statusName,
+		(select image from product where id = uor.product_id) as productImage,
+		p.product_num as productNum,
+		uor.create_by as createBy,
+		uor.create_date as createDate,
+		uor.update_by as updateBy,
+		uor.update_date as updateDate,
+		uor.logType as logType,
+		uor.logistics as logistics,
+		CONCAT(s.name,':',uor.logistics) as serialNumber,
+		s.name as logisticsName, 
+		u.remarks as remarks,
+		uor.version as version,
+		uor.detail_id as detailId,
+		uor.type as type,
+		(case when uor.type=1 then "退款" when uor.type=2 then "退货" when uor.type=3 then "售后服务" end) as typeName,
+		uor.sku_link_id as skuLinkId,
+		u.fact_price as refundTotalPrice,
+		(case when c.status = 1 then u.fact_price - c.used_price else u.fact_price end) as factPrice,
+		u.pay_method as payMethod,
+		u.create_date as orderDate,
+		u.all_price as allPrice,
+		u.consignee as consignee,
+		u.consignee_address as consigneeAddress,
+		u.consignee_phone as consigneePhone,
+		(case when u.pay_method = 1 then (select trade_no from alipay_order_info where out_trade_no=u.out_trade_no limit 1)
+		 when u.pay_method = 2 then (select transaction_id from wxpay_order_info where out_trade_no=u.out_trade_no limit 1)
+		 when u.pay_method = 5 then (select transaction_no from order_payinfo where out_trade_no=u.out_trade_no and channel = 'upacp' limit 1)
+		 when u.pay_method = 6 then (select transaction_no from order_payinfo where out_trade_no=u.out_trade_no and channel = 'applepay_upacp' limit 1)
+		 when u.pay_method = 8 then (select transaction_id from wxpay_order_info where out_trade_no=u.out_trade_no limit 1)
+		 end) as tradeNo,
+		uor.coupon_price as couponPrice,
+		uor.service_involved as serviceInvolved,
+		(CASE WHEN uor.service_involved = 1 THEN '否' WHEN uor.service_involved = 2 THEN '是' END) as serviceInvolvedName,
+		uor.refund_money as refundMoney,
+		(select create_date from user_wallet_log where order_id=uor.order_id and out_trade_no='cancel' limit 1)as refundMoneyDate,
+		uor.is_refund as isRefund
+		from user_order_refund as uor left join user_order u on uor.order_id = u.id 
+		left join sys_dict  s on  s.name_en =uor.logType left join coupon_order c on c.order_id = u.id and c.status = 1
+		left join sys_login sl on sl.id=uor.user_id
+		left join product p on p.id = uor.product_id
+		where
+		1=1 and u.is_delete_order=0
+		<if test=" productNum !=null and productNum !='' ">
+			and p.product_num like concat("%",#{productNum},"%" )
+		</if>
+		<if test="auditStatus ==0">
+			and uor.status in (5,6)
+		</if>
+		<if test="auditStatus ==1">
+			and uor.status in (1,2,3,4,7)
+		</if>
+		<if test="refundStatus == 1">
+			and uor.status in (1)
+		</if>
+		<if test="refundStatus == 2">
+			and uor.status in (2,3)
+		</if>
+		<if test="refundStatus == 3">
+			and uor.status in (0,4,5,6,7)
+		</if>
+		<if test="refundStatus == 4">
+			and uor.status in (4,7)
+		</if>
+		<if test="refundStatus == 5">
+			and uor.status in (1,2,3)
+			and uor.reject_images is not null 
+			and uor.reject_reason is not null
+		</if>
+		<if test="refundStatus == 0">
+			and uor.status in (4,5,6,7)
+			and uor.reject_images is not null 
+			and uor.reject_reason is not null
+		</if>
+		<if test=" orderId !=null and orderId !='' ">
+			and uor.order_id like concat("%",#{orderId},"%" )
+		</if>
+		<if test=" orderNo !=null and orderNo !='' ">
+			and u.order_no like concat("%",#{orderNo},"%" )
+		</if>
+		<if test=" loginName !=null and loginName !='' ">
+			and uor.loginname like concat("%",#{loginName},"%" )
+		</if>
+		<if test=" loginname1 !=null and loginname1 !='' ">
+			and sl.loginname like concat("%",#{loginname1},"%" )
+		</if>
+		<if test="createDateStartStr !=null and createDateStartStr !=''">
+			and UNIX_TIMESTAMP(uor.create_date) >= UNIX_TIMESTAMP(CONCAT(#{createDateStartStr}))
+		</if>
+		<if test="createDateEndStr !=null and createDateEndStr !=''">
+			and UNIX_TIMESTAMP(CONCAT(#{createDateEndStr})) > UNIX_TIMESTAMP(uor.create_date)
+		</if>
+		<!-- <if test=" name !=null and name !='' ">
+			and sl.name like concat("%",#{name},"%" )
+		</if> -->
+		<if test=" productName !=null and productName !='' ">
+			and uor.product_name like concat("%",#{productName},"%" )
+		</if>
+		<if test="pageSize != null">
+			 order by uor.update_date desc, uor.id desc limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+
+	<!-- 返回信息记录的数目count -->
+	<select id="userOrderRefundAllCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from user_order_refund as uor left join user_order u on uor.order_id = u.id left join sys_login sl on sl.id = uor.user_id left join product p on p.id = uor.product_id
+		where
+		1=1 and u.is_delete_order=0
+		<if test=" productNum !=null and productNum !='' ">
+			and p.product_num like concat("%",#{productNum},"%" )
+		</if>
+		<if test="auditStatus ==0">
+			and uor.status in (5,6)
+		</if>
+		<if test="auditStatus ==1">
+			and uor.status in (1,2,3,4,7)
+		</if>
+		<if test="refundStatus == 1">
+			and uor.status in (1)
+		</if>
+		<if test="refundStatus == 2">
+			and uor.status in (2,3)
+		</if>
+		<if test="refundStatus == 3">
+			and uor.status in (0,4,5,6,7)
+		</if>
+		<if test="refundStatus == 4">
+			and uor.status in (4,7)
+		</if>
+		<if test="refundStatus == 5">
+			and uor.status in (1,2,3)
+			and uor.reject_images is not null 
+			and uor.reject_reason is not null
+		</if>
+		<if test="refundStatus == 0">
+			and uor.status in (4,5,6,7)
+			and uor.reject_images is not null 
+			and uor.reject_reason is not null
+		</if>
+		<if test=" orderId !=null and orderId !='' ">
+			and uor.order_id like concat("%",#{orderId},"%" )
+		</if>
+		<if test=" orderNo !=null and orderNo !='' ">
+			and u.order_no like concat("%",#{orderNo},"%" )
+		</if>
+		<if test=" loginName !=null and loginName !='' ">
+			and uor.loginname like concat("%",#{loginName},"%" )
+		</if>
+		<if test=" loginname1 !=null and loginname1 !='' ">
+			and sl.loginname like concat("%",#{loginname1},"%" )
+		</if>
+		<if test="createDateStartStr !=null and createDateStartStr !=''">
+			and UNIX_TIMESTAMP(uor.create_date) >= UNIX_TIMESTAMP(CONCAT(#{createDateStartStr}))
+		</if>
+		<if test="createDateEndStr !=null and createDateEndStr !=''">
+			and UNIX_TIMESTAMP(CONCAT(#{createDateEndStr})) > UNIX_TIMESTAMP(uor.create_date)
+		</if>
+		<!-- <if test=" name !=null and name !='' ">
+			and sl.name like concat("%",#{name},"%" )
+		</if> -->
+		<if test=" productName !=null and productName !='' ">
+			and uor.product_name like concat("%",#{productName},"%" )
+		</if>
+	</select>
+		<!-- 查询用户退货 -->
+	<select id="findUserOrderRefundByUserId" resultType="UserOrderRefundPojo" parameterType="Long">
+		select uor.id as id,
+			uor.order_id as orderId,
+			uor.user_id as userId,
+			uor.shop_id as shopId,
+			uor.loginname as loginname,
+			uor.status,
+			uo.consignee_phone as consigneePhone,
+			uo.order_no as orderNo,
+			us.name as shopName,
+			uor.create_date as createDate,
+			uor.service_involved as serviceInvolved,
+			uo.all_price as allPrice,
+			uo.fact_price as factPrice,
+			uo.activity_id as activityId,
+			uo.source as source,
+			uor.stock_price_old as stockPriceOld,
+			uor.stock_price as stockPrice,
+			uor.reject_reason as rejectReason,
+			p.id as productId,
+			p.image as productImage,
+			p.product_name as productName
+		from user_order_refund as uor 
+			left join user_shop us on uor.shop_id=us.id 
+			left join user_order uo on uo.id=uor.order_id
+			left join product p on p.id = uor.product_id
+		where 1=1
+		<if test="userId != null">
+			and uor.user_id=#{userId}
+		</if>
+		<if test="shopId != null">
+			and uor.shop_id=#{shopId}
+		</if>
+		<if test="status != null">
+			and uor.status=#{status}
+		</if>
+		<if test="refundStatus != null and refundStatus == 1">
+			and uor.status = 1
+		</if>
+		<if test="refundStatus != null and refundStatus == 2">
+			and uor.status in (2,3)
+		</if>
+		<if test="refundStatus != null and refundStatus == 3">
+			and uor.status in (5,6)
+		</if>
+		<if test="refundStatus != null and refundStatus == 4">
+			and uor.status in (4,7)
+		</if>
+		<if test="orderNo != null and orderNo != ''">
+			and uo.order_no like concat("%",#{orderNo},"%" )
+		</if>
+		group by order_id
+		order by uor.id desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	<select id="findOrderRefundDetailByUserId" resultType="UserOrderRefundPojo" parameterType="java.util.Map">
+		select uor.id as id,
+		uor.order_id as orderId,
+		uor.user_id as userId,
+		uor.shop_id as shopId,
+		us.name as shopName,
+		uor.product_id as productId,
+		uor.product_name as productName,
+		uor.stock_price as stockPrice,
+		t.product_image as productImage,
+		t.num as buyNum,
+		uor.refund_num as refundNum,
+		uor.refund_reason as refundReason,
+		uor.detail_id as detailId,
+		uor.images as images,
+		uor.type as type,
+		uor.status as status,
+		uor.sku_link_id as skuLinkId
+		from user_order_refund as uor left join user_shop us on uor.shop_id=us.id
+		left join user_order_detail t on t.id=uor.detail_id
+		where uor.user_id=#{userId}
+		order by uor.id desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	<select id="findUserOrderRefundByorderId" resultType="UserOrderRefundPojo" parameterType="Long">
+		select uor.id as id,
+		uor.refund_reason as refundReason,
+		uor.create_date as createDate,
+		sl.name as userName,
+		uor.order_id as orderId,
+		uor.product_id as productId,
+		uor.product_name as productName,
+		uor.refund_num as refundNum,
+		uor.detail_id as detailId,
+		uor.images as  images,
+		uor.logistics as logistics,
+		uor.logType as logType,
+		d.name as logisticsNameCN,
+		t.image as productImage,
+		uor.status as status,
+		(select name from sys_dict where value=uor.status and type="refund_status") as statusName,
+		uor.sku_link_id as skuLinkId,
+		uor.type as type,
+		uor.refund_money as refundMoney,
+		uor.is_refund as isRefund
+		from user_order_refund as uor left join user_shop us on uor.shop_id=us.id
+		left join product t on t.id=uor.product_id
+		left join sys_login sl on sl.id=uor.user_id
+		left join sys_dict d on uor.logType=d.name_en 
+		where uor.order_id=#{orderId}
+	</select>
+	<!--更新remarks -->
+	<update id="updateOrderRefundRemarks" parameterType="UserOrderRefundPojo">
+		update user_order_refund set
+		<if test=" remarks !=null and remarks !='' ">
+			remarks=#{remarks},
+		</if>
+		<if test=" updateBy !=null and updateBy !='' ">
+			update_by=#{updateBy},
+		</if>	
+		<if test=" refundMoney !=null and refundMoney !='' ">
+			refund_money=#{refundMoney},
+		</if>
+		<if test=" rejectImages !=null and rejectImages !='' ">
+			reject_images=#{rejectImages},
+		</if>	
+		<if test=" rejectReason !=null and rejectReason !='' ">
+			reject_reason=#{rejectReason},
+		</if>
+		update_date=#{updateDate}
+		where
+		id = #{id}
+	</update>
+	
+	<!-- 返回退款条数 -->
+	<select id="userOrderRefundAllCount2" resultType="int" parameterType="java.util.Map">
+        select count(*) from (select count(*)
+                 from user_order_refund as uor LEFT JOIN user_order uo ON uor.order_id=uo.id
+                where uo.suser_id=#{userId}
+                <if test="status != null and status != ''">
+                    and uor.status=#{status}
+                </if>
+                <if test="orderNo != null and orderNo != ''">
+                    and uo.out_trade_no like concat("%",#{orderNo},"%" )
+                </if>
+                group by uor.order_id
+                order by uor.id desc) r 
+
+
+    </select>
+	
+	<!-- 商家中心-售后管理-查询用户退货 -->
+    <select id="findUserOrderRefundByUserId2" resultType="UserOrderRefundPojo" parameterType="Long">
+        select uor.id as id,
+        uor.order_id as orderId,
+        uor.user_id as userId,
+        uor.shop_id as shopId,
+        uor.loginname as loginname,
+        uo.consignee_phone as consigneePhone,
+        uo.out_trade_no as orderNo,
+        uor.create_date as createDate,
+        uor.service_involved as serviceInvolved
+        from user_order_refund as uor LEFT JOIN user_order uo ON uor.order_id=uo.id
+		where uo.suser_id=#{userId}
+        <if test="status != null and status != ''">
+            and uor.status=#{status}
+        </if>
+        <if test="orderNo != null and orderNo != ''">
+            and uo.out_trade_no like concat("%",#{orderNo},"%" )
+        </if>
+        group by uor.order_id
+        order by uor.id desc
+        <if test="pageSize != null">
+            limit #{pageNo} , #{pageSize}
+        </if>
+    </select>
+	
+	
+	<!-- 根据orderId查询退货商品list -->
+	<select id="findUserOrderRefundListByorderId" resultType="UserOrderRefundPojo" parameterType="Long">
+		select
+		uor.id as id,
+		uor.product_id as productId,
+		uor.product_name as productName,
+		uor.detail_id as detailId,
+		uor.images as images,
+		uor.order_id as orderId,
+		uor.stock_price as stockPrice,
+		uor.refund_money as refundMoney,
+		uor.refund_num as refundNum,
+		uor.logistics as logistics,
+		uor.logType as logType,
+		uo.order_no as orderNo,
+		t.image as productImage,
+		uor.status as status,
+		uor.sku_link_id as skuLinkId,
+		uor.type as type,
+		uor.service_involved as serviceInvolved,
+		uor.coupon_price as couponPrice,
+		(uor.stock_price*uor.refund_num) as sumPrice,
+		(uor.stock_price*uor.refund_num-uor.coupon_price) as refundSumPrice
+		from user_order_refund as uor left join user_shop us on uor.shop_id=us.id
+		left join product t on t.id=uor.product_id left join user_order uo on uo.id=uor.order_id
+		where uor.order_id=#{orderId}
+		<if test="status != null and status != ''">
+			and uor.status=#{status}
+		</if>
+	</select>
+	<!-- 根据type改变status状态  -->
+	<update id="updateStatusOfUserOrderRefundById" parameterType="userOrderRefundPojo">
+		update user_order_refund set
+		status = #{status},update_date =now()
+		where
+		id = #{id}
+	</update>
+	
+	<select id="getByOutRefundNo" parameterType="String" resultType="UserOrderRefundPojo">
+		select
+			id as id,
+			order_id as orderId,
+			user_id as userId,
+			loginname as loginname,
+			shop_id as shopId,
+			product_id as productId,
+			product_name as productName,
+			product_model as productModel,
+			stock_id as stockId,
+			stock_price_old as stockPriceOld,
+			stock_price as stockPrice,
+			refund_num as refundNum,
+			refund_reason as refundReason,
+			status as status,
+			create_by as createBy,
+			create_date as createDate,
+			update_by as updateBy,
+			update_date as updateDate,
+			remarks as remarks,
+			version as version,
+			images as images,
+			images2 as images2,
+			images3 as images3,
+			logistics as logistics,
+			logType as logType,
+			refund_Type as refundType,
+			address as address,
+			detail_id as detailId,
+			type as type,
+			sku_link_id as skuLinkId,
+			coupon_price as couponPrice,
+			refund_money as refundMoney,
+			service_involved as serviceInvolved,
+			reject_images as rejectImages,
+			reject_reason as rejectReason,
+			phone as phone,
+			is_refund as isRefund,
+			out_refund_no as outRefundNo,
+			refund_date as refundDate
+		from
+			user_order_refund
+		where
+			out_refund_no = #{outRefundNo}
+	</select>
+</mapper>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="userRedeemCode" extends="default">
+		<!-- 进入列表页面 -->
+		<action name="goUserRedeemCode" class="com.tzmb2c.web.action.UserRedeemCodeAction" method="goUserRedeemCode">
+			<result name="success">/page/system/userRedeemCode/userRedeemCodeList.jsp</result>
+		</action>
+		<!-- 新增 -->
+		<action name="goAddUserRedeemCode" class="com.tzmb2c.web.action.UserRedeemCodeAction" method="goAddUserRedeemCode">
+		    <result name="success">/page/system/userRedeemCode/addUserRedeemCode.jsp</result>
+		</action>
+		<!-- 新增提交 -->
+		<action name="addUserRedeemCode" class="com.tzmb2c.web.action.UserRedeemCodeAction" method="add">
+		</action>		
+		<!-- 编辑页面 -->
+		<action name="goEditUserRedeemCode" class="com.tzmb2c.web.action.UserRedeemCodeAction" method="goEditUserRedeemCode">
+			<result name="success">/page/system/userRedeemCode/updateUserRedeemCode.jsp</result>
+		</action>
+		<!-- 编辑提交 -->
+		<action name="updateUserRedeemCode" class="com.tzmb2c.web.action.UserRedeemCodeAction" method="update">
+		</action>
+	</package>
+	<package name="userRedeemCode-json" extends="json-default">
+		<!-- 内容 -->
+		<action name="userRedeemCodeList" class="com.tzmb2c.web.action.UserRedeemCodeAction" method="userRedeemCodeList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="userRedeemCodeCnt" class="com.tzmb2c.web.action.UserRedeemCodeAction" method="userRedeemCodeRowCnt">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+		<!-- 根据ID删除 -->
+		<action name="delUserRedeemCode" class="com.tzmb2c.web.action.UserRedeemCodeAction" method="delete">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+		<!-- 删除选中 -->
+		<action name="delUserRedeemCodeAll" class="com.tzmb2c.web.action.UserRedeemCodeAction" method="deleteAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 通过审核 -->
+		<action name="checkUserRedeemCode" class="com.tzmb2c.web.action.UserRedeemCodeAction" method="check">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 取消审核 -->
+		<action name="uncheckUserRedeemCode" class="com.tzmb2c.web.action.UserRedeemCodeAction" method="uncheck">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中通过审核 -->
+		<action name="checkUserRedeemCodeAll" class="com.tzmb2c.web.action.UserRedeemCodeAction" method="checkAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中取消审核 -->
+		<action name="uncheckUserRedeemCodeAll" class="com.tzmb2c.web.action.UserRedeemCodeAction" method="uncheckAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+	</package>
+</struts>

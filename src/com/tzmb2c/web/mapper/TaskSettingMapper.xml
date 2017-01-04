@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tzmb2c.web.mapper.TaskSettingMapper">
+<!--1层查内容-->
+<select id="findTaskSettingList1" resultType="TaskSettingPojo" parameterType="java.util.Map">
+		select  
+		     t.task_date as taskDate	    
+        from task_setting t
+	    where 1=1
+	        and t.is_delete = 0
+	        and t.task_id = 0
+	    <if test="age != null">
+			and t.task_age_type = #{age}
+		</if>
+        order by t.task_date desc 
+		<if test="pageNo != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+</select>
+<!--1层查条数-->
+<select id="findTaskSettingCount1" resultType="int" parameterType="java.util.Map">
+		select 
+		count(*)
+		from task_setting t 
+		where 1=1
+		    and t.is_delete = 0
+		    and t.task_id = 0
+	    <if test="age != null">
+			and t.task_age_type = #{age}
+		</if>
+</select>
+<!--2层查内容-->
+<select id="findTaskSettingList2" resultType="TaskSettingPojo" parameterType="java.util.Map">
+		select 
+		     t.id            as id,
+		     t.task_id       as taskId,
+		     tl.taskTitle    as taskTitle,
+		     tl.taskContent  as taskContent,
+		     tl.taskAge      as taskAge,
+			 (select s.name from sys_dict s where tl.taskAge = s.value and s.type = "user_age")            as taskAgeMessage,		     
+		     tl.ability      as ability,
+		     (select s.name from sys_dict s where tl.ability = s.value and s.type = "ability")             as abilityMessage,
+		     tl.taskType     as taskType,
+		     (select s.name from sys_dict s where tl.taskType = s.value and s.type = "task_type")          as taskTypeMessage,			
+			 (select s.name from sys_dict s where tl.taskTypeLink = s.value and s.type = "task_type_link") as taskTypeLinkMessage,
+		     tl.taskScore    as taskScore
+        from task_setting t left join task_library tl on tl.id=t.task_id
+	    where 1=1
+	        and t.is_delete = 0
+	        and tl.is_delete = 0
+	        and t.task_id != 0
+	    <if test="taskDateStr != null and taskDate != ''">
+			and str_to_date(t.task_date,'%Y-%m-%d') = #{taskDateStr}
+		</if>
+		<if test="age != null">
+			and t.task_age_type = #{age}
+		</if>
+        order by t.id desc 
+		<if test="pageNo != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+</select>
+<!--2层查条数-->
+<select id="findTaskSettingCount2" resultType="int" parameterType="java.util.Map">
+		select 
+		count(*)
+		from task_setting t left  join task_library tl on tl.id=t.task_id
+		where 1=1
+		    and t.is_delete = 0
+		    and tl.is_delete = 0
+		    and t.task_id != 0
+	    <if test="taskDateStr != null and taskDateStr != ''">
+			and str_to_date(t.task_date,'%Y-%m-%d') = #{taskDateStr}
+		</if>
+		<if test="age != null">
+			and t.task_age_type = #{age}
+		</if>
+		<if test="taskId != null">
+			and t.task_id = #{taskId}
+		</if>
+</select>
+<!--加入某条-->
+<insert id="insertTaskSetting" parameterType="TaskSettingPojo">
+		insert into task_setting  (task_date,task_id,task_age_type,is_delete,create_date,create_by,update_date,update_by)
+		values(#{taskDate},#{taskId},#{taskAgeType},0,now(),1,now(),1)
+</insert>
+<!-- 逻辑删除单条(id) -->
+<delete id="delTaskSetting" parameterType="Long">
+		update task_setting set is_delete = 1 where id = #{id}
+</delete>
+<!-- 查询日程是否重复 -->
+<select id="findTaskSettingCountDate" resultType="int" parameterType="java.util.Map">
+		select 
+		count(*)
+		from task_setting t 
+		where 1=1
+		    and t.is_delete = 0
+	    <if test="age != null">
+			and t.task_age_type = #{age}
+		</if>
+		<if test="taskDateStr != null and taskDateStr != ''">
+			and str_to_date(t.task_date,'%Y-%m-%d') = #{taskDateStr}
+		</if>
+</select>
+
+<!-- 查询当日任务 -->
+<select id="findTaskSettingToday" resultType="TaskSettingPojo" parameterType="java.util.Map">
+		select 
+		     t.id            as id,
+		     t.task_id       as taskId,
+		     t.task_date       as taskDate,
+		     tl.taskTitle    as taskTitle,
+		     tl.taskContent  as taskContent,
+		     tl.taskAge      as taskAge,
+			 (select s.name from sys_dict s where tl.taskAge = s.value and s.type = "user_age")            as taskAgeMessage,		     
+		     tl.ability      as ability,
+		     (select s.name from sys_dict s where tl.ability = s.value and s.type = "ability")             as abilityMessage,
+		     tl.taskType     as taskType,
+		     (select s.name from sys_dict s where tl.taskType = s.value and s.type = "task_type")          as taskTypeMessage,			
+			 (select s.name from sys_dict s where tl.taskTypeLink = s.value and s.type = "task_type_link") as taskTypeLinkMessage,
+		     tl.taskScore    as taskScore,
+		     ut.status as taskStatus,
+		     ut.start_time as startTime,
+		     ut.id as userTaskId
+        from task_setting t left join task_library tl on tl.id=t.task_id left join user_task ut on t.id=ut.task_setting_id and ut.user_id = #{userId}
+	    where 1=1
+	        and t.is_delete = 0
+	        and tl.is_delete = 0
+	        and t.task_id != 0
+	    <if test="taskDateStr != null and taskDate != ''">
+			and t.task_date = #{taskDateStr}
+		</if>
+		<if test="age != null">
+			and t.task_age_type = #{age}
+		</if>
+        order by t.id desc 
+		<if test="pageNo != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+</select>
+<!-- 根据ID查询任务 -->
+<select id="getTaskSettingById" resultType="TaskSettingPojo" parameterType="Long">
+		select 
+		    t.id,
+			t.task_date as taskDate,
+			t.task_id as taskId,
+			t.task_age_type as taskAgeType
+        from task_setting t
+	    where t.id = #{id}
+</select>
+</mapper>

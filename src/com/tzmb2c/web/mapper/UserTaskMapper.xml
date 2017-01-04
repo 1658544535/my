@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.UserTaskMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id,
+		user_id as userId,
+		task_setting_id as taskSettingId,
+		task_date as taskDate,
+		status,
+		start_time as startTime,
+		end_time as emdTime
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="UserTaskPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			user_task
+		where
+			id = #{id}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from user_task t
+		left join task_setting s on t.task_setting_id = s.id 
+		left join task_library l on s.task_id = l.id
+		where 1=1
+		  <if test="id != null ">
+			and t.id = #{id}
+		  </if>
+		  <if test="userId != null ">
+			and t.user_id = #{userId}
+		  </if>
+		  <if test="taskSettingId != null ">
+			and t.task_setting_id = #{taskSettingId}
+		  </if>
+		  <if test="histFlag == null and taskDate != null ">
+			and t.task_date = #{taskDate}
+		  </if>
+		  <if test="histFlag != null and histFlag == 1 ">
+			  and t.task_date &lt; #{taskDate}
+		  </if>
+		  <if test="histFlag != null and histFlag == 2 ">
+			  and t.task_date &gt;= #{taskDate}
+		  </if>
+		  <if test="status != null ">
+			and t.status = #{status}
+		  </if>
+		  <if test="startTime != null ">
+			and t.start_time = #{startTime}
+		  </if>
+		  <if test="endTime != null ">
+			and t.end_time = #{endTime}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="UserTaskPojo">
+		select
+			t.id,
+			t.user_id as userId,
+			t.task_setting_id as taskSettingId,
+			t.task_date as taskDate,
+			t.status,
+			t.start_time as startTime,
+			t.end_time as endTime,
+			l.taskTitle,
+			l.taskContent,
+			l.taskType,
+			l.taskScore,
+			l.taskAge,
+			l.ability
+		from user_task t 
+		left join task_setting s on t.task_setting_id = s.id 
+		left join task_library l on s.task_id = l.id
+		where 1=1
+			<if test="id != null ">
+			  and t.id = #{id}
+			</if>
+			<if test="userId != null ">
+			  and t.user_id = #{userId}
+			</if>
+			<if test="taskSettingId != null ">
+			  and t.task_setting_id = #{taskSettingId}
+			</if>
+			<if test="histFlag == null and taskDate != null ">
+			  and t.task_date = #{taskDate}
+			</if>
+			<if test="histFlag != null and histFlag == 1 ">
+			  and t.task_date &lt;= #{taskDate}
+			</if>
+			<if test="histFlag != null and histFlag == 2 ">
+			  and t.task_date &gt;= #{taskDate}
+		    </if>
+			<if test="status != null ">
+			  and t.status = #{status}
+			</if>
+			<if test="startTime != null ">
+			  and t.start_time = #{startTime}
+			</if>
+			<if test="endTime != null ">
+			  and t.end_time = #{endTime}
+			</if>
+		order by t.task_date desc
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="UserTaskPojo">
+		update user_task
+		<set>
+			<if test="userId != null">
+			  user_id = #{userId},
+			</if>
+			<if test="taskSettingId != null">
+			  task_setting_id = #{taskSettingId},
+			</if>
+			<if test="taskDate != null">
+			  task_date = #{taskDate},
+			</if>
+			<if test="status != null">
+			  status = #{status},
+			</if>
+			<if test="startTime != null">
+			  start_time = #{startTime},
+			</if>
+			<if test="endTime != null">
+			  end_time = #{endTime},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from user_task 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="UserTaskPojo">
+		insert into user_task
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="taskSettingId != null">
+				task_setting_id,
+			</if>
+			<if test="taskDate != null">
+				task_date,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="startTime != null">
+				start_time,
+			</if>
+			<if test="endTime != null">
+				end_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="userId != null">
+				#{userId},
+			</if>
+			<if test="taskSettingId != null">
+				#{taskSettingId},
+			</if>
+			<if test="taskDate != null">
+				#{taskDate},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+			<if test="startTime != null">
+				#{startTime},
+			</if>
+			<if test="endTime != null">
+				#{endTime},
+			</if>
+		</trim>
+	</insert>
+	<!--判断用户是否有领取浏览帖子的任务 -->
+	<select id="checkBrowsePostTask" parameterType="java.util.Map" resultType="UserTaskPojo">
+		select
+			t.id,
+			t.user_id as userId,
+			t.task_setting_id as taskSettingId,
+			t.task_date as taskDate,
+			t.status,
+			t.start_time as startTime,
+			t.end_time as endTime,
+			l.taskScore as taskScore,
+			l.ability as ability
+		from user_task t 
+			left join task_setting s on t.task_setting_id = s.id 
+			left join task_library l on s.task_id = l.id
+		where 1=1
+		<if test="userId != null">
+			and t.user_id = #{userId}
+		</if>
+		<if test="taskAge != null">
+			and l.taskAge = #{taskAge}
+		</if>
+		<if test="ability != null">
+			and l.ability = #{ability}
+		</if>
+		<if test="taskTypeLink != null">
+			and l.taskTypeLink = #{taskTypeLink}
+		</if>
+	</select>
+	<!--判断用户当日任务是否完成 -->
+	<select id="isALLTaskDone" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from task_setting t
+		left join user_task ut
+		on t.id = ut.task_setting_id and ut.user_id=#{userId}
+		where t.is_delete=0
+		and t.task_id !=0
+		and t.task_date=#{taskDate}
+		and t.task_age_type=#{ageType}
+		and (ut.id is null or ut.status =0)
+	</select>
+</mapper>

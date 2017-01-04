@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.GrouponPushMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id as id,
+		product_image as productImage,
+		address as address,
+		name as name,
+		order_id as orderId,
+		attend_id as attendId,
+		create_by as createBy,
+		create_date as createDate,
+		update_by as updateBy,
+		update_date as updateDate
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="GrouponPushPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			groupon_push
+		where
+			id = #{id}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from groupon_push
+		where 1=1
+		  <if test="id != null ">
+			and id = #{id}
+		  </if>
+		  <if test="productImage != null and productImage != '' ">
+			and product_image = #{productImage}
+		  </if>
+		  <if test="address != null and address != '' ">
+			and address = #{address}
+		  </if>
+		  <if test="name != null and name != '' ">
+			and name = #{name}
+		  </if>
+		  <if test="orderId != null ">
+			and order_id = #{orderId}
+		  </if>
+		  <if test="attendId != null ">
+			and attend_id = #{attendId}
+		  </if>
+		  <if test="createBy != null ">
+			and create_by = #{createBy}
+		  </if>
+		  <if test="createDate != null ">
+			and create_date = #{createDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and update_by = #{updateBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and update_date = #{updateDate}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="GrouponPushPojo">
+		select
+			<include refid="Base_Column_List" />
+		from groupon_push
+		where 1=1
+			<if test="id != null ">
+			  and id = #{id}
+			</if>
+			<if test="productImage != null and productImage != '' ">
+			  and product_image = #{productImage}
+			</if>
+			<if test="address != null and address != '' ">
+			  and address = #{address}
+			</if>
+			<if test="name != null and name != '' ">
+			  and name = #{name}
+			</if>
+			<if test="orderId != null ">
+			  and order_id = #{orderId}
+			</if>
+			<if test="attendId != null ">
+			  and attend_id = #{attendId}
+			</if>
+			<if test="createBy != null ">
+			  and create_by = #{createBy}
+			</if>
+			<if test="createDate != null ">
+			  and create_date = #{createDate}
+			</if>
+			<if test="updateBy != null ">
+			  and update_by = #{updateBy}
+			</if>
+			<if test="updateDate != null ">
+			  and update_date = #{updateDate}
+			</if>
+			<if test="nowDate != null and nowDate != '' ">
+			  and create_date 
+			  between 
+			  <!-- date_sub(CURRENT_TIMESTAMP, interval 5 SECOND) -->
+			  date_sub(CURRENT_TIMESTAMP, interval #{num} SECOND)
+			  and 
+			  <!-- date_sub(CURRENT_TIMESTAMP, interval -5 SECOND) -->
+			  CURRENT_TIMESTAMP
+			</if>
+			<if test="startDate != null and startDate != '' and endDate != null and endDate != '' ">
+			  and create_date 
+			  between 
+			  #{startDate}
+			  and 
+			  #{endDate}
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="GrouponPushPojo">
+		update groupon_push
+		<set>
+			<if test="productImage != null">
+			  product_image = #{productImage},
+			</if>
+			<if test="address != null">
+			  address = #{address},
+			</if>
+			<if test="name != null">
+			  name = #{name},
+			</if>
+			<if test="orderId != null">
+			  order_id = #{orderId},
+			</if>
+			<if test="attendId != null">
+			  attend_id = #{attendId},
+			</if>
+			<if test="createBy != null">
+			  create_by = #{createBy},
+			</if>
+			<if test="createDate != null">
+			  create_date = #{createDate},
+			</if>
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+			<if test="updateDate != null">
+			  update_date = #{updateDate},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from groupon_push 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="GrouponPushPojo">
+		insert into groupon_push
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="productImage != null">
+				product_image,
+			</if>
+			<if test="address != null">
+				address,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="orderId != null">
+				order_id,
+			</if>
+			<if test="attendId != null">
+				attend_id,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+				create_date,
+			<if test="updateBy != null">
+				update_by,
+			</if>
+				update_date,
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="productImage != null">
+				#{productImage},
+			</if>
+			<if test="address != null">
+				#{address},
+			</if>
+			<if test="name != null">
+				#{name},
+			</if>
+			<if test="orderId != null">
+				#{orderId},
+			</if>
+			<if test="attendId != null">
+				#{attendId},
+			</if>
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+				now(),
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+				now(),
+		</trim>
+	</insert>
+	
+</mapper>

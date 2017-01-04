@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="baiduLogin" extends="default">
+		<!-- 积分明细管理 -->
+		<action name="baiduLoginList" class="com.tzmb2c.web.action.BaiduLoginAction" method="baiduLoginListCount">
+			<result name="success">/page/system/sys/baiduLoginList.jsp</result>
+		</action>	
+		<!-- 根据ID删除 -->
+		<action name="delBaiduLogin" class="com.tzmb2c.web.action.BaiduLoginAction" method="delBaiduLogin">
+		</action>
+	</package>
+	<package name="baiduLogin-json" extends="json-default">
+		<!-- 积分明细列表 -->
+		<action name="baiduLoginListAll" class="com.tzmb2c.web.action.BaiduLoginAction" method="baiduLoginListAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 积分明细条数 -->
+		<action name="baiduLoginListCount" class="com.tzmb2c.web.action.BaiduLoginAction" method="baiduLoginListCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>		
+	</package>
+</struts>

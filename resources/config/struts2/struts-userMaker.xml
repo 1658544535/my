@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="userMaker" extends="default">
+		<!-- 页面（全部）  -->
+		<action name="userMaker" class="com.tzmb2c.web.action.UserMakerAction" method="userMakerListCount">
+			<result name="success">/page/system/userMaker/userMaker.jsp</result>
+		</action>	
+		<!-- 根据ID删除    -->
+		<action name="delUserMaker" class="com.tzmb2c.web.action.UserMakerAction" method="delUserMaker">
+		</action>
+		<!-- 通过审核         -->
+		<action name="checkUserMaker" class="com.tzmb2c.web.action.UserMakerAction" method="checkUserMaker">
+		</action>
+		<!-- 取消审核         -->
+		<action name="uncheckUserMaker" class="com.tzmb2c.web.action.UserMakerAction" method="uncheckUserMaker">
+		</action>
+		<!-- 跳转新增        -->
+		<action name="goAddUserMaker" class="com.tzmb2c.web.action.UserMakerAction" method="goAddUserMaker">
+		    <result name="success">/page/system/userMaker/addUserMaker.jsp</result>
+		</action>
+		<!-- 新增提交         -->
+		<action name="addUserMaker" class="com.tzmb2c.web.action.UserMakerAction" method="addUserMaker">
+		</action>
+		<!-- 编辑 -->
+		<action name="goEditMaker" class="com.tzmb2c.web.action.UserMakerAction" method="goEditMaker">
+			<result name="success">/page/system/userMaker/editUserMaker.jsp</result>
+		</action>
+		<!-- 编辑提交 -->
+		<action name="editMaker" class="com.tzmb2c.web.action.UserMakerAction" method="editMaker">
+		</action>
+	</package>
+	<package name="userMaker-json" extends="json-default">
+		<!-- 重置密码         -->
+		<action name="resetPassword" class="com.tzmb2c.web.action.UserMakerAction" method="resetPassword">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 内容 -->
+		<action name="userMakerListAll" class="com.tzmb2c.web.action.UserMakerAction" method="userMakerListAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="userMakerListCount" class="com.tzmb2c.web.action.UserMakerAction" method="userMakerListCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>		
+	</package>
+</struts>

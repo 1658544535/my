@@ -1,0 +1,118 @@
+@CHARSET "UTF-8";
+
+/**
+* default index
+* width: 960px
+**/
+
+/******************************************************** header begin ********************************************************/
+.header-left-div {
+	width: 24px;
+	height: 120px;
+	position: absolute;
+	left: 0;
+	display: none;
+	overflow: hidden;
+}
+
+.header-right-div {
+	width: 24px;
+	height: 120px;
+	position: absolute;
+	right: 0;
+	display: none;
+	overflow: hidden;
+}
+
+/**
+	border-style: solid;
+	border-width: 1px;
+	border-color: #483C32;
+**/
+.header-main-div {
+	margin: auto;
+	width: 960px;
+	height: 120px;
+	position: relative;
+	overflow: hidden;
+}
+/******************************************************** header end ********************************************************/
+
+/** header body split line */
+.header-body-split-line {
+	width: 960px;
+}
+
+/******************************************************** body begin ********************************************************/
+/**
+border-style: solid;
+border-width: 1px;
+border-color: #483C32;
+**/
+.body-left-div {
+	width: 24px;
+	height: 500px;
+	overflow: hidden;
+	position: absolute;
+	left: 0;
+	display: none;
+}
+
+.body-right-div {
+	width: 24px;
+	height: 500px;
+	overflow: hidden;
+	position: absolute;
+	right: 0;
+	display: none;
+}
+
+.body-main-div {
+	position: relative;
+	margin: auto;
+	width: 960px;
+}
+/******************************************************** body end ********************************************************/
+
+/** footer body split line */
+.footer-body-split-line {
+	width: 960px;
+}
+
+/******************************************************** footer begin ********************************************************/
+/**
+border-style: solid;
+	border-width: 1px;
+	border-color: #483C32;
+**/
+.footer-left-div {
+	width: 24px;
+	height: 120px;
+	position: absolute;
+	left: 0;
+	display: none;
+	overflow: hidden;
+}
+
+.footer-right-div {
+	width: 24px;
+	height: 120px;
+	position: absolute;
+	right: 0;
+	display: none;
+	overflow: hidden;
+}
+
+/**
+	border-style: solid;
+	border-width: 1px;
+	border-color: #483C32;
+**/
+.footer-main-div {
+	position: relative;
+	margin: auto;
+	width: 960px;
+	height: 120px;
+	overflow: hidden;
+}
+/******************************************************** footer end ********************************************************/

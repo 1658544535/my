@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="userShopCollect" extends="default">
+
+		<action name="userShopCollect" class="com.tzmb2c.web.action.UserShopCollectAction" method="getUserShopCollectCount">
+			<result>/page/system/user/userShopCollect.jsp</result>
+		</action>
+		
+		<action name="UserShopCollectDeleteId" class="com.tzmb2c.web.action.UserShopCollectAction" method="userShopCollectDeleteId">
+		
+		</action>
+		
+		<action name="goFindUserShopCollect" class="com.tzmb2c.web.action.UserShopCollectAction" method="goFindUserShopCollect">
+			<result>/page/system/user/userShopCollectupdate.jsp</result>
+		</action>
+		<action name="updateUserShopCollect" class="com.tzmb2c.web.action.UserShopCollectAction" method="updateUserShopCollect">
+		</action>
+		
+		
+		
+	</package>
+	
+	<package name="UserShopCollect-json" extends="json-default">
+		<!--平台入口-->
+		<action name="getUserShopCollectCount" class="com.tzmb2c.web.action.UserShopCollectAction" method="getUserShopCollectCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+			<action name="userShopCollectAllList" class="com.tzmb2c.web.action.UserShopCollectAction" method="userShopCollectAllList">
+			<result type="json">
+				<param name="root">page.result</param>.
+			</result>
+		</action>
+		<action name="deleUserShopCollect" class="com.tzmb2c.web.action.UserShopCollectAction" method="deleUserShopCollect">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

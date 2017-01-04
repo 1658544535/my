@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.UserPostLikeHistoryMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id as id,user_id as userId,post_id as postId,author_id as authorId,is_like as isLike,create_time as createTime,create_by as createBy,update_time as updateTime,update_by as updateBy
+	</sql>
+	
+	<select id="getUserPostLikeHistoryById" parameterType="int" resultType="UserPostLikeHistoryPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			user_post_like_history
+		where
+			id = #{id}
+	</select>
+	
+	<select id="userPostLikeHistoryCount" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from user_post_like_history
+		where 1=1
+		  <if test="id != null ">
+			and id = #{id}
+		  </if>
+		  <if test="userId != null ">
+			and user_id = #{userId}
+		  </if>
+		  <if test="postId != null ">
+			and post_id = #{postId}
+		  </if>
+		  <if test="authorId != null ">
+			and author_id = #{authorId}
+		  </if>
+		  <if test="isLike != null ">
+			and is_like = #{isLike}
+		  </if>
+		  <if test="createTime != null ">
+			and create_time = #{createTime}
+		  </if>
+		  <if test="createBy != null ">
+			and create_by = #{createBy}
+		  </if>
+		  <if test="updateTime != null ">
+			and update_time = #{updateTime}
+		  </if>
+		  <if test="updateBy != null ">
+			and update_by = #{updateBy}
+		  </if>
+	</select>
+	
+	<select id="userPostLikeHistoryList" parameterType="java.util.Map" resultType="UserPostLikeHistoryPojo">
+		select
+			<include refid="Base_Column_List" />
+		from user_post_like_history
+		where 1=1
+			<if test="id != null ">
+			  and id = #{id}
+			</if>
+			<if test="userId != null ">
+			  and user_id = #{userId}
+			</if>
+			<if test="postId != null ">
+			  and post_id = #{postId}
+			</if>
+			<if test="authorId != null ">
+			  and author_id = #{authorId}
+			</if>
+			<if test="isLike != null ">
+			  and is_like = #{isLike}
+			</if>
+			<if test="createTime != null ">
+			  and create_time = #{createTime}
+			</if>
+			<if test="createBy != null ">
+			  and create_by = #{createBy}
+			</if>
+			<if test="updateTime != null ">
+			  and update_time = #{updateTime}
+			</if>
+			<if test="updateBy != null ">
+			  and update_by = #{updateBy}
+			</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="updateUserPostLikeHistory" parameterType="UserPostLikeHistoryPojo">
+		update user_post_like_history
+		<set>
+			<if test="userId != null">
+			  user_id = #{userId},
+			</if>
+			<if test="postId != null">
+			  post_id = #{postId},
+			</if>
+			<if test="authorId != null">
+			  author_id = #{authorId},
+			</if>
+			<if test="isLike != null">
+			  is_like = #{isLike},
+			</if>
+			  update_time = now(),
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<delete id="deleteUserPostLikeHistoryById" parameterType="int">
+		delete from user_post_like_history 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="addUserPostLikeHistory" useGeneratedKeys="true" keyProperty="id" parameterType="UserPostLikeHistoryPojo">
+		insert into user_post_like_history
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="postId != null">
+				post_id,
+			</if>
+			<if test="authorId != null">
+				author_id,
+			</if>
+			<if test="isLike != null">
+				is_like,
+			</if>
+				create_time,
+			<if test="createBy != null">
+				create_by,
+			</if>
+				update_time,
+			<if test="updateBy != null">
+				update_by,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="userId != null">
+				#{userId},
+			</if>
+			<if test="postId != null">
+				#{postId},
+			</if>
+			<if test="authorId != null">
+				#{authorId},
+			</if>
+			<if test="isLike != null">
+				#{isLike},
+			</if>
+				now(),
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+				now(),
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+		</trim>
+	</insert>
+	
+</mapper>

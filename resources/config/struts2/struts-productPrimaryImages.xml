@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="productPrimaryImages" extends="default">
+
+		<action name="productPrimaryImages" class="com.tzmb2c.web.action.ProductPrimaryImagesAction" method="getProductPrimaryImagesCount">
+			<result>/page/system/product/productPrimaryImages.jsp</result>
+		</action>
+		
+		<action name="ProductPrimaryImagesDeleteId" class="com.tzmb2c.web.action.ProductPrimaryImagesAction" method="productPrimaryImagesDeleteId">
+		
+		</action>
+		
+		<action name="goFindProductPrimaryImages" class="com.tzmb2c.web.action.ProductPrimaryImagesAction" method="goFindProductPrimaryImages">
+			<result>/page/system/product/productPrimaryImagesupdate.jsp</result>
+		</action>
+		<action name="updateProductPrimaryImages" class="com.tzmb2c.web.action.ProductPrimaryImagesAction" method="updateProductPrimaryImages">
+		</action>
+		<action name="addProductPrimaryImages" class="com.tzmb2c.web.action.ProductPrimaryImagesAction" method="addProductPrimaryImages">
+			<result>/page/system/product/productPrimaryImagesAdd.jsp</result>
+		</action>
+		<action name="insertProductPrimaryImages" class="com.tzmb2c.web.action.ProductPrimaryImagesAction" method="insertProductPrimaryImages">
+		</action>
+		
+	</package>
+	<package name="ProductPrimaryImages-json" extends="json-default">
+		<!--平台入口-->
+		<action name="getProductPrimaryImagesCount" class="com.tzmb2c.web.action.ProductPrimaryImagesAction" method="getProductPrimaryImagesCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+			<action name="productPrimaryImagesAllList" class="com.tzmb2c.web.action.ProductPrimaryImagesAction" method="productPrimaryImagesAllList">
+			<result type="json">
+				<param name="root">page.result</param>.
+			</result>
+		</action>
+		<action name="deleProductPrimaryImages" class="com.tzmb2c.web.action.ProductPrimaryImagesAction" method="deleProductPrimaryImages">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

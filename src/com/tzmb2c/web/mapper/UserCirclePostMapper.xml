@@ -1,0 +1,918 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.UserCirclePostMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id as id,
+		user_id as userId,
+		circle_id as circleId,
+		title as title,
+		sketch as sketch,
+		banner as banner,
+		like_num as likeNum,
+		comment_num as commentNum,
+		collect_num as collectNum,
+		look_num as lookNum,
+		score as score,
+		content as content,
+		age_type as ageType,
+		(select name from sys_dict where value = age_type and type="user_age") as ageTypeName, 
+		skill_type as skillType,
+		(select name from sys_dict where value = skill_type and type="ability") as skillTypeName,
+		option_type as optionType,
+		(select name from label_bucket where id = optionType) as optionTypeName,
+		product_type as productType,	
+		(select name from product_type where id = productType) as productTypeName,	
+		sec_skill_type as secSkillType,
+		(select name from sys_dict where value = sec_skill_type and type="second_ability") as secSkillTypeName,
+		status as status,
+		(CASE WHEN status = 0 THEN '未审核' WHEN status = 1 THEN '审核通过' WHEN status = 2 THEN '审核不通过' END) as statusName,
+		video_url as videoUrl,
+		create_date as createDate,
+		create_by as createBy,
+		update_date as updateDate,
+		update_by as updateBy
+	</sql>
+	
+	<select id="getUserCirclePostById" parameterType="int" resultType="UserCirclePostPojo">
+		select
+			<!-- <include refid="Base_Column_List" /> -->
+			u.id as id,
+			u.user_id as userId,
+			u.circle_id as circleId,
+			u.title as title,
+			u.sketch as sketch,
+			u.banner as banner,
+			u.image as image,
+			u.like_num as likeNum,
+			u.comment_num as commentNum,
+			u.collect_num as collectNum,
+			u.look_num as lookNum,
+			u.score as score,
+			u.content as content,
+			u.video_url as videoUrl,
+			u.age_type as ageType,
+			(select name from sys_dict where value = u.age_type and type="user_age") as ageTypeName, 
+			u.skill_type as skillType,
+			(select name from sys_dict where value = u.skill_type and type="ability") as skillTypeName,
+			u.option_type as optionType,
+			(select name from label_bucket where id = u.option_type) as optionTypeName,
+			u.product_type as productType,	
+			(select name from product_type where id = u.product_type) as productTypeName,	
+			u.sec_skill_type as secSkillType,
+			(select name from sys_dict where value = u.sec_skill_type and type="second_ability") as secSkillTypeName,
+			u.status as status,
+			(CASE WHEN u.status = 0 THEN '未审核' WHEN u.status = 1 THEN '审核通过' WHEN u.status = 2 THEN '审核不通过' END) as statusName,
+			u.create_date as createDate,
+			u.create_by as createBy,
+			u.update_date as updateDate,
+			u.update_by as updateBy,
+			s.name as userName,
+			s.image as userImage,
+			s.type as userType,
+			ui.sex as userSex,
+			u.sorting as sorting,
+			u.version as version,
+			u.is_delete as isDelete,
+			your_favourites_id as yourFavouritesId
+		from
+			user_circle_post u
+		left join sys_login s on u.user_id = s.id
+    	left join user_info ui on u.user_id = ui.user_id
+		where
+			u.id = #{id}
+			<!-- and u.is_delete = 0 -->
+	</select>
+	<select id="getPostBaseInfoById" parameterType="int" resultType="UserCirclePostPojo">
+		select
+			u.id as id,
+			u.user_id as userId,
+			u.circle_id as circleId,
+			u.title as title,
+			u.sketch as sketch,
+			u.banner as banner,
+			u.image as image,
+			u.like_num as likeNum,
+			u.comment_num as commentNum,
+			u.collect_num as collectNum,
+			u.look_num as lookNum,
+			u.score as score,
+			u.video_url as videoUrl,
+			u.age_type as ageType,
+			(select name from sys_dict where value = u.age_type and type="user_age") as ageTypeName, 
+			u.skill_type as skillType,
+			(select name from sys_dict where value = u.skill_type and type="ability") as skillTypeName,
+			u.option_type as optionType,
+			(select name from label_bucket where id = u.option_type) as optionTypeName,
+			u.product_type as productType,	
+			(select name from product_type where id = u.product_type) as productTypeName,	
+			u.sec_skill_type as secSkillType,
+			(select name from sys_dict where value = u.sec_skill_type and type="second_ability") as secSkillTypeName,
+			u.status as status,
+			(CASE WHEN u.status = 0 THEN '未审核' WHEN u.status = 1 THEN '审核通过' WHEN u.status = 2 THEN '审核不通过' END) as statusName,
+			u.create_date as createDate,
+			u.create_by as createBy,
+			u.update_date as updateDate,
+			u.update_by as updateBy,
+			s.name as userName,
+			s.image as userImage,
+			ui.sex as userSex,
+			u.sorting as sorting
+		from
+			user_circle_post u
+		left join sys_login s on u.user_id = s.id
+    	left join user_info ui on u.user_id = ui.user_id
+		where u.id = #{id}
+	</select>
+		<select id="getUserCirclePostByIdUserId" parameterType="int" resultType="UserCirclePostPojo">
+		select
+			ucp.id as id,
+			ucp.user_id as userId,
+			(select name from sys_login where id = user_id) as userName, 
+			(select image from sys_login where id = user_id) as userImage, 
+			(select sex from user_info ui where ui.user_id = ucp.user_id) as userSex, 
+			ucp.circle_id as circleId,
+			ucp.title as title,
+			ucp.sketch as sketch,
+			ucp.banner as banner,
+			ucp.like_num as likeNum,
+			ucp.comment_num as commentNum,
+			ucp.collect_num as collectNum,
+			ucp.look_num as lookNum,
+			ucp.score as score,
+			ucp.content as content,
+			ucp.age_type as ageType,
+			(select name from sys_dict where value = age_type and type="user_age") as ageTypeName, 
+			ucp.skill_type as skillType,
+			(select name from sys_dict where value = skill_type and type="ability") as skillTypeName,
+			ucp.option_type as optionType,
+			(select name from label_bucket where id = optionType) as optionTypeName,
+			ucp.product_type as productType,	
+			(select name from product_type where id = productType) as productTypeName,	
+			ucp.sec_skill_type as secSkillType,
+			(select name from sys_dict where value = sec_skill_type and type="second_ability") as secSkillTypeName,
+			ucp.status as status,
+			(CASE WHEN status = 0 THEN '未审核' WHEN status = 1 THEN '审核通过' WHEN status = 2 THEN '审核不通过' END) as statusName,
+			ucp.video_url as videoUrl,
+			ucp.create_date as createDate,
+			ucp.create_by as createBy,
+			ucp.update_date as updateDate,
+			ucp.update_by as updateBy
+		from
+			user_circle_post ucp
+		where
+			1=1
+			AND ucp.user_id = #{id}
+			AND ucp.status = 1 
+			<!-- AND ucp.is_delete = 0 -->
+			order by create_date desc
+			limit 1
+	</select>
+	
+	<select id="userCirclePostCount" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from user_circle_post u
+		left join sys_login s
+		on u.user_id = s.id
+		left join social_circle sc
+		on u.circle_id = sc.id
+		where 1=1
+		<if test="hou_tai == null">
+		   and u.is_delete=0
+		   </if>
+		  <if test="id != null ">
+			and u.id = #{id}
+		  </if>
+		  <if test="userId != null ">
+			and u.user_id = #{userId}
+		  </if>
+		  <if test="circleId != null ">
+			and u.circle_id = #{circleId}
+		  </if>
+		 	 <if test="title != null and title != '' ">
+			and u.title like concat("%",#{title},"%")
+		  </if>
+		    <if test="userName != null and userName != '' ">
+			and s.name like concat("%",#{userName},"%")
+		  </if>
+			<if test="banner != null and banner != '' ">
+			  and u.banner like concat("%",#{banner},"%")
+			</if>
+		  <if test="likeNum != null ">
+			and u.like_num = #{likeNum}
+		  </if>
+		  <if test="commentNum != null ">
+			and u.comment_num = #{commentNum}
+		  </if>
+		  <if test="collectNum != null ">
+			and u.collect_num = #{collectNum}
+		  </if>
+		  <if test="lookNum != null ">
+			and u.look_num = #{lookNum}
+		  </if>
+		  <if test="score != null ">
+			and u.score = #{score}
+		  </if>
+		  <if test="content != null and content !='' ">
+			and u.content = #{content}
+		  </if>
+		  <if test="ageType != null ">
+			and u.age_type = #{ageType}
+		  </if>
+		  <if test="skillType != null ">
+			and u.skill_type = #{skillType}
+		  </if>
+		  <if test="optionType != null ">
+			and u.option_type = #{optionType}
+		  </if>
+		  <if test="productType != null ">
+			and u.product_type = #{productType}
+		  </if>
+		  <if test="secSkillType != null ">
+			and u.sec_skill_type = #{secSkillType}
+		  </if>
+		  <if test="isDelete != null ">
+			  and u.is_delete = #{isDelete}
+		  </if>
+		  <if test="status != null ">
+		  	<choose>
+		  	<when test="status == 3">
+		  		and u.is_delete = 1
+		  	</when>
+		  	<otherwise>
+		  		and u.status = #{status}
+		  		and u.is_delete = 0
+		  	</otherwise>
+		  	</choose>
+		  </if>
+		  <if test="createDate != null ">
+			and u.create_date = #{createDate}
+		  </if>
+		  <if test="createBy != null ">
+			and u.create_by = #{createBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and u.update_date = #{updateDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and u.update_by = #{updateBy}
+		  </if>
+		  <if test="createDateStartStr !=null and createDateStartStr !=''">
+			and UNIX_TIMESTAMP(u.create_date) >= UNIX_TIMESTAMP(CONCAT(#{createDateStartStr}))
+		   </if>
+		   <if test="createDateEndStr !=null and createDateEndStr !=''">
+			and UNIX_TIMESTAMP(CONCAT(#{createDateEndStr})) > UNIX_TIMESTAMP(u.create_date)
+		   </if>
+	</select>
+	
+	<select id="userCirclePostList" parameterType="java.util.Map" resultType="UserCirclePostPojo">
+		select
+			<!-- <include refid="Base_Column_List" /> -->
+			u.id as id,
+			u.user_id as userId,
+			u.circle_id as circleId,
+			u.title as title,
+			u.sketch as sketch,
+			u.banner as banner,
+			u.image  as image,
+			u.like_num as likeNum,
+			u.comment_num as commentNum,
+			u.collect_num as collectNum,
+			u.look_num as lookNum,
+			u.score as score,
+			<!--u.content as content,-->
+			u.age_type as ageType,
+			(select name from sys_dict where value = u.age_type and type="user_age") as ageTypeName, 
+			u.skill_type as skillType,
+			(select name from sys_dict where value = u.skill_type and type="ability") as skillTypeName,
+			u.option_type as optionType,
+			(select name from label_bucket where id = optionType) as optionTypeName,
+			u.product_type as productType,
+			(select name from product_type t where t.id = productType) as productTypeName,	
+			u.sec_skill_type as secSkillType,
+		    (select name from sys_dict where value = sec_skill_type and type="second_ability") as secSkillTypeName,
+			u.status as status,
+			(CASE WHEN u.is_delete = 1 THEN '删除' WHEN u.status = 0 THEN '审核中' WHEN u.status = 1 THEN '审核成功' WHEN u.status = 2 THEN '审核失败' END) as statusName,
+			video_url as videoUrl,
+			u.create_date as createDate,
+			u.create_by as createBy,
+			u.update_date as updateDate,
+			u.update_by as updateBy,
+			s.name as userName,
+			s.image as userImage,
+			sc.title as circleName,
+			ui.sex as userSex,
+			u.sorting as sorting,
+			u.is_delete as isDelete
+		from user_circle_post u
+		left join sys_login s on u.user_id = s.id
+		left join social_circle sc on u.circle_id = sc.id
+		left join user_talent_auth uta on u.user_id = uta.user_id
+    	left join user_info ui on u.user_id = ui.user_id
+		where 1=1
+			<if test="hou_tai == null">
+		    	and u.is_delete=0
+		    </if>
+			<if test="id != null ">
+			  and u.id = #{id}
+			</if>
+			<if test="ids != null ">
+			  and u.id &lt;= #{ids}
+			</if>
+			<if test="userId != null ">
+			  and u.user_id = #{userId}
+			</if>
+			<if test="circleId != null ">
+			  and u.circle_id = #{circleId}
+			</if>
+			 <if test="title != null and title != '' ">
+			and u.title like concat("%",#{title},"%")
+		  </if>
+		   <if test="userName != null and userName != '' ">
+			and s.name like concat("%",#{userName},"%")
+		  </if>
+			<if test="banner != null and banner != '' ">
+			  and u.banner like concat("%",#{banner},"%")
+			</if>
+			<if test="likeNum != null ">
+			  and u.like_num = #{likeNum}
+			</if>
+			<if test="commentNum != null ">
+			  and u.comment_num = #{commentNum}
+			</if>
+			<if test="collectNum != null ">
+			  and u.collect_num = #{collectNum}
+			</if>
+			<if test="lookNum != null ">
+			  and u.look_num = #{lookNum}
+			</if>
+			<if test="score != null ">
+			  and u.score = #{score}
+			</if>
+			<if test="content != null and content !='' ">
+			  and u.content = #{content}
+			</if>
+			<if test="ageType != null ">
+			  and u.age_type = #{ageType}
+			</if>
+			<if test="skillType != null ">
+			  and u.skill_type = #{skillType}
+			</if>
+			<if test="optionType != null ">
+			  and u.option_type = #{optionType}
+			</if>
+			<if test="productType != null ">
+			  and u.product_type = #{productType}
+			</if>
+			<if test="secSkillType != null ">
+			and u.sec_skill_type = #{secSkillType}
+		  </if>
+			<if test="status != null ">
+			  <choose>
+		  		<when test="status == 3">
+		  			and u.is_delete = 1
+		  		</when>
+		  		<otherwise>
+		  			and u.status = #{status}
+		  			and u.is_delete = 0
+		  		</otherwise>
+		  		</choose>
+			</if>
+			<if test="createDate != null ">
+			  and u.create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and u.create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and u.update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and u.update_by = #{updateBy}
+			</if>
+			<if test="isDelete != null ">
+			  and u.is_delete = #{isDelete}
+			</if>
+			<if test="createDateStartStr !=null and createDateStartStr !=''">
+			and UNIX_TIMESTAMP(u.create_date) >= UNIX_TIMESTAMP(CONCAT(#{createDateStartStr}))
+		   </if>
+		   <if test="createDateEndStr !=null and createDateEndStr !=''">
+			and UNIX_TIMESTAMP(CONCAT(#{createDateEndStr})) > UNIX_TIMESTAMP(u.create_date)
+		   </if>
+		   <if test="pids != null and pids != '' ">
+			and u.id not in
+			<foreach item="item" index="index" collection="pids" open="(" separator="," close=")">  
+				#{item}
+        	</foreach>
+		   </if>
+		   <if test="orderBy != null and orderBy != '' ">
+				order by ${orderBy}
+		   </if>
+		   <if test="orderBy == null or orderBy == '' ">
+			order by u.update_date desc,u.create_date desc
+		   </if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	
+	<!--更新单条-->
+	<update id="updateUserCirclePost" parameterType="UserCirclePostPojo">
+		update user_circle_post set
+			<if test="userId != null">
+			  user_id = #{userId},
+			</if>
+			<if test="circleId != null">
+			  circle_id = #{circleId},
+			</if>
+			<if test="title != null and title !='' ">
+			  title = #{title},
+			</if>
+			<if test="sketch != null and sketch !='' ">
+			  sketch = #{sketch},
+			</if>
+			<if test="banner != null and banner !='' ">
+			  banner = #{banner},
+			</if>
+			<if test="image != null">
+			  image = #{image},
+			</if>
+			<if test="likeNum != null">
+			  like_num = #{likeNum},
+			</if>
+			<if test="commentNum != null">
+			  comment_num = #{commentNum},
+			</if>
+			<if test="collectNum != null">
+			  collect_num = #{collectNum},
+			</if>
+			<if test="lookNum != null">
+			  look_num = #{lookNum},
+			</if>
+			<if test="score != null">
+			  score = #{score},
+			</if>
+			<if test="sorting != null">
+			  sorting = #{sorting},
+			</if>
+			<if test="content != null and content !='' ">
+			  content = #{content},
+			</if>
+			<if test="videoUrl != null">
+			  video_url = #{videoUrl},
+			</if>
+			<if test="ageType != null">
+			  age_type = #{ageType},
+			</if>
+			<if test="skillType != null">
+			  skill_type = #{skillType},
+			</if>
+			<if test="optionType != null">
+			  option_type = #{optionType},
+			</if>
+			<if test="productType != null">
+			  product_type = #{productType},
+			</if>
+			<if test="secSkillType != null">
+			  sec_skill_type = #{secSkillType},
+			</if>
+			<if test="isDelete != null">
+			  is_delete = #{isDelete},
+			</if>
+			<if test="status != null">
+			  status = #{status},
+			</if>
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+			<if test="sketch != null and sketch != '' ">
+				sketch = #{sketch},
+			</if>
+			<!-- <if test="version != null">
+				version = #{version},
+			</if> -->
+			<if test="yourFavouritesId != null">
+				your_favourites_id = #{yourFavouritesId},
+			</if>
+		update_date = now()
+		where id = #{id}
+	</update>
+	
+	<update id="increaseUserCirclePostNumById" parameterType="UserCirclePostPojo">
+		update user_circle_post
+		<set>
+			<if test="likeNum != null">
+			  like_num = like_num + 1,
+			</if>
+			<if test="commentNum != null">
+			  comment_num = comment_num + 1,
+			</if>
+			<if test="collectNum != null">
+			  collect_num = collect_num + 1,
+			</if>
+			<if test="lookNum != null">
+			  look_num = look_num + 1,
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="decreaseUserCirclePostNumById" parameterType="UserCirclePostPojo">
+		update user_circle_post
+		<set>
+			<if test="likeNum != null">
+			  like_num = like_num - 1,
+			</if>
+			<if test="commentNum != null">
+			  comment_num = comment_num - 1,
+			</if>
+			<if test="collectNum != null">
+			  collect_num = collect_num - 1,
+			</if>
+			<if test="lookNum != null">
+			  look_num = look_num - 1,
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<!-- <update id="increaseUserCirclePostNumById" parameterType="UserCirclePostPojo">
+		update user_circle_post set
+			<if test="likeNum != null">
+			  like_num = like_num + #{likeNum},
+			</if>
+			<if test="commentNum != null">
+			  comment_num = comment_num + #{commentNum},
+			</if>
+			<if test="collectNum != null">
+			  collect_num = collect_num + #{collectNum},
+			</if>
+			<if test="lookNum != null">
+			  look_num = look_num + #{lookNum},
+			</if>
+		where id = #{id}
+	</update>
+	
+	<update id="decreaseUserCirclePostNumById" parameterType="UserCirclePostPojo">
+		update user_circle_post set
+			<if test="likeNum != null">
+			  like_num = like_num - #{likeNum},
+			</if>
+			<if test="commentNum != null">
+			  comment_num = comment_num - #{commentNum},
+			</if>
+			<if test="collectNum != null">
+			  collect_num = collect_num - #{collectNum},
+			</if>
+			<if test="lookNum != null">
+			  look_num = look_num - #{lookNum},
+			</if>
+		where id = #{id}
+	</update> -->
+
+	<update id="deleteUserCirclePostById" parameterType="int">
+		update user_circle_post set is_delete = 1,update_date = now() where id = #{id}
+	</update>
+	<!-- 插入单条 -->
+	<!--
+	<insert id="addUserCirclePost" parameterType="UserCirclePostPojo" useGeneratedKeys="true" keyProperty="id">
+		insert into user_circle_post 
+		(id,user_id,circle_id,title,banner,image,like_num,comment_num,collect_num,look_num,score,content,video_url,age_type,skill_type,option_type,product_type,status,create_by,create_date,update_by,update_date,is_delete,sec_skill_type,sorting)
+		values(#{id},#{userId},#{circleId},#{title},#{banner},#{image},#{likeNum},#{commentNum},#{collectNum},#{lookNum},#{score},#{content},#{videoUrl},#{ageType},#{skillType},#{optionType},#{productType},#{status},#{createBy},now(),#{updateBy},now(),0,#{secSkillType},#{sorting})
+	</insert>
+	-->
+	<!-- <insert id="addUserCirclePost" parameterType="UserCirclePostPojo" useGeneratedKeys="true" keyProperty="id">
+		insert into user_circle_post 
+		(id,user_id,circle_id,title,banner,image,like_num,comment_num,collect_num,look_num,score,content,video_url,age_type,skill_type,option_type,product_type,status,create_by,create_date,update_by,update_date,is_delete,sec_skill_type,sorting,sketch,version)
+		values(#{id},#{userId},#{circleId},#{title},#{banner},#{image},#{likeNum},#{commentNum},floor(rand()*10),#{lookNum},#{score},#{content},#{videoUrl},#{ageType},#{skillType},#{optionType},#{productType},#{status},#{createBy},now(),#{updateBy},now(),0,#{secSkillType},#{sorting},#{sketch},#{version})
+	</insert> -->
+	<insert id="addUserCirclePost" useGeneratedKeys="true" keyProperty="id" parameterType="UserCirclePostPojo">
+		insert into user_circle_post
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="circleId != null">
+				circle_id,
+			</if>
+			<if test="title != null">
+				title,
+			</if>
+			<if test="banner != null">
+				banner,
+			</if>
+			<if test="image != null">
+				image,
+			</if>
+			<if test="likeNum != null">
+				like_num,
+			</if>
+			<if test="commentNum != null">
+				comment_num,
+			</if>
+			<if test="collectNum != null">
+				collect_num,
+			</if>
+			<if test="lookNum != null">
+				look_num,
+			</if>
+			<if test="score != null">
+				score,
+			</if>
+			<if test="content != null">
+				content,
+			</if>
+			<if test="videoUrl != null">
+				video_url,
+			</if>
+			<if test="ageType != null">
+				age_type,
+			</if>
+			<if test="skillType != null">
+				skill_type,
+			</if>
+			<if test="optionType != null">
+				option_type,
+			</if>
+			<if test="productType != null">
+				product_type,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+				create_date,
+			<if test="createBy != null">
+				create_by,
+			</if>
+				update_date,
+			<if test="updateBy != null">
+				update_by,
+			</if>
+			<if test="isDelete != null">
+				is_delete,
+			</if>
+			<if test="secSkillType != null">
+				sec_skill_type,
+			</if>
+			<if test="sorting != null">
+				sorting,
+			</if>
+			<if test="height != null">
+				height,
+			</if>
+			<if test="width != null">
+				width,
+			</if>
+			<if test="shareNum != null">
+				share_num,
+			</if>
+			<if test="saleNum != null">
+				sale_num,
+			</if>
+			<if test="sketch != null and sketch != '' ">
+				sketch,
+			</if>
+			<if test="version != null">
+				version,
+			</if>
+			<if test="yourFavouritesId != null">
+				your_favourites_id,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="userId != null">
+				#{userId},
+			</if>
+			<if test="circleId != null">
+				#{circleId},
+			</if>
+			<if test="title != null">
+				#{title},
+			</if>
+			<if test="banner != null">
+				#{banner},
+			</if>
+			<if test="image != null">
+				#{image},
+			</if>
+			<if test="likeNum != null">
+				#{likeNum},
+			</if>
+			<if test="commentNum != null">
+				#{commentNum},
+			</if>
+			<if test="collectNum != null">
+				#{collectNum},
+			</if>
+			<if test="lookNum != null">
+				#{lookNum},
+			</if>
+			<if test="score != null">
+				#{score},
+			</if>
+			<if test="content != null">
+				#{content},
+			</if>
+			<if test="videoUrl != null">
+				#{videoUrl},
+			</if>
+			<if test="ageType != null">
+				#{ageType},
+			</if>
+			<if test="skillType != null">
+				#{skillType},
+			</if>
+			<if test="optionType != null">
+				#{optionType},
+			</if>
+			<if test="productType != null">
+				#{productType},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+				now(),
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+				now(),
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+			<if test="isDelete != null">
+				#{isDelete},
+			</if>
+			<if test="secSkillType != null">
+				#{secSkillType},
+			</if>
+			<if test="sorting != null">
+				#{sorting},
+			</if>
+			<if test="height != null">
+				#{height},
+			</if>
+			<if test="width != null">
+				#{width},
+			</if>
+			<if test="shareNum != null">
+				#{shareNum},
+			</if>
+			<if test="saleNum != null">
+				#{saleNum},
+			</if>
+			<if test="sketch != null and sketch != '' ">
+				#{sketch},
+			</if>
+			<if test="version != null">
+				#{version},
+			</if>
+			<if test="yourFavouritesId != null">
+				#{yourFavouritesId},
+			</if>
+		</trim>
+	</insert>
+	<!--更新单条状态-->
+	<update id="checkUserCirclePost" parameterType="Long">
+		update user_circle_post set status = 1,update_date = now() where id = #{id}
+	</update>
+	<!--更新单条状态-->
+	<update id="uncheckUserCirclePost" parameterType="Long">
+		update user_circle_post set status = 2,update_date = now() where id = #{id}
+	</update>
+	<!-- 根据关注的圈子集查询帖子 -->
+	<select id="findBycircleIds" resultType="UserCirclePostPojo">
+		select
+			s.name as userName,
+			s.image as userImage,
+			ucp.id as id,
+			ucp.user_id as userId,
+			(select sex from user_info ui where ui.user_id = ucp.user_id) as userSex,
+			ucp.circle_id as circleId,
+			ucp.title as title,
+			ucp.banner as banner,
+			ucp.like_num as likeNum,
+			ucp.comment_num as commentNum,
+			ucp.collect_num as collectNum,
+			ucp.look_num as lookNum,
+			ucp.score as score,
+			<!-- ucp.content as content,-->
+			ucp.sketch as sketch,
+			ucp.age_type as ageType,
+			(select name from sys_dict where value = age_type and type="user_age") as ageTypeName, 
+			ucp.skill_type as skillType,
+			(select name from sys_dict where value = skill_type and type="ability") as skillTypeName,
+			ucp.option_type as optionType,
+			(select name from label_bucket where id = optionType) as optionTypeName,
+			ucp.product_type as productType,
+			ucp.status as status,
+			(CASE WHEN ucp.status = 0 THEN '未审核' WHEN ucp.status = 1 THEN '审核通过' WHEN ucp.status = 2 THEN '审核不通过' END) as statusName,
+			ucp.video_url as videoUrl,
+			ucp.create_date as createDate,
+			ucp.create_by as createBy,
+			ucp.update_date as updateDate,
+			ucp.update_by as updateBy
+		from
+			user_circle_post ucp 
+			left join sys_login s on ucp.user_id = s.id
+		where
+			1 = 1
+			<if test="status != null">
+			  and ucp.status = #{status}
+			</if>
+			<if test="scs != null">
+			  	and circle_id in
+				<foreach item="item" index="index" collection="scs" open="(" separator="," close=")">  
+				  #{item}
+				</foreach>
+			</if>
+			order by ucp.look_num desc
+			<if test="pageSize != null">
+			  limit #{pageNo}, #{pageSize}
+			</if>
+	</select>
+	
+	<select id="findBycircleParams" resultType="UserCirclePostPojo">
+		select
+			id as id,
+			user_id as userId,
+			circle_id as circleId,
+			title as title,
+			sketch as sketch,
+			banner as banner,
+			image as image,
+			content as content,
+			like_num as likeNum,
+			comment_num as commentNum,
+			collect_num as collectNum,
+			look_num as lookNum,
+			score as score,
+			age_type as ageType,
+			(select name from sys_dict where value = age_type and type="user_age") as ageTypeName, 
+			skill_type as skillType,
+			(select name from sys_dict where value = skill_type and type="ability") as skillTypeName,
+			option_type as optionType,
+			(select name from label_bucket where id = optionType) as optionTypeName,
+			product_type as productType,
+			(select pt.name from product_type pt where pt.id = product_type) as productTypeName,
+			video_url as videoUrl,
+			status as status,
+			version as version,
+			is_delete as isDelete
+		from
+			user_circle_post
+		where
+			1=1
+			<if test="id != null">
+			  and id = #{id}
+			</if>
+			<if test="status != null">
+			  and status = #{status}
+			</if>
+			<if test="ageType != null ">
+			  and age_type = #{ageType}
+			</if>
+			<if test="skillType != null ">
+			  and skill_type = #{skillType}
+			</if>
+			<if test="isDelete != null ">
+			  and is_delete = #{isDelete}
+			</if>
+			<if test="orderBy != null and orderBy == 'update_date desc,create_date desc' ">
+			  order by update_date desc,create_date desc
+		    </if>
+			limit 1
+	</select>
+	<!-- 查询图片集 -->
+	<select id="selectPhotos" parameterType="java.util.Map" resultType="UserCirclePostPojo">
+		select
+			id,
+			banner,
+			image,
+			create_date as createDate
+		from
+			user_circle_post
+		where
+			1=1
+			<if test="userId != null">
+			  and user_id = #{userId}
+			</if>
+			<if test="status != null">
+			  and status = #{status}
+			</if>
+			<if test="isDelete != null">
+			  and is_delete = #{isDelete}
+			</if>
+			  order by create_date desc
+			<if test="pageSize != null">
+			  limit #{pageNo}, #{pageSize}
+			</if>
+	</select>
+</mapper>

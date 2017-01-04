@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="guessActivity" extends="default">
+		<!-- 进入猜价活动页面 -->
+		<action name="goGuessActivityList" class="com.tzmb2c.web.action.GuessActivityAction" method="guessActivityCount">
+			<result name="success">/page/system/guessActivity/guessActivityList.jsp</result>
+		</action>
+		<!-- 进入新增猜价活动页面 -->
+		<action name="goAddGuessActivity" class="com.tzmb2c.web.action.GuessActivityAction" method="goAddGuessActivity">
+			<result name="success">/page/system/guessActivity/addGuessActivity.jsp</result>
+		</action>
+		<!-- 新增猜价活动 -->
+		<action name="addGuessActivity" class="com.tzmb2c.web.action.GuessActivityAction" method="addGuessActivity">
+		</action>
+		<!-- 进入选择猜价商品页面 -->
+		<action name="goSelectGuessProduct" class="com.tzmb2c.web.action.GuessActivityAction" method="selectGuessProductCount">
+			<result name="success">/page/system/guessActivity/selectGuessProduct.jsp</result>
+		</action>
+		<!-- 进入选择猜价活动编辑页面 -->
+		<action name="goUpdateGuessActivity" class="com.tzmb2c.web.action.GuessActivityAction" method="goUpdateGuessActivity">
+			<result name="success">/page/system/guessActivity/updateGuessActivity.jsp</result>
+		</action>
+		<!-- 进入选择猜价活动编辑页面 -->
+		<action name="updateGuessActivity" class="com.tzmb2c.web.action.GuessActivityAction" method="updateGuessActivity">
+		</action>
+		<!-- 参加猜价活动人列表 -->
+		<action name="goGuessGroUserRec" class="com.tzmb2c.web.action.GuessActivityAction" method="guessGroUserRecCount">
+			<result name="success">/page/system/guessActivity/guessGroUserRecList.jsp</result>
+		</action>
+		<!-- 发放优惠券 -->
+		<action name="grantCoupon" class="com.tzmb2c.web.action.GuessActivityAction" method="grantCoupon">
+		</action>
+	</package>
+	<package name="guessActivity-json" extends="json-default">
+		<!-- 猜价活动count -->
+		<action name="guessActivityCount" class="com.tzmb2c.web.action.GuessActivityAction" method="guessActivityCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>			
+		<!-- 猜价活动list -->
+		<action name="guessActivityList" class="com.tzmb2c.web.action.GuessActivityAction" method="guessActivityList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>			
+		<!-- 选择猜价活动商品count -->
+		<action name="selectGuessProductCount" class="com.tzmb2c.web.action.GuessActivityAction" method="selectGuessProductCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>			
+		<!-- 选择猜价商品list -->
+		<action name="selectGuessProductList" class="com.tzmb2c.web.action.GuessActivityAction" method="selectGuessProductList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>			
+		<!-- 根据id查找替换商品 -->
+		<action name="findGuessProductById" class="com.tzmb2c.web.action.GuessActivityAction" method="findGuessProductById">
+			<result type="json">
+				<param name="root">dataMap</param>
+			</result>
+		</action>		
+		<!-- 根据id删除活动 -->
+		<action name="delGuessActivityById" class="com.tzmb2c.web.action.GuessActivityAction" method="delGuessActivityById">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>	
+		<!-- 根据ids删除活动 -->
+		<action name="delGuessActivityByIds" class="com.tzmb2c.web.action.GuessActivityAction" method="delGuessActivityByIds">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>	
+		<!-- 选中审核 -->
+		<action name="checkAllGuessActivity" class="com.tzmb2c.web.action.GuessActivityAction" method="checkAllGuessActivity">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>	
+	<!-- 	更改活动状态 
+		<action name="openWin" class="com.tzmb2c.web.action.GuessActivityAction" method="openWin">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>	-->
+		<!-- 选中取消审核 -->
+		<action name="uncheckAllGuessActivity" class="com.tzmb2c.web.action.GuessActivityAction" method="uncheckAllGuessActivity">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 猜价活动count -->
+		<action name="guessGroUserRecCount" class="com.tzmb2c.web.action.GuessActivityAction" method="guessGroUserRecCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>			
+		<!-- 猜价活动list -->
+		<action name="guessGroUserRecList" class="com.tzmb2c.web.action.GuessActivityAction" method="guessGroUserRecList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>		
+	</package>
+</struts>

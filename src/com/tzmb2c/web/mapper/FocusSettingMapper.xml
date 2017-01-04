@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.FocusSettingMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id as id,
+		title as title,
+		banner as banner,
+		size_tips as sizeTips,
+		background_color as backgroundColor,
+		type as type,
+		param_type as paramType,
+		param_id as paramId,
+		activity_id as activityId,
+		url as url,
+		sorting as sorting,
+		status as status,
+		(CASE WHEN status = 0 THEN '未审核' WHEN status = 1 THEN '已审核' END)  as statusName,
+		create_by as createBy,
+		create_date as createDate,
+		update_by as updateBy,
+		update_date as updateDate,
+		remarks as remarks,
+		start_time as startTime,
+		end_time as endTime
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="FocusSettingPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			focus_setting
+		where
+			id = #{id}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from focus_setting
+		where 1=1
+		  <if test="activityFocusSetting != null ">
+			and type in (2,3)
+			</if>
+		  <if test="id != null ">
+			and id = #{id}
+		  </if>
+		  <if test="title != null and title != '' ">
+			and title like concat("%",#{title},"%" )
+		  </if>
+		  <if test="banner != null and banner != '' ">
+			and banner = #{banner}
+		  </if>
+		  <if test="sizeTips != null and sizeTips != '' ">
+			and size_tips = #{sizeTips}
+		  </if>
+		  <if test="backgroundColor != null and backgroundColor != '' ">
+			and background_color = #{backgroundColor}
+		  </if>
+		  <if test="type != null ">
+			and type = #{type}
+		  </if>
+		  <if test="paramType != null ">
+			and param_type = #{paramType}
+		  </if>
+		  <if test="paramId != null ">
+			and param_id = #{paramId}
+		  </if>
+		  <if test="activityId != null ">
+			and activity_id = #{activityId}
+		  </if>
+		  <if test="url != null and url != '' ">
+			and url = #{url}
+		  </if>
+		  <if test="sorting != null ">
+			and sorting = #{sorting}
+		  </if>
+		  <if test="status != null ">
+			and status = #{status}
+		  </if>
+		  <if test="createBy != null ">
+			and create_by = #{createBy}
+		  </if>
+		  <if test="createDate != null ">
+			and create_date = #{createDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and update_by = #{updateBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and update_date = #{updateDate}
+		  </if>
+		  <if test="remarks != null and remarks != '' ">
+			and remarks = #{remarks}
+		  </if>
+		  <if test="startTime != null ">
+			and start_time = #{startTime}
+		  </if>
+		  <if test="endTime != null ">
+			and end_time = #{endTime}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="FocusSettingPojo">
+		select
+			<include refid="Base_Column_List" />
+		from focus_setting
+		where 1=1
+		    <if test="activityFocusSetting != null ">
+			  and type in (2,3,4)
+			</if>
+			<if test="id != null ">
+			  and id = #{id}
+			</if>
+			<if test="title != null and title != '' ">
+			  and title like concat("%",#{title},"%" )
+			</if>
+			<if test="banner != null and banner != '' ">
+			  and banner = #{banner}
+			</if>
+			<if test="sizeTips != null and sizeTips != '' ">
+			  and size_tips = #{sizeTips}
+			</if>
+			<if test="backgroundColor != null and backgroundColor != '' ">
+			  and background_color = #{backgroundColor}
+			</if>
+			<if test="type != null ">
+			  and type = #{type}
+			</if>
+			<if test="paramType != null ">
+			  and param_type = #{paramType}
+			</if>
+			<if test="paramId != null ">
+			  and param_id = #{paramId}
+			</if>
+			<if test="activityId != null ">
+			  and activity_id = #{activityId}
+			</if>
+			<if test="url != null and url != '' ">
+			  and url = #{url}
+			</if>
+			<if test="sorting != null ">
+			  and sorting = #{sorting}
+			</if>
+			<if test="status != null ">
+			  and status = #{status}
+			</if>
+			<if test="createBy != null ">
+			  and create_by = #{createBy}
+			</if>
+			<if test="createDate != null ">
+			  and create_date = #{createDate}
+			</if>
+			<if test="updateBy != null ">
+			  and update_by = #{updateBy}
+			</if>
+			<if test="updateDate != null ">
+			  and update_date = #{updateDate}
+			</if>
+			<if test="remarks != null and remarks != '' ">
+			  and remarks = #{remarks}
+			</if>
+			<if test="nowTimeStr != null ">
+			  and str_to_date(start_time,'%Y-%m-%d %H:%i:%s') &lt;= #{nowTimeStr}
+			</if>
+			<if test="startTime != null ">
+			  and start_time = #{startTime}
+			</if>
+			<if test="endTime != null ">
+			  and end_time = #{endTime}
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="FocusSettingPojo">
+		update focus_setting
+		<set>
+			<if test="title != null">
+			  title = #{title},
+			</if>
+			<if test="banner != null">
+			  banner = #{banner},
+			</if>
+			<if test="sizeTips != null">
+			  size_tips = #{sizeTips},
+			</if>
+			<if test="backgroundColor != null">
+			  background_color = #{backgroundColor},
+			</if>
+			<if test="type != null">
+			  type = #{type},
+			</if>
+			<if test="paramType != null">
+			  param_type = #{paramType},
+			</if>
+			<if test="paramId != null">
+			  param_id = #{paramId},
+			</if>
+			<if test="activityId != null">
+			  activity_id = #{activityId},
+			</if>
+			<if test="url != null">
+			  url = #{url},
+			</if>
+			<if test="sorting != null">
+			  sorting = #{sorting},
+			</if>
+			<if test="status != null">
+			  status = #{status},
+			</if>
+			<if test="createBy != null">
+			  create_by = #{createBy},
+			</if>
+			<if test="createDate != null">
+			  create_date = #{createDate},
+			</if>
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+			<if test="updateDate != null">
+			  update_date = #{updateDate},
+			</if>
+			<if test="remarks != null">
+			  remarks = #{remarks},
+			</if>
+			<if test="startTime != null">
+			  start_time = #{startTime},
+			</if>
+			<if test="endTime != null">
+			  end_time = #{endTime},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from focus_setting 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="FocusSettingPojo">
+		insert into focus_setting
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="title != null">
+				title,
+			</if>
+			<if test="banner != null">
+				banner,
+			</if>
+			<if test="sizeTips != null">
+				size_tips,
+			</if>
+			<if test="backgroundColor != null">
+				background_color,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="paramType != null">
+				param_type,
+			</if>
+			<if test="paramId != null">
+				param_id,
+			</if>
+			<if test="activityId != null">
+				activity_id,
+			</if>
+			<if test="url != null">
+				url,
+			</if>
+			<if test="sorting != null">
+				sorting,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="updateBy != null">
+				update_by,
+			</if>
+			<if test="updateDate != null">
+				update_date,
+			</if>
+			<if test="remarks != null">
+				remarks,
+			</if>
+			<if test="startTime != null">
+				start_time,
+			</if>
+			<if test="endTime != null">
+				end_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="title != null">
+				#{title},
+			</if>
+			<if test="banner != null">
+				#{banner},
+			</if>
+			<if test="sizeTips != null">
+				#{sizeTips},
+			</if>
+			<if test="backgroundColor != null">
+				#{backgroundColor},
+			</if>
+			<if test="type != null">
+				#{type},
+			</if>
+			<if test="paramType != null">
+				#{paramType},
+			</if>
+			<if test="paramId != null">
+				#{paramId},
+			</if>
+			<if test="activityId != null">
+				#{activityId},
+			</if>
+			<if test="url != null">
+				#{url},
+			</if>
+			<if test="sorting != null">
+				#{sorting},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+			<if test="createDate != null">
+				#{createDate},
+			</if>
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+			<if test="updateDate != null">
+				#{updateDate},
+			</if>
+			<if test="remarks != null">
+				#{remarks},
+			</if>
+			<if test="startTime != null">
+				#{startTime},
+			</if>
+			<if test="endTime != null">
+				#{endTime},
+			</if>
+		</trim>
+	</insert>
+	
+</mapper>

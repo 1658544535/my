@@ -1,0 +1,290 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="css/all.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+<title>M2C分销平台</title>
+<script>
+$(function() {
+	var time = null;
+	$('#zhaqsz').hover(function(){
+		$('.drop').show();
+	},function(){
+		time = setTimeout(function(){
+			$('.drop').hide();
+		},50);
+	});
+	$(".drop").hover(function(){
+		clearTimeout(time);
+		$(this).show();
+	},function(){
+		time = setTimeout(function(){
+			$('.drop').hide();
+		},50);
+	});
+});
+</script>
+</head>
+
+<body>
+<div class="top">
+	<div class="top-width">
+    	<div class="welcome">您好，欢迎djyww0505来到M2C分销平台<a href="#" class="out">退出</a></div>
+        <div class="login"><a href="#" class="login-a">首页</a><span class="login-line">|</span><a href="#" class="login-a">我的</a><span class="login-line">|</span><a href="shopping_Cart.html" class="login-a">购物车</a><span class="login-line">|</span><a href="#" class="login-a">收藏夹</a><span class="login-line">|</span><a href="#" class="login-a">客服中心</a><span class="login-line">|</span><a href="#" class="login-a">网站导航</a></div>
+    </div>
+</div>
+
+<div class="clear"></div>
+
+<div class="help-nav-width">
+	<div style="width:1190px; margin:0 auto;">
+        <div class="favorite_01-logo">M2C分销</div>
+        <div class="buy-nav">
+            <ul>
+                <li><a href="#"><span>首页</span></a></li>
+                <li><a href="#">个人主页</a></li>
+                <li><a href="#" id="zhaqsz">帐户安全设置 <img src="images/buy_03.png" alt="" width="10" height="10" /></a></li>
+                <li><a href="#">消息</a></li>
+            </ul>
+        </div>
+        
+        <div class="drop">
+        	<div class="drop-arrow"></div>
+            <div class="drop-Bj">
+            	<div class="drop-title">安全设置</div>
+                <div class="drop-list">
+                	<dl>
+                    	<dt><a href="#">修改登录密码</a></dt>
+                        <dt><a href="#">修改登录</a></dt>
+                        <dt><a href="#">修改登录密码</a></dt>
+                        <dt><a href="#">修改登录密码</a></dt>
+                    </dl>
+                </div>
+            </div>
+            
+            <div class="drop-Bj02">
+            	<div class="drop-title02">个人资料</div>
+                <div class="drop-list">
+                	<dl>
+                    	<dt><a href="#">修改登录密码</a></dt>
+                        <dt><a href="#">修改登录</a></dt>
+                        <dt><a href="#">修改登录密码</a></dt>
+                        <dt><a href="#">修改登录密码</a></dt>
+                    </dl>
+                </div>
+            </div>
+            
+            <div class="drop-Bj03">
+            	<div class="drop-title03">账号绑定</div>
+                <div class="drop-list">
+                	<dl>
+                    	<dt><a href="#">修改登录密码</a></dt>
+                        <dt><a href="#">修改登录</a></dt>
+                        <dt><a href="#">修改登录密码</a></dt>
+                        <dt><a href="#">修改登录密码</a></dt>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="faq-width">
+	<div class="buy-L">
+    	<div class="buy-L-title"><img src="images/faq_03.jpg" alt="" width="16" height="16" />&nbsp;&nbsp;&nbsp;&nbsp;全部功能</div>
+        <div class="buy-L-list">
+        	<ul>
+            	<li><a href="#">我的购物车</a></li>
+                <li><a href="#">已买到的宝贝</a></li>
+                <li><a href="#">我的收藏</a></li>
+                <li><a href="#">API申请</a></li>
+                <li><a href="#">我的评价</a></li>
+                <li><a href="#">退款维权</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="buy-R">
+    	<div class="buy-R-Part01">
+        	<ul>
+            	<li><a href="#">所有订单</a></li>
+                <li><a href="#">待付款</a></li>
+                <li><a href="#">待发货</a></li>
+                <li><a href="#">待收货 <font color="#df434e">2</font></a></li>
+                <li><a href="#">待评价 <font color="#df434e">2</font></a></li>
+            </ul>
+        </div>
+        
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="buy-R-Part02">
+        	<tr>
+            	<td width="340">宝贝</td>
+                <td width="140">单价（元）</td>
+                <td width="30">数量</td>
+                <td width="100">商品操作</td>
+                <td width="100">实付款（元）</td>
+                <td width="100">交易状态</td>
+                <td width="110">操作</td>
+            </tr>
+        </table>
+        
+        <div class="buy-R-Part03">
+        	<ul>
+            	<li>
+                	<table border="0" cellpadding="0" cellspacing="0" width="100%" class="buy-R-Part03-table">
+                    	<tr>
+                        	<td class="buy-R-Part03-table-title01"><input type="checkbox" name="" value=""/> 2014-12-31</td>
+                            <td class="buy-R-Part03-table-title02">订单号：2014122011001</td>
+                            <td class="buy-R-Part03-table-title03" colspan="6">草莓木玩玩具店</td>
+                        </tr>
+                        <tr>
+                            <td width="120" class="buy-R-Part03-table-Pic"><img src="images/shopping_Cart_03.jpg" alt="" width="79" height="80" /></td>
+                            <td width="220" class="buy-R-Part03-table-txt01">儿童木制仿真过家家厨房厨具女孩益智做饭宝宝玩具女童切切看蛋糕<p class="buy-R-Part03-table-txt01-color">颜色分类：精细款过家家<br />蛋糕组</p></td>
+                            <td width="140" class="buy-R-Part03-table-txt02">¥179.00</td>
+                            <td width="30" class="buy-R-Part03-table-txt02">1</td>
+                            <td width="100" class="buy-R-Part03-table-txt02"><a href="#">退款/退货</a></td>
+                            <td width="100" class="buy-R-Part03-table-txt03">278.00</td>
+                            <td width="100" class="buy-R-Part03-table-txt03"><a href="#">快件已签收</a><br /><a href="#">订单详情</a><br /><a href="#"><span>查看物流</span></a></td>
+                            <td width="100" class="buy-R-Part03-table-txt04"><a href="#" class="buy-R-Part03-table-txt04-button">确认收货</a></td>
+                        </tr>
+                    </table>
+                </li>
+                
+                <li>
+                	<table border="0" cellpadding="0" cellspacing="0" width="100%" class="buy-R-Part03-table">
+                    	<tr>
+                        	<td class="buy-R-Part03-table-title01"><input type="checkbox" name="" value=""/> 2014-12-31</td>
+                            <td class="buy-R-Part03-table-title02">订单号：2014122011001</td>
+                            <td class="buy-R-Part03-table-title03" colspan="5">草莓木玩玩具店</td>
+                            <td style="background:#f4f8fb; text-indent:90px;"><a href="#"><img src="images/favorite_02_08.jpg" alt="" width="18" height="18" /></a></td>
+                        </tr>
+                        <tr>
+                            <td width="120" class="buy-R-Part03-table-Pic"><img src="images/shopping_Cart_03.jpg" alt="" width="79" height="80" /></td>
+                            <td width="220" class="buy-R-Part03-table-txt01">儿童木制仿真过家家厨房厨具女孩益智做饭宝宝玩具女童切切看蛋糕<p class="buy-R-Part03-table-txt01-color">颜色分类：精细款过家家<br />蛋糕组</p></td>
+                            <td width="140" class="buy-R-Part03-table-txt02">¥179.00</td>
+                            <td width="30" class="buy-R-Part03-table-txt02">1</td>
+                            <td width="100" class="buy-R-Part03-table-txt02"><a href="#">退款/退货</a></td>
+                            <td width="100" class="buy-R-Part03-table-txt05">278.00</td>
+                            <td width="100" class="buy-R-Part03-table-txt05"><a href="#">快件已签收</a><br /><a href="#">订单详情</a><br /><a href="#"><span>查看物流</span></a></td>
+                            <td width="100" class="buy-R-Part03-table-txt06"><a href="#" class="buy-R-Part03-table-txt04-button02">再次购买</a></td>
+                        </tr>
+                        <tr>
+                            <td width="120" class="buy-R-Part03-table-Pic"><img src="images/shopping_Cart_03.jpg" alt="" width="79" height="80" /></td>
+                            <td width="220" class="buy-R-Part03-table-txt01">儿童木制仿真过家家厨房厨具女孩益智做饭宝宝玩具女童切切看蛋糕<p class="buy-R-Part03-table-txt01-color">颜色分类：精细款过家家<br />蛋糕组</p></td>
+                            <td width="140" class="buy-R-Part03-table-txt02">¥179.00</td>
+                            <td width="30" class="buy-R-Part03-table-txt02">1</td>
+                            <td width="100" class="buy-R-Part03-table-txt02"><a href="#">退款/退货</a></td>
+                            <td width="100" class="buy-R-Part03-table-txt03">278.00</td>
+                            <td width="100" class="buy-R-Part03-table-txt03"><a href="#">快件已签收</a><br /><a href="#">订单详情</a><br /><a href="#"><span>查看物流</span></a></td>
+                            <td width="100" class="buy-R-Part03-table-txt04"></td>
+                        </tr>
+                    </table>
+                </li>
+                
+                <li>
+                	<table border="0" cellpadding="0" cellspacing="0" width="100%" class="buy-R-Part03-table">
+                    	<tr>
+                        	<td class="buy-R-Part03-table-title01"><input type="checkbox" name="" value=""/> 2014-12-31</td>
+                            <td class="buy-R-Part03-table-title02">订单号：2014122011001</td>
+                            <td class="buy-R-Part03-table-title03" colspan="6">草莓木玩玩具店</td>
+                        </tr>
+                        <tr>
+                            <td width="120" class="buy-R-Part03-table-Pic"><img src="images/shopping_Cart_03.jpg" alt="" width="79" height="80" /></td>
+                            <td width="220" class="buy-R-Part03-table-txt01">儿童木制仿真过家家厨房厨具女孩益智做饭宝宝玩具女童切切看蛋糕<p class="buy-R-Part03-table-txt01-color">颜色分类：精细款过家家<br />蛋糕组</p></td>
+                            <td width="140" class="buy-R-Part03-table-txt02">¥179.00</td>
+                            <td width="30" class="buy-R-Part03-table-txt02">1</td>
+                            <td width="100" class="buy-R-Part03-table-txt02"><a href="#">退款/退货</a></td>
+                            <td width="100" class="buy-R-Part03-table-txt03">278.00</td>
+                            <td width="100" class="buy-R-Part03-table-txt03"><a href="#">快件已签收</a><br /><a href="#">订单详情</a><br /><a href="#"><span>查看物流</span></a></td>
+                            <td width="100" class="buy-R-Part03-table-txt04"><a href="#" class="buy-R-Part03-table-txt04-button">确认收货</a></td>
+                        </tr>
+                    </table>
+                </li>
+                
+                <li>
+                	<table border="0" cellpadding="0" cellspacing="0" width="100%" class="buy-R-Part03-table">
+                    	<tr>
+                        	<td class="buy-R-Part03-table-title01"><input type="checkbox" name="" value=""/> 2014-12-31</td>
+                            <td class="buy-R-Part03-table-title02">订单号：2014122011001</td>
+                            <td class="buy-R-Part03-table-title03" colspan="5">草莓木玩玩具店</td>
+                            <td style="background:#f4f8fb; text-indent:90px;"><a href="#"><img src="images/favorite_02_08.jpg" alt="" width="18" height="18" /></a></td>
+                        </tr>
+                        <tr>
+                            <td width="120" class="buy-R-Part03-table-Pic"><img src="images/shopping_Cart_03.jpg" alt="" width="79" height="80" /></td>
+                            <td width="220" class="buy-R-Part03-table-txt01">儿童木制仿真过家家厨房厨具女孩益智做饭宝宝玩具女童切切看蛋糕<p class="buy-R-Part03-table-txt01-color">颜色分类：精细款过家家<br />蛋糕组</p></td>
+                            <td width="140" class="buy-R-Part03-table-txt02">¥179.00</td>
+                            <td width="30" class="buy-R-Part03-table-txt02">1</td>
+                            <td width="100" class="buy-R-Part03-table-txt02"><a href="#">退款/退货</a></td>
+                            <td width="100" class="buy-R-Part03-table-txt05">278.00</td>
+                            <td width="100" class="buy-R-Part03-table-txt05"><a href="#">快件已签收</a><br /><a href="#">订单详情</a><br /><a href="#"><span>查看物流</span></a></td>
+                            <td width="100" class="buy-R-Part03-table-txt06"><a href="#" class="buy-R-Part03-table-txt04-button02">再次购买</a></td>
+                        </tr>
+                        <tr>
+                            <td width="120" class="buy-R-Part03-table-Pic"><img src="images/shopping_Cart_03.jpg" alt="" width="79" height="80" /></td>
+                            <td width="220" class="buy-R-Part03-table-txt01">儿童木制仿真过家家厨房厨具女孩益智做饭宝宝玩具女童切切看蛋糕<p class="buy-R-Part03-table-txt01-color">颜色分类：精细款过家家<br />蛋糕组</p></td>
+                            <td width="140" class="buy-R-Part03-table-txt02">¥179.00</td>
+                            <td width="30" class="buy-R-Part03-table-txt02">1</td>
+                            <td width="100" class="buy-R-Part03-table-txt02"><a href="#">退款/退货</a></td>
+                            <td width="100" class="buy-R-Part03-table-txt03">278.00</td>
+                            <td width="100" class="buy-R-Part03-table-txt03"><a href="#">快件已签收</a><br /><a href="#">订单详情</a><br /><a href="#"><span>查看物流</span></a></td>
+                            <td width="100" class="buy-R-Part03-table-txt04"></td>
+                        </tr>
+                    </table>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<div class="clear"></div>
+<div class="foot">
+	<div class="foot-line">
+    	<div class="foot-Kj"><img src="images/index_81.jpg" alt="" width="37" height="37" /> <span class="foot-Kj-title">新手指南</span>
+        	<ul>
+            	<li><a href="#">免费注册</a></li>
+                <li><a href="#">买家入门</a></li>
+                <li><a href="#">卖家入门</a></li>
+                <li><a href="#">绑定支付宝</a></li>
+            </ul>
+        </div>
+        
+        <div class="foot-Kj"><img src="images/index_84.jpg" alt="" width="37" height="37" /> <span class="foot-Kj-title">采购商服务</span>
+        	<ul>
+            	<li><a href="#">找供应商</a></li>
+                <li><a href="#">采购平台</a></li>
+                <li><a href="#">价格行情</a></li>
+            </ul>
+        </div>
+        
+        <div class="foot-Kj"><span class="foot-Kj-title">二维码</span>
+        	<div class="code"><img src="images/index_92.jpg" alt="" width="102" height="102" /></div>
+        </div>
+        
+        <div class="foot-Kj"><img src="images/index_87.jpg" alt="" width="37" height="37" /> <span class="foot-Kj-title">供货商服务</span>
+        	<ul>
+            	<li><a href="#">应用市场</a></li>
+                <li><a href="#">物流服务</a></li>
+                <li><a href="#">诚信通服务</a></li>
+                <li><a href="#">网销宝服务</a></li>
+            </ul>
+        </div>
+        
+        <div class="foot-Kj"><img src="images/index_89.jpg" alt="" width="37" height="37" /> <span class="foot-Kj-title">关于我们</span>
+        	<ul>
+            	<li><a href="#">公司简介</a></li>
+                <li><a href="#">服务项目</a></li>
+                <li><a href="#">联系我们</a></li>
+                <li><a href="#">加入我们</a></li>
+            </ul>
+        </div>
+	</div>
+    
+    <div class="foot-link"><a href="#">M2C分销平台</a><span class="foot-foot-link-line">｜</span><a href="#">阿里巴巴国际站</a><span class="foot-link-line">｜</span><a href="#">1688</a><span class="foot-link-line">｜</span><a href="#">全球速卖通</a><span class="foot-link-line">｜</span><a href="#">淘宝网</a><span class="foot-link-line">｜</span><a href="#">天猫</a><span class="foot-link-line">｜</span><a href="#">聚划算</a><span class="foot-link-line">｜</span><a href="#">一淘</a><span class="foot-link-line">｜</span><a href="#">阿里旅行 · 去啊</a><span class="foot-link-line">｜</span><a href="#">阿里妈妈</a><span class="foot-link-line">｜</span><a href="#">酷盘</a><span class="foot-link-line">｜</span><a href="#">虾米</a><span class="foot-link-line">｜</span><a href="#">支付宝</a><span class="foot-link-line">｜</span><a href="#">阿里通信</a><br />
+<a href="#">欢迎合作</a><span class="foot-link-line">｜</span><a href="#">知识产权</a><span class="foot-link-line">｜</span><a href="#">著作权与商标声明</a><span class="foot-link-line">｜</span><a href="#">法律声明</a><span class="foot-link-line">｜</span><a href="#">服务条款</a><span class="foot-link-line">｜</span><a href="#">隐私声明</a><span class="foot-link-line">｜</span><a href="#">网站导航</a></div>
+
+	<div class="foot-company">澄海市宇博电子商务有限公司 Copyright © 2014 All Rights Reserved 版权所有 粤ICP备13081564号</div>
+    
+</div>
+</body>
+</html>

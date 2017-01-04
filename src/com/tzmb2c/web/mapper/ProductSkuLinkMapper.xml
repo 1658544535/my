@@ -1,0 +1,570 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.ProductSkuLinkMapper">
+
+	<!-- <cache/>  -->
+
+
+	<select id="getProductSkuLinkAll" parameterType="java.util.Map" resultType="productSkuLinkPojo">
+		select 
+		t.id as id,
+		t.product_id as productId,
+		t.stock as stock,
+		t.sku_color as skuColor,
+		t.sku_format as skuFormat,
+		t.image,
+		t.sorting as sorting,
+		t.status as status,
+		(select name from sys_dict where value=t.status and type = 'status') as statusName,
+		t.remarks as remarks,
+		t.version as version,
+		p.product_name as productName,
+		p.selling_price as sellingPrice,
+		t.stock_num as stockNum,
+		t.type,
+		t.price,
+		t.activity_id as activityId,
+		t.business_code as businessCode,
+		t.create_by as createBy,
+		t.create_date as createDate,
+		t.update_by as updateBy,
+		t.update_date as updateDate,
+		t.sku_color_id as skuColorId,
+		t.sku_format_id as skuFormatId,
+		p.format_value as formatValue,
+		p.color_value as colorValue
+		from product_sku_link t left join product p on t.product_id=p.id 
+		where 1=1
+		<if test="productId != null and productId != ''">
+			and t.product_id=#{productId} 
+		</if>
+		<if test="productName != null and productName != ''">
+			and p.product_name=#{productName} 
+		</if>
+		<if test="id != null and id != ''">
+			and t.id=#{id} 
+		</if>
+		<if test="status != null ">
+			and t.status=#{status} 
+		</if>
+		<if test="type != null ">
+			and t.type=#{type} 
+		</if>
+		<if test="activityId != null ">
+			and t.activity_id = #{activityId} 
+		</if>
+		<if test="stockStatus != null ">
+			and t.stock > 0 
+		</if>
+	    order by t.sorting, id desc
+	    <if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<select id="getProductSkuLinkCount" parameterType="java.util.Map" resultType="int">
+		select count(*) from product_sku_link t left join product p on t.product_id=p.id 
+		where 1=1 
+		<if test="productId != null and productId != ''">
+			and t.product_id=#{productId} 
+		</if>
+		<if test="skuColor != null">
+			and t.sku_color=#{skuColor} 
+		</if>
+		<if test="skuFormat != null">
+			and t.sku_format=#{skuFormat} 
+		</if>
+		<if test="productName != null and productName != ''">
+		    and p.product_name=#{productName} 
+	    </if>
+	    <if test="status != null ">
+			and t.status=#{status} 
+		</if>
+		<if test="type != null ">
+			and t.type=#{type} 
+		</if>
+		<if test="activityId != null ">
+			and t.activity_id = #{activityId} 
+		</if>
+	    <if test="id != null and id != ''">
+			and t.id=#{id} 
+		</if>
+		<if test="stockStatus != null ">
+			and t.stock > 0 
+		</if>
+	</select>
+	
+	<select id="findProductSkuLink" parameterType="productSkuLinkPojo" resultType="productSkuLinkPojo">
+		select t.id as id,t.product_id as productId,t.stock as stock,t.sku_color as skuColor,t.sku_format as skuFormat,t.sorting as sorting,t.status as status,
+		(select name from sys_dict where value=t.status and type = 'status') as statusName,t.create_by as createBy,t.create_date as createDate,t.update_by as updateBy,
+		t.update_date as updateDate,t.remarks as remarks,t.version as version,p.product_name as productName,
+		t.stock_num as stockNum,t.type,t.price,t.activity_id as activityId,t.business_code as businessCode
+		from product_sku_link t left join product p on t.product_id=p.id 
+		<!--
+		left join sku_attribute a on t.sku_color_id =a.id
+		left join sku_attribute s on t.sku_format_id =s.id
+		-->
+		where 1=1 
+		<if test="id != null and id != ''">
+			and t.id=#{id}
+		</if>	
+		<if test="productId != null and productId != ''">
+			and t.product_id=#{productId} 
+		</if>
+		<if test="type != null">
+			and t.type=#{type} 
+		</if>
+	</select>
+	
+	<update id="productSkuLinkUpdate" parameterType="productSkuLinkPojo">
+		update product_sku_link t set
+		<if test="productId != null and productId != ''">
+		t.product_id=#{productId},
+		</if>
+		<if test="skuColor != null and skuColor != ''">
+		t.sku_color=#{skuColor},
+		</if>
+		<if test="skuFormat != null and skuFormat != ''">
+		t.sku_format=#{skuFormat},
+		</if>
+		<if test="stock != null ">
+		t.stock=#{stock},
+		</if>
+		<if test="stockNum != null ">
+		t.stock_num = #{stockNum},
+		</if>
+		<if test="sorting != null and sorting != ''">
+		t.sorting=#{sorting},
+		</if>
+		<if test="status != null ">
+		t.status=#{status},
+		</if>
+		<if test="updateBy != null and updateBy != ''">
+		t.update_by=#{updateBy},
+		</if>
+		<if test="remarks != null and remarks != ''">
+		t.remarks=#{remarks},
+		</if>
+		<if test="price != null and price != ''">
+		t.price=#{price},
+		</if>
+		<if test="businessCode != null and businessCode != ''">
+		t.business_code=#{businessCode},
+		</if>
+		t.update_date=now()
+		where
+		t.id = #{id}
+	</update>
+	
+	<update id="updateProductSkuStock" parameterType="productSkuLinkPojo">
+		update product_sku_link set
+		stock=stock - #{minusStock},
+		update_date=now()
+		where
+		id = #{id} and stock &gt;= #{minusStock}
+	</update>
+	
+	<update id="updateActivityProductSkuStock" parameterType="productSkuLinkPojo">
+		update product_sku_link a left join groupon_activity b on a.product_id =b.product_id and b.type =6 and b.id = #{activityId} 
+		set
+		a.stock=a.stock - #{minusStock},
+		a.update_date=now(),
+		b.surplus_num=b.surplus_num-#{minusStock},
+		b.update_date=now()
+		where
+		a.id = #{id} and a.stock &gt;= #{minusStock} and b.surplus_num &gt;= #{minusStock}
+	</update>
+	
+	<select id="findSkuLinkByProductId" parameterType="productSkuLinkPojo" resultType="productSkuLinkPojo">
+		select t.id as id,t.product_id as productId,t.stock as stock,t.sku_color as skuColor,t.sku_format as skuFormat,t.sorting as sorting,t.status as status,
+		(select name from sys_dict where value=t.status and type = 'status') as statusName,t.create_by as createBy,t.create_date as createDate,t.update_by as updateBy,
+		t.update_date as updateDate,t.remarks as remarks,t.version as version,p.product_name as productName,t.stock_num as stockNum,t.type,t.price,t.activity_id as activityId
+		from product_sku_link t left join product p on t.product_id=p.id 
+		where t.product_id=#{productId}
+	</select>
+	
+		<select id="findSkuColorByProductId" parameterType="productSkuLinkPojo" resultType="productSkuLinkPojo">
+		SELECT DISTINCT (t.sku_color) AS skuColor
+        FROM product_sku_link t
+        WHERE t.product_id=#{productId} 
+        AND t.status=1
+        <if test="type!=null ">
+        AND t.type=#{type}
+        </if>       
+        ORDER BY t.sorting, t.id DESC
+	</select>
+	
+		<select id="findSkuFormatByProductId" parameterType="productSkuLinkPojo" resultType="productSkuLinkPojo">
+		SELECT DISTINCT (t.sku_format) AS skuFormat
+        FROM product_sku_link t
+        WHERE t.product_id=#{productId} 
+        AND t.status=1
+        <if test="type!=null ">
+        AND t.type=#{type}
+        </if>       
+        ORDER BY t.sorting, t.id DESC
+	</select>
+	
+	<!-- <insert id="addSkuLinkByProductId" parameterType="productSkuLinkPojo" useGeneratedKeys="true" keyProperty="id" >
+		insert into product_sku_link(product_id,sku_color,sku_format,stock,sorting,status,create_by,create_date,update_by,update_date,remarks,version,type,price,activity_id,stock_num,business_code)
+		values(#{productId},#{skuColor},#{skuFormat},#{stock},#{sorting},#{status},#{createBy},now(),#{updateBy},now(),#{remarks},#{version},#{type},#{price},#{activityId},#{stockNum},#{businessCode})
+	</insert> -->
+	
+	<insert id="addSkuLinkByProductId" useGeneratedKeys="true" keyProperty="id" parameterType="ProductSkuLinkPojo">
+		insert into product_sku_link
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				Id,
+			</if>
+			<if test="productId != null">
+				product_id,
+			</if>
+			<if test="skuColor != null">
+				sku_color,
+			</if>
+			<if test="skuFormat != null">
+				sku_format,
+			</if>
+			<if test="skuColorId != null">
+				sku_color_id,
+			</if>
+			<if test="skuFormatId != null">
+				sku_format_id,
+			</if>
+			<if test="image != null">
+				image,
+			</if>
+			<if test="stockNum != null">
+				stock_num,
+			</if>
+			<if test="stock != null">
+				stock,
+			</if>
+			<if test="sorting != null">
+				sorting,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="price != null">
+				price,
+			</if>
+			<if test="activityId != null">
+				activity_id,
+			</if>
+			<if test="businessCode != null">
+				business_code,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+				create_date,
+			<if test="updateBy != null">
+				update_by,
+			</if>
+				update_date,
+			<if test="remarks != null">
+				remarks,
+			</if>
+			<if test="version != null">
+				version,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="productId != null">
+				#{productId},
+			</if>
+			<if test="skuColor != null">
+				#{skuColor},
+			</if>
+			<if test="skuFormat != null">
+				#{skuFormat},
+			</if>
+			<if test="skuColorId != null">
+				#{skuColorId},
+			</if>
+			<if test="skuFormatId != null">
+				#{skuFormatId},
+			</if>
+			<if test="image != null">
+				#{image},
+			</if>
+			<if test="stockNum != null">
+				#{stockNum},
+			</if>
+			<if test="stock != null">
+				#{stock},
+			</if>
+			<if test="sorting != null">
+				#{sorting},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+			<if test="type != null">
+				#{type},
+			</if>
+			<if test="price != null">
+				#{price},
+			</if>
+			<if test="activityId != null">
+				#{activityId},
+			</if>
+			<if test="businessCode != null">
+				#{businessCode},
+			</if>
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+				now(),
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+				now(),
+			<if test="remarks != null">
+				#{remarks},
+			</if>
+			<if test="version != null">
+				#{version},
+			</if>
+		</trim>
+	</insert>
+	
+	
+	<delete id="deleProductSkuLink" parameterType="Long">
+		delete from product_sku_link where id=#{id}
+	</delete>
+	
+	<update id="checkProductSkuLink" parameterType="Long">
+		update product_sku_link set status = 1 where id = #{id}
+		and (sku_color_id is not null and sku_color_id != 0)
+		and (sku_format_id is not null and sku_format_id != 0)
+	</update>
+	
+	<update id="uncheckProductSkuLink" parameterType="Long">
+		update product_sku_link set status = 0 where id = #{id}
+	</update>
+	
+	<select id="findSkuLinkByOtherSku" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from product_sku_link t left join product p on t.product_id=p.id 
+		where t.id != #{id} 
+		<if test="skuColorId != null">
+			and t.sku_color_id = #{skuColorId}
+		</if>
+		<if test="skuFormatId != null">
+			and t.sku_format_id = #{skuFormatId}
+		</if>
+	</select>
+	
+	<insert id="addActivitySkuLinkByPid" parameterType="Long">
+		insert into product_sku_link(product_id,sku_color_id,sku_format_id,stock,sorting,status,create_by,create_date,update_by,update_date,remarks,version,type,price)
+		<!--values(#{productId},#{skuColorId},#{skuFormatId},#{stock},#{sorting},#{status},#{createBy},now(),#{updateBy},now(),#{remarks},#{version},#{type},#{price})-->
+		select product_id,sku_color_id,sku_format_id,0,,sorting,0,create_by,now(),update_by,,now(),remarks,version,1,price from product_sku_link 
+		where product_id = #{productId} and status = 1 and type = 0
+	</insert>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="ProductSkuLinkPojo">
+		select
+			<include refid="Base_Column_List" />
+		from product_sku_link
+		where 1=1
+			<if test="id != null ">
+			  and Id = #{id}
+			</if>
+			<if test="productId != null ">
+			  and product_id = #{productId}
+			</if>
+			<if test="skuColor != null and skuColor != '' ">
+			  and sku_color = #{skuColor}
+			</if>
+			<if test="skuFormat != null and skuFormat != '' ">
+			  and sku_format = #{skuFormat}
+			</if>
+			<if test="image != null and image != '' ">
+			  and image = #{image}
+			</if>
+			<if test="stockNum != null ">
+			  and stock_num = #{stockNum}
+			</if>
+			<if test="stock != null ">
+			  and stock = #{stock}
+			</if>
+			<if test="sorting != null ">
+			  and sorting = #{sorting}
+			</if>
+			<if test="status != null ">
+			  and status = #{status}
+			</if>
+			<if test="type != null ">
+			  and type = #{type}
+			</if>
+			<if test="price != null ">
+			  and price = #{price}
+			</if>
+			<if test="activityId != null ">
+			  and activity_id = #{activityId}
+			</if>
+			<if test="businessCode != null and businessCode != '' ">
+			  and business_code = #{businessCode}
+			</if>
+			<if test="createBy != null ">
+			  and create_by = #{createBy}
+			</if>
+			<if test="createDate != null ">
+			  and create_date = #{createDate}
+			</if>
+			<if test="updateBy != null ">
+			  and update_by = #{updateBy}
+			</if>
+			<if test="updateDate != null ">
+			  and update_date = #{updateDate}
+			</if>
+			<if test="remarks != null and remarks != '' ">
+			  and remarks = #{remarks}
+			</if>
+			<if test="version != null ">
+			  and version = #{version}
+			</if>
+			<if test="cids != null and cids !='' ">
+				and id not in 
+				<foreach collection="cids" item="cids" index="index" open="(" separator="," close=")">
+					#{cids}
+				</foreach>
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<sql id="Base_Column_List">
+		Id as id,
+		product_id as productId,
+		sku_color as skuColor,
+		sku_format as skuFormat,
+		image as image,
+		stock_num as stockNum,
+		stock as stock,
+		sorting as sorting,
+		status as status,
+		type as type,
+		price as price,
+		activity_id as activityId,
+		business_code as businessCode,
+		create_by as createBy,
+		create_date as createDate,
+		update_by as updateBy,
+		update_date as updateDate,
+		remarks as remarks,
+		version as version,
+		sku_color_id as skuColorId,
+		sku_format_id as skuFormatId
+	</sql>
+	
+	<update id="update" parameterType="ProductSkuLinkPojo">
+		update product_sku_link
+		<set>
+			<if test="productId != null">
+			  product_id = #{productId},
+			</if>
+			<if test="skuColor != null">
+			  sku_color = #{skuColor},
+			</if>
+			<if test="skuFormat != null">
+			  sku_format = #{skuFormat},
+			</if>
+			<if test="image != null">
+			  image = #{image},
+			</if>
+			<if test="stockNum != null">
+			  stock_num = #{stockNum},
+			</if>
+			<if test="stock != null">
+			  stock = #{stock},
+			</if>
+			<if test="sorting != null">
+			  sorting = #{sorting},
+			</if>
+			<if test="status != null">
+			  status = #{status},
+			</if>
+			<if test="type != null">
+			  type = #{type},
+			</if>
+			<if test="price != null">
+			  price = #{price},
+			</if>
+			<if test="activityId != null">
+			  activity_id = #{activityId},
+			</if>
+			<if test="businessCode != null">
+			  business_code = #{businessCode},
+			</if>
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+			  update_date = now(),
+			<if test="remarks != null">
+			  remarks = #{remarks},
+			</if>
+			<if test="version != null">
+			  version = #{version},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<select id="getById" parameterType="Long" resultType="ProductSkuLinkPojo">
+		select
+			Id as id,
+			product_id as productId,
+			sku_color as skuColor,
+			sku_format as skuFormat,
+			image as image,
+			stock_num as stockNum,
+			stock as stock,
+			sorting as sorting,
+			status as status,
+			type as type,
+			price as price,
+			activity_id as activityId,
+			business_code as businessCode,
+			create_by as createBy,
+			create_date as createDate,
+			update_by as updateBy,
+			update_date as updateDate,
+			remarks as remarks,
+			version as version
+		from
+			product_sku_link
+		where
+			id = #{id}
+	</select>
+	
+	<select id="getSkuStock" parameterType="java.util.Map" resultType="int">
+		select
+			ifnull(sum(stock),0)
+		from
+			product_sku_link
+		where
+			1=1
+		  <if test="productId != null">
+		    and product_id = #{productId}
+		  </if>
+		  <if test="status != null">
+		    and status = #{status}
+		  </if>
+	</select>
+</mapper>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tzmb2c.web.mapper.UserDeductionScoreMapper">
+	<insert id="insertUserDeductionScore" parameterType="userDeductionScorePojo">
+		insert into user_deduction_score 
+		(suser_id,deduct_score,remark,status,create_date,create_by) 
+		value 
+		(#{suserId},#{deductScore},#{remark},#{status},now(),#{createBy})
+	</insert>
+	
+	<select id="findUserDeductionScoreList" resultType="userDeductionScorePojo" parameterType="java.util.Map">
+		select id,
+		suser_id as suserId,
+		deduct_score as deductScore,
+		remark,
+		status,
+		(CASE WHEN status = 0 THEN '未审核' WHEN status = 1 THEN '已审核' END) as statusName,
+		create_date as createDate,
+		create_by as createBy,
+		update_date as updateDate,
+		update_by as updateBy 
+		from user_deduction_score 
+		where 1=1 
+		<if test="id != null">
+			and id = #{id}
+		</if>
+		<if test="suserId != null">
+			and suser_id = #{suserId} 
+		</if>
+		<if test="status != null">
+			and status = #{status} 
+		</if>
+		<if test="createDateStr != null and createDateStr != '' ">
+			and date_format(create_date,'%Y-%m-%d') = date_format(#{createDateStr},'%Y-%m-%d')
+		</if>
+		<if test="updateDateStr != null and updateDateStr != '' ">
+			and date_format(update_date,'%Y-%m-%d') = date_format(#{updateDateStr},'%Y-%m-%d')
+		</if>
+		order by update_date desc,create_date desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<select id="findUserDeductionScoreCount" resultType="int" parameterType="java.util.Map">
+		select count(*) 
+		from user_deduction_score 
+		where 1=1 
+		<if test="id != null">
+			and id = #{id}
+		</if>
+		<if test="suserId != null">
+			and suser_id = #{suserId} 
+		</if>
+		<if test="status != null">
+			and status = #{status} 
+		</if>
+		<if test="createDateStr != null and createDateStr != '' ">
+			and date_format(create_date,'%Y-%m-%d') = date_format(#{createDateStr},'%Y-%m-%d')
+		</if>
+		<if test="updateDateStr != null and updateDateStr != '' ">
+			and date_format(update_date,'%Y-%m-%d') = date_format(#{updateDateStr},'%Y-%m-%d')
+		</if>
+	</select>
+	
+	<delete id="delUserDeductionScoreById" parameterType="Long">
+		delete from user_deduction_score where id = #{id}
+	</delete>
+	
+	<update id="checkUserDeductionScore" parameterType="Long">
+		update user_deduction_score set status = 1 where id = #{id}
+	</update>
+	
+	<update id="uncheckUserDeductionScore" parameterType="Long">
+		update user_deduction_score set status = 0 where id = #{id}
+	</update>
+	
+	<update id="updateUserDeductionScore" parameterType="userCertificatesPhotoPojo">
+		update user_deduction_score set 
+		<if test="deductScore != null">
+			deduct_score = #{deductScore},
+		</if>
+		<if test="remark != null and remark != '' ">
+			remark = #{remark},
+		</if>
+		<if test="status != null">
+			status = #{status},
+		</if>
+		<if test="updateBy != null">
+			update_by = #{updateBy},
+		</if>
+		update_date = now()
+		where 1 = 1
+		<if test="id != null">
+			and id = #{id}
+		</if>
+		<if test="suserId != null">
+			and suser_id = #{suserId}
+		</if>
+	</update>
+	
+	<select id="findUserDeductionScoreAll" resultType="double" parameterType="java.util.Map">
+		select ifnull(sum(deduct_score),0) 
+		from user_deduction_score 
+		where 1=1 
+		<if test="id != null">
+			and id = #{id}
+		</if>
+		<if test="suserId != null">
+			and suser_id = #{suserId} 
+		</if>
+		<if test="status != null">
+			and status = #{status} 
+		</if>
+		<if test="createDateStr != null and createDateStr != '' ">
+			and date_format(create_date,'%Y-%m-%d') = date_format(#{createDateStr},'%Y-%m-%d')
+		</if>
+		<if test="updateDateStr != null and updateDateStr != '' ">
+			and date_format(update_date,'%Y-%m-%d') = date_format(#{updateDateStr},'%Y-%m-%d')
+		</if>
+	</select>
+	
+	
+</mapper>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+	<package name="pagePush" extends="default">
+
+		<action name="pushNoticeManage" class="com.tzmb2c.web.action.PagePushAction"
+			method="getPushNoticeCount">
+			<result name="success">/page/system/notice/managenotice.jsp</result>
+		</action>
+
+		<!-- 添加信息 -->
+		<action name="goAddPushNotice" class="com.tzmb2c.web.action.PagePushAction"
+			method="goAddnotice">
+			<result>/page/system/notice/addnotice.jsp</result>
+		</action>
+
+		<!-- 添加信息 -->
+		<action name="addPushNotice" class="com.tzmb2c.web.action.PagePushAction"
+			method="addPushNotice">
+			<result>/page/system/notice/addnotice.jsp</result>
+		</action>
+
+		<!-- 首页推送 -->
+		<action name="queryPageNotice" class="com.tzmb2c.web.action.PagePushAction"
+			method="getPushNoticeCount">
+			<result>/page/system/notice/queryPageNotice.jsp</result>
+		</action>
+
+		<!-- 内页推送 -->
+		<action name="queryInPageNotice" class="com.tzmb2c.web.action.PagePushAction"
+			method="getPushNoticeCount">
+			<result>/page/system/notice/queryInPageNotice.jsp</result>
+		</action>
+		
+        <!-- 更新 -->
+		<action name="goUpdatePushNotice" class="com.tzmb2c.web.action.PagePushAction"
+			method="goFindNotice">
+			<result>/page/system/notice/updatenotice.jsp</result>
+		</action>
+
+		<!-- 更新 -->
+		<action name="updatePushnotice" class="com.tzmb2c.web.action.PagePushAction"
+			method="updateNotice">
+		</action>
+
+		<!-- 审核 -->
+		<action name="verifyPushNotice" class="com.tzmb2c.web.action.PagePushAction"
+			method="verifyPushNotice">
+		</action>
+
+		<!-- 审核全部 -->
+		<action name="verifyAllPushNotice" class="com.tzmb2c.web.action.PagePushAction"
+			method="verifyAllPushNotice">
+		</action>
+
+		<!-- 删除 -->
+		<action name="delPushNotice" class="com.tzmb2c.web.action.PagePushAction"
+			method="delPushNotice">
+		</action>
+
+		<!-- 删除全部 -->
+		<action name="noticeDeleteId" class="com.tzmb2c.web.action.PagePushAction"
+			method="delAllPushNoticeById">
+		</action>
+
+		<action name="findNoticeItem" class="com.tzmb2c.web.action.PagePushAction"
+			method="findNoticeItem">
+		</action>
+
+	</package>
+
+	<package name="notice-json" extends="json-default">
+		<!--平台入口 -->
+		<action name="getNoitceCount" class="com.tzmb2c.web.action.PagePushAction"
+			method="getPushNoticeCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+			<result name="outpage">/page/system/notice/queryPageNotice.jsp</result>
+			<result name="inpage">/page/system/notice/queryInPageNotice.jsp
+			</result>
+		</action>
+
+		<action name="noticeAllList" class="com.tzmb2c.web.action.PagePushAction"
+			method="pushNoticeAllList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+
+		<action name="delPushNotice" class="com.tzmb2c.web.action.PagePushAction"
+			method="delPushNotice">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+
+		<action name="verifyPushNotice" class="com.tzmb2c.web.action.PagePushAction"
+			method="verifyPushNotice">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+	</package>
+
+</struts>

@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.UserMakerBrandMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id as id,user_id as userId,logo as logo,brand_name as brandName,content as content,age_type as ageType,skill_type as skillType,option_type as optionType,product_type as productType,sorting as sorting,status as status,create_date as createDate,create_by as createBy,update_date as updateDate,update_by as updateBy
+	</sql>
+	
+	<select id="getUserMakerBrandById" parameterType="int" resultType="UserMakerBrandPojo">
+		select
+			u.id as id,
+			u.brand_id as brandId,
+			u.user_id as userId,
+			u.logo as logo,
+			u.brand_name as brandName,
+			u.content as content,
+			u.age_type as ageType,
+			u.skill_type as skillType,
+			u.option_type as optionType,
+			u.product_type as productType,
+			u.registration_certificate as registrationCertificate,
+			u.sorting as sorting,
+			u.status as status,
+			(CASE WHEN u.status = 0 THEN '未审核' WHEN u.status = 1 THEN '审核成功' WHEN u.status = 2 THEN '审核失败' END) as statusName,
+			u.brand_type as brandType,
+			(CASE WHEN u.brand_type = 0 THEN '首页品牌' WHEN u.brand_type = 1 THEN '精选品牌' END) as brandTypeName,
+			u.create_date as createDate,
+			u.create_by as createBy,
+			u.update_date as updateDate,
+			u.update_by as updateBy,
+			s.name as userName,
+			s.image as userImage,
+			ub.main_category as mainCategory,
+			ub.id as userBrandId,
+			bd.id as brandDicId,
+			(select name from product_type pt where pt.id=ub.main_category)as mainCategoryName,
+			ui.sex as userSex
+		from
+			user_maker_brand u
+			left join sys_login s on u.user_id = s.id
+			left join user_info ui on u.user_id = ui.user_id
+			left join user_brand ub on ub.id = u.brand_id
+			left join brand_dic bd on bd.id = ub.brand_id
+		where
+			u.id = #{id}
+	</select>
+	
+	<select id="userMakerBrandCount" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from user_maker_brand u
+		left join sys_login s on u.user_id = s.id
+		where 1=1
+		  <if test="id != null ">
+			and u.id = #{id}
+		  </if>
+		  <if test="userId != null ">
+			and u.user_id = #{userId}
+		  </if>
+		  <if test="logo != null and logo != '' ">
+			and u.logo = #{logo}
+		  </if>
+		  <if test="brandName != null and brandName != '' ">
+			and u.brand_name = #{brandName}
+		  </if>
+		  <if test="brandNames != null and brandNames != '' ">
+			  and u.brand_name like CONCAT("%",#{brandNames},"%")
+		  </if>
+		  <if test="userName != null and userName != '' ">
+			  and s.name like CONCAT("%",#{userName},"%")
+		  </if>
+		  <if test="content != null ">
+			and u.content = #{content}
+		  </if>
+		  <if test="ageType != null ">
+			and u.age_type = #{ageType}
+		  </if>
+		  <if test="skillType != null ">
+			and u.skill_type = #{skillType}
+		  </if>
+		  <if test="optionType != null ">
+			and u.option_type = #{optionType}
+		  </if>
+		  <if test="productType != null ">
+			and u.product_type = #{productType}
+		  </if>
+		  <if test="sorting != null ">
+			and u.sorting = #{sorting}
+		  </if>
+		  <if test="status != null ">
+			and u.status = #{status}
+		  </if>
+		  <if test="brandType != null ">
+			and u.brand_type = #{brandType}
+		  </if>
+		  <if test="createDate != null ">
+			and u.create_date = #{createDate}
+		  </if>
+		  <if test="createBy != null ">
+			and u.create_by = #{createBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and u.update_date = #{updateDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and u.update_by = #{updateBy}
+		  </if>
+	</select>
+	
+	<select id="userMakerBrandList" parameterType="java.util.Map" resultType="UserMakerBrandPojo">
+		select
+			u.id as id,
+			u.brand_id as brandId,
+			u.user_id as userId,
+			u.logo as logo,
+			u.brand_name as brandName,
+			u.content as content,
+			u.age_type as ageType,
+			u.skill_type as skillType,
+			u.option_type as optionType,
+			u.product_type as productType,
+			u.registration_certificate as registrationCertificate,
+			u.sorting as sorting,
+			u.status as status,
+			(CASE WHEN u.status = 0 THEN '未审核' WHEN u.status = 1 THEN '审核成功' WHEN u.status = 2 THEN '审核失败' END) as statusName,
+			u.brand_type as brandType,
+			(CASE WHEN u.brand_type = 0 THEN '首页品牌' WHEN u.brand_type = 1 THEN '精选品牌' END) as brandTypeName,
+			u.create_date as createDate,
+			u.create_by as createBy,
+			u.update_date as updateDate,
+			u.update_by as updateBy,
+			s.name as userName,
+			ub.main_category as mainCategory,
+			(select name from product_type pt where pt.id=ub.main_category)as mainCategoryName,
+			s.image as userImage
+		from user_maker_brand u
+		left join sys_login s on u.user_id = s.id left join user_brand ub on ub.id = u.brand_id
+		where 1=1
+			<if test="id != null ">
+			  and u.id = #{id}
+			</if>
+			<if test="userId != null ">
+			  and u.user_id = #{userId}
+			</if>
+			<if test="logo != null and logo != '' ">
+			  and u.logo = #{logo}
+			</if>
+			<if test="userName != null and userName != '' ">
+			  and s.name like CONCAT("%",#{userName},"%")
+		  </if>
+			<if test="brandName != null and brandName != '' ">
+			  and u.brand_name = #{brandName}
+			</if>
+			<if test="brandNames != null and brandNames != '' ">
+			  and u.brand_name like CONCAT("%",#{brandNames},"%")
+			</if>
+			<if test="content != null ">
+			  and u.content = #{content}
+			</if>
+			<if test="ageType != null ">
+			  and u.age_type = #{ageType}
+			</if>
+			<if test="skillType != null ">
+			  and u.skill_type = #{skillType}
+			</if>
+			<if test="optionType != null ">
+			  and u.option_type = #{optionType}
+			</if>
+			<if test="productType != null ">
+			  and u.product_type = #{productType}
+			</if>
+			<if test="sorting != null ">
+			  and u.sorting = #{sorting}
+			</if>
+			<if test="status != null ">
+			  and u.status = #{status}
+			</if>
+			<if test="brandType != null ">
+			  and u.brand_type = #{brandType}
+			</if>
+			<if test="createDate != null ">
+			  and u.create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and u.create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and u.update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and u.update_by = #{updateBy}
+			</if>
+			order by u.update_date desc
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	<select id="findMakerBrandByParams" parameterType="java.util.Map" resultType="UserMakerBrandPojo">
+		select
+			u.id as id,
+			u.user_id as userId,
+			u.logo as logo,
+			u.brand_name as brandName,
+			u.content as content,
+			u.age_type as ageType,
+			(select s.name from sys_dict s where s.value = u.age_type and s.type='user_age') as ageTypeStr,
+			u.skill_type as skillType,
+			(select s.name from sys_dict s where s.value = u.skill_type and s.type='ability') as skillTypeStr,
+			u.option_type as optionType,
+			(select l.name from label_bucket l where l.id = u.option_type) as optionTypeStr,
+			u.product_type as productType,
+			(select pt.name from product_type pt where pt.id = u.product_type) as productTypeStr,
+			u.registration_certificate as registrationCertificate,
+			u.sorting as sorting,
+			u.status as status,
+			(CASE WHEN u.status = 0 THEN '未审核' WHEN u.status = 1 THEN '审核成功' WHEN u.status = 2 THEN '审核失败' END) as statusName,
+			u.brand_type as brandType,
+			(CASE WHEN u.brand_type = 0 THEN '首页品牌' WHEN u.brand_type = 1 THEN '精选品牌' END) as brandTypeName,
+			u.create_date as createDate,
+			u.create_by as createBy,
+			u.update_date as updateDate,
+			u.update_by as updateBy,
+			s.name as userName,
+			s.image as userImage
+		from user_maker_brand u
+		left join sys_login s on u.user_id = s.id
+		where 1=1
+			<if test="id != null ">
+			  and u.id = #{id}
+			</if>
+			<if test="userId != null ">
+			  and u.user_id = #{userId}
+			</if>
+			<if test="logo != null and logo != '' ">
+			  and u.logo = #{logo}
+			</if>
+			<if test="userName != null and userName != '' ">
+			  and s.name like CONCAT("%",#{userName},"%")
+		  </if>
+			<if test="brandName != null and brandName != '' ">
+			  and u.brand_name = #{brandName}
+			</if>
+			<if test="brandNames != null and brandNames != '' ">
+			  and u.brand_name like CONCAT("%",#{brandNames},"%")
+			</if>
+			<if test="content != null ">
+			  and u.content = #{content}
+			</if>
+			<if test="ageType != null ">
+			  and u.age_type = #{ageType}
+			</if>
+			<if test="skillType != null ">
+			  and u.skill_type = #{skillType}
+			</if>
+			<if test="optionType != null ">
+			  and u.option_type = #{optionType}
+			</if>
+			<if test="productType != null ">
+			  and u.product_type = #{productType}
+			</if>
+			<if test="sorting != null ">
+			  and u.sorting = #{sorting}
+			</if>
+			<if test="status != null ">
+			  and u.status = #{status}
+			</if>
+			<if test="brandType != null ">
+			  and u.brand_type = #{brandType}
+			</if>
+			<if test="createDate != null ">
+			  and u.create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and u.create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and u.update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and u.update_by = #{updateBy}
+			</if>
+			order by u.update_date desc,u.create_date desc
+			limit 1
+	</select>
+	
+	<update id="updateUserMakerBrand" parameterType="UserMakerBrandPojo">
+		update user_maker_brand
+		<set>
+			<if test="userId != null">
+			  user_id = #{userId},
+			</if>
+			<if test="logo != null">
+			  logo = #{logo},
+			</if>
+			<if test="brandName != null">
+			  brand_name = #{brandName},
+			</if>
+			<if test="content != null">
+			  content = #{content},
+			</if>
+			<if test="ageType != null">
+			  age_type = #{ageType},
+			</if>
+			<if test="skillType != null">
+			  skill_type = #{skillType},
+			</if>
+			<if test="optionType != null">
+			  option_type = #{optionType},
+			</if>
+			<if test="productType != null">
+			  product_type = #{productType},
+			</if>
+			<if test="registrationCertificate != null">
+				registration_certificate = #{registrationCertificate},
+			</if>
+			<if test="sorting != null">
+			  sorting = #{sorting},
+			</if>
+			<if test="status != null">
+			  status = #{status},
+			</if>
+			<if test="createBy != null">
+			  create_by = #{createBy},
+			</if>	  
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+			update_date = now(),
+			create_date = now(),
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<delete id="deleteUserMakerBrandById" parameterType="int">
+		delete from user_maker_brand 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="addUserMakerBrand" useGeneratedKeys="true" keyProperty="id" parameterType="UserMakerBrandPojo">
+	insert into user_maker_brand (user_id,logo,brand_name,content,age_type,skill_type,option_type,registration_certificate,sorting,status,create_by,create_date,update_by,update_date,brand_id)
+	values(#{userId},#{logo},#{brandName},#{content},#{ageType},#{skillType},#{optionType},#{registrationCertificate},#{sorting},#{status},#{createBy},now(),#{updateBy},now(),#{brandId})	
+	</insert>
+	
+	<update id="checkUserMakerBrand" parameterType="Long">
+		update user_maker_brand set
+			  status = 1,
+			  update_date = now()			
+		where id = #{id}
+	</update>
+	
+	<update id="uncheckUserMakerBrand" parameterType="Long">
+		update user_maker_brand set
+			  status = 2,
+			  update_date = now()			
+		where id = #{id}
+	</update>
+	
+	<update id="changeTypeUserMakerBrand1" parameterType="Long">
+		update user_maker_brand set
+			  brand_type = 0,  
+			  update_date = now()			
+		where id = #{id}
+	</update>
+	
+	<update id="changeTypeUserMakerBrand2" parameterType="Long">
+		update user_maker_brand set
+			  brand_type = 1,  
+			  update_date = now()			
+		where id = #{id}
+	</update>
+</mapper>

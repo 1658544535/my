@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="grouponUserRecord" extends="default">
+		<!-- 进入列表页面 -->
+		<action name="goGrouponUserRecord" class="com.tzmb2c.web.action.GrouponUserRecordAction" method="goGrouponUserRecord">
+			<result name="success">/page/system/grouponUserRecord/grouponUserRecordList.jsp</result>
+		</action>
+		<!-- 新增 -->
+		<action name="goAddGrouponUserRecord" class="com.tzmb2c.web.action.GrouponUserRecordAction" method="goAddGrouponUserRecord">
+		    <result name="success">/page/system/grouponUserRecord/addGrouponUserRecord.jsp</result>
+		</action>
+		<!-- 新增提交 -->
+		<action name="addGrouponUserRecord" class="com.tzmb2c.web.action.GrouponUserRecordAction" method="add">
+		</action>		
+		<!-- 编辑页面 -->
+		<action name="goEditGrouponUserRecord" class="com.tzmb2c.web.action.GrouponUserRecordAction" method="goEditGrouponUserRecord">
+			<result name="success">/page/system/grouponUserRecord/updateGrouponUserRecord.jsp</result>
+		</action>
+		<!-- 编辑提交 -->
+		<action name="updateGrouponUserRecord" class="com.tzmb2c.web.action.GrouponUserRecordAction" method="update">
+		</action>
+	</package>
+	<package name="grouponUserRecord-json" extends="json-default">
+		<!-- 内容 -->
+		<action name="grouponUserRecordList" class="com.tzmb2c.web.action.GrouponUserRecordAction" method="grouponUserRecordList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="grouponUserRecordCnt" class="com.tzmb2c.web.action.GrouponUserRecordAction" method="grouponUserRecordRowCnt">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+		<!-- 根据ID删除 -->
+		<action name="delGrouponUserRecord" class="com.tzmb2c.web.action.GrouponUserRecordAction" method="delete">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+		<!-- 删除选中 -->
+		<action name="delGrouponUserRecordAll" class="com.tzmb2c.web.action.GrouponUserRecordAction" method="deleteAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 通过审核 -->
+		<action name="checkGrouponUserRecord" class="com.tzmb2c.web.action.GrouponUserRecordAction" method="check">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 取消审核 -->
+		<action name="uncheckGrouponUserRecord" class="com.tzmb2c.web.action.GrouponUserRecordAction" method="uncheck">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中通过审核 -->
+		<action name="checkGrouponUserRecordAll" class="com.tzmb2c.web.action.GrouponUserRecordAction" method="checkAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中取消审核 -->
+		<action name="uncheckGrouponUserRecordAll" class="com.tzmb2c.web.action.GrouponUserRecordAction" method="uncheckAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+	</package>
+</struts>

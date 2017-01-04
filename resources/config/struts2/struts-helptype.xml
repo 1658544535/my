@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="helpttype" extends="default">
+
+		<!-- 帮助类型 -->
+		<action name="helpTypeManage" class="com.tzmb2c.web.action.HelpTypeAction" method="getCountHelpType">
+			<result>/page/system/help/helpTypeList.jsp</result>
+		</action>
+		
+		
+		
+		<!-- 添加帮助类型-->
+		<action name="gohelpTypeAdd" class="com.tzmb2c.web.action.HelpTypeAction" method="gohelpTypeAdd">
+			<result>/page/system/help/helpTypeAdd.jsp</result>
+		</action>
+		
+		<action name="helpTypeAdd" class="com.tzmb2c.web.action.HelpTypeAction" method="helpTypeAdd">
+		</action> 
+
+		<!-- go修改帮助类型-->
+		<action name="goFindHelpType" class="com.tzmb2c.web.action.HelpTypeAction" method="goFindHelpType">
+			<result>/page/system/help/helpTypeUpdate.jsp</result>
+		</action>
+		
+		<!-- 修改帮助类型 -->
+		<action name="helpTypeUpdate" class="com.tzmb2c.web.action.HelpTypeAction" method="helpTypeUpdate">
+		</action> 
+
+		
+		
+		<!--  
+		<action name="ProductTypeDeleteId" class="com.tzmb2c.web.action.HelpTypeAction" 
+			method="ProductTypeDeleteId">
+		</action>
+		-->
+		<!-- 审核全部 -->
+		<action name="allCheckHelpType" class="com.tzmb2c.web.action.HelpTypeAction"
+			method="allCheckHelpType">
+		</action>
+		
+	</package>
+	
+	<package name="helpttype-json" extends="json-default">
+		<!-- 审核 -->
+		<action name="checkHelpType" class="com.tzmb2c.web.action.HelpTypeAction"
+			method="checkHelpType">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		<!-- 删除帮助类型成功回调 -->
+		<action name="deleHelpType" class="com.tzmb2c.web.action.HelpTypeAction"
+			method="deleHelpType">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		<!--平台入口-->
+		<action name="getCountHelpType" class="com.tzmb2c.web.action.HelpTypeAction" method="getCountHelpType">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+
+		<!-- 根据父类查找对应类型 -->
+		<action name="getHelpTypeByPid" class="com.tzmb2c.web.action.HelpTypeAction"
+			method="getHelpTypeByPid">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+	</package>
+	
+</struts>

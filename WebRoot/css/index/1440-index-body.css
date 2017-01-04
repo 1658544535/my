@@ -1,0 +1,12 @@
+@CHARSET "UTF-8";
+
+.main-iframe-div {
+	width: 99%;
+	height: 99%;
+	margin: auto;
+}
+
+.main-iframe {
+	width: 100%;
+	height: 100%;
+}

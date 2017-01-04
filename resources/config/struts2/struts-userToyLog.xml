@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="userToyLog" extends="default">
+		<action name="userToyLogList" class="com.tzmb2c.web.action.UserToyLogAction" method="UserToyLogListCount">
+			<result name="success">/page/system/factoryToy/toyLogList.jsp</result>
+		</action>
+		<action name="ToySendOut" class="com.tzmb2c.web.action.UserToyLogAction" method="ToySendOut">
+			<result name="success">/page/system/factoryToy/sendOutInfo.jsp</result>
+		</action>
+		<action name="updateToySendOut" class="com.tzmb2c.web.action.UserToyLogAction" method="updateToySendOut">
+		</action>
+	</package>
+	
+	<package name="userToyLog-json" extends="json-default">
+		<action name="UserToyLogfindAll" class="com.tzmb2c.web.action.UserToyLogAction"
+			method="UserToyLogfindAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="UserToyLogListCount" class="com.tzmb2c.web.action.UserToyLogAction" method="UserToyLogListCount">
+				<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+	</package>
+</struts>

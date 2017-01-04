@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.AgencyCollectMapper">
+
+<!-- 插入批发商（代理商）产品库表 -->
+<insert id="insertAgencyCollect" parameterType="agencyCollectPojo">
+		insert into
+		user_agency_collect(uid,agency_id,product_id,agency_stock,is_export,create_by,create_date,update_by,update_date,remarks,version)
+		values(#{uid},#{agency_id},#{product_id},#{agency_stock},#{is_export},#{create_by},now(),#{update_by},now(),#{remarks},#{version})
+	</insert>
+
+<select id="findagencyCollectById" parameterType="agencyCollectPojo" resultType="agencyCollectPojo" >
+		select  t.id,t.uid,t.agency_id,t.product_id,t.agency_stock
+		from user_agency_collect t  where 1=1 
+		 
+		<if test="uid!=null and uid!=0 ">
+			and t.uid = #{uid}
+		</if>
+		<if test="product_id!=null and product_id!=0 ">
+			and t.product_id =  #{product_id}
+		</if>
+		<if test="agency_id!=null and agency_id!=0 ">
+			and agency_id = #{agency_id}
+		</if>
+	</select>
+	
+	
+	<select id="findagencyCollectByUid" parameterType="java.util.Map" resultType="agencyCollectPojo" >
+		select  t.id,t.uid,t.agency_id,t.product_id,t.uid,t.agency_stock,p.product_name as productName,p.product_num as productNum,p.selling_price as originalPrice,p.distribution_price as sellingPrice,p.image
+		from user_agency_collect t left join product p on
+		t.product_id =p.id where 1=1 
+		 
+		<if test="uid!=null and uid!=0 ">
+			and t.uid = #{uid}
+		</if>
+		<if test="agency_id!=null and agency_id!=0 ">
+			and agency_id = #{agency_id}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+
+   <update id="updatAagencyNumWeb" parameterType="agencyCollectPojo">
+	
+		update user_agency_collect set agency_stock =#{agency_stock} where product_id = #{id} and uid = #{uid}
+	</update>
+	
+	<update id="updatAagencyCollect" parameterType="agencyCollectPojo">
+		update user_agency_collect set agency_stock = #{agency_stock} where id = #{id}
+	</update>
+
+   <delete id="delNotCheckProduct" parameterType="java.util.Map">
+		delete from user_agency_collect where agency_id = #{agency_id} and product_id not in 
+		<foreach item="item" index="index" collection="pids"   
+                        open="(" separator="," close=")">  
+                       #{item}
+        </foreach>  
+	</delete>
+	
+	<delete id="delCheckProduct" parameterType="agencyCollectPojo">
+		delete from user_agency_collect where agency_id = #{agency_id} and product_id = #{product_id}
+	</delete>
+	
+	<delete id="delAgencyCollectById" parameterType="Long">
+		delete from user_agency_collect where id = #{id}
+	</delete>
+	
+	<select id="agencyCollectCount" parameterType="java.util.Map" resultType="int" >
+		select  
+		count(*)
+		from user_agency_collect t 
+		left join product p on t.product_id =p.id 
+		left join sys_login s on p.user_id =s.id 
+		where 1=1 
+		<if test="uid!=null and uid!=0 ">
+			and t.uid = #{uid}
+		</if>
+		<if test="agency_id!=null and agency_id!=0 ">
+			and t.agency_id = #{agency_id}
+		</if>
+		<if test="productName!=null and productName!='' ">
+			and p.product_name like concat("%", #{productName},"%")
+		</if>
+		<if test="productNum!=null and productNum!='' ">
+			and p.product_num = #{productNum}
+		</if>
+	</select>
+	<select id="agencyCollectList" parameterType="java.util.Map" resultType="agencyCollectPojo" >
+		select  
+		t.id,
+		t.uid,
+		t.agency_id,
+		t.product_id,
+		t.agency_stock,
+		p.product_no as productNo,
+		p.product_num as productNum,
+		p.image as productImage,
+		p.product_name as productName,
+		p.distribution_price as sellingPrice,
+		p.user_id as puserId,
+		s.name as manuName,
+		p.product_type_id as productTypeId,
+		(select pt.name from product_type pt where p.product_type_id = pt.id) as productTypeName
+		from user_agency_collect t 
+		left join product p on t.product_id =p.id 
+		left join sys_login s on p.user_id =s.id 
+		where 1=1 
+		<if test="uid!=null and uid!=0 ">
+			and t.uid = #{uid}
+		</if>
+		<if test="agency_id!=null and agency_id!=0 ">
+			and t.agency_id = #{agency_id}
+		</if>
+		<if test="productName!=null and productName!='' ">
+			and p.product_name like concat("%", #{productName},"%")
+		</if>
+		<if test="productNum!=null and productNum!='' ">
+			and p.product_num = #{productNum}
+		</if>
+		order by t.id desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+		
+<select id="findagencyCollectByProductId" parameterType="java.util.Map" resultType="Long" >
+		select count(*) from user_agency_collect where product_id = #{id} and agency_id = #{agencyId}
+	</select>
+</mapper>
+

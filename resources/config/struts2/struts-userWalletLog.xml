@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="userWalletLog" extends="default">
+		<!-- 显示页面 -->
+		<action name="userWalletLog" class="com.tzmb2c.web.action.UserWalletLogAction" method="userWalletLogCount">
+			<result name="success">/page/system/wallet/userWalletLog.jsp</result>
+		</action>	
+		<!-- 删除 -->
+		<action name="delUserWalletLog" class="com.tzmb2c.web.action.UserWalletLogAction" method="delUserWalletLog">
+		</action>
+		<!-- 批量删除 -->
+		<action name="delUserWalletLogAll" class="com.tzmb2c.web.action.UserWalletLogAction" method="delUserWalletLogAll">
+		</action>
+		<!-- 编辑(跳转) -->
+		<!-- <action name="goUpdateUserWalletLog" class="com.tzmb2c.web.action.UserWalletLogAction" method="goUpdateUserWalletLog">
+			<result name="success">/page/system/wallet/updateUserWalletLog.jsp</result>
+		</action> -->
+	    <!-- 编辑 -->
+		<!-- <action name="updateUserWalletLog" class="com.tzmb2c.web.action.UserWalletLogAction" method="updateUserWalletLog">
+		</action> -->		
+		<!-- 新增（跳转）-->
+		<action name="goAddUserWalletLog" class="com.tzmb2c.web.action.UserWalletLogAction" method="goAddUserWalletLog">
+			<result name="success">/page/system/wallet/addUserWalletLog.jsp</result>
+		</action>	
+		<!-- 提交新增 -->
+		<action name="addUserWalletLog" class="com.tzmb2c.web.action.UserWalletLogAction" method="addUserWalletLog">			
+		</action>		
+		<!-- 钱包流水导出 -->
+		<action name="getWalletLogExcel" class="com.tzmb2c.web.action.UserWalletLogAction" method="getWalletLogExcel">			
+		</action>
+	</package>
+	<package name="userWalletLog-json" extends="json-default">
+		<!-- 明细列表 -->
+		<action name="userWalletLogAll" class="com.tzmb2c.web.action.UserWalletLogAction" method="userWalletLogAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 明细条数 -->
+		<action name="userWalletLogCount" class="com.tzmb2c.web.action.UserWalletLogAction" method="userWalletLogCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>		
+	</package>
+</struts>

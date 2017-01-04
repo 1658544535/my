@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="childrenChannelHistory" extends="default">
+	<!-- 少儿频道浏览记录列表 -->
+	<action name="childrenChannelHistory" class="com.tzmb2c.web.action.ChildrenChannelHistoryAction" method="findChildrenChannelHistoryCount">
+			<result>/page/system/childrenChannelHistory/childrenChannelHistoryList.jsp</result>
+	</action>
+	</package>
+	<package name="childrenChannelHistory-json" extends="json-default">
+	    <action name="findChildrenChannelHistoryList" class="com.tzmb2c.web.action.ChildrenChannelHistoryAction" method="findChildrenChannelHistoryList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="findChildrenChannelHistoryCount" class="com.tzmb2c.web.action.ChildrenChannelHistoryAction" method="findChildrenChannelHistoryCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+	    <action name="delChildrenChannelHistory" class="com.tzmb2c.web.action.ChildrenChannelHistoryAction" method="delChildrenChannelHistory">
+	    	<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

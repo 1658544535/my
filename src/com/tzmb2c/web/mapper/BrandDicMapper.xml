@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tzmb2c.web.mapper.BrandDicMapper">
+<select id="findBrandDicList" resultType="BrandDicPojo" parameterType="java.util.Map">
+		select
+			b.id          as id,
+		    b.brand       as brand,
+			b.logo        as logo,
+			b.sorting     as sorting,
+			b.status      as status,
+			(CASE WHEN b.status = 0 THEN '未审核' WHEN b.status = 1 THEN '已审核' END) as statusName,
+			b.create_date as createDate,
+			b.update_date as updateDate
+        from brand_dic b 
+	    where 
+	    <if test="option == null">
+			1=1
+		</if>
+		<if test="option != null">
+			1=0
+		</if>
+	    <if test="brand != null and brand != '' ">
+			and b.brand like concat("%",#{brand},"%")
+		</if>
+		<if test="status!=null">
+			and b.status = #{status}
+		</if>
+		<if test="panduan!=1">
+			order by b.update_date desc 
+		</if>
+        <if test="panduan==1">
+			order by b.create_Date desc 
+		</if>
+		<if test="pageNo != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+</select>
+
+<select id="findBrandActivityList" resultType="BrandDicPojo" parameterType="java.util.Map">
+		select b.logo as logo,
+		s.* 
+		from (select s.user_brand_id,
+		s.begin_time,
+		s.update_date,
+		s.activity_id as activityId,
+		s.title as title 
+		from special_show s 
+		where 1=1 
+		<if test="isdelete != null and isdelete != '' ">
+			and s.isdelete = #{isdelete} 
+		</if>
+		<if test="currentTimeStr != null and currentTimeStr !='' ">
+			and str_to_date(s.begin_time,'%Y-%m-%d %H:%i:%s') &lt;= #{currentTimeStr} 
+			and str_to_date(s.end_time,'%Y-%m-%d %H:%i:%s') &gt; #{currentTimeStr} 
+		</if>
+		<if test="status != null">
+			and s.status = #{status} 
+		</if>
+		order by s.begin_time desc,s.update_date desc 
+		) s 
+		left join user_brand u on u.id = s.user_brand_id 
+		left join brand_dic b on b.id = u.brand_id 
+		where b.id !=10000
+		group by b.id 
+		order by s.begin_time desc,s.update_date desc 
+		<if test="pageNo != null">
+			limit #{pageNo},#{pageSize}
+		</if>
+</select>
+
+<select id="findBrandDicCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from brand_dic b 
+		where 1=1
+		<if test="brand != null">
+			and b.brand like concat("%",#{brand},"%")
+		</if>
+		<if test="status!=null">
+			and b.status = #{status}
+		</if>
+</select>
+<!-- 查找单条(id) -->
+<select id="findBrandDicById" resultType="BrandDicPojo" parameterType="Long">
+		select
+		    b.id      as id,
+		    b.brand   as brand,
+			b.logo    as logo,
+			b.sorting as sorting,
+			b.status  as status,
+			(CASE WHEN b.status = 0 THEN '未审核' WHEN b.status = 1 THEN '已审核' END) as statusName,
+			b.create_date as createDate,
+			b.update_date as updateDate
+        from brand_dic b 
+		where
+		b.id=#{id}
+</select>
+<!--加入某条-->
+<insert id="insertBrandDic" parameterType="BrandDicPojo" useGeneratedKeys="true" keyProperty="id" >
+		insert into brand_dic  (brand,logo,sorting,status,create_date,update_date)
+		values(#{brand},#{logo},#{sorting},#{status},now(),now())
+</insert>
+<!-- 删除单条(id) -->
+<delete id="delBrandDic" parameterType="BrandDicPojo">
+		delete from brand_dic  where id = #{id}
+</delete>
+<!-- 审核单条(id) -->
+<update id="checkBrandDic" parameterType="BrandDicPojo">
+		update brand_dic  set
+		status = 1,
+		update_date = now()
+		where 
+		id = #{id}
+<!-- 取审单条(id) -->
+</update>
+<update id="uncheckBrandDic" parameterType="BrandDicPojo">
+		update brand_dic b set
+		status = 0,
+		update_date = now()
+		where 
+		id = #{id}
+</update>
+<!--编辑单条-->
+<update id="updateBrandDic" parameterType="BrandDicPojo">
+		update brand_dic set
+        <if test="brand != null">
+			brand = #{brand},
+		</if>
+		<if test="logo != null and logo !=''">
+			logo = #{logo},
+		</if>
+		<if test="sorting != null">
+			sorting = #{sorting},
+		</if>
+		<if test="status != null">
+			status = #{status},
+		</if>
+		update_date = now()
+		where
+		id=#{id}
+</update>
+</mapper>

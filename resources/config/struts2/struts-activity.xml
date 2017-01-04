@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="activity" extends="default">
+		<!--app活动列表-->
+		<action name="pushAppManage" class="com.tzmb2c.web.action.ActivityAction" method="pushAppList">
+			<result name="success">/page/system/notice/appActivity.jsp</result>
+		</action>
+		<action name="activityAdd" class="com.tzmb2c.web.action.ActivityAction" method="activityAdd">
+			<result name="success">/page/system/notice/activityAdd.jsp</result>
+		</action>
+		<action name="addActivity" class="com.tzmb2c.web.action.ActivityAction" method="addActivity">
+		   <result name="success">/page/system/notice/activityAdd.jsp</result>
+		</action>
+		<!-- 删除 -->
+		<action name="delActivity" class="com.tzmb2c.web.action.ActivityAction"
+			method="delActivity">
+		</action>
+		  <!-- 编辑 -->
+		<action name="goUpdateActivity" class="com.tzmb2c.web.action.ActivityAction"
+			method="goFindActivity">
+			<result>/page/system/notice/updateActivity.jsp</result>
+		</action>
+		<!-- 更新 -->
+		<action name="updateActivity" class="com.tzmb2c.web.action.ActivityAction"
+			method="updateActivity">
+		</action>
+	</package>
+	
+	<package name="activity-json" extends="json-default">
+		<action name="pushAppList" class="com.tzmb2c.web.action.ActivityAction"
+			method="pushAppList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="pushAppListcount" class="com.tzmb2c.web.action.ActivityAction" method="pushAppListCount">
+				<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		<action name="delActivity" class="com.tzmb2c.web.action.ActivityAction" method="delActivity">
+				<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

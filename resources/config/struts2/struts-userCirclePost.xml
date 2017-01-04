@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="userCirclePost" extends="default">
+	<!-- 笔记列表 -->
+	<action name="userCirclePost" class="com.tzmb2c.web.action.UserCirclePostAction" method="findUserCirclePostCount">
+			<result>/page/system/userCirclePost/userCirclePostList.jsp</result>
+		</action>
+	<action name="findUserCirclePostById" class="com.tzmb2c.web.action.UserCirclePostAction" method="findUserCirclePostById">
+			<result>/page/system/userCirclePost/userCirclePostSet.jsp</result>
+		</action>
+	<!--跳转指编辑页面-->
+	<action name="updateUserCirclePostList" class="com.tzmb2c.web.action.UserCirclePostAction" method="updateUserCirclePostList">
+			<result name="success">/page/system/userCirclePost/updateUserCirclePostList.jsp</result>
+			<result name="oldVersion">/page/system/userCirclePost/oldUpdateUserCirclePostList.jsp</result>
+        </action>	
+	<action name="checkUserCirclePostAll" class="com.tzmb2c.web.action.UserCirclePostAction" method="checkUserCirclePostAll">
+		</action>
+	<action name="delUserCirclePostAll" class="com.tzmb2c.web.action.UserCirclePostAction" method="delUserCirclePostAll">
+	    </action>
+	<!--跳转指新增页面-->
+	<action name="addUserCirclePost" class="com.tzmb2c.web.action.UserCirclePostAction" method="addUserCirclePost">
+			<result name="success">/page/system/userCirclePost/addUserCirclePostList.jsp</result>
+	    </action>
+	</package>
+	
+	
+	<package name="userCirclePost-json" extends="json-default">
+	 	<action name="findUserCirclePostList" class="com.tzmb2c.web.action.UserCirclePostAction" method="findUserCirclePostList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="findUserCirclePostCount" class="com.tzmb2c.web.action.UserCirclePostAction" method="findUserCirclePostCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+	 <action name="checkUserCirclePost" class="com.tzmb2c.web.action.UserCirclePostAction" method="checkUserCirclePost">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+	 <action name="uncheckUserCirclePost" class="com.tzmb2c.web.action.UserCirclePostAction" method="uncheckUserCirclePost">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+	<action name="delUserCirclePost" class="com.tzmb2c.web.action.UserCirclePostAction" method="delUserCirclePost">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		<!--提交新增-->
+		<action name="insertUserCirclePost" class="com.tzmb2c.web.action.UserCirclePostAction" method="insertUserCirclePost">
+	    	<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+	    </action>
+	    <!-- 图片上传 -->
+		<action name="postImgUpfile" class="com.tzmb2c.web.action.UserCirclePostAction" method="postImgUpfile">
+			<result type="json">
+				<param name="root">dataMap</param>
+			</result>
+		</action>
+		<!--提交编辑-->
+		<action name="updateUserCirclePost" class="com.tzmb2c.web.action.UserCirclePostAction" method="updateUserCirclePost">
+	    	<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+	    </action>
+	</package>
+</struts>

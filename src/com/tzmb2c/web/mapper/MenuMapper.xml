@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.MenuMapper">
+
+	<!-- <cache/> -->
+
+	<select id="getMenuPojoByUserId" parameterType="Long"
+		resultType="menuPojo">
+		select t2.id as id, t2.name as name, t2.name_en as nameEn
+		,t2.level as level, t2.path as path,t2.icon as icon,t2.sorting as
+		sorting ,t2.status as status
+		from sys_user_role t, sys_role_menu t1,
+		sys_menu t2
+		where t.user_id =
+		#{userId}
+		and t.role_id = t1.role_id
+		and
+		t1.menu_id = t2.id order by
+		t2.sorting
+	</select>
+
+
+	<select id="getMenuPojoByMenuLevel" parameterType="Long"
+		resultType="menuPojo">
+		select t.id as id, t.name as name, t.name_en as nameEn
+		,t.level as level, t.path as path,t.icon as icon,t.sorting as sorting
+		,t.status as status from
+		sys_menu t where t.level = #{level} and t.status=1 order by
+		t.sorting
+	</select>
+
+	<select id="getMenuAll" resultType="menuPojo">
+		select t.id as id, t.name as
+		name, t.name_en as nameEn ,t.level as level, t.path as path,t.icon as
+		icon,t.sorting as sorting ,t.status as status
+		from sys_menu t order by
+		t.sorting
+	</select>
+
+	<select id="getfindByIdMenu" parameterType="Long" resultType="menuPojo">
+		select t.id as id, t.name as name, t.name_en as nameEn ,t.level as
+		level, (select b.name from sys_menu b where b.id=t.level) as levelName ,t.path as path,t.icon as icon,t.sorting as sorting ,t.status as
+		status, t.create_by as createBy,t.create_date as
+		createDate,t.update_by as updateBy,t.update_date as updateDate
+		from
+		sys_menu t where
+		t.id = #{id} order by t.sorting
+	</select>
+
+	<select id="getMenuCountByMenuLevel" parameterType="Long"
+		resultType="menuPojo">
+		select count(t.id) as menuCount from sys_menu t where
+		t.level = #{level} order by t.sorting
+	</select>
+
+
+	<insert id="insertMenu" parameterType="menuPojo">
+		insert into
+		sys_menu(id,name,level,path,icon,name_en,sorting,status,create_by,create_date,update_by,update_date,remarks,version)
+		values(#{id},#{name},#{level},#{path},#{icon},#{nameEn},#{sorting},#{status},#{createBy},#{createDate},#{updateBy},#{updateDate},#{remarks},#{version})
+	</insert>
+
+	<delete id="deleteMenu" parameterType="Long">
+		delete sys_menu where id =
+		#{id}
+	</delete>
+
+	<update id="updateMenu" parameterType="menuPojo">
+
+		update sys_menu set
+		id = #{id},
+		name = #{name},
+		name_en =#{nameEn},
+		level =#{level},
+		path =#{path},
+		icon =#{icon},
+		sorting =#{sorting},
+		status =#{status},
+		update_by
+		=#{updateBy},
+		update_date =#{updateDate},
+		remarks =#{remarks},
+		version
+		=#{version}
+		where id = #{id}
+
+	</update>
+
+</mapper>

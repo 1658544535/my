@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimal-ui, user-scalable=0" name="viewport">
+<title>分享</title>
+<style>
+html,body{width:100%;margin:0;padding:0;font-family:'微软雅黑';}
+html{font-size:12px;-webkit-text-size-adjust:none;}
+body,div,ul,li,h1,h2,h3,h4,p,dl,dt,dd{margin:0px;padding:0px;}
+h1,h2,h3,h4,h5{font-size:1rem;font-weight:normal;}
+a{-webkit-tap-highlight-color:rgba(0,0,0,0);outline:none;text-decoration:none;}
+input[type="text"],input[type="password"]{-webkit-appearance:none;appearance:none;outline:none;-webkit-tap-highlight-color:rgba(0,0,0,0);border-radius:0;}
+ul,li{list-style:none;}
+table{border-collapse:collapse;}
+img{max-width:100%;border:none;-webkit-touch-callout:none;}
+
+.header{height:47px;padding:0 10px;background-color:#ffd714;background-image:url(images/logo01.png);background-repeat:no-repeat;background-size:47px auto;background-position:10px center;}
+.header h1{margin-left:67px;font-size:14px;color:#333;font-weight:bold;padding:6px 0 0 0;}
+.header h3{margin-left:67px;font-size:13px;color:#333;}
+.header a{position:absolute;top:0;right:10px;padding-left:29px;font-size:14px;color:#c70041;line-height:47px;background:url(images/share_login.png) no-repeat 6px center;background-size:17px auto;}
+.mainTxt{margin:10px 10px 0 10px;font-size:14px;color:#333;text-align:justify;line-height:20px;}
+.link{margin:0 10px 10px;font-size:14px;color:#666;}
+.link dt{padding:6px 0 3px;}
+.link dd a{display:block;}
+.link dd img{display:block;width:100%;height:auto;}
+.footer{position:fixed;bottom:0;left:0;width:100%;}
+.footer .download{position:relative;background:#ffd714;padding-bottom:15.2%;}
+.footer .download .logo{position:absolute;left:0;bottom:0;width:60%;}
+.footer .download .logo img{display:block;width:100%;height:auto;}
+.download_btn{position:absolute;width:27.2%;left:62.66667%;top:22.81%;}
+.download_btn img{display:block;width:100%;height:auto;}
+.download_close{position:absolute;right:0;top:0;width:6%;padding-bottom:6%;background:url(images/share_download_close.png) no-repeat 50% 50%;background-size:9px 9px;cursor:pointer;}
+
+.footer .option{background:#fff;padding:5px 10px;height:34px;}
+.footer .option a{display:inline-block;vertical-align:middle;height:34px;line-height:34px;}
+.footer .option a.next{float:right;color:#666;font-size:18px;}
+.footer .option a.like{margin-left:20px;padding-left:28px;color:#666;font-size:18px;background:url(images/share_like.png) no-repeat left center;background-size:18px auto;}
+</style>
+</head>
+
+<body>
+
+    <div class="wraper">
+        <div class="header">
+            <h1>淘竹马</h1>
+            <h3>您身边的玩具专家</h3>
+            <a href="#">登录</a>
+        </div>
+
+        <div class="mainTxt">天惶惶地惶惶，我家有个夜哭郎！宝宝不睡，妈天惶惶地惶惶，我家有个夜哭郎！宝宝不睡，妈天惶惶地惶惶，我家有个夜哭郎！宝宝不睡，妈天惶惶地惶惶，我家有个夜哭郎！宝宝不睡，妈天惶惶地惶惶，我家有个夜哭郎！宝宝不睡，妈天惶惶地惶惶，我家有个夜哭郎！宝宝不睡，妈天惶惶地惶惶，我家有个夜哭郎！宝宝不睡，妈</div>
+
+        <dl class="link">
+            <dt>点击下图，观看《大咖对奇葩》第四集</dt>
+            <dd><a href="#"><img src="images/img1.jpg" /></a></dd>
+            <dt>点击下图，观看《大咖对奇葩》第四集</dt>
+            <dd><a href="#"><img src="images/img1.jpg" /></a></dd>
+            <dt>点击下图，观看《大咖对奇葩》第四集</dt>
+            <dd><a href="#"><img src="images/img1.jpg" /></a></dd>
+            <dt>点击下图，观看《大咖对奇葩》第四集</dt>
+            <dd><a href="#"><img src="images/img1.jpg" /></a></dd>
+        </dl>
+
+        <div style="height:45px;"></div>
+        <div class="footer">
+            <div id="download" class="download">
+                <div class="logo"><img src="images/share_footer.png" /></div>
+                <a class="download_btn" href="#"><img src="images/share_download.png" /></a>
+                <span class="download_close" id="download_close"></span>
+            </div>
+            <div class="option">
+                <a href="#"><img src="images/share_suggestion.png" width="150" height="34" /></a>
+                <a href="#" class="like">999</a>
+                <a href="#" class="next">下一篇</a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.getElementById("download_close").onclick = function(){
+            document.getElementById("download").style.display = "none";
+        }
+    </script>
+
+</body>
+</html>

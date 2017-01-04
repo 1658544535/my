@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+	<package name="redpacketCode" extends="default">
+		<!-- 红包邀请码记录 -->
+		<action name="redpacketCodeList" class="com.tzmb2c.web.action.RedpacketCodeAction" method="redpacketCodeListCount">
+			<result name="success">/page/system/redpacketCode/redpacketCodeList.jsp</result>
+		</action>
+		
+		<!-- 新增红包邀请码 -->
+		<action name="addRedpacketCode" class="com.tzmb2c.web.action.RedpacketCodeAction" method="addRedpacketCode">
+			<result name="success">/page/system/redpacketCode/addRedpacketCode.jsp</result>
+		</action>
+		
+		<!-- 新增红包邀请码提交 -->
+		<action name="addRedpacketCodeOk" class="com.tzmb2c.web.action.RedpacketCodeAction" method="addRedpacketCodeOk">
+		</action>
+		
+		
+	</package>
+	<package name="redpacketCode-json" extends="json-default">
+		<!-- 红包邀请码记录列表 -->
+		<action name="redpacketCodeListAll" class="com.tzmb2c.web.action.RedpacketCodeAction" method="redpacketCodeListAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<!-- 红包邀请码记录 -->
+		<action name="redpacketCodeListCount" class="com.tzmb2c.web.action.RedpacketCodeAction" method="redpacketCodeListCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		
+		
+	</package>
+</struts>

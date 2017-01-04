@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.HotBrandRecommendMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		hbr.id as id,
+		hbr.brand_id as brandId,
+		ub.user_id as userId,
+		bd.brand as name,
+		bd.logo as image,
+		hbr.sorting as sorting,
+		hbr.create_date as createDate,
+		hbr.create_by as createBy,
+		hbr.update_date as updateDate,
+		hbr.update_by as updateBy
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="HotBrandRecommendPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			hot_brand_recommend hbr
+		left join user_brand ub on hbr.brand_id = ub.id
+		left join brand_dic bd on ub.brand_id = bd.id
+		where
+			hbr.id = #{id}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from hot_brand_recommend hbr 
+		left join user_brand ub on hbr.brand_id = ub.id
+		left join brand_dic bd on ub.brand_id = bd.id
+		where 1=1
+		  <if test="id != null ">
+			and hbr.id = #{id}
+		  </if>
+		  <if test="brandId != null ">
+			and hbr.brand_id = #{brandId}
+		  </if>
+		  <if test="sorting != null ">
+			and hbr.sorting = #{sorting}
+		  </if>
+		  <if test="createDate != null ">
+			and hbr.create_date = #{createDate}
+		  </if>
+		  <if test="createBy != null ">
+			and hbr.create_by = #{createBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and hbr.update_date = #{updateDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and hbr.update_by = #{updateBy}
+		  </if>
+		  <if test="brandStatus != null ">
+			and ub.status = #{brandStatus}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="HotBrandRecommendPojo">
+		select
+			<include refid="Base_Column_List" />
+		from hot_brand_recommend hbr
+		left join user_brand ub on hbr.brand_id = ub.id
+		left join brand_dic bd on ub.brand_id = bd.id
+		where 1=1
+			<if test="id != null ">
+			  and hbr.id = #{id}
+			</if>
+			<if test="brandId != null ">
+			  and hbr.brand_id = #{brandId}
+			</if>
+			<if test="sorting != null ">
+			  and hbr.sorting = #{sorting}
+			</if>
+			<if test="createDate != null ">
+			  and hbr.create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and hbr.create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and hbr.update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and hbr.update_by = #{updateBy}
+			</if>
+		  	<if test="brandStatus != null ">
+			  and ub.status = #{brandStatus}
+		  	</if>			
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="HotBrandRecommendPojo">
+		update hot_brand_recommend
+		<set>
+			<if test="brandId != null">
+			  brand_id = #{brandId},
+			</if>
+			<if test="sorting != null">
+			  sorting = #{sorting},
+			</if>
+			<if test="createDate != null">
+			  create_date = #{createDate},
+			</if>
+			<if test="createBy != null">
+			  create_by = #{createBy},
+			</if>
+			<if test="updateDate != null">
+			  update_date = #{updateDate},
+			</if>
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from hot_brand_recommend 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="HotBrandRecommendPojo">
+		insert into hot_brand_recommend
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="brandId != null">
+				brand_id,
+			</if>
+			<if test="sorting != null">
+				sorting,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+			<if test="updateDate != null">
+				update_date,
+			</if>
+			<if test="updateBy != null">
+				update_by,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="brandId != null">
+				#{brandId},
+			</if>
+			<if test="sorting != null">
+				#{sorting},
+			</if>
+			<if test="createDate != null">
+				#{createDate},
+			</if>
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+			<if test="updateDate != null">
+				#{updateDate},
+			</if>
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+		</trim>
+	</insert>
+	
+</mapper>

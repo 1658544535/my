@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.AlipayOrderInfoMapper">
+
+	<!-- 插入单条 -->
+	<insert id="insertOne" parameterType="AlipayOrderInfoPojo">
+		insert into alipay_order_info
+		(id,out_trade_no,trade_no,buyer_email,buyer_id,total_fee,trade_status,create_by,create_date,update_by,update_date,remarks,version,pay_type)
+		values
+		(#{id}, #{outTradeNo},#{tradeNo},
+		#{buyerEmail},#{buyerId},#{totalFee},#{tradeStatus},#{createBy},
+		#{createDate},#{updateBy},#{updateDate},#{remarks},#{version},#{payType})
+	</insert>
+
+	<!--更新 订单状态-->
+	<update id="updateOrder" parameterType="AlipayOrderInfoPojo">
+		update alipay_order_info io set
+		trade_no=#{tradeNo},buyer_email=#{buyerEmail},
+		buyer_id=#{buyerId},trade_status=#{tradeStatus},
+		<if test="remarks!=null and remarks !='' ">
+			remarks=#{remarks},
+		</if>
+		update_date=#{updateDate},update_by=#{updateBy},create_date=#{updateDate}
+		where
+		io.out_trade_no = #{outTradeNo}
+	</update>
+	
+	<!--更新 订单支付方式-->
+	<update id="updatePayType" parameterType="AlipayOrderInfoPojo">
+		update alipay_order_info io set
+		pay_type=#{payType}
+		where
+		io.out_trade_no = #{outTradeNo}
+	</update>
+	
+	<!-- 查找单条 -->
+	<select id="findPayInfoByTradeNo" resultType="AlipayOrderInfoPojo" parameterType="String">
+		select 
+		id as id,
+		out_trade_no as outTradeNo,
+		trade_no as tradeNo,
+		buyer_Email as buyerEmail,
+		buyer_id as buyerId,
+		total_fee as totalFee,
+		trade_status as tradeStatus,
+		pay_type as payType,
+		out_refund_no as outRefundNo,
+		refund_fee as refundFee,
+		refund_reason as refundReason,
+		refund_status as refundStatus,
+		source as source
+		from alipay_order_info
+		where
+		out_trade_no = #{outTradeNo}
+	</select>
+
+	<!-- 查找单条 -->
+	<select id="findInfoById" resultType="InfoPojo" parameterType="Long">
+		select 
+		io.id as id,
+		io.status as status,
+		(select name from sys_dict where value=io.status and type="status") as statusName,
+		io.display_order as displayOrder,
+		io.type as type,
+		(select name from sys_dict where value=io.type and type="info_type") as typeName,
+		io.title as title,
+		io.content as content,
+		io.image as image,
+		io.author as author,
+		io.create_by as createBy,
+		io.create_date as createDate,
+		io.update_by as updateBy,
+		io.update_date as updateDate,
+		io.remarks as remarks,
+		io.version as version,
+		source as source
+		from info io
+		where
+		io.id=#{id}
+	</select>
+
+	<!--更新 单条-->
+	<update id="updateInfo" parameterType="InfoPojo">
+		update info io set
+		id=#{id}, status=#{status},display_order=#{displayOrder},
+		type=#{type},title=#{title},content=#{content},image=#{image},author=#{author},
+		update_by=#{updateBy},update_date=#{updateDate},version=#{version},remarks=#{remarks}
+		where
+		io.id = #{id}
+	</update>
+
+	<!-- 审核单条-->
+	<update id="verifyInfo" parameterType="InfoPojo">
+		update info io set
+		io.status=1
+		where
+		io.id = #{id}
+	</update>
+
+	<!-- 审核全部 -->
+	<update id="checkAllInfoById" parameterType="String">
+		update info io set
+		io.status=1
+		where
+		io.id = #{id}
+	</update>
+
+	<!-- 未审核单条.fu-->
+	<update id="uncheckinfo" parameterType="InfoPojo">
+		update info io set
+		io.status=0
+		where
+		io.id = #{id}
+	</update>
+
+	<!--全部设为未审核 .fu-->
+	<update id="uncheckAllInfoById" parameterType="String">
+		update info io set
+		io.status=0
+		where
+		io.id = #{id}
+	</update>
+
+	<!-- 删除全部 -->
+	<delete id="delAllInfoById" parameterType="String">
+		delete from info
+		where
+		id = #{id}
+	</delete>
+
+	<!-- 删除单个 -->
+	<delete id="delInfo" parameterType="InfoPojo">
+		delete from info
+		where
+		id =
+		#{id}
+	</delete>
+
+	<!-- 查询所有的记录 -->
+	<select id="infoAllList" resultType="InfoPojo" parameterType="java.util.Map">
+		select 
+		io.id as id,
+		io.status as status,
+		(select name from sys_dict where value=io.status and type="status") as statusName,
+		io.display_order as displayOrder,
+		io.type as type,
+		(select name from sys_dict where value=io.type and type="info_type") as typeName,
+		io.title as title,
+		io.content as content,
+		io.image as image,
+		io.author as author,
+		io.create_by as createBy,
+		io.create_date as createDate,
+		io.update_by as updateBy,
+		io.update_date as updateDate,
+		io.remarks as remarks,
+		io.version as version
+		from info io
+		where
+		1=1
+		<if test="infoTitle!=null and infoTitle !='' ">
+			and title like concat("%",#{infoTitle},"%" )
+		</if>
+		<if test="infoType !=null and infoType !='' ">
+			and type=#{infoType}
+		</if>
+		<if test="status !=null and status !='' ">
+			and status=#{status}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+		
+	</select>
+
+	<!-- 返回信息记录的数目count -->
+	<select id="infoAllCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from info
+		where 1=1
+		<if test="infoTitle!=null and infoTitle !='' ">
+			and title like concat("%",#{infoTitle},"%" )
+		</if>
+		<if test="infoType !=null and infoType !='' ">
+			and type=#{infoType}
+		</if>
+	</select>
+	
+	<!-- 前端页面调用 -->
+	<!-- 查询所有的记录 -->
+	<select id="infoPageList" resultType="InfoPojo" parameterType="java.util.Map">
+		select 
+		io.id as id,
+		io.status as status,
+		(select name from sys_dict where value=io.status and type="status") as statusName,
+		io.display_order as displayOrder,
+		io.type as type,
+		(select name from sys_dict where value=io.type and type="info_type") as typeName,
+		io.title as title,
+		io.content as content,
+		io.image as image,
+		io.author as author,
+		io.create_by as createBy,
+		io.create_date as createDate,
+		io.update_by as updateBy,
+		io.update_date as updateDate,
+		io.remarks as remarks,
+		io.version as version
+		from info io
+		where 1=1 and io.status = 1
+		<if test="type != null">
+			and io.type=#{type}
+		</if>
+		<if test="marketTitleKeyWord != null and marketTitleKeyWord !='' ">
+			and io.title like concat("%",#{marketTitleKeyWord},"%" )
+		</if>
+		<if test="tradeTitleKeyWord !=null and tradeTitleKeyWord !='' ">
+			and io.title like concat("%",#{tradeTitleKeyWord},"%" )
+		</if>
+		<if test="tittle !=null and tittle !='' ">
+			and io.title like concat("%",#{tittle},"%" )
+		</if>
+		order by io.create_date desc
+		<if test="size !=null and size !='' ">
+			limit #{size}
+		</if>	
+	</select>
+	<update id="updatePayRefund" parameterType="java.util.Map">
+		update alipay_order_info 
+		<set> 
+			update_date = now(),
+			<if test="updateBy != null">
+			update_by = #{updateBy},
+			</if>
+			<if test="outRefundNo != null and outRefundNo != ''">
+			out_refund_no = #{outRefundNo},
+			</if>
+			<if test="refundFee != null and refundFee != ''">
+			refund_fee = #{refundFee},
+			</if>
+			<if test="refundReason != null and refundReason != ''">
+			refund_reason = #{refundReason},
+			</if>
+			<if test="refundStatus != null and refundStatus != ''">
+			refund_status = #{refundStatus},
+			</if>
+			<if test="remarks!=null and remarks !='' ">
+			remarks=#{remarks},
+			</if>
+			<if test="source !=null and source !='' ">
+				source = #{source},
+			</if>
+		</set>
+		where 1=1
+			<if test="tradeNo != null">
+			and trade_no = #{tradeNo}
+			</if>
+			<if test="outTradeNo != null">
+			and out_trade_no = #{outTradeNo}
+			</if>
+			<if test="outRefundNumber != null">
+			and out_refund_no = #{outRefundNumber}
+			</if>
+			<if test="tradeNo == null and outTradeNo == null and outRefundNumber == null">
+			and id = #{id}
+			</if>
+	</update>
+	<!-- 根据批次号查询支付宝订单 -->
+	<select id="findOrderInfoByBatchNo" resultType="AlipayOrderInfoPojo" parameterType="java.util.Map">
+		select
+			aoi.refund_status as refundStatus,
+			aoi.out_refund_no as outRefundNo,
+			aoi.out_trade_no as outTradeNo,
+			aoi.trade_no as tradeNo,
+			aoi.source as source
+		from alipay_order_info aoi
+		where 
+		aoi.out_refund_no=#{outRefundNo} limit 1
+	</select>
+</mapper>

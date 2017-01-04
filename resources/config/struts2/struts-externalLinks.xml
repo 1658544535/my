@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+	<package name="externalLinks" extends="default">
+	<action name="goExternalLinks" class="com.tzmb2c.web.action.ExternalLinksAction"
+			method="goExternalLinks">
+			<result name="success">/page/system/externalLinks/externalLinks.jsp</result>
+		</action>
+		<!-- 跳转添加推送信息 -->
+		<action name="goAddExternalLinks" class="com.tzmb2c.web.action.ExternalLinksAction"
+			method="goAddExternalLinks">
+			<result>/page/system/externalLinks/addExternalLinks.jsp</result>
+		</action>
+
+		<!-- 添加信息 -->
+		<action name="addExternalLinks" class="com.tzmb2c.web.action.ExternalLinksAction"
+			method="addExternalLinks">
+		</action>
+        
+        
+        <!-- 更新 -->
+		<action name="goUpdateExternalLinks" class="com.tzmb2c.web.action.ExternalLinksAction"
+			method="goUpdateExternalLinks">
+			<result>/page/system/externalLinks/updateExternalLinks.jsp</result>
+		</action>
+
+		<!-- 更新 -->
+		<action name="updateExternalLinks" class="com.tzmb2c.web.action.ExternalLinksAction"
+			method="updateExternalLinks">
+		</action>
+		<!-- 删除全部 -->
+		<action name="externalLinksDeleteId" class="com.tzmb2c.web.action.ExternalLinksAction"
+			method="externalLinksDeleteId">
+		</action>
+	</package>
+
+	<package name="externalLinks-json" extends="json-default">
+		<!--平台入口 -->
+		<action name="getExternalLinksCount" class="com.tzmb2c.web.action.ExternalLinksAction"
+			method="goExternalLinks">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+
+		<action name="externalLinksAllList" class="com.tzmb2c.web.action.ExternalLinksAction"
+			method="externalLinksAllList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="delExternalLinks" class="com.tzmb2c.web.action.ExternalLinksAction"
+			method="delExternalLinks">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+	</package>
+
+</struts>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="userCouponFlagShow" extends="default">
+		<!-- go -->
+		<action name="goUserCouponFlagList" class="com.tzmb2c.web.action.UserCouponFlagAction" method="userCouponFlagListCount">
+			<result name="success">/page/system/navigation/navigationList.jsp</result>
+		</action>		
+	</package>
+	<package name="userCouponFlag-json" extends="json-default">
+		<!-- list -->
+		<action name="userCouponFlagListAll" class="com.tzmb2c.web.action.UserCouponFlagAction" method="userCouponFlagListAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>		
+		<!-- count -->
+		<action name="userCouponFlagListCount" class="com.tzmb2c.web.action.UserCouponFlagAction" method="userCouponFlagListCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+	</package>
+</struts>

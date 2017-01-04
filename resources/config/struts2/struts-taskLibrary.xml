@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="taskLibrary" extends="default">
+		<!-- 任务管理 -->
+		<action name="taskLibraryList" class="com.tzmb2c.web.action.TaskLibraryAction" method="taskLibraryListCount">
+			<result name="success">/page/system/taskLibrary/taskLibraryList.jsp</result>
+		</action>	
+			
+		<!-- 删除 -->
+		<action name="delTaskLibrary" class="com.tzmb2c.web.action.TaskLibraryAction" method="delTaskLibrary">
+		</action>
+		
+		<!-- 编辑(跳转) -->
+		<action name="goUpdateTaskLibrary" class="com.tzmb2c.web.action.TaskLibraryAction" method="goUpdateTaskLibrary">
+			<result name="success">/page/system/taskLibrary/updateTaskLibrary.jsp</result>
+		</action>
+		
+	    <!-- 编辑 -->
+		<action name="updateTaskLibrary" class="com.tzmb2c.web.action.TaskLibraryAction" method="updateTaskLibrary">
+		</action>
+		
+		<!-- （跳转）新增任务 -->
+		<action name="goAddTaskLibraryList" class="com.tzmb2c.web.action.TaskLibraryAction" method="goAddTaskLibraryList">
+			<result name="success">/page/system/taskLibrary/addTaskLibraryList.jsp</result>
+		</action>	
+		
+		<!-- 提交新增任务 -->
+		<action name="addTaskLibraryList" class="com.tzmb2c.web.action.TaskLibraryAction" method="addTaskLibraryList">			
+		</action>		
+	</package>
+	<package name="taskLibrary-json" extends="json-default">
+		<!-- 任务列表 -->
+		<action name="taskLibraryListAll" class="com.tzmb2c.web.action.TaskLibraryAction" method="taskLibraryListAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>		
+		<!-- 任务条数 -->
+		<action name="taskLibraryListCount" class="com.tzmb2c.web.action.TaskLibraryAction" method="taskLibraryListCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>		
+	</package>
+</struts>

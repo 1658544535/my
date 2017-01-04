@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.ProductTypeMapper">
+
+	<!-- <cache/>  -->
+	<!--获取二级类型列表-->
+	<select id="getProductTypeSecondLevel" resultType="productTypePojo">
+		select t.is_red as isRed, t.id as id,t.user_id as userId,t.pid as pid,t.level as level,t.name as name,t.name_en as nameEn,
+		t.status as status,(select name from sys_dict where value=t.status and type = 'status') as statusName,t.sorting as sorting,t.create_by as createBy,t.create_date as createDate,t.update_by as updateBy,
+		t.update_date as updateDate,t.remarks as remarks,t.version as version,t.image as image,t.age_type as ageType 
+		from product_type t
+		where t.pid!=0 and t.status=1
+		order by t.sorting
+	</select>
+	
+	
+	<select id="getProductTypeByPid8" parameterType="Long" resultType="productTypePojo">
+		select t.is_red as isRed, t.id as id,t.user_id as userId,u.name as userName,t.pid as pid,t.level as level,t.name as name,t.name_en as nameEn,
+		t.status as status,t.sorting as sorting,t.create_by as createBy,t.create_date as createDate,t.update_by as updateBy,
+		t.update_date as updateDate,t.remarks as remarks,t.version as version ,t.image as image
+		from product_type t left join sys_login u on t.user_id=u.id 
+		where t.pid=#{pid} and t.status=1 order by t.sorting limit 8 
+	</select>
+	<select id="getProductTypeByPid" parameterType="productTypePojo" resultType="productTypePojo">
+		select t.is_red as isRed, t.id as id,t.user_id as userId,u.name as userName,t.pid as pid,t.level as level,t.name as name,t.name_en as nameEn,
+		t.status as status,(select name from sys_dict where value=t.status and type = 'status') as statusName,t.sorting as sorting,t.create_by as createBy,t.create_date as createDate,t.update_by as updateBy,
+		t.update_date as updateDate,t.remarks as remarks,t.version as version,t.image as image
+		,t.age_type as ageType,t.top_level as topLevel,t.visable as visable from product_type t left join sys_login u on t.user_id=u.id 
+		where 1 = 1
+		<if test="pid != null">
+			and t.pid = #{pid}
+		</if>
+		<if test="status!=null">
+		 and t.status=#{status}
+	    </if>
+	    <if test="topLevel != null and topLevel != '' ">
+			and t.top_level = #{topLevel}
+	    </if>
+	    <if test="visable != null">
+			and t.visable = #{visable}
+	    </if>
+		order by t.sorting
+    </select>
+
+
+    <select id="getProductTypeByPids" parameterType="productTypePojo" resultType="productTypePojo">
+			select 
+				t.is_red as isRed,
+				t.id as id,
+				t.user_id as userId,
+				u.name as userName,
+				t.pid as pid,
+				t.level as level,
+				t.name as name,
+				(CASE WHEN t.name = '年货' THEN 1 END) as categoryFlag,
+				t.name_en as nameEn,
+				t.status as status,
+				(select name from sys_dict where value=t.status and type = 'status') as statusName,
+				t.sorting as sorting,
+				t.create_by as createBy,
+				t.create_date as createDate,
+				t.update_by as updateBy,
+				t.update_date as updateDate,
+				t.remarks as remarks,
+				t.version as version,
+				t.image as image,
+				t.age_type as ageType
+			from product_type t 
+			left join sys_login u on t.user_id=u.id 
+			where 1=1
+			<if test="pid != null ">
+			and t.pid=#{pid} 
+	       </if>
+	       <if test="visable != null">
+			and t.visable = #{visable}
+	       </if>
+		   <if test="topLevel != null and topLevel != '' ">
+			and t.top_level = #{topLevel}
+	       </if>
+	       <if test="topLevel1 != null and topLevel1 != '' ">
+			and t.top_level = #{topLevel1}
+	       </if>
+			and t.status="1"
+			order by t.sorting
+	</select>
+    <select id="getProductTypeByPidName" parameterType="productTypePojo" resultType="productTypePojo">
+			select t.is_red as isRed, t.id as id,t.user_id as userId,u.name as userName,t.pid as pid,t.level as level,t.name as name,t.name_en as nameEn,
+			t.status as status,(select name from sys_dict where value=t.status and type = 'status') as statusName,t.sorting as sorting,t.create_by as createBy,t.create_date as createDate,t.update_by as updateBy,
+			t.update_date as updateDate,t.remarks as remarks,t.version as version,t.image as image from product_type t left join sys_login u on t.user_id=u.id 
+			where t.pid=#{pid} and t.name=#{name} 
+			and t.status="1"
+			order by t.sorting
+	</select>
+			
+	<select id="getCount" parameterType="productTypePojo" resultType="int">
+		select count(*) from product_type t left join sys_login u on t.user_id=u.id where t.pid=#{pid}
+		<if test="status!=null and status!=''">
+			 and t.status=#{status}
+		</if>
+	</select>
+	
+	<select id="findProductType" parameterType="ProductTypePojo" resultType="ProductTypePojo">
+		select t.is_red as isRed,t.id as id,t.user_id as userId,t.pid as pid,t.level as level,t.name as name,t.name_en as nameEn,
+		t.status as status,(select name from sys_dict where value=t.status and type = 'status') as statusName,t.sorting as sorting,t.create_by as createBy,t.create_date as createDate,t.update_by as updateBy,
+		t.update_date as updateDate,t.remarks as remarks,t.version as version,t.image as image from product_type t where t.id=#{id}
+	</select>
+	
+	<insert id="addProductType" parameterType="productTypePojo">
+		insert into product_type(
+			is_red,
+			<if test="userId != null">
+			user_id,
+			</if>
+			pid,
+			level,
+			name,
+			name_en,
+			status,
+			sorting,
+			top_level,
+			<if test="visable != null">
+			visable,
+			</if>
+			image
+		)
+		values(
+			#{isRed},
+			<if test="userId != null">
+			#{userId},
+			</if>
+			#{pid},
+			#{level},
+			#{name},
+			#{nameEn},
+			#{status},
+			#{sorting},
+			#{topLevel},
+			<if test="visable != null">
+			#{visable},
+			</if>
+			#{image}
+		)
+	</insert>
+	
+	<update id="productTypeUpdate" parameterType="productTypePojo">
+		update product_type t set
+		<if test="name != null">
+		t.name=#{name},
+		</if>
+		<if test="isRed != null">
+		t.is_red=#{isRed},
+		</if>
+		<if test="status != null">
+		t.status=#{status},
+		</if>
+		<if test="sorting != null">
+		t.sorting=#{sorting},
+		</if>
+		<if test="visable != null">
+		t.visable = #{visable},
+	    </if>
+	    <if test="image != null and image != '' ">
+		t.image=#{image},
+	    </if>
+	    <if test="updateBy != null">
+		t.update_by=#{updateBy},
+	    </if>
+	    t.update_date = now()
+		where
+		t.id = #{id}
+	</update>
+	
+	<!--删除单条-->
+	<delete id="deleProductType" parameterType="Long">
+		delete from product_type where id=#{id}
+	</delete>
+	
+	<update id="checkProductType" parameterType="Long">
+		update product_type set status = 1 where id = #{id}
+	</update>
+	<update id="visableProductType" parameterType="Long">
+		update product_type set visable = 1 where id = #{id}
+	</update>
+	<update id="invisableProductType" parameterType="Long">
+		update product_type set visable = 0 where id = #{id}
+	</update>
+	
+	<select id="getProductTypeThree" parameterType="java.util.Map" resultType="productTypePojo">
+		select t.is_red as isRed, t.id as id,t.user_id as userId,t.pid as pid,t.level as level,t.name as name,t.name_en as nameEn,tt.name as parentName,
+		t.status as status,(select name from sys_dict where value=t.status and type = 'status') as statusName,t.sorting as sorting,t.create_by as createBy,t.create_date as createDate,t.update_by as updateBy,
+		t.update_date as updateDate,t.remarks as remarks,t.version as version,t.image as image
+		,t.age_type as ageType,t.top_level as topLevel,t.visable as visable from product_type t left join product_type tt on t.pid=tt.id
+		where 1 = 1 and t.pid > 0 and t.status=1 and t.visable=1
+		 <if test="pid != null">
+			and t.pid = #{pid}
+	    </if>
+		order by t.sorting
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+    </select>
+    <select id="getCountProductTypeThree" parameterType="java.util.Map" resultType="int">
+		select count(*) from product_type t
+		where 1 = 1 and t.pid > 0 and t.status=1 and t.visable=1
+		 <if test="pid != null">
+			and t.pid = #{pid}
+	    </if>
+	</select>
+	<!-- 查询第三级类目 -->
+	<select id="findThridProductType" resultType="ProductTypePojo">
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.pid as pid,
+		t.level as level,
+		t.name as name,
+		t.name_en as nameEn,
+		t.status as status,
+		t.sorting as sorting,
+		t.create_by as createBy,
+		t.create_date as createDate,
+		t.update_by as updateBy,
+		t.update_date as updateDate,
+		t.remarks as remarks,
+		t.version as version,
+		t.image as image 
+		from product_type t 
+		where t.pid > 0 and t.status=1
+		
+	</select>
+	
+	<!-- 审核全部帮助信息 -->
+	<update id="checkAllProductTypeById" parameterType="String">
+		update product_type t set
+		t.status=1
+		where
+		t.id = #{id}
+	</update>
+</mapper>

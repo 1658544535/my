@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.SpecialMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		s.id as id,
+		s.title as title,
+		s.image as image,
+		s.special_type_id as specialTypeId,
+		s.status as status,
+		(CASE WHEN s.status = 0 THEN '未审核' WHEN s.status = 1 THEN '已审核' END)  as statusName,
+		s.sorting as sorting,
+		s.is_delete as isDelete,
+		s.create_date as createDate,
+		s.create_by as createBy,
+		s.update_date as updateDate,
+		s.update_by as updateBy,
+		st.name as specialTypeName,
+		s.icon,
+		s.share_desc as shareDesc
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="SpecialPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			special s left join special_type st on s.special_type_id= st.id
+		where
+			s.id = #{id}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from special
+		where 1=1
+		  <if test="id != null ">
+			and id = #{id}
+		  </if>
+		  <if test="title != null and title != '' ">
+			and title = #{title}
+		  </if>
+		  <if test="image != null and image != '' ">
+			and image = #{image}
+		  </if>
+		  <if test="specialTypeId != null ">
+			and special_type_id = #{specialTypeId}
+		  </if>
+		  <if test="status != null ">
+			and status = #{status}
+		  </if>
+		  <if test="sorting != null ">
+			and sorting = #{sorting}
+		  </if>
+		  <if test="isDelete != null ">
+			and is_delete = #{isDelete}
+		  </if>
+		  <if test="createDate != null ">
+			and create_date = #{createDate}
+		  </if>
+		  <if test="createBy != null ">
+			and create_by = #{createBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and update_date = #{updateDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and update_by = #{updateBy}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="SpecialPojo">
+		select
+			<include refid="Base_Column_List" />
+		from special s left join special_type st on s.special_type_id= st.id
+		where 1=1
+			<if test="id != null ">
+			  and s.id = #{id}
+			</if>
+			<if test="title != null and title != '' ">
+			  and s.title = #{title}
+			</if>
+			<if test="image != null and image != '' ">
+			  and s.image = #{image}
+			</if>
+			<if test="specialTypeId != null ">
+			  and s.special_type_id = #{specialTypeId}
+			</if>
+			<if test="status != null ">
+			  and s.status = #{status}
+			</if>
+			<if test="sorting != null ">
+			  and s.sorting = #{sorting}
+			</if>
+			<if test="isDelete != null ">
+			  and s.is_delete = #{isDelete}
+			</if>
+			<if test="createDate != null ">
+			  and s.create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and s.create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and s.update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and s.update_by = #{updateBy}
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="SpecialPojo">
+		update special
+		<set>
+			<if test="title != null">
+			  title = #{title},
+			</if>
+			<if test="image != null">
+			  image = #{image},
+			</if>
+			<if test="specialTypeId != null">
+			  special_type_id = #{specialTypeId},
+			</if>
+			<if test="status != null">
+			  status = #{status},
+			</if>
+			<if test="sorting != null">
+			  sorting = #{sorting},
+			</if>
+			<if test="isDelete != null">
+			  is_delete = #{isDelete},
+			</if>
+			  update_date = now(),
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+			<if test="icon != null">
+				icon = #{icon},
+			</if>
+			<if test="shareDesc != null">
+				share_desc = #{shareDesc},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from special 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="SpecialPojo">
+		insert into special
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="title != null">
+				title,
+			</if>
+			<if test="image != null">
+				image,
+			</if>
+			<if test="specialTypeId != null">
+				special_type_id,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="sorting != null">
+				sorting,
+			</if>
+			<if test="isDelete != null">
+				is_delete,
+			</if>
+				create_date,
+			<if test="createBy != null">
+				create_by,
+			</if>
+				update_date,
+			<if test="updateBy != null">
+				update_by,
+			</if>
+			<if test="icon != null">
+				icon,
+			</if>
+			<if test="shareDesc != null">
+				share_desc,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="title != null">
+				#{title},
+			</if>
+			<if test="image != null">
+				#{image},
+			</if>
+			<if test="specialTypeId != null">
+				#{specialTypeId},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+			<if test="sorting != null">
+				#{sorting},
+			</if>
+			<if test="isDelete != null">
+				#{isDelete},
+			</if>
+				now(),
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+				now(),
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+			<if test="icon != null">
+				#{icon},
+			</if>
+			<if test="shareDesc != null">
+				#{shareDesc},
+			</if>
+		</trim>
+	</insert>
+	
+</mapper>

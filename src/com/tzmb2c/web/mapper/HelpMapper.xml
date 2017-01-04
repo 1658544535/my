@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.HelpMapper">
+
+
+	<!-- 查询帮助信息 -->
+	<select id="helpSearch" resultType="helpPojo" parameterType="String">
+		select
+		h.id as id,
+		h.status as status,
+		(select name from sys_dict where value=h.status and type="status") as statusName,
+		h.sorting as sorting,
+		h.type_id as typeId,
+		h.title as title,
+		h.title_en as titleEn,
+		h.content as content,
+		h.content_en as contentEn,
+		h.answer as answer,
+		h.create_by as createBy,
+		h.create_date as createDate,
+		h.update_by as updateBy,
+		h.update_date as updateDate,
+		h.remarks as remarks,
+		h.version as version
+		from
+		help h 
+		where 1=1 
+		and h.title like concat("%",#{searchkey},"%" )
+		order by h.id desc
+		
+	</select>
+
+	<!-- 热门问题列表 -->
+	<select id="getHotList" resultType="helpPojo">
+		select
+		h.id as id,
+		h.status as status,
+		h.sorting as sorting,
+		h.type_id as typeId,
+		h.title as title,
+		h.title_en as titleEn,
+		h.content as content,
+		h.content_en as contentEn,
+		h.answer as answer,
+		h.create_by as createBy,
+		h.create_date as createDate,
+		h.update_by as updateBy,
+		h.update_date as updateDate,
+		h.remarks as remarks,
+		h.version as version,
+		h.is_usual as isUsual,
+		h.is_hot as isHot
+		from
+		help h
+		where h.is_hot = 1
+		and status = 1
+		order by sorting
+	</select>
+	<!-- 常见问题列表 -->
+	<select id="getUsualList" resultType="helpPojo">
+		select
+		h.id as id,
+		h.status as status,
+		h.sorting as sorting,
+		h.type_id as typeId,
+		h.title as title,
+		h.title_en as titleEn,
+		h.content as content,
+		h.content_en as contentEn,
+		h.answer as answer,
+		h.create_by as createBy,
+		h.create_date as createDate,
+		h.update_by as updateBy,
+		h.update_date as updateDate,
+		h.remarks as remarks,
+		h.version as version,
+		h.is_usual as isUsual,
+		h.is_hot as isHot
+		from
+		help h
+		where h.is_usual = 1
+		and status = 1
+		order by sorting
+	</select>
+
+	<!-- 通过分类id查询列表 -->
+	<select id="getListByTypeid" resultType="helpPojo" parameterType="Long">
+		select
+		h.id as id,
+		h.status as status,
+		h.sorting as sorting,
+		h.type_id as typeId,
+		h.title as title,
+		h.title_en as titleEn,
+		h.content as content,
+		h.content_en as contentEn,
+		h.answer as answer,
+		h.create_by as createBy,
+		h.create_date as createDate,
+		h.update_by as updateBy,
+		h.update_date as updateDate,
+		h.remarks as remarks,
+		h.version as version,
+		h.is_usual as isUsual,
+		h.is_hot as isHot
+		from
+		help h 
+		where h.type_id = #{typeid}
+		and status = 1
+	</select>
+
+	<!-- 查询所有帮助信息 -->
+	<select id="helpAllList" resultType="helpPojo" parameterType="java.util.Map">
+		select
+		h.id as id,
+		h.status as status,
+		(select name from sys_dict where value=h.status and type="status") as statusName,
+		h.sorting as sorting,
+		h.type_id as typeId,
+		ht.name as helpTypeName,
+		ht.name_en as helpTypeNameEn,
+		h.title as title,
+		h.title_en as titleEn,
+		h.content as content,
+		h.content_en as contentEn,
+		h.answer as answer,
+		h.create_by as createBy,
+		h.create_date as createDate,
+		h.update_by as updateBy,
+		h.update_date as updateDate,
+		h.remarks as remarks,
+		h.version as version
+		from
+		help h left join help_type ht on h.type_id = ht.id 
+		where 1=1 
+		<if test="helpPojo!=null">
+			<if test="helpPojo.title != null and helpPojo.title != ''">
+				and h.title like concat("%",#{helpPojo.title},"%" )
+			</if>
+		</if>
+		order by h.id desc
+		
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+		
+	</select>
+
+	<!-- 查询所有帮助信息数目 -->
+	<select id="helpAllListCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from
+		help h left join help_type ht on h.type_id = ht.id 
+		where 1=1
+		<if test="helpPojo!=null">
+			<if test="helpPojo.title != null and helpPojo.title != ''">
+				and h.title like concat("%",#{helpPojo.title},"%")
+			</if>
+		</if>
+	</select>
+
+	<!-- 查询单条帮助信息 -->
+	<select id="goHelpUpdate" parameterType="helpPojo" resultType="helpPojo">
+		select
+		h.id as id,
+		h.status as status,
+		(select name from sys_dict where value=h.status and type="status") as statusName,
+		h.sorting as sorting,
+		h.type_id as typeId,
+		ht.name as helpTypeName,
+		ht.name_en as helpTypeNameEn,
+		h.title as title,
+		h.title_en as titleEn,
+		h.content as content,
+		h.content_en as contentEn,
+		h.answer as answer,
+		h.create_by as createBy,
+		h.create_date as createDate,
+		h.update_by as updateBy,
+		h.update_date as updateDate,
+		h.remarks as remarks,
+		h.version as version,
+		h.is_usual as isUsual,
+		h.is_hot as isHot
+		from
+		help h left join help_type ht on h.type_id = ht.id
+		where
+		h.id=#{id}
+	</select>
+
+	<!-- 插入单条帮助信息 -->
+	<insert id="helpAdd" parameterType="helpPojo">
+		insert into
+		help(id,status,sorting,type_id,title,title_en,content,content_en,answer,
+		create_by,create_date,update_by,update_date,remarks,version,is_usual,is_hot)
+		values(#{id},
+		#{status},#{sorting},#{typeId},#{title},#{titleEn},#{content},
+		#{contentEn},#{answer},#{createBy},#{createDate},#{updateBy},#{updateDate},#{remarks},#{version},#{isUsual},#{isHot})
+	</insert>
+	
+	<!-- 删除单条帮助信息-->
+	<delete id="helpDelete" parameterType="helpPojo">
+		delete from help
+		where
+		id = #{id}
+	</delete>
+
+	<!-- 更新单条帮助信息 -->
+	<update id="helpUpdate" parameterType="helpPojo">
+		update help h set
+		h.title=#{title},
+		h.content=#{content},
+		
+		h.status=#{status},
+		h.is_usual=#{isUsual},
+		h.is_hot=#{isHot},
+		h.sorting=#{sorting}
+		where
+		h.id = #{id}
+	</update>
+
+	<!-- 审核单条帮助信息 -->
+	<update id="checkHelpInfo" parameterType="HelpPojo">
+		update help h set
+		h.status=1
+		where
+		h.id = #{id}
+	</update>
+
+	<!-- 审核全部帮助信息 -->
+	<update id="checkAllHelpInfoById" parameterType="String">
+		update help h set
+		h.status=1
+		where
+		h.id = #{id}
+	</update>
+	
+	<!-- 前端页面调用 -->
+	<!-- 查询所有的记录 -->
+	<select id="helpPageList" resultType="helpPojo" parameterType="java.util.Map">
+		select
+			h.id as id,
+			h.status as status,
+			(select name from sys_dict where value=h.status and type="status") as statusName,
+			h.sorting as sorting,
+			h.type_id as typeId,
+			ht.name as helpTypeName,
+			ht.name_en as helpTypeNameEn,
+			h.title as title,
+			h.title_en as titleEn,
+			h.content as content,
+			h.content_en as contentEn,
+			h.answer as answer,
+			h.create_by as createBy,
+			h.create_date as createDate,
+			h.update_by as updateBy,
+			h.update_date as updateDate,
+			h.remarks as remarks,
+			h.version as version
+			from
+			help h left join help_type ht on h.type_id = ht.id 
+			where 1=1
+	</select>
+</mapper>

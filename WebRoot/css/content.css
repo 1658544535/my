@@ -1,0 +1,102 @@
+@CHARSET "UTF-8";
+
+@IMPORT url("sysbase.css");
+
+@IMPORT url("displaytag/screen.css");
+
+@IMPORT url("displaytag/print.css");
+
+@IMPORT url("displaytag/maven-base.css");
+
+@IMPORT url("displaytag/maven-theme.css");
+
+@IMPORT url("displaytag/site.css");
+
+
+table,tr,td {
+	/**
+	text-align: center;
+	border-style: solid;
+	border-width: thin;
+	border-color: #c0c0c0;
+	margin: auto;*/
+	font: 14px 宋体, Arial, sans-serif;
+}
+
+/** top 、center、bottom*/
+.top-div,.center-div,.bottom-div {
+	width: 90%;
+	margin: auto;
+	position: relative;
+	font: 14px 宋体, Arial, sans-serif;
+	/**border-style: solid;*/
+}
+
+.center-div{
+	margin-top: 20px;
+}
+
+.top-title-div,.top-main-div,.top-main-content-div,.top-mian-content-table,.center-main-div
+	{
+	position: relative;
+	width: 100%;
+	padding: 0;
+	/**border-style: solid;*/
+}
+
+.top-title-div {
+	margin-top: 10px;
+	text-align: center;
+}
+
+.top-main-div {
+	margin-top: 20px;
+	/**border-style: solid;
+	border-width: thin;*/
+	border-style: solid;
+	border-width: thin;
+}
+
+.top-main-title-div {
+	margin-top: 10px;
+	margin-left: 10px;
+}
+
+.top-main-content-div {
+	border: 0;
+	padding: 0;
+	margin: 0;
+	
+}
+
+.top-mian-content-table {
+	padding: 0;
+	margin: 0 !important;
+}
+
+.top-title {
+	font: 28px 宋体, Arial, sans-serif;
+	vertical-align: middle;
+	font-weight: bold;
+}
+
+.top-hr {
+	width: 100%;
+	margin: 0;
+}
+
+.top-main-title {
+	
+}
+
+.top-main-bottom-div,.center-main-botomm-div{
+	position: relative;
+}
+.center-main-botomm-div{
+	border-style: solid;
+	border-width: thin;
+}
+.top-main-bottom-button,.center-main-bottom-button{
+	position: relative;
+	margin-left: 95%;
+}

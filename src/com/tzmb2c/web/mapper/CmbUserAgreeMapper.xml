@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.CmbUserAgreeMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id as id,user_id as userId,cust_argno as custArgno,req_serial as reqSerial,cust_no as custNo,mobile as mobile,status as status,create_date as createDate,cancel_date as cancelDate
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="CmbUserAgreePojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			cmb_user_agree
+		where
+			id = #{id}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from cmb_user_agree
+		where 1=1
+		  <if test="id != null ">
+			and id = #{id}
+		  </if>
+		  <if test="userId != null ">
+			and user_id = #{userId}
+		  </if>
+		  <if test="custArgno != null and custArgno != '' ">
+			and cust_argno = #{custArgno}
+		  </if>
+		  <if test="reqSerial != null and reqSerial != '' ">
+			and req_serial = #{reqSerial}
+		  </if>
+		  <if test="custNo != null and custNo != '' ">
+			and cust_no = #{custNo}
+		  </if>
+		  <if test="mobile != null and mobile != '' ">
+			and mobile = #{mobile}
+		  </if>
+		  <if test="status != null ">
+			and status = #{status}
+		  </if>
+		  <if test="createDate != null ">
+			and create_date = #{createDate}
+		  </if>
+		  <if test="cancelDate != null ">
+			and cancel_date = #{cancelDate}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="CmbUserAgreePojo">
+		select
+			<include refid="Base_Column_List" />
+		from cmb_user_agree
+		where 1=1
+			<if test="id != null ">
+			  and id = #{id}
+			</if>
+			<if test="userId != null ">
+			  and user_id = #{userId}
+			</if>
+			<if test="custArgno != null and custArgno != '' ">
+			  and cust_argno = #{custArgno}
+			</if>
+			<if test="reqSerial != null and reqSerial != '' ">
+			  and req_serial = #{reqSerial}
+			</if>
+			<if test="custNo != null and custNo != '' ">
+			  and cust_no = #{custNo}
+			</if>
+			<if test="mobile != null and mobile != '' ">
+			  and mobile = #{mobile}
+			</if>
+			<if test="status != null ">
+			  and status = #{status}
+			</if>
+			<if test="createDate != null ">
+			  and create_date = #{createDate}
+			</if>
+			<if test="cancelDate != null ">
+			  and cancel_date = #{cancelDate}
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="CmbUserAgreePojo">
+		update cmb_user_agree
+		<set>
+			<if test="userId != null">
+			  user_id = #{userId},
+			</if>
+			<if test="custArgno != null">
+			  cust_argno = #{custArgno},
+			</if>
+			<if test="reqSerial != null">
+			  req_serial = #{reqSerial},
+			</if>
+			<if test="custNo != null">
+			  cust_no = #{custNo},
+			</if>
+			<if test="mobile != null">
+			  mobile = #{mobile},
+			</if>
+			<if test="status != null">
+			  status = #{status},
+			</if>
+			<if test="createDate != null">
+			  create_date = #{createDate},
+			</if>
+			<if test="cancelDate != null">
+			  cancel_date = #{cancelDate},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from cmb_user_agree 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="CmbUserAgreePojo">
+		insert into cmb_user_agree
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="custArgno != null">
+				cust_argno,
+			</if>
+			<if test="reqSerial != null">
+				req_serial,
+			</if>
+			<if test="custNo != null">
+				cust_no,
+			</if>
+			<if test="mobile != null">
+				mobile,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="cancelDate != null">
+				cancel_date,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="userId != null">
+				#{userId},
+			</if>
+			<if test="custArgno != null">
+				#{custArgno},
+			</if>
+			<if test="reqSerial != null">
+				#{reqSerial},
+			</if>
+			<if test="custNo != null">
+				#{custNo},
+			</if>
+			<if test="mobile != null">
+				#{mobile},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+			<if test="createDate != null">
+				#{createDate},
+			</if>
+			<if test="cancelDate != null">
+				#{cancelDate},
+			</if>
+		</trim>
+	</insert>
+	<!-- 根据userid查找 -->
+	<select id="getByUserId" parameterType="Long" resultType="CmbUserAgreePojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			cmb_user_agree
+		where
+			user_id = #{userId}
+	</select>
+</mapper>

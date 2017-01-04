@@ -1,0 +1,2322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.ProductMapper">
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id as id,
+		user_id as userId,
+		product_no as productNo,
+		product_num as productNum,
+		product_type_id as productTypeId,
+		product_type_ids as productTypeIds,
+		product_name as productName,
+		product_sketch as productSketch,
+		product_name_en as productNameEn,
+		distribution_price as distributionPrice,
+		selling_price as sellingPrice,
+		lowest_price as lowestPrice,
+		unit as unit,
+		discount as discount,
+		minimum as minimum,
+		ladder_price as ladderPrice,
+		image as image,
+		qrcode as qrcode,
+		hits as hits,
+		is_introduce as isIntroduce,
+		sell_number + base_number as sellNumber,
+		base_number as baseNumber,
+		is_new as isNew,
+		recommend as recommend,
+		brand as brand,
+		texture as texture,
+		age as age,
+		product_function as productFunction,
+		location as location,
+		is_power as isPower,
+		pack as pack,
+		is_hotsale as isHotsale,
+		content as content,
+		sorting as sorting,
+		status as status,
+		create_by as createBy,
+		create_date as createDate,
+		update_by as updateBy,
+		update_date as updateDate,
+		remarks as remarks,
+		version as version,
+		postage_type as postageType,
+		weight as weight,
+		proxy_price as proxyPrice,
+		base_number as baseNumber,
+		tag as tag,
+		age_desc as ageDesc,
+		user_brand_id as userBrandId,
+		product_type1 as productType1,
+		alts as alts,
+		product_commt as productCommt,
+		video_url as videoUrl,
+		tvideo_url as tvideoUrl,
+		tvideo_url_image as tvideoUrlImage,
+		sale_type as saleType,
+		image_small as imageSmall,
+		image_main as imageMain,
+		max_num as maxNum,
+		color_value as colorValue,
+		format_value as formatValue,
+		norm_type as normType,
+		limit_num as limitNum,
+		surplus_num as surplusNum
+	</sql>
+	<!-- <cache/>  -->
+	<!--前台调用，默认审核状态为1-->
+	<select id="getCountStatus" parameterType="java.util.Map" resultType="int">
+		select count(*) from product t left join sys_login u on t.user_id = u.id left join user_shop us on t.user_id = us.user_id
+		where 1=1 
+		and t.status=1 and us.status=1 and (t.product_type_ids!=':0:' and t.product_type_id!=6)
+		<if test="productName != null and productName != ''">
+			and t.product_name like CONCAT("%",#{productName},"%" )
+		</if>
+		<if test="productStatus != null and productStatus != ''">
+			and t.status like CONCAT("%",#{productStatus},"%" )
+		</if>
+		<if test="productTypeId !=null and productTypeId != ''">
+			and t.product_type_id=#{productTypeId}
+		</if>
+		<if test="productTypeIds !=null and productTypeIds != ''">
+			and t.product_type_ids like concat("%:",#{productTypeIds},":%")
+		</if>
+		<if test="productNo !=null and productNo != ''">
+			and t.product_no=#{productNo}
+		</if>
+		<if test="productNum !=null and productNum != ''">
+			and t.product_num like CONCAT("%",#{productNum},"%" )
+		</if>
+		<if test="remarks !=null and remarks != ''">
+			and u.name like CONCAT("%",#{remarks},"%" )
+		</if>
+		<if test="isIntroduce!=null and isIntroduce !=''">
+			and t.is_introduce = #{isIntroduce}
+		</if>
+		<if test="isNew!=null and isNew !=''">
+			and t.is_new = #{isNew}
+		</if>
+		<if test="userId!=null and userId !=''">
+			and t.user_id = #{userId}
+		</if>
+		<if test="brand!=null and brand !=''">
+			and t.brand = #{brand}
+		</if>
+		<if test="userBrandId != null">
+			and t.user_brand_id = #{userBrandId}
+		</if>
+		<if test="texture!=null and texture !=''">
+			and t.texture = #{texture}
+		</if>
+		<if test="age!=null and age !=''">
+			and t.age = #{age}
+		</if>
+		<if test="BeginPrice!=null and BeginPrice !=''">
+			and t.distribution_price >= #{BeginPrice}
+		</if>
+		<if test="EndPrice!=null and EndPrice !=''">
+			and #{EndPrice} >= t.distribution_price 
+		</if>
+	</select>
+	
+	<select id="getAgencyProductAll" parameterType="java.util.Map" resultType="productPojo">
+		select t.postage_type as postageType,t.weight as weight,t.unit as unit,(select name from synthetical_dict where value=t.unit and type = 'unit') as unitName,us.name as shopName,
+		t.product_sketch as productSketch,t.product_num as productNum,t.discount as discount,t.recommend as recommend,t.brand as brand,t.texture as texture,t.age as age,t.product_function as productFunction,t.location as location,t.is_power as isPower,t.pack as pack,t.is_hotsale as isHotsale,
+		t.id as id,t.user_id as userId,u.name as userName,t.product_no as productNo,t.product_type_id as productTypeId,pt.name as productTypeName,substring_index(substring_index(t.product_type_ids,':',2),':',-1) as productTypeIds,
+		t.product_name as productName,t.product_name_en as productNameEn,t.distribution_price as distributionPrice,t.selling_price as sellingPrice,t.lowest_price as lowestPrice,t.minimum as minimum,t.content as content,
+		t.ladder_price as ladderPrice,t.image as image,t.qrcode as qrcode,t.hits as hits,t.is_introduce as isIntroduce,(select name from sys_dict where value=t.is_introduce and type = 'yes_no') as isIntroduceName,t.sorting as sorting,t.status as status,(select name from sys_dict where value=t.status and type = 'status') as statusName,(select address from user_shop where user_id = t.user_id) as userAddress,t.create_by as createBy,t.create_date as createDate,t.update_by as updateBy,
+		t.update_date as updateDate,t.remarks as remarks,t.version as version,
+		<if test="filter == null">
+		((select ifnull(sum(num),0) from ele_order  where product_id=t.id)+(select ifnull(sum(num),0) from user_order_detail as ud left join user_order as uo on ud.order_id=uo.id where ud.product_id=t.id and uo.order_status>=2)) as sellNumber,
+		</if>
+		t.is_new as isNew,(select name from sys_dict where value=t.is_new and type = 'yes_no') as isNewName ,
+		(select name from synthetical_dict where value=t.is_hotsale and type = 'is_hotsale') as isHotsaleName,
+		(select name from sys_dict where value=t.postage_type and type = 'yes_no') as postageTypeName,
+		t.user_brand_id as userBrandId
+		from product t left join sys_login u on t.user_id = u.id left join product_type pt on t.product_type_id = pt.id left join user_shop us on t.user_id = us.user_id 
+		where 1=1
+			and t.status=1 and us.status=1 and (t.product_type_ids!=':0:' and t.product_type_id!=6)
+		<!--
+		<if test="userId != null and userId != ''">
+			and u.id like CONCAT("%",#{userId},"%" )
+		</if>
+		-->
+		<if test="filter != null and filter != '' ">
+			<!--
+			and t.id not in
+			<foreach collection="filter" item="filter" index="index" open="(" separator="," close=")">
+				#{filter}
+			</foreach>
+			-->
+			and not exists (
+				select g.* from activity_goods g
+			   	left join activity_time at on g.time_id = at.id
+			   	left join special_show s on s.activity_id = at.id
+				where g.product_id = t.id
+				and g.status = 1
+				and at.type = 3
+				and at.channel = 1
+				and at.isdelete = '0'
+				and 
+				((date_format(now(),'%Y-%m-%d %T') &gt;= date_format(at.begin_time,'%Y-%m-%d %T')
+				and date_format(now(),'%Y-%m-%d %T') &lt; date_format(at.end_time,'%Y-%m-%d %T')) or s.status=4)
+			)
+		</if>
+		<if test="productName != null and productName != ''">
+			and t.product_name like CONCAT("%",#{productName},"%" )
+		</if>
+		<if test="productTypeId !=null and productTypeId != ''">
+			and t.product_type_id=#{productTypeId}
+		</if>
+		<if test="productTypeIds !=null and productTypeIds != ''">
+			and t.product_type_ids like concat("%:",#{productTypeIds},":%")
+		</if>
+		<if test="productNum !=null and productNum != ''">
+			and t.product_num like CONCAT("%",#{productNum},"%" )
+		</if>
+		<if test="productNo !=null and productNo != ''">
+			and t.product_no=#{productNo}
+		</if>
+		<if test="productNum !=null and productNum != ''">
+			and t.product_num=#{productNum}
+		</if>
+		<if test="remarks !=null and remarks != ''">
+			and u.name like CONCAT("%",#{remarks},"%" )
+		</if>
+		<if test="isIntroduce!=null and isIntroduce !=''">
+			and t.is_introduce = #{isIntroduce}
+		</if>
+		<if test="isNew!=null and isNew !=''">
+			and t.is_new = #{isNew}
+		</if>
+		<if test="userId!=null and userId !=''">
+			and t.user_id = #{userId}
+		</if>
+		<if test="brand!=null and brand !=''">
+			and t.brand = #{brand}
+		</if>
+		<if test="texture!=null and texture !=''">
+			and t.texture = #{texture}
+		</if>
+		<if test="age!=null and age !=''">
+			and t.age = #{age}
+		</if>
+		<if test="userBrandId != null">
+			and t.user_brand_id = #{userBrandId}
+		</if>
+		<if test="BeginPrice!=null and BeginPrice !=''">
+			and t.distribution_price >= #{BeginPrice}
+		</if>
+		<if test="EndPrice!=null and EndPrice !=''">
+			and #{EndPrice} >= t.distribution_price 
+		</if>
+		<if test="paixu3 !=null and paixu3!=''">
+			order by t.id desc
+		</if>
+		<if test="paixu0 !=null and paixu0==0">
+			order by t.recommend desc
+		</if>
+		<if test="paixu0 !=null and paixu0==33">
+			order by t.recommend asc
+		</if>
+		
+		<if test="paixu1 !=null and paixu1==1">
+			order by sell_number+base_number desc
+		</if>
+		<if test="paixu1 !=null and paixu1==11">
+			order by sell_number+base_number asc
+		</if>
+	    <if test="paixu2 !=null and paixu2 ==2">
+			order by t.distribution_price desc
+		</if>
+		<if test="paixu2 !=null and paixu2 ==22">
+			order by t.distribution_price asc
+		</if>
+		 <if test="paixu4 !=null and paixu4 ==4">
+			order by t.create_date desc
+		</if>		
+	    <if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	<select id="getAgencyProductAllCount" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from product t left join sys_login u on t.user_id = u.id left join product_type pt on t.product_type_id = pt.id left join user_shop us on t.user_id = us.user_id 
+		where 1=1
+		and t.status=1 and us.status=1 and (t.product_type_ids!=':0:' and t.product_type_id!=6)
+		<!--
+		<if test="userId != null and userId != ''">
+			and u.id like CONCAT("%",#{userId},"%" )
+		</if>
+		-->
+		<if test="filter != null and filter != '' ">
+			<!--
+			and t.id not in
+			<foreach collection="filter" item="filter" index="index" open="(" separator="," close=")">
+				#{filter}
+			</foreach>
+			-->
+			and not exists (
+				select g.* from activity_goods g
+			   	left join activity_time at on g.time_id = at.id
+				where g.product_id = t.id
+				and g.status = 1
+				and at.type = 3
+				and at.channel = 1
+				and at.isdelete = '0'
+				and date_format(now(),'%Y-%m-%d %T') &gt;= date_format(at.begin_time,'%Y-%m-%d %T')
+				and date_format(now(),'%Y-%m-%d %T') &lt; date_format(at.end_time,'%Y-%m-%d %T')
+			)
+		</if>
+		<if test="productName != null and productName != ''">
+			and t.product_name like CONCAT("%",#{productName},"%" )
+		</if>
+		<if test="productTypeId !=null and productTypeId != ''">
+			and t.product_type_id=#{productTypeId}
+		</if>
+		<if test="productTypeIds !=null and productTypeIds != ''">
+			and t.product_type_ids like concat("%:",#{productTypeIds},":%")
+		</if>
+		<if test="productNum !=null and productNum != ''">
+			and t.product_num like CONCAT("%",#{productNum},"%" )
+		</if>
+		<if test="productNo !=null and productNo != ''">
+			and t.product_no=#{productNo}
+		</if>
+		<if test="productNum !=null and productNum != ''">
+			and t.product_num=#{productNum}
+		</if>
+		<if test="remarks !=null and remarks != ''">
+			and u.name like CONCAT("%",#{remarks},"%" )
+		</if>
+		<if test="isIntroduce!=null and isIntroduce !=''">
+			and t.is_introduce = #{isIntroduce}
+		</if>
+		<if test="isNew!=null and isNew !=''">
+			and t.is_new = #{isNew}
+		</if>
+		<if test="userId!=null and userId !=''">
+			and t.user_id = #{userId}
+		</if>
+		<if test="brand!=null and brand !=''">
+			and t.brand = #{brand}
+		</if>
+		<if test="texture!=null and texture !=''">
+			and t.texture = #{texture}
+		</if>
+		<if test="age!=null and age !=''">
+			and t.age = #{age}
+		</if>
+		<if test="userBrandId != null">
+			and t.user_brand_id = #{userBrandId}
+		</if>
+		<if test="BeginPrice!=null and BeginPrice !=''">
+			and t.distribution_price >= #{BeginPrice}
+		</if>
+		<if test="EndPrice!=null and EndPrice !=''">
+			and #{EndPrice} >= t.distribution_price 
+		</if>
+	</select>
+	
+	
+	<select id="getProductAllIds" parameterType="java.util.Map" resultType="productPojo">
+		select t.id 
+		from product t 
+		where 1=1 and t.status=1 and (t.product_type_ids!=':0:' and t.product_type_id!=6)
+
+		<if test="userId!=null and userId !=''">
+			and t.user_id = #{userId}
+		</if>
+		
+	</select>
+	
+	<select id="getProductAllStatus" parameterType="java.util.Map" resultType="productPojo">
+		select t.postage_type as postageType,t.weight as weight,t.unit as unit,(select name from synthetical_dict where value=t.unit and type = 'unit') as unitName,us.name as shopName,
+		t.product_sketch as productSketch,t.product_num as productNum,t.discount as discount,t.recommend as recommend,t.brand as brand,t.texture as texture,t.age as age,t.product_function as productFunction,t.location as location,t.is_power as isPower,t.pack as pack,t.is_hotsale as isHotsale,
+		t.id as id,t.user_id as userId,u.name as userName,t.product_no as productNo,t.product_type_id as productTypeId,pt.name as productTypeName,substring_index(substring_index(t.product_type_ids,':',2),':',-1) as productTypeIds,
+		t.product_name as productName,t.product_name_en as productNameEn,t.distribution_price as distributionPrice,t.selling_price as sellingPrice,t.lowest_price as lowestPrice,t.minimum as minimum,t.content as content,
+		t.ladder_price as ladderPrice,t.image as image,t.qrcode as qrcode,t.hits as hits,t.is_introduce as isIntroduce,(select name from sys_dict where value=t.is_introduce and type = 'yes_no') as isIntroduceName,t.sorting as sorting,t.status as status,(select name from sys_dict where value=t.status and type = 'status') as statusName,(select address from user_shop where user_id = t.user_id) as userAddress,t.create_by as createBy,t.create_date as createDate,t.update_by as updateBy,
+		t.update_date as updateDate,t.remarks as remarks,t.version as version,
+		((select ifnull(sum(num),0) from ele_order  where product_id=t.id)+(select ifnull(sum(num),0) from user_order_detail as ud left join user_order as uo on ud.order_id=uo.id where ud.product_id=t.id and uo.order_status>=2)) as sellNumber,
+		t.is_new as isNew,(select name from sys_dict where value=t.is_new and type = 'yes_no') as isNewName ,
+		(select name from synthetical_dict where value=t.is_hotsale and type = 'is_hotsale') as isHotsaleName,
+		(select name from sys_dict where value=t.postage_type and type = 'yes_no') as postageTypeName
+		from product t left join sys_login u on t.user_id = u.id left join product_type pt on t.product_type_id = pt.id left join user_shop us on t.user_id = us.user_id 
+		where 1=1
+			and t.status=1 and us.status=1 and (t.product_type_ids!=':0:' and t.product_type_id!=6)
+		<if test="UserId != null and UserId != ''">
+			and u.id like CONCAT("%",#{UserId},"%" )
+		</if>
+		<if test="productName != null and productName != ''">
+			and t.product_name like CONCAT("%",#{productName},"%" )
+		</if>
+		<if test="productTypeId !=null and productTypeId != ''">
+			and t.product_type_id=#{productTypeId}
+		</if>
+		<if test="productTypeIds !=null and productTypeIds != ''">
+			and t.product_type_ids like concat("%:",#{productTypeIds},":%")
+		</if>
+		<if test="productNum !=null and productNum != ''">
+			and t.product_num like CONCAT("%",#{productNum},"%" )
+		</if>
+		<if test="productNo !=null and productNo != ''">
+			and t.product_no=#{productNo}
+		</if>
+		<if test="productNum !=null and productNum != ''">
+			and t.product_num=#{productNum}
+		</if>
+		<if test="remarks !=null and remarks != ''">
+			and u.name like CONCAT("%",#{remarks},"%" )
+		</if>
+		<if test="isIntroduce!=null and isIntroduce !=''">
+			and t.is_introduce = #{isIntroduce}
+		</if>
+		<if test="isNew!=null and isNew !=''">
+			and t.is_new = #{isNew}
+		</if>
+		<if test="userId!=null and userId !=''">
+			and t.user_id = #{userId}
+		</if>
+		<if test="brand!=null and brand !=''">
+			and t.brand = #{brand}
+		</if>
+		<if test="texture!=null and texture !=''">
+			and t.texture = #{texture}
+		</if>
+		<if test="age!=null and age !=''">
+			and t.age = #{age}
+		</if>
+		<if test="BeginPrice!=null and BeginPrice !=''">
+			and t.distribution_price >= #{BeginPrice}
+		</if>
+		<if test="EndPrice!=null and EndPrice !=''">
+			and #{EndPrice} >= t.distribution_price 
+		</if>
+		<if test="paixu3 !=null and paixu3!=''">
+			order by t.id desc
+		</if>
+		<if test="paixu0 !=null and paixu0==0">
+			order by t.recommend desc
+		</if>
+		<if test="paixu0 !=null and paixu0==33">
+			order by t.recommend asc
+		</if>
+		
+		<if test="paixu1 !=null and paixu1==1">
+			order by sell_number+base_number desc
+		</if>
+		<if test="paixu1 !=null and paixu1==11">
+			order by sell_number+base_number asc
+		</if>
+	    <if test="paixu2 !=null and paixu2 ==2">
+			order by t.distribution_price desc
+		</if>
+		<if test="paixu2 !=null and paixu2 ==22">
+			order by t.distribution_price asc
+		</if>
+		 <if test="paixu4 !=null and paixu4 ==4">
+			order by t.create_date desc
+		</if>		
+	    <if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+
+	<select id="productByUserIdSort" parameterType="java.util.Map" resultType="productPojo">
+		select t.unit as unit,(select name from synthetical_dict where value=t.unit and type = 'unit') as unitName,
+		t.product_sketch as productSketch,t.product_num as productNum,t.discount as discount,t.recommend as recommend,t.brand as brand,t.texture as texture,t.age as age,t.product_function as productFunction,t.location as location,t.is_power as isPower,t.pack as pack,t.is_hotsale as isHotsale,
+		t.id as id,t.user_id as userId,t.product_no as productNo,t.product_type_id as productTypeId,substring_index(substring_index(t.product_type_ids,':',2),':',-1) as productTypeIds,
+		t.product_name as productName,t.product_name_en as product_name_en,t.distribution_price as distributionPrice,t.selling_price as sellingPrice,
+		t.lowest_price as lowestPrice,t.minimum as minimum,t.ladder_price as ladderPrice,t.image as image,t.qrcode as qrcode,t.hits as hits,t.is_introduce as isIntroduce,t.sell_number + t.base_number as sellNumber,(select name from sys_dict where value=t.is_introduce and type = 'yes_no') as isIntroduceName,t.sorting as sorting,t.status as status,(select name from sys_dict where value=t.status and type = 'status') as statusName,
+		t.create_by as createBy,t.create_date as createDate,t.update_by as updateBy,t.update_date as updateDate,t.remarks as remarks,t.version as version,t.is_new as isNew ,(select name from sys_dict where value=t.is_new and type = 'yes_no') as isNewName,
+		t.base_number as baseNumber
+		from product t left join user_shop us on t.user_id = us.user_id
+		where 1=1 and t.status = 1 and us.status = 1
+		<if test="userId !=null ">
+			and t.user_id = #{userId}
+		</if>
+		<if test="sort!=null and sort==1">
+			order by t.sell_number+t.base_number desc
+		</if>
+		<if test="sort!=null and sort==11">
+			order by t.sell_number+t.base_number asc
+		</if>
+		<if test="sort!=null and sort==2">
+			order by t.distribution_price desc
+		</if>
+		<if test="sort!=null and sort==22">
+			order by t.distribution_price asc
+		</if>
+		<if test="sort!=null and sort==3">
+			order by t.hits desc
+		</if>
+		<if test="sort!=null and sort==33">
+			order by t.hits asc
+		</if>
+		
+		<if test="pageSize != null">
+			 limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+
+	<select id="getProductAllByParameter" parameterType="java.util.Map" resultType="productPojo">
+		select t.unit as unit,(select name from synthetical_dict where value=t.unit and type = 'unit') as unitName,
+		t.product_sketch as productSketch,t.product_num as productNum,t.discount as discount,t.recommend as recommend,t.brand as brand,t.texture as texture,t.age as age,t.product_function as productFunction,t.location as location,t.is_power as isPower,t.pack as pack,t.is_hotsale as isHotsale,
+		t.id as id,t.user_id as userId,u.name as userName,t.product_no as productNo,t.product_type_id as productTypeId,pt.name as productTypeName,substring_index(substring_index(t.product_type_ids,':',2),':',-1) as productTypeIds,
+		t.product_name as productName,t.product_name_en as productNameEn,t.distribution_price as distributionPrice,t.selling_price as sellingPrice,t.lowest_price as lowestPrice,t.minimum as minimum,t.content as content,
+		t.ladder_price as ladderPrice,t.image as image,t.qrcode as qrcode,t.hits as hits,t.is_introduce as isIntroduce,(select name from sys_dict where value=t.is_introduce and type = 'yes_no') as isIntroduceName,t.sorting as sorting,t.status as status,(select name from sys_dict where value=t.status and type = 'status') as statusName,(select address from user_info where user_id = t.user_id) as userAddress,t.create_by as createBy,t.create_date as createDate,t.update_by as updateBy,
+		t.update_date as updateDate,t.remarks as remarks,t.version as version,t.sell_number + t.base_number as sellNumber,t.is_new as isNew,t.postage_type as postageType,(select name from sys_dict where value=t.is_new and type = 'yes_no') as isNewName from product t left join sys_login u on t.user_id = u.id left join product_type pt on t.product_type_id = pt.id where 1=1 and t.status = '1'
+		<if test="productTypeId != null || productTypeId == ''">
+		     and t.product_type_id = #{productTypeId}
+		</if>
+		<if test="productTypeIds != null || productTypeIds == ''">
+		     and t.product_type_ids like concat("%:",#{productTypeIds},":%")
+		</if>
+		<if test="sortingType != null and sortingType != '' and sortingType == 'hits' ">
+			order by t.hits desc
+		</if>
+		<if test="sortingType != null and sortingType != '' and sortingType == 'sellNumber' ">
+			order by t.sell_number+t.base_number desc
+		</if>
+		<if test="sortingType != null and sortingType != '' and sortingType == 'distributionPrice' ">
+			order by t.distribution_price desc
+		</if>
+		<if test="sortingType == null || sortingType == ''">
+			order by t.sorting desc
+		</if>
+	    <if test="pageSize != null">
+			 limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	<select id="imagesCount" resultType="int" parameterType="java.util.Map">
+	select count(*) from product_images a  where a.product_id= #{productId} and a.status =1
+	</select>
+	<select id="focusImageCount" resultType="int" parameterType="java.util.Map">
+	select count(*) from product_focus_images b  where b.product_id=#{productId} and b.status =1
+	</select>
+	
+	<!--查询所有产品-->
+    <select id="getProductAll" parameterType="java.util.Map" resultType="productPojo">
+        select
+        t.postage_type as postageType,
+		t.update_by as updateBy,
+		(select name from sys_login where id=t.update_by)as updateByName,
+		t.weight as weight,
+		t.unit as unit,
+		(select name from synthetical_dict where value=t.unit and type = 'unit') as unitName,
+		us.name as shopName,
+		t.product_sketch as productSketch,
+		t.product_num as productNum,
+		t.discount as discount,
+		t.recommend as recommend,
+		t.brand as brand,
+		t.texture as texture,
+		t.age as age,
+		t.product_function as productFunction,
+		t.location as location,
+		t.is_power as isPower,
+		t.pack as pack,
+		t.is_hotsale as isHotsale,
+		t.id as id,
+		t.user_id as userId,
+		u.name as userName,
+		t.product_no as productNo,
+		t.product_type_id as productTypeId,
+		pt.name as productTypeName,
+		substring_index(substring_index(t.product_type_ids,':',2),':',-1) as productTypeIds,
+		t.product_name as productName,
+		t.product_name_en as productNameEn,
+		t.distribution_price as distributionPrice,
+		t.proxy_price  as proxyPrice,
+		t.selling_price as sellingPrice,
+		t.lowest_price as lowestPrice,
+		t.minimum as minimum,t.content as content,
+		t.ladder_price as ladderPrice,
+		t.image as image,
+		t.image_main as imageMain,
+		t.qrcode as qrcode,
+		t.hits as hits,
+		t.is_introduce as isIntroduce,
+		(select name from sys_dict where value=t.is_introduce and type = 'yes_no') as isIntroduceName,
+		t.sorting as sorting,
+		t.status as status,
+		(select name from synthetical_dict where value=t.is_power and type = 'is_power') as isPowerName,
+		(select name from sys_dict where value=t.status and type = 'status') as statusName,
+		(select address from user_info where user_id = t.user_id) as userAddress,
+		t.create_by as createBy,
+		t.create_date as createDate,
+		t.update_by as updateBy,
+		t.update_date as updateDate,
+		t.remarks as remarks,
+		t.version as version,
+		t.sell_number + t.base_number as sellNumber,
+		(select name from synthetical_dict where value=t.brand and type = 'brand') as brandName,
+		(select name from synthetical_dict where value=t.texture and type = 'texture') as textureName,
+		(select name from synthetical_dict where value=t.age and type = 'age') as ageName,
+		t.is_new as isNew,
+		(select name from synthetical_dict where value=t.pack and type = 'pack') as packName,
+		(select name from sys_dict where value=t.is_new and type = 'yes_no') as isNewName ,
+		(select name from synthetical_dict where value=t.is_hotsale and type = 'is_hotsale') as isHotsaleName,
+		(select name from sys_dict where value=t.postage_type and type = 'yes_no') as postageTypeName,
+		
+		(select ifnull(sum(stock),0) from product_sku_link where product_id=t.id) as stock,
+		ifnull(gac.price,0) as price,
+		ifnull(gac.num,0) as num,
+		<if test="activityType != null">
+			(select count(*) from groupon_user_record gur where gur.activity_id = gac.id and gur.activity_type=#{activityType}) as countNum,
+			
+		</if> 
+		(SELECT COUNT(*) FROM groupon_user_record gur 
+			LEFT JOIN groupon_activity_record gar ON gur.attend_id = gar.id WHERE gar.activity_id=gac.id) as numNow1,
+		gac.type as type,
+		gac.status as status2,
+		gac.id as grouponId,
+		gac.price as price,
+		
+		<if test="timeIdIsN != null and timeIdIsN != '' ">
+		g.time_id as activityId,
+		g.active_price as activePrice,
+		</if>
+		t.base_number as baseNumber,
+		us.name as name,
+		t.tag as tag,
+		t.age_desc as ageDesc,
+		t.user_brand_id as userBrandId,
+		ub.brand_name as brandNames,
+		t.product_type1 as productType1,
+		t.product_commt as productCommt,
+		t.limit_num as limitNum,
+		t.surplus_num as surplusNum
+		from product t 
+		left join sys_login u on t.user_id = u.id 
+		left join product_type pt on t.product_type_id = pt.id 
+		left join user_shop us on t.user_id = us.user_id
+		left join user_brand ub on t.user_brand_id = ub.id 
+		<if test="timeIdIsN != null and timeIdIsN != '' ">
+		left join activity_goods g on g.product_id = t.id 
+		left join activity_time at on g.time_id = at.id
+		left join special_show ss on at.id = ss.activity_id
+		</if> 
+		left join groupon_activity gac on gac.product_id=t.id and gac.is_default=1 and gac.type=1
+		where 1=1
+		<if test="timeIdIsN != null and timeIdIsN != '' ">
+			and ss.status = 4
+			and g.status = 1
+			and g.time_id is not null
+			and at.channel = 1
+			and at.isdelete = '0'
+			<if test="activityType != null">
+				and at.type = #{activityType}
+			</if>
+			and ((at.type = 0
+			and date_format(now(),'%Y-%m-%d') = date_format(at.activity_date,'%Y-%m-%d')
+			and date_format(now(),'%H:%i') &gt;= at.begin_time 
+			and date_format(now(),'%H:%i') &lt; at.end_time)
+			or (at.type > 0
+			and date_format(now(),'%Y-%m-%d %T') &gt;= date_format(at.begin_time,'%Y-%m-%d %T')
+			and date_format(now(),'%Y-%m-%d %T') &lt; date_format(at.end_time,'%Y-%m-%d %T')))
+		</if>
+		<if test="keywords != null and keywords != ''">
+			and
+				(
+					t.product_name LIKE CONCAT(CONCAT('%', #{keywords}),'%')
+					 or 
+					t.id =#{keywords}
+				)
+		</if>
+		<if test="drawkeywords != null and drawkeywords != ''">
+			and
+				(
+					t.product_name LIKE CONCAT(CONCAT('%', #{drawkeywords}),'%')
+					 or 
+					t.product_num LIKE CONCAT(CONCAT('%', #{drawkeywords}),'%') 
+					or 
+					t.id LIKE CONCAT(CONCAT('%', #{drawkeywords}),'%') 
+				)
+		</if>
+		<if test="productNameOrId != null and productNameOrId != ''">
+			and
+				(
+					t.product_name LIKE CONCAT(CONCAT('%', #{productNameOrId}),'%')
+					 or 
+					t.id LIKE CONCAT(CONCAT('%', #{productNameOrId}),'%') 
+					 or 
+					t.product_num LIKE CONCAT(CONCAT('%', #{productNameOrId}),'%')
+				)
+		</if>
+		<if test="activityStatus != null and activityStatus != ''">
+			and gac.status = #{activityStatus}
+		</if>
+		<if test="activityStatus == 0">
+			and gac.status = #{activityStatus}
+		</if>
+		<if test="status2 != null and status2 != ''">
+			and u.id like CONCAT("%",#{status2},"%" )
+		</if>
+		<if test="productStatus != null">
+			and t.status=#{productStatus}
+		</if>
+		<if test="status != null">
+			and t.status=#{status}
+		</if>
+		<if test="UserId != null and UserId != ''">
+			and u.id like CONCAT("%",#{UserId},"%" )
+		</if>
+		<if test="productName != null and productName != ''">
+			and t.product_name like CONCAT("%",#{productName},"%" )
+		</if>
+		<if test="productTypeId !=null and productTypeId != ''">
+			and t.product_type_id=#{productTypeId}
+		</if>
+		<if test="productTypeIds !=null and productTypeIds != ''">
+			and t.product_type_ids like concat("%:",#{productTypeIds},":%")
+		</if>
+		<if test="productNum !=null and productNum != ''">
+			and t.product_num like CONCAT("%",#{productNum},"%" )
+		</if>
+		<if test="productNo !=null and productNo != ''">
+			and t.product_no like CONCAT("%",#{productNo},"%" )
+		</if>
+		<if test="productType1 !=null and productType1 != ''">
+			and t.product_type1 = #{productType1}
+		</if>
+		<if test="userBrandId !=null">
+			and t.user_brand_id = #{userBrandId}
+		</if>
+		<if test="id !=null">
+			and t.id=#{id}
+		</if>
+		<if test="remarks !=null and remarks != ''">
+			and us.name like CONCAT("%",#{remarks},"%" )
+		</if>
+		<if test="isIntroduce!=null and isIntroduce !=''">
+			and t.is_introduce = #{isIntroduce}
+		</if>
+		<if test="isNew!=null and isNew !=''">
+			and t.is_new = #{isNew}
+		</if>
+		<if test="userId!=null and userId !=''">
+			and t.user_id = #{userId}
+		</if>
+		<if test="brand!=null and brand !=''">
+			and t.brand = #{brand}
+		</if>
+		<if test="texture!=null and texture !=''">
+			and t.texture = #{texture}
+		</if>
+		<if test="age!=null and age !=''">
+			and t.age = #{age}
+		</if>
+		<if test="tag!=null and tag !=''">
+			and t.tag = #{tag}
+		</if>
+		<if test="shopName!=null and shopName !=''">
+			and us.name like CONCAT("%",#{shopName},"%" )
+		</if>
+		<if test="ageDesc!=null and ageDesc !=''">
+			and t.age_desc = #{ageDesc}
+		</if>
+		<if test="BeginPrice!=null and BeginPrice !=''">
+			and t.distribution_price >= #{BeginPrice}
+		</if>
+		
+		<if test="EndPrice!=null and EndPrice !=''">
+			and #{EndPrice} >= t.distribution_price 
+		</if>
+		<if test="time!=null and time !=''">
+			and TO_DAYS(t.create_date)=TO_DAYS(NOW())
+		</if>
+		<if test="paixu3 !=null and paixu3!=''">
+			order by t.id desc
+		</if>
+		<if test="paixu0 !=null and paixu0!=''">
+			order by t.recommend asc
+		</if>
+		<if test="paixu1 !=null and paixu1!=''">
+			order by t.sell_number+t.base_number desc
+		</if>
+		<if test="paixu11 !=null and paixu11!=''">
+			order by t.sell_number+t.base_number asc
+		</if>
+	    <if test="timeIdIsN == null and paixu2 !=null and paixu2!=''">
+			order by t.distribution_price asc
+		</if>
+		<if test="timeIdIsN == null and paixu22 !=null and paixu22!=''">
+			order by t.distribution_price desc
+		</if>
+	    <if test="timeIdIsN != null and paixu2 !=null and paixu2!=''">
+			order by g.active_price asc
+		</if>
+		<if test="timeIdIsN != null and paixu22 !=null and paixu22!=''">
+			order by g.active_price desc
+		</if>
+		<if test="paixu4 !=null and paixu4!=''">
+			order by t.hits desc
+		</if>
+		<if test="paixu44 !=null and paixu44!=''">
+			order by t.hits asc
+		</if>
+		<if test="paixu5 !=null and paixu5!=''">
+			order by t.create_date desc
+		</if>
+		<if test="orderBy != null and orderBy == 1">
+			order by t.sell_number+t.base_number desc
+		</if>
+		<if test="orderBy != null and orderBy == 2">
+			order by gac.price desc
+		</if>
+	    <if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	
+	<!--查询所有产品-->
+    <select id="getProductAll2" parameterType="java.util.Map" resultType="productExcelPojo">
+        select
+			t.postage_type as postageType,
+			t.update_by as updateBy,
+			t.weight as weight,
+			t.product_sketch as productSketch,
+			t.product_num as productNum,
+			t.discount as discount,
+			t.id as id,
+			t.user_id as userId,
+			t.product_no as productNo,
+			t.product_type_id as productTypeId,
+			substring_index( substring_index( t.product_type_ids, ':', 2 ), ':',- 1 ) as productTypeIds,
+			t.product_name as productName,
+			t.distribution_price as distributionPrice,
+			t.selling_price as sellingPrice,
+			t.image as image,
+			t.qrcode as qrcode,
+			t.hits as hits,
+			t.status as status,
+			t.update_date as updateDate,
+			t.remarks as remarks,
+			t.version as version,
+			t.sell_number + t.base_number as sellNumber,
+			(select sum(ifnull(stock,0)) from product_sku_link where product_id = t.id) as stock,
+			ifnull(gac.price,0) as price,
+			ifnull(gac.num,0) as num,
+			gac.type as type,
+			gac.status as status2,
+			(case when ifnull(gac.status,0)= 1 then "销售中" else "未上架" end) as statusStr,
+			ifnull(gac.id,0) as grouponId,
+			t.base_number as baseNumber,
+			t.product_type1 as productType1,
+			t.product_commt as productCommt
+		from
+			product t
+			left join groupon_activity gac on gac.product_id = t.id and gac.is_default = 1 and gac.type = 1
+		where 1=1	
+		<if test="productNameOrId != null and productNameOrId != ''">
+			and (
+				t.product_name LIKE CONCAT('%', #{productNameOrId},'%')
+			or 
+				t.id LIKE CONCAT('%', #{productNameOrId},'%')
+			or 
+				t.product_num LIKE CONCAT('%', #{productNameOrId},'%'))
+		</if>
+		<if test="activityStatus != null">
+			and gac.status = #{activityStatus}
+		</if>
+
+		<if test="productStatus != null">
+			and t.status=#{productStatus}
+		</if>
+		<if test="status != null">
+			and t.status=#{status}
+		</if>
+		<if test="productName != null and productName != ''">
+			and t.product_name like CONCAT("%",#{productName},"%" )
+		</if>
+		<if test="productTypeId !=null and productTypeId != ''">
+			and t.product_type_id=#{productTypeId}
+		</if>
+		<if test="productTypeIds !=null and productTypeIds != ''">
+			and t.product_type_ids = CONCAT(":",#{productTypeIds},":")
+		</if>
+		<if test="productNum !=null and productNum != ''">
+			and t.product_num like CONCAT("%",#{productNum},"%" )
+		</if>
+		<if test="productNo !=null and productNo != ''">
+			and t.product_no like CONCAT("%",#{productNo},"%" )
+		</if>
+		<if test="productType1 !=null and productType1 != ''">
+			and t.product_type1 = #{productType1}
+		</if>
+		<if test="userBrandId !=null">
+			and t.user_brand_id = #{userBrandId}
+		</if>
+		<if test="id !=null">
+			and t.id=#{id}
+		</if>
+		<if test="userId!=null and userId !=''">
+			and t.user_id = #{userId}
+		</if>
+		<if test="BeginPrice!=null and BeginPrice !=''">
+			and t.distribution_price >= #{BeginPrice}
+		</if>
+		
+		<if test="EndPrice!=null and EndPrice !=''">
+			and #{EndPrice} >= t.distribution_price 
+		</if>
+		<if test="time!=null and time !=''">
+			and TO_DAYS(t.create_date)=TO_DAYS(NOW())
+		</if>
+		<if test="paixu3 !=null and paixu3!=''">
+			order by t.id desc
+		</if>
+		<if test="paixu0 !=null and paixu0!=''">
+			order by t.recommend asc
+		</if>
+		<if test="paixu1 !=null and paixu1!=''">
+			order by t.sell_number+t.base_number desc
+		</if>
+		<if test="paixu11 !=null and paixu11!=''">
+			order by t.sell_number+t.base_number asc
+		</if>
+	    <if test="timeIdIsN == null and paixu2 !=null and paixu2!=''">
+			order by t.distribution_price asc
+		</if>
+		<if test="timeIdIsN == null and paixu22 !=null and paixu22!=''">
+			order by t.distribution_price desc
+		</if>
+		<if test="paixu4 !=null and paixu4!=''">
+			order by t.hits desc
+		</if>
+		<if test="paixu44 !=null and paixu44!=''">
+			order by t.hits asc
+		</if>
+		<if test="paixu5 !=null and paixu5!=''">
+			order by t.create_date desc
+		</if>
+		<if test="orderBy !=null and orderBy!=''">
+			order by ${orderBy}
+		</if>
+	    <if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<!--商品上架下架-->
+	<update id="productStatusUpdate" parameterType="productPojo">
+		update groupon_activity set
+		status=#{status2},
+		update_date=now()
+		where id = #{id}
+	</update>
+	
+	<select id="getProductAllByName" parameterType="java.util.Map" resultType="productPojo">
+		select t.postage_type as postageType,t.weight as weight,t.unit as unit,(select name from synthetical_dict where value=t.unit and type = 'unit') as unitName,us.name as shopName,
+		t.product_sketch as productSketch,t.product_num as productNum,t.discount as discount,t.recommend as recommend,t.brand as brand,t.texture as texture,t.age as age,t.product_function as productFunction,t.location as location,t.is_power as isPower,t.pack as pack,t.is_hotsale as isHotsale,
+		t.id as id,t.user_id as userId,u.name as userName,t.product_no as productNo,t.product_type_id as productTypeId,pt.name as productTypeName,substring_index(substring_index(t.product_type_ids,':',2),':',-1) as productTypeIds,
+		t.product_name as productName,t.product_name_en as productNameEn,t.distribution_price as distributionPrice,t.selling_price as sellingPrice,t.lowest_price as lowestPrice,t.minimum as minimum,t.content as content,
+		t.ladder_price as ladderPrice,t.image as image,t.qrcode as qrcode,t.hits as hits,t.is_introduce as isIntroduce,(select name from sys_dict where value=t.is_introduce and type = 'yes_no') as isIntroduceName,t.sorting as sorting,t.status as status,(select name from sys_dict where value=t.status and type = 'status') as statusName,(select address from user_info where user_id = t.user_id) as userAddress,t.create_by as createBy,t.create_date as createDate,t.update_by as updateBy,
+		t.update_date as updateDate,t.remarks as remarks,t.version as version,t.sell_number + t.base_number as sellNumber,t.is_new as isNew,(select name from sys_dict where value=t.is_new and type = 'yes_no') as isNewName ,
+		(select name from synthetical_dict where value=t.is_hotsale and type = 'is_hotsale') as isHotsaleName
+		from product t left join sys_login u on t.user_id = u.id left join product_type pt on t.product_type_id = pt.id left join user_shop us on t.user_id = us.user_id 
+		where 1=1 and t.status=1 and us.status=1
+		<if test="UserId != null and UserId != ''">
+			and u.id like CONCAT("%",#{UserId},"%" )
+		</if>
+		<if test="productName != null and productName != ''">
+			and t.product_name like CONCAT("%",#{productName},"%" )
+		</if>
+		<if test="productTypeId !=null and productTypeId != ''">
+			and t.product_type_id=#{productTypeId}
+		</if>
+		<if test="productTypeIds !=null and productTypeIds != ''">
+			and t.product_type_ids like concat("%:",#{productTypeIds},":%")
+		</if>
+		<if test="productNum !=null and productNum != ''">
+			and t.product_num like CONCAT("%",#{productNum},"%" )
+		</if>
+		<if test="productNo !=null and productNo != ''">
+			and t.product_no=#{productNo}
+		</if>
+		<if test="remarks !=null and remarks != ''">
+			and u.name like CONCAT("%",#{remarks},"%" )
+		</if>
+		<if test="isIntroduce!=null and isIntroduce !=''">
+			and t.is_introduce = #{isIntroduce}
+		</if>
+		<if test="isNew!=null and isNew !=''">
+			and t.is_new = #{isNew}
+		</if>
+		<if test="userId!=null and userId !=''">
+			and t.user_id = #{userId}
+		</if>
+		<if test="brand!=null and brand !=''">
+			and t.brand = #{brand}
+		</if>
+		<if test="texture!=null and texture !=''">
+			and t.texture = #{texture}
+		</if>
+		<if test="age!=null and age !=''">
+			and t.age = #{age}
+		</if>
+		<if test="BeginPrice!=null and BeginPrice !=''">
+			and t.distribution_price >= #{BeginPrice}
+		</if>
+		<if test="EndPrice!=null and EndPrice !=''">
+			and #{EndPrice} >= t.distribution_price 
+		</if>
+		<if test="paixu3 !=null and paixu3!=''">
+			order by t.id desc
+		</if>
+		<if test="paixu0 !=null and paixu0!=''">
+			order by t.recommend asc
+		</if>
+		<if test="paixu1 !=null and paixu1!=''">
+			order by t.sell_number+t.base_number desc
+		</if>
+	    <if test="paixu2 !=null and paixu2!=''">
+			order by t.distribution_price asc
+		</if>
+	    <if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<select id="getCount" parameterType="java.util.Map" resultType="int">
+		select count(*) from 
+		product t left join sys_login u on t.user_id = u.id left join user_shop us on t.user_id = us.user_id 
+		left join groupon_activity gac on gac.product_id=t.id and gac.is_default=1 and gac.type = 1
+		where 1=1 
+		<if test="keywords != null and keywords != ''">
+			and
+				(
+					t.product_name LIKE CONCAT(CONCAT('%', #{keywords}),'%')
+					 or 
+					t.id =#{keywords}
+				)
+		</if>
+		<if test="drawkeywords != null and drawkeywords != ''">
+			and
+				(
+					t.product_name LIKE CONCAT(CONCAT('%', #{drawkeywords}),'%')
+					 or 
+					t.product_num LIKE CONCAT(CONCAT('%', #{drawkeywords}),'%') 
+					 or 
+					t.id LIKE CONCAT(CONCAT('%', #{drawkeywords}),'%') 
+				)
+		</if>
+		<if test="productNameOrId != null and productNameOrId != ''">
+			and
+				(
+					t.product_name LIKE CONCAT(CONCAT('%', #{productNameOrId}),'%')
+					 or 
+					t.id LIKE CONCAT(CONCAT('%', #{productNameOrId}),'%') 
+					 or 
+					t.product_num LIKE CONCAT(CONCAT('%', #{productNameOrId}),'%') 
+				)
+		</if>
+		<if test="activityStatus != null and activityStatus != ''">
+			and gac.status = #{activityStatus}
+		</if>
+		<if test="activityStatus == 0">
+			and gac.status = #{activityStatus}
+		</if>
+		<if test="status != null">
+			and t.status=#{status}
+		</if> 
+		<if test="productName != null and productName != ''">
+			and t.product_name like CONCAT("%",#{productName},"%" )
+		</if>
+		<if test="productStatus != null and productStatus != ''">
+			and t.status like CONCAT("%",#{productStatus},"%" )
+		</if>
+		<if test="productTypeId !=null and productTypeId != ''">
+			and t.product_type_id=#{productTypeId}
+		</if>
+		<if test="productTypeIds !=null and productTypeIds != ''">
+			and t.product_type_ids like concat("%:",#{productTypeIds},":%")
+		</if>
+		<if test="productType1 !=null and productType1 != ''">
+			and t.product_type1 =#{productType1}
+		</if>
+		<if test="id !=null">
+			and t.id=#{id}
+		</if>
+		<if test="tag!=null and tag !=''">
+			and t.tag = #{tag}
+		</if>
+		<if test="shopName!=null and shopName !=''">
+			and us.name like CONCAT("%",#{shopName},"%" )
+		</if>
+		<if test="ageDesc!=null and ageDesc !=''">
+			and t.age_desc = #{ageDesc}
+		</if>
+		<if test="productNum !=null and productNum != ''">
+			and t.product_num like CONCAT("%",#{productNum},"%" )
+		</if>
+		<if test="productNo !=null and productNo != ''">
+			and t.product_no like CONCAT("%",#{productNo},"%" )
+		</if>
+		<if test="remarks !=null and remarks != ''">
+			and us.name like CONCAT("%",#{remarks},"%" )
+		</if>
+		<if test="isIntroduce!=null and isIntroduce !=''">
+			and t.is_introduce = #{isIntroduce}
+		</if>
+		<if test="isNew!=null and isNew !=''">
+			and t.is_new = #{isNew}
+		</if>
+		<if test="userId!=null and userId !=''">
+			and t.user_id = #{userId}
+		</if>
+		<if test="brand!=null and brand !=''">
+			and t.brand = #{brand}
+		</if>
+		<if test="userBrandId != null">
+			and t.user_brand_id = #{userBrandId}
+		</if>
+		<if test="texture!=null and texture !=''">
+			and t.texture = #{texture}
+		</if>
+		<if test="age!=null and age !=''">
+			and t.age = #{age}
+		</if>
+		<if test="BeginPrice!=null and BeginPrice !=''">
+			and t.distribution_price >= #{BeginPrice}
+		</if>
+		<if test="EndPrice!=null and EndPrice !=''">
+			and #{EndPrice} >= t.distribution_price 
+		</if>
+	</select>
+	
+	<select id="findProduct" parameterType="productPojo" resultType="productPojo">
+		select t.unit as unit,(select name from synthetical_dict where value=t.unit and type = 'unit') as unitName,
+		t.product_sketch as productSketch, t.product_num as productNum,
+		t.product_name as name,
+		t.discount as discount,
+		t.recommend as recommend,
+		t.brand as brand,
+		t.texture as texture,
+		t.age as age,
+		t.product_function as productFunction,
+		t.location as location,
+		t.is_power as isPower,
+		t.pack as pack,
+		t.is_hotsale as isHotsale,
+		(select name from synthetical_dict where value=t.brand and type = 'brand') as brandName,
+		(select name from synthetical_dict where value=t.texture and type = 'texture') as textureName,
+		(select name from synthetical_dict where value=t.age and type = 'age') as ageName,
+		(select name from synthetical_dict where value=t.product_function and type = 'product_function') as productFunctionName,
+		(select name from synthetical_dict where value=t.is_power and type = 'is_power') as isPowerName,
+		(select name from synthetical_dict where value=t.pack and type = 'pack') as packName,
+		t.id as id,
+		t.user_id as userId,
+		t.product_no as productNo,
+		u.name as userName,
+		pt.name productTypeName,
+		t.product_type_id as productTypeId,
+		substring_index(substring_index(t.product_type_ids,':',2),':',-1) as productTypeIds,
+		t.product_name as productName,
+		t.product_name_en as product_name_en,
+		t.distribution_price as distributionPrice,
+		t.selling_price as sellingPrice,
+		t.sell_number as sellNumber,
+		t.base_number as baseNumber,
+		t.lowest_price as lowestPrice,
+		t.minimum as minimum,
+		t.content as content,
+		t.ladder_price as ladderPrice,
+		t.image as image,
+		t.qrcode as qrcode,
+		t.hits as hits,
+		t.is_introduce as isIntroduce,
+		(select name from sys_dict where value=t.is_introduce and type = 'yes_no') as isIntroduceName,
+		t.sorting as sorting,
+		t.status as status,
+		(select name from sys_dict where value=t.status and type = 'status') as statusName,
+		<!-- (select name from sys_dict where value=substring_index(substring_index(t.product_type_ids,':',2),':',-1) and type = 'main_category') as productTypeIdsName, -->
+		(select name from product_type a left join product b on a.id = substring_index(substring_index(b.product_type_ids,':',2),':',-1)  where a.pid='0' and a.top_level =b.product_type1 and b.id=#{id}) as productTypeIdsName,
+		t.create_by as createBy,
+		t.create_date as createDate,
+		t.update_by as updateBy,
+		t.update_date as updateDate,
+		t.remarks as remarks,
+		t.version as version,
+		t.is_new as isNew,
+		t.postage_type as postageType,
+		t.weight as weight,
+		t.tag as tag,
+		t.age_desc as ageDesc,
+		(select name from sys_dict where value=t.is_new and type = 'yes_no') as isNewName,
+		t.base_number as baseNumber,
+		t.user_brand_id as userBrandId,
+		ub.brand_name as brandNames,
+		t.product_type1 as productType1,
+		(select name from product_type where id=t.product_type1 and status =1) as productType1Name,
+		(select price from groupon_activity where product_id=t.id and type=1 and is_delete=0 and is_default=1 limit 1) as price,
+		t.product_commt as productCommt,
+		t.video_url as videoUrl,
+		t.tvideo_url as tvideoUrl, 
+		t.tvideo_url_image as tvideoUrlImage,
+		t.image_small as imageSmall,
+		t.image_main as imageMain,
+		t.max_num as maxNum,
+		t.format_value as formatValue,
+		t.color_value as colorValue,
+		t.norm_type as normType,
+		t.limit_num as limitNum,
+		t.surplus_num as surplusNum
+		from product t 
+		left join sys_login u on t.user_id = u.id
+		left join product_type pt on t.product_type_id = pt.id 
+		left join user_brand ub on t.user_brand_id = ub.id
+		where t.id=#{id}
+		<if test="status != null ">
+			and t.status = #{status}
+		</if>
+	</select>
+	
+	<!--查找商品详情-->
+	<select id="findProductContent" parameterType="productPojo" resultType="productPojo">
+		select * from product where id=#{id}
+	</select>
+	
+	<!--编辑商品详情-->
+	<update id="productContentUpdate" parameterType="productPojo">
+		update product set
+		content=#{content},
+		version=1,
+		update_date=now()
+		where id = #{id}
+	</update>
+	
+	<!--查找商品名称-->
+	<select id="findProductName" parameterType="productPojo" resultType="productPojo">
+		select product_name as productName from product where id=#{id}
+	</select>
+	
+	<!--编辑商品名称-->
+	<update id="productNameUpdate" parameterType="productPojo">
+		update product set
+		product_name=#{productName},
+		update_date=now()
+		where id = #{id}
+	</update>
+	
+	
+	<!--查找商品库存-->
+	<select id="findProductStockCount" parameterType="Long" resultType="int">
+		select count(*) from product p
+		left join product_sku_link psl on p.id = psl.product_id
+		where p.id=#{id}
+	</select>
+	
+	<select id="findProductStockList" parameterType="Long" resultType="productPojo">
+		select
+		p.product_name as productName,
+		(select case when count(id)=0 then '0' else max(id) end id
+		from groupon_activity  where product_id=p.id) as grouponId,
+		psl.id as productSkuId,
+		psl.sku_format as skuFormat,
+		psl.sku_color as skuColor,
+		psl.stock as stock
+		from product p
+		left join product_sku_link psl on p.id = psl.product_id
+		where p.id=#{id}
+	</select>
+	
+	<!--编辑商品库存-->
+	<update id="productStockUpdate" parameterType="java.util.Map">
+		update product_sku_link set
+		stock=#{stock},
+		update_date=now()
+		where id = #{stockSkuId}
+	</update>
+	
+	
+	<insert id="addProduct" parameterType="productPojo" useGeneratedKeys="true" keyProperty="id">
+		insert into product(
+			unit,
+			product_sketch,
+			product_num,
+			discount,
+			recommend,
+			brand,
+			texture,
+			age,
+			product_function,
+			location,
+			is_power,
+			pack,
+			is_hotsale,
+			is_introduce,
+			user_id,
+			product_no,
+			product_type_id,
+			product_type_ids,
+			product_name,
+			product_name_en,
+			distribution_price,
+			selling_price,
+			lowest_price,
+			minimum,
+			content,
+			ladder_price,
+			image,
+			qrcode,
+			is_new,
+			sorting,
+			status,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			version,
+			postage_type,
+			weight,
+			base_number,
+			age_desc,
+			tag,
+			user_brand_id,
+			product_type1,
+			video_url,
+			tvideo_url,
+			tvideo_url_image,
+			image_small,
+			image_main,
+			max_num,
+			format_value,
+			color_value,
+			norm_type,
+			limit_num,
+			surplus_num
+		)
+		values(
+			#{unit},
+			#{productSketch},
+			#{productNum},
+			#{discount},
+			#{recommend},
+			#{brand},
+			#{texture},
+			#{age},
+			#{productFunction},
+			#{location},
+			#{isPower},
+			#{pack},
+			#{isHotsale},
+			#{isIntroduce},
+			#{userId},
+			#{productNo},
+			#{productTypeId},
+			#{productTypeIds},
+			#{productName},
+			#{productNameEn},
+			#{distributionPrice},
+			#{sellingPrice},
+			#{lowestPrice},
+			#{minimum},
+			#{content},
+			#{ladderPrice},
+			#{image},
+			#{qrcode},
+			#{isNew},
+			#{sorting},
+			#{status},
+			#{createBy},
+			sysdate(),
+			#{updateBy},
+			sysdate(),
+			#{remarks},
+			#{version},
+			#{postageType},
+			#{weight},
+			#{baseNumber},
+			#{ageDesc},
+			#{tag},
+			#{userBrandId},
+			#{productType1},
+			#{videoUrl},
+			#{tvideoUrl},
+			#{tvideoUrlImage},
+			#{imageSmall},
+			#{imageMain},
+			#{maxNum},
+			#{formatValue},
+			#{colorValue},
+			#{normType},
+			#{limitNum},
+			#{surplusNum}
+		)
+	</insert>
+	
+	<update id="productUpdateIng" parameterType="productPojo">
+		update product t set
+		t.is_introduce=#{isIntroduce},
+		t.is_new=#{isNew},
+		t.is_hotsale=#{isHotsale},
+		t.recommend=#{recommend}
+		where
+		t.id = #{id}
+	</update>
+	
+	<update id="productUpdate" parameterType="productPojo">
+		update product t set
+		<if test="qrcode != null and qrcode !='' ">
+			t.qrcode = #{qrcode},
+		</if>
+		<if test="unit !=null and unit !=''">
+			t.unit=#{unit},
+		</if>
+		<if test="productSketch !=null and productSketch !=''">
+			t.product_sketch=#{productSketch},
+		</if>
+		<if test="productNum !=null and productNum !=''">
+			t.product_num=#{productNum},
+		</if>
+		<if test="productTypeId !=null and productTypeId !=''">
+			t.product_type_id=#{productTypeId},
+		</if>
+		<if test="productTypeIds !=null and productTypeIds !=''">
+			t.product_type_ids=#{productTypeIds},
+		</if>
+		<if test="productName !=null and productName !=''">
+			t.product_name=#{productName},
+		</if>
+		<if test="productNameEn !=null and productNameEn !=''">
+			t.product_name_en=#{productNameEn},
+		</if>
+		<if test="distributionPrice !=null and distributionPrice !=''">
+			t.distribution_price=#{distributionPrice},
+		</if>
+		<if test="sellingPrice !=null and sellingPrice !=''">
+			t.selling_price=#{sellingPrice},
+		</if>
+		<if test="lowestPrice !=null and lowestPrice !=''">
+			t.lowest_price=#{lowestPrice},
+		</if>
+		<if test="minimum !=null and minimum !=''">
+			t.minimum=#{minimum},
+		</if>
+		<if test="content !=null and content !=''">
+			t.content=#{content},
+		</if>		
+		<if test="ladderPrice !=null ">
+			t.ladder_price=#{ladderPrice},
+		</if>
+		<if test="baseNumber !=null and baseNumber != 0 ">
+			t.base_number=#{baseNumber},
+		</if>
+		<if test="image !=null and image !=''">
+		   t.image=#{image},
+		</if>
+		<if test="imageSmall !=null and imageSmall !=''">
+		   t.image_small=#{imageSmall},
+		</if>
+		<if test="imageMain !=null and imageMain !=''">
+		   t.image_main=#{imageMain},
+		</if>
+		<if test="isIntroduce !=null ">
+		  t.is_introduce=#{isIntroduce},
+		</if>
+		<if test="brand !=null and brand !=''">
+		  t.brand=#{brand},
+		</if>
+		<if test="texture !=null and texture !=''">
+		 t.texture=#{texture},
+		</if>
+		<if test="age !=null and age !=''">
+		 t.age=#{age},
+		</if>
+		<if test="productFunction !=null and productFunction !=''">
+		 t.product_function=#{productFunction},
+		</if>
+        <if test="isPower !=null ">
+		t.is_power=#{isPower},
+		</if>
+		<if test="pack !=null and pack !=''">
+		 t.pack=#{pack},
+		</if>
+		<if test="isHotsale !=null ">
+		 t.is_hotsale=#{isHotsale},
+		</if>
+		<if test="location !=null and location !=''">
+		 t.location=#{location},
+		</if>
+		<if test="isNew !=null ">
+		 t.is_new=#{isNew},
+		</if>
+		<if test="sorting !=null ">
+		 t.sorting=#{sorting},
+		</if>
+		<if test="status !=null ">
+		 t.status=#{status},
+		</if>
+		<if test="postageType !=null and postageType !=''">
+		 t.postage_type=#{postageType},
+		</if>
+		<if test="tag !=null and tag !=''">
+		 t.tag=#{tag},
+		</if>
+		<if test="ageDesc !=null ">
+			t.age_desc=#{ageDesc},
+		</if>		
+		<if test="discount !=null and discount != '' ">
+			t.discount=#{discount},
+		</if>
+		<if test="createDate !=null ">
+			t.create_date=#{createDate},
+		</if>
+		<if test="productType1 !=null ">
+			t.product_type1=#{productType1},
+		</if>
+		<if test="weight != null and weight != '' ">
+			t.weight = #{weight},
+		</if>
+		<if test="productCommt != null and productCommt != '' ">
+			t.product_commt = #{productCommt},
+		</if>
+		<if test="userBrandId != null and userBrandId != '' ">
+			t.user_brand_id = #{userBrandId},
+		</if>
+		<if test="videoUrl != null and videoUrl != '' ">
+			t.video_url = #{videoUrl},
+		</if>
+		<if test="tvideoUrl != null and tvideoUrl != '' ">
+			t.tvideo_url = #{tvideoUrl},
+		</if>
+		<if test="houtai ==1">
+			t.video_url = #{videoUrl},
+		</if>
+		<if test="houtai ==1">
+			t.tvideo_url = #{tvideoUrl},
+		</if>
+		<if test="tvideoUrlImage != null and tvideoUrlImage != '' ">
+			t.tvideo_url_image = #{tvideoUrlImage},
+		</if>
+		<if test="maxNum != null">
+		    t.max_num = #{maxNum},
+		</if>
+		<if test="formatValue != null">
+			t.format_value = #{formatValue},
+		</if>
+		<if test="colorValue != null">
+			t.color_value = #{colorValue},
+		</if>
+		<if test="normType != null">
+			t.norm_type = #{normType},
+		</if>
+		<if test="limitNum != null">
+			t.limit_num = #{limitNum},
+		</if>
+		<if test="surplusNum != null">
+			t.surplus_num = #{surplusNum},
+		</if>
+		<if test="surplusNumMinus != null">
+			t.surplus_num = t.surplus_num - #{surplusNumMinus},
+		</if>
+		<if test="version == null">
+			t.version = 0
+		</if>
+		<if test="version != null">
+			t.version = 1
+		</if>
+		where
+		t.id = #{id}
+		<if test="surplusNumMinus != null">
+			and t.limit_num > 0
+		</if>
+	</update>
+	
+	<delete id="deleProduct" parameterType="Long">
+		delete from product where id=#{id}
+	</delete>
+	
+	<update id="checkProduct" parameterType="Long">
+		update product set status = 1 where id = #{id}
+	</update>
+	
+	<update id="uncheckProduct" parameterType="Long">
+		update product set status = 0 where id = #{id}
+	</update>
+	
+	<select id="productForUser" parameterType="java.util.Map" resultType="productPojo">
+		select t.unit as unit,(select name from synthetical_dict where value=t.unit and type = 'unit') as unitName,
+		t.product_sketch as productSketch,t.product_num as productNum,t.discount as discount,t.recommend as recommend,t.brand as brand,t.texture as texture,t.age as age,t.product_function as productFunction,t.location as location,t.is_power as isPower,t.pack as pack,t.is_hotsale as isHotsale,
+		t.id as id,t.user_id as userId,t.product_no as productNo,t.product_type_id as productTypeId,substring_index(substring_index(t.product_type_ids,':',2),':',-1) as productTypeIds,
+		t.product_name as productName,t.product_name_en as product_name_en,t.distribution_price as distributionPrice,t.selling_price as sellingPrice,
+		t.lowest_price as lowestPrice,t.minimum as minimum,t.ladder_price as ladderPrice,t.image as image,t.qrcode as qrcode,t.hits as hits,t.is_introduce as isIntroduce,t.sell_number + t.base_number as sellNumber,(select name from sys_dict where value=t.is_introduce and type = 'yes_no') as isIntroduceName,t.sorting as sorting,t.status as status,(select name from sys_dict where value=t.status and type = 'status') as statusName,
+		t.create_by as createBy,t.create_date as createDate,t.update_by as updateBy,t.update_date as updateDate,t.remarks as remarks,t.version as version,t.is_new as isNew ,(select name from sys_dict where value=t.is_new and type = 'yes_no') as isNewName
+		from product t left join user_shop us on t.user_id = us.user_id
+		where 1=1 and t.status = 1 and us.status = 1
+		<if test="userId !=null ">
+			and t.user_id = #{userId}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<select id="productForUserNew" parameterType="productPojo" resultType="productPojo">
+		select  t.unit as unit,(select name from synthetical_dict where value=t.unit and type = 'unit') as unitName,
+		t.product_sketch as productSketch,t.product_num as productNum,t.discount as discount,t.recommend as recommend,t.brand as brand,t.texture as texture,t.age as age,t.product_function as productFunction,t.location as location,t.is_power as isPower,t.pack as pack,t.is_hotsale as isHotsale,
+		t.id as id,t.user_id as userId,t.product_no as productNo,t.product_type_id as productTypeId,substring_index(substring_index(t.product_type_ids,':',2),':',-1) as productTypeIds,
+		t.product_name as productName,t.product_name_en as product_name_en,t.distribution_price as distributionPrice,t.selling_price as sellingPrice,
+		t.lowest_price as lowestPrice,t.minimum as minimum,t.ladder_price as ladderPrice,t.image as image,t.qrcode as qrcode,t.hits as hits,t.is_introduce as isIntroduce,t.sell_number + t.base_number as sellNumber,(select name from sys_dict where value=t.is_introduce and type = 'yes_no') as isIntroduceName,t.sorting as sorting,t.status as status,(select name from sys_dict where value=t.status and type = 'status') as statusName,
+		t.create_by as createBy,t.create_date as createDate,update_by as updateBy,t.update_date as updateDate,t.remarks as remarks,t.version as version ,t.is_new as isNew,t.postage_type as postageType,(select name from sys_dict where value=t.is_new and type = 'yes_no') as isNewName
+		from product t where t.user_id = #{userId} and t.status = 1 and t.product_type_id!=6 order by t.create_date desc limit 4
+	</select>
+	<select id="productForUserYes" parameterType="productPojo" resultType="productPojo">
+		select t.unit as unit,(select name from synthetical_dict where value=t.unit and type = 'unit') as unitName,
+		t.product_sketch as productSketch,t.product_num as productNum,t.discount as discount,t.recommend as recommend,t.brand as brand,t.texture as texture,t.age as age,t.product_function as productFunction,t.location as location,t.is_power as isPower,t.pack as pack,t.is_hotsale as isHotsale,
+		t.id as id,t.user_id as userId,t.product_no as productNo,t.product_type_id as productTypeId,substring_index(substring_index(t.product_type_ids,':',2),':',-1) as productTypeIds,
+		t.product_name as productName,t.product_name_en as product_name_en,t.distribution_price as distributionPrice,t.selling_price as sellingPrice,
+		t.lowest_price as lowestPrice,t.minimum as minimum,t.ladder_price as ladderPrice,t.image as image,t.qrcode as qrcode,t.hits as hits,t.is_introduce as isIntroduce,t.sell_number + t.base_number as sellNumber,(select name from sys_dict where value=t.is_introduce and type = 'yes_no') as isIntroduceName,t.sorting as sorting,t.status as status,(select name from sys_dict where value=t.status and type = 'status') as statusName,
+		t.create_by as createBy,t.create_date as createDate,update_by as updateBy,t.update_date as updateDate,t.remarks as remarks,t.version as version ,t.postage_type as postageType,t.is_new as isNew,(select name from sys_dict where value=t.is_new and type = 'yes_no') as isNewName
+		from product t where t.user_id = #{userId} and t.is_introduce = 1 and t.status = 1 order by t.id desc limit 4
+	</select>
+	
+	<select id="productForUserYes5" parameterType="productPojo" resultType="productPojo">
+		select t.unit as unit,(select name from synthetical_dict where value=t.unit and type = 'unit') as unitName,
+		t.product_sketch as productSketch,t.product_num as productNum,t.discount as discount,t.recommend as recommend,t.brand as brand,t.texture as texture,t.age as age,t.product_function as productFunction,t.location as location,t.is_power as isPower,t.pack as pack,t.is_hotsale as isHotsale,
+		t.id as id,t.user_id as userId,t.product_no as productNo,t.product_type_id as productTypeId,substring_index(substring_index(t.product_type_ids,':',2),':',-1) as productTypeIds,
+		t.product_name as productName,t.product_name_en as product_name_en,t.distribution_price as distributionPrice,t.selling_price as sellingPrice,
+		t.lowest_price as lowestPrice,t.minimum as minimum,t.ladder_price as ladderPrice,t.image as image,t.qrcode as qrcode,t.hits as hits,t.is_introduce as isIntroduce,t.sell_number + t.base_number as sellNumber,(select name from sys_dict where value=t.is_introduce and type = 'yes_no') as isIntroduceName,t.sorting as sorting,t.status as status,(select name from sys_dict where value=t.status and type = 'status') as statusName,
+		t.create_by as createBy,t.create_date as createDate,update_by as updateBy,t.update_date as updateDate,t.remarks as remarks,t.version as version ,t.is_new as isNew,t.postage_type as postageType,(select name from sys_dict where value=t.is_new and type = 'yes_no') as isNewName
+		from product t where t.user_id = #{userId}  and t.status = 1   order by sellNumber desc limit 5
+	</select>
+	
+	<select id="productForType" parameterType="Long" resultType="productPojo">
+		select t.unit as unit,(select name from synthetical_dict where value=t.unit and type = 'unit') as unitName,
+		t.product_sketch as productSketch,t.product_num as productNum,t.discount as discount,t.recommend as recommend,t.brand as brand,t.texture as texture,t.age as age,t.product_function as productFunction,t.location as location,t.is_power as isPower,t.pack as pack,t.is_hotsale as isHotsale,
+		t.id as id,t.user_id as userId,t.product_no as productNo,t.product_type_id as productTypeId,substring_index(substring_index(t.product_type_ids,':',2),':',-1) as productTypeIds,
+		t.product_name as productName,t.product_name_en as product_name_en,t.distribution_price as distributionPrice,t.selling_price as sellingPrice,
+		t.lowest_price as lowestPrice,t.minimum as minimum,t.ladder_price as ladderPrice,t.image as image,t.qrcode as qrcode,t.hits as hits,t.is_introduce as isIntroduce,t.sell_number + t.base_number as sellNumber,(select name from sys_dict where value=t.is_introduce and type = 'yes_no') as isIntroduceName,t.sorting as sorting,t.status as status,(select name from sys_dict where value=t.status and type = 'status') as statusName,
+		t.create_by as createBy,t.create_date as createDate,t.update_by as updateBy,t.update_date as updateDate,t.remarks as remarks,t.version as version ,s.name as shopName,t.is_new as isNew,t.postage_type as postageType,(select name from sys_dict where value=t.is_new and type = 'yes_no') as isNewName
+		from product t left join user_shop s on t.user_id = s.user_id where t.product_type_id = #{productTypeId}  and t.status = 1 limit 8
+	</select>
+	
+	<select id="productAll" resultType="productPojo">
+		select t.unit as unit,(select name from synthetical_dict where value=t.unit and type = 'unit') as unitName,
+		t.product_sketch as productSketch,t.product_num as productNum,t.discount as discount,t.recommend as recommend,t.brand as brand,t.texture as texture,t.age as age,t.product_function as productFunction,t.location as location,t.is_power as isPower,t.pack as pack,t.is_hotsale as isHotsale, 
+		t.id as id,
+		t.user_id as userId,
+		t.product_name as productName,
+		t.product_name_en as productNameEn,
+		t.distribution_price as distributionPrice,
+		t.selling_price as sellingPrice,
+		t.lowest_price as lowestPrice,
+		t.image as image,
+		(select id from user_shop where user_id=t.user_id) as shopId,
+		t.postage_type as postageType,
+		((select ifnull(sum(num),0) from ele_order  where product_id= t.id)+(select ifnull(sum(num),0) from user_order_detail as ud left join user_order as uo on ud.order_id=uo.id where ud.product_id=t.id and uo.order_status>=2)) as sellNumber,
+		s.name as shopName
+		from product t left join user_shop s on t.user_id = s.user_id
+		where t.status = 1 and t.is_hotsale=1  and  t.product_type_ids!=':0:' and t.product_type_id!=6 and s.status=1  order by sellNumber desc limit 5
+	</select>
+	
+	<select id="productForShopId" parameterType="productPojo" resultType="productPojo">
+		select t.unit as unit,(select name from synthetical_dict where value=t.unit and type = 'unit') as unitName,
+		t.product_sketch as productSketch,t.product_num as productNum,t.discount as discount,t.recommend as recommend,t.brand as brand,t.texture as texture,t.age as age,t.product_function as productFunction,t.location as location,t.is_power as isPower,t.pack as pack,t.is_hotsale as isHotsale,
+		t.id as id,t.user_id as userId,t.product_no as productNo,t.product_type_id as productTypeId,substring_index(substring_index(t.product_type_ids,':',2),':',-1) as productTypeIds,
+		t.product_name as productName,t.product_name_en as product_name_en,t.distribution_price as distributionPrice,t.selling_price as sellingPrice,
+		t.lowest_price as lowestPrice,t.minimum as minimum,t.ladder_price as ladderPrice,t.image as image,t.qrcode as qrcode,t.hits as hits,t.is_introduce as isIntroduce,t.sell_number + t.base_number as sellNumber,(select name from sys_dict where value=t.is_introduce and type = 'yes_no') as isIntroduceName,t.sorting as sorting,t.status as status,(select name from sys_dict where value=t.status and type = 'status') as statusName,
+		t.create_by as createBy,t.create_date as createDate,update_by as updateBy,t.update_date as updateDate,t.remarks as remarks,t.version as version ,t.is_new as isNew,t.postage_type as postageType,(select name from sys_dict where value=t.is_new and type = 'yes_no') as isNewName
+		from product t where t.user_id = #{userId} and t.is_introduce = 1 and t.status = 1 limit 6
+	</select>
+	
+	<select id="productForHot" parameterType="productPojo" resultType="productPojo">
+		select t.unit as unit,(select name from synthetical_dict where value=t.unit and type = 'unit') as unitName,
+		t.product_sketch as productSketch,t.product_num as productNum,t.discount as discount,t.recommend as recommend,t.brand as brand,t.texture as texture,t.age as age,t.product_function as productFunction,t.location as location,t.is_power as isPower,t.pack as pack,t.is_hotsale as isHotsale,
+		t.id as id,t.user_id as userId,t.product_no as productNo,t.product_type_id as productTypeId,substring_index(substring_index(t.product_type_ids,':',2),':',-1) as productTypeIds,
+		t.product_name as productName,t.product_name_en as product_name_en,t.distribution_price as distributionPrice,t.selling_price as sellingPrice,
+		t.lowest_price as lowestPrice,t.minimum as minimum,t.ladder_price as ladderPrice,t.image as image,t.qrcode as qrcode,t.hits as hits,t.is_introduce as isIntroduce,t.sell_number + t.base_number as sellNumber,(select name from sys_dict where value=t.is_introduce and type = 'yes_no') as isIntroduceName,t.sorting as sorting,t.status as status,(select name from sys_dict where value=t.status and type = 'status') as statusName,
+		t.create_by as createBy,t.create_date as createDate,update_by as updateBy,t.update_date as updateDate,t.remarks as remarks,t.version as version ,t.is_new as isNew,t.postage_type as postageType,(select name from sys_dict where value=t.is_new and type = 'yes_no') as isNewName
+		from product t where t.status = 1
+		
+		<if test="productTypeId != null and productTypeId != ''">
+		    and t.product_type_id = #{productTypeId}
+		</if>
+	   order by t.sell_number+t.base_number desc limit 3
+	    
+	</select>
+	
+	<select id="productForHotSupplyWeb" parameterType="productPojo" resultType="productPojo">
+		select t.unit as unit,(select name from synthetical_dict where value=t.unit and type = 'unit') as unitName,
+		t.product_sketch as productSketch,t.product_num as productNum,t.discount as discount,t.recommend as recommend,t.brand as brand,t.texture as texture,t.age as age,t.product_function as productFunction,t.location as location,t.is_power as isPower,t.pack as pack,t.is_hotsale as isHotsale,
+		t.id as id,
+		t.user_id as userId,
+		t.product_no as productNo,
+		t.product_type_id as productTypeId,
+		substring_index(substring_index(t.product_type_ids,':',2),':',-1) as productTypeIds,
+		t.product_name as productName,
+		t.product_name_en as product_name_en,
+		t.distribution_price as distributionPrice,
+		t.selling_price as sellingPrice,
+		t.lowest_price as lowestPrice,
+		t.minimum as minimum,
+		t.content as content,
+		t.ladder_price as ladderPrice,
+		t.image as image,
+		t.qrcode as qrcode,
+		t.hits as hits,
+		t.is_introduce as isIntroduce,
+		((select ifnull(sum(num),0) from ele_order  where product_id=t.id)+(select ifnull(sum(num),0) from user_order_detail as ud left join user_order as uo on ud.order_id=uo.id where ud.product_id=t.id and uo.order_status>=2)) as sellNumber,
+		(select name from sys_dict where value=t.is_introduce and type = 'yes_no') as isIntroduceName,t.sorting as sorting,t.status as status,(select name from sys_dict where value=t.status and type = 'status') as statusName,
+		t.create_by as createBy,
+		t.create_date as createDate,
+		t.update_by as updateBy,
+		t.update_date as updateDate,
+		t.remarks as remarks,
+		t.version as version ,t.is_new as isNew,t.postage_type as postageType,(select name from sys_dict where value=t.is_new and type = 'yes_no') as isNewName
+		from product t left join user_shop us on t.user_id = us.user_id 
+		where t.status = 1 and t.is_hotsale=1  and  t.product_type_ids!=':0:' and t.product_type_id!=6 and us.status=1 
+		<if test="productTypeId !=null and productTypeId != ''">
+		 and product_type_id=#{productTypeId}
+		</if>
+		<if test="productTypeIds !=null and productTypeIds != ''">
+		 and product_type_ids like concat("%:",#{productTypeIds},":%")
+		</if>
+		order by sell_number+base_number desc
+		limit 4
+	</select>
+	<select id="getProductLimit" parameterType="java.util.Map" resultType="productPojo">
+		select t.unit as unit,(select name from synthetical_dict where value=t.unit and type = 'unit') as unitName,
+		t.product_sketch as productSketch,t.product_num as productNum,t.discount as discount,t.recommend as recommend,t.brand as brand,t.texture as texture,t.age as age,t.product_function as productFunction,t.location as location,t.is_power as isPower,t.pack as pack,t.is_hotsale as isHotsale,
+		t.id as id,t.user_id as userId,t.product_no as productNo,t.product_type_id as productTypeId,substring_index(substring_index(t.product_type_ids,':',2),':',-1) as productTypeIds,
+		t.product_name as productName,t.product_name_en as product_name_en,t.distribution_price as distributionPrice,t.selling_price as sellingPrice,
+		t.lowest_price as lowestPrice,t.minimum as minimum,t.ladder_price as ladderPrice,t.image as image,t.qrcode as qrcode,t.hits as hits,t.is_introduce as isIntroduce,t.sell_number + t.base_number as sellNumber,(select name from sys_dict where value=t.is_introduce and type = 'yes_no') as isIntroduceName,t.sorting as sorting,t.status as status,(select name from sys_dict where value=t.status and type = 'status') as statusName,
+		t.create_by as createBy,t.create_date as createDate,update_by as updateBy,t.update_date as updateDate,t.remarks as remarks,t.version as version,t.is_new as isNew ,t.postage_type as postageType,(select name from sys_dict where value=t.is_new and type = 'yes_no') as isNewName
+		from product t where 1=1 and t.status = 1 
+		<if test="isNew !=null and isNew != ''">
+			and t.is_new=#{isNew} and t.recommend >=0 and 2000 >=t.recommend  order by t.sell_number+t.base_number desc,t.recommend desc
+		</if>
+		<if test="productTypeIds !=null and productTypeIds != ''">
+			and t.product_type_ids like concat("%:",#{productTypeIds},":%") and t.recommend >=1001 and 2000 >=t.recommend  order by t.sell_number+t.base_number desc,t.recommend desc
+		</if>
+		<if test="limit !=null and limit != ''">
+			limit #{limit} 
+		</if>
+	</select>
+	
+	<select id="productSellCountSupplyWeb" parameterType="productPojo" resultType="productPojo">
+		select t.unit as unit,(select name from synthetical_dict where value=t.unit and type = 'unit') as unitName,
+		t.product_sketch as productSketch,t.product_num as productNum,t.discount as discount,t.recommend as recommend,t.brand as brand,t.texture as texture,t.age as age,t.product_function as productFunction,t.location as location,t.is_power as isPower,t.pack as pack,t.is_hotsale as isHotsale,
+		t.id as id,
+		t.user_id as userId,
+		t.product_no as productNo,
+		t.product_type_id as productTypeId,
+		substring_index(substring_index(t.product_type_ids,':',2),':',-1) as productTypeIds,
+		t.product_name as productName,
+		t.product_name_en as product_name_en,
+		t.distribution_price as distributionPrice,
+		t.selling_price as sellingPrice,
+		t.lowest_price as lowestPrice,
+		t.minimum as minimum,
+		t.content as content,
+		t.ladder_price as ladderPrice,
+		t.image as image,
+		t.qrcode as qrcode,
+		t.hits as hits,
+		t.is_introduce as isIntroduce,
+		t.sell_number + t.base_number as sellNumber,
+		(select name from sys_dict where value=t.is_introduce and type = 'yes_no') as isIntroduceName,
+		t.sorting as sorting,
+		t.status as status,
+		(select name from sys_dict where value=t.status and type = 'status') as statusName,
+		t.create_by as createBy,
+		t.create_date as createDate,
+		update_by as updateBy,
+		t.update_date as updateDate,
+		t.remarks as remarks,
+		t.postage_type as postageType,
+		t.version as version 
+		from product t
+		where t.status = 1 and t.status = 1  and t.user_id=#{userId} 
+		order by t.sell_number+t.base_number desc limit 12
+	</select>
+	
+	<update id="updateHits" parameterType="Long">
+		update product set hits = hits+1 where id = #{id}
+	</update>
+	
+	<update id="updateProductStatus" parameterType="Long">
+		update product set status = 0 where user_id = #{userId}
+	</update>
+	<select id="getProductByBrandName" parameterType="java.util.Map" resultType="productPojo">
+		select t.id as id,t.product_name as productName,t.image as image,t.distribution_price as distributionPrice,t.sell_number + t.base_number as sellNumber,t.base_number as baseNumber from product t where t.brand in (SELECT value from synthetical_dict where type='brand' and name like CONCAT("%",#{productBrand},"%" ))
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	<select id="getProductApi" parameterType="java.util.Map" resultType="productPojo">
+		select t.postage_type as postageType,t.weight as weight,t.unit as unit,(select name from synthetical_dict where value=t.unit and type = 'unit') as unitName,us.name as shopName,
+		t.product_sketch as productSketch,t.product_num as productNum,t.discount as discount,t.recommend as recommend,t.brand as brand,t.texture as texture,t.age as age,t.product_function as productFunction,t.location as location,t.is_power as isPower,t.pack as pack,t.is_hotsale as isHotsale,
+		t.id as id,t.user_id as userId,u.name as userName,t.product_no as productNo,t.product_type_id as productTypeId,pt.name as productTypeName,substring_index(substring_index(t.product_type_ids,':',2),':',-1) as productTypeIds,
+		t.product_name as productName,t.product_name_en as productNameEn,t.distribution_price as distributionPrice,t.proxy_price  as proxyPrice,t.selling_price as sellingPrice,t.lowest_price as lowestPrice,t.minimum as minimum,t.content as content,
+		t.ladder_price as ladderPrice,t.image as image,t.qrcode as qrcode,t.hits as hits,t.is_introduce as isIntroduce,(select name from sys_dict where value=t.is_introduce and type = 'yes_no') as isIntroduceName,t.sorting as sorting,t.status as status,(select name from sys_dict where value=t.status and type = 'status') as statusName,(select address from user_shop where user_id = t.user_id) as userAddress,t.create_by as createBy,t.create_date as createDate,t.update_by as updateBy,
+		t.update_date as updateDate,t.remarks as remarks,t.version as version,t.sell_number + t.base_number as sellNumber,t.is_new as isNew,(select name from sys_dict where value=t.is_new and type = 'yes_no') as isNewName ,
+		(select name from synthetical_dict where value=t.is_hotsale and type = 'is_hotsale') as isHotsaleName,
+		(select name from sys_dict where value=t.postage_type and type = 'yes_no') as postageTypeName,	
+		t.user_brand_id as userBrandId,	
+		<if test="timeIdIsN != null and timeIdIsN != '' ">
+		g.time_id as activityId,
+		g.active_price as activePrice,
+		</if>
+        t.base_number as baseNumber
+		from product t left join sys_login u on t.user_id = u.id left join product_type pt on t.product_type_id = pt.id left join user_shop us on t.user_id = us.user_id 
+		<if test="timeIdIsN != null and timeIdIsN != '' ">
+		left join activity_goods g on g.product_id = t.id 
+		left join activity_time at on g.time_id = at.id
+		left join special_show ss on at.id = ss.activity_id
+		</if>
+		where 1=1 and t.status=1 and us.status=1 and (t.product_type_id!=6 and t.product_type_ids!=':0:')
+		<if test="timeIdIsN != null and timeIdIsN != '' ">
+			and ss.status = 4
+			and g.status = 1
+			and g.time_id is not null
+			and at.channel = 1
+			and at.isdelete = '0'
+			<if test="activityType != null">
+				and at.type = #{activityType}
+			</if>
+			and ((at.type = 0
+			and date_format(now(),'%Y-%m-%d') = date_format(at.activity_date,'%Y-%m-%d')
+			and date_format(now(),'%H:%i') &gt;= at.begin_time 
+			and date_format(now(),'%H:%i') &lt; at.end_time)
+			or (at.type > 0
+			and date_format(now(),'%Y-%m-%d %T') &gt;= date_format(at.begin_time,'%Y-%m-%d %T')
+			and date_format(now(),'%Y-%m-%d %T') &lt; date_format(at.end_time,'%Y-%m-%d %T')))
+		</if>
+		<if test="UserId != null and UserId != ''">
+			and u.id like CONCAT("%",#{UserId},"%" )
+		</if>
+		<if test="productName != null and productName != ''">
+			and t.product_name like CONCAT("%",#{productName},"%" )
+		</if>
+		<if test="productTypeId !=null and productTypeId != ''">
+			and t.product_type_id=#{productTypeId}
+		</if>
+		<if test="productTypeIds !=null and productTypeIds != ''">
+			and t.product_type_ids like concat("%:",#{productTypeIds},":%")
+		</if>
+		<if test="productNum !=null and productNum != ''">
+			and t.product_num like CONCAT("%",#{productNum},"%" )
+		</if>
+		<if test="productNo !=null and productNo != ''">
+			and t.product_no=#{productNo}
+		</if>
+		<if test="productNum !=null and productNum != ''">
+			and t.product_num=#{productNum}
+		</if>
+		<if test="remarks !=null and remarks != ''">
+			and u.name like CONCAT("%",#{remarks},"%" )
+		</if>
+		<if test="isIntroduce!=null and isIntroduce !=''">
+			and t.is_introduce = #{isIntroduce}
+		</if>
+		<if test="isNew!=null and isNew !=''">
+			and t.is_new = #{isNew}
+		</if>
+		<if test="userId!=null and userId !=''">
+			and t.user_id = #{userId}
+		</if>
+		<if test="brand!=null and brand !=''">
+			and t.brand = #{brand}
+		</if>
+		<if test="userBrandId != null">
+			and t.user_brand_id = #{userBrandId}
+		</if>
+		<if test="texture!=null and texture !=''">
+			and t.texture = #{texture}
+		</if>
+		<if test="age!=null and age !=''">
+			and t.age = #{age}
+		</if>
+		<if test="BeginPrice!=null and BeginPrice !=''">
+			and t.distribution_price >= #{BeginPrice}
+		</if>
+		<if test="EndPrice!=null and EndPrice !=''">
+			and #{EndPrice} >= t.distribution_price 
+		</if>
+		<if test="paixu3 !=null and paixu3!=''">
+			order by t.id asc
+		</if>
+		<if test="paixu0 !=null and paixu0==0">
+			order by t.recommend desc
+		</if>
+		<if test="paixu0 !=null and paixu0==33">
+			order by t.recommend asc
+		</if>
+		
+		<if test="paixu1 !=null and paixu1==1">
+			order by t.sell_number+t.base_number desc
+		</if>
+		<if test="paixu1 !=null and paixu1==11">
+			order by t.sell_number+t.base_number asc
+		</if>
+	    <if test="timeIdIsN == null and paixu2 !=null and paixu2 ==2">
+			order by t.distribution_price desc
+		</if>
+		<if test="timeIdIsN == null and paixu2 !=null and paixu2 ==22">
+			order by t.distribution_price asc
+		</if>
+	    <if test="timeIdIsN != null and paixu2 !=null and paixu2 ==2">
+			order by g.active_price desc
+		</if>
+		<if test="timeIdIsN != null and paixu2 !=null and paixu2 ==22">
+			order by g.active_price asc
+		</if>
+		 <if test="paixu4 !=null and paixu4 ==4">
+			order by t.create_date desc
+		</if>		
+	    <if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	<update id="updateProductsellNumber" parameterType="java.util.Map">
+		update product set 
+		update_date=sysdate(),
+		sell_number=#{sellNumber} 
+		where id=#{id}
+	</update>
+	
+	<!-- 活动接口-->
+	<select id="getProductByActivity" parameterType="java.util.Map" resultType="productPojo">
+		select t.postage_type as postageType,
+		t.weight as weight,
+		t.unit as unit,
+		(select name from synthetical_dict where value=t.unit and type = 'unit') as unitName,
+		us.name as shopName,
+		t.product_sketch as productSketch,
+		t.product_num as productNum,
+		t.discount as discount,
+		t.recommend as recommend,
+		t.brand as brand,
+		t.texture as texture,
+		t.age as age,
+		t.product_function as productFunction,
+		t.location as location,
+		t.is_power as isPower,
+		t.pack as pack,
+		t.is_hotsale as isHotsale,
+		t.id as id,
+		t.user_id as userId,
+		u.name as userName,
+		t.product_no as productNo,
+		t.product_type_id as productTypeId,
+		pt.name as productTypeName,
+		substring_index(substring_index(t.product_type_ids,':',2),':',-1) as productTypeIds,
+		t.product_name as productName,
+		t.product_name_en as productNameEn,
+		t.distribution_price as distributionPrice,
+		t.selling_price as sellingPrice,
+		t.lowest_price as lowestPrice,
+		t.minimum as minimum,
+		t.content as content,
+		t.ladder_price as ladderPrice,
+		t.image as image,
+		t.qrcode as qrcode,
+		t.hits as hits,
+		t.is_introduce as isIntroduce,
+		(select name from sys_dict where value=t.is_introduce and type = 'yes_no') as isIntroduceName,
+		t.sorting as sorting,
+		t.status as status,
+		(select name from sys_dict where value=t.status and type = 'status') as statusName,
+		(select address from user_shop where user_id = t.user_id) as userAddress,
+		t.create_by as createBy,
+		t.create_date as createDate,
+		t.update_by as updateBy,
+		t.update_date as updateDate,
+		t.remarks as remarks,
+		t.version as version,
+		t.sell_number + t.base_number as sellNumber,
+		t.is_new as isNew,
+		(select name from sys_dict where value=t.is_new and type = 'yes_no') as isNewName ,
+		(select name from synthetical_dict where value=t.is_hotsale and type = 'is_hotsale') as isHotsaleName,
+		(select name from sys_dict where value=t.postage_type and type = 'yes_no') as postageTypeName,		
+		<if test="timeIdIsN != null and timeIdIsN != '' ">
+		g.time_id as activityId,
+		g.active_price as activePrice,
+		</if>
+        t.base_number as baseNumber
+		from product t left join sys_login u on t.user_id = u.id left join product_type pt on t.product_type_id = pt.id left join user_shop us on t.user_id = us.user_id 
+		<if test="timeIdIsN != null and timeIdIsN != '' ">
+		left join activity_goods g on g.product_id = t.id 
+		left join activity_time at on g.time_id = at.id
+		left join special_show ss on at.id = ss.activity_id
+		</if>	
+		where 1=1
+			and t.status=1 and us.status=1 and (t.product_type_ids!=':0:' and t.product_type_id!=6)
+		<if test="timeIdIsN != null and timeIdIsN != '' ">
+			and ss.status = 4
+			and g.status = 1
+			and g.time_id is not null
+			and at.channel = 1
+			and at.isdelete = '0'
+			<if test="activityType != null">
+				and at.type = #{activityType}
+			</if>
+			and ((at.type = 0
+			and date_format(now(),'%Y-%m-%d') = date_format(at.activity_date,'%Y-%m-%d')
+			and date_format(now(),'%H:%i') &gt;= at.begin_time 
+			and date_format(now(),'%H:%i') &lt; at.end_time)
+			or (at.type > 0
+			and date_format(now(),'%Y-%m-%d %T') &gt;= date_format(at.begin_time,'%Y-%m-%d %T')
+			and date_format(now(),'%Y-%m-%d %T') &lt; date_format(at.end_time,'%Y-%m-%d %T')))
+		</if>
+		<if test="shopName!=null and shopName !=''">
+			and us.name like CONCAT("%",#{shopName},"%" )
+		</if>
+		<if test="productNum != null and productNum != ''">
+			and t.product_num like CONCAT("%",#{productNum},"%" )
+		</if>
+		<if test="productName != null and productName != ''">
+			and t.product_name like CONCAT("%",#{productName},"%" )
+		</if>
+		<if test="productNo != null and productNo != ''">
+			and t.product_no like CONCAT("%",#{productNo},"%" )
+		</if>
+		<if test="status != null ">
+			and t.status = #{status}
+		</if>
+		<if test="createDate !=null">
+			and UNIX_TIMESTAMP(NOW())-3600*72 &lt;=UNIX_TIMESTAMP(t.create_date)  order by t.create_date desc
+		</if>
+		<if test="sellNumber !=null">
+			and t.sell_number+t.base_number &gt; 0 order by t.sell_number+t.base_number desc, t.id desc
+		</if>
+		<if test="isIntroduce !=null">
+			and t.recommend &gt;0 order by t.sorting asc,t.id desc
+		</if>
+		<if test="geekId != null">
+			and u.id = #{geekId}
+		</if>
+		<if test="isNew !=null">
+			<!-- and t.is_new =1 order by t.create_date desc,id desc -->
+			order by t.id desc
+		</if>
+		<if test="hits !=null">
+			order by t.hits desc,t.id desc
+		</if>	
+	    <if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	<!-- 活动接口-->
+	<select id="getProductByActivityCount" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from product t left join sys_login u on t.user_id = u.id left join product_type pt on t.product_type_id = pt.id left join user_shop us on t.user_id = us.user_id 
+		<if test="timeIdIsN != null and timeIdIsN != '' ">
+		left join activity_goods g on g.product_id = t.id 
+		left join activity_time at on g.time_id = at.id
+		left join special_show ss on at.id = ss.activity_id
+		</if>	
+		where 1=1
+			and t.status=1 and us.status=1 and (t.product_type_ids!=':0:' and t.product_type_id!=6)
+		<if test="timeIdIsN != null and timeIdIsN != '' ">
+			and ss.status = 4
+			and g.status = 1
+			and g.time_id is not null
+			and at.channel = 1
+			and at.isdelete = '0'
+			<if test="activityType != null">
+				and at.type = #{activityType}
+			</if>
+			and ((at.type = 0
+			and date_format(now(),'%Y-%m-%d') = date_format(at.activity_date,'%Y-%m-%d')
+			and date_format(now(),'%H:%i') &gt;= at.begin_time 
+			and date_format(now(),'%H:%i') &lt; at.end_time)
+			or (at.type > 0
+			and date_format(now(),'%Y-%m-%d %T') &gt;= date_format(at.begin_time,'%Y-%m-%d %T')
+			and date_format(now(),'%Y-%m-%d %T') &lt; date_format(at.end_time,'%Y-%m-%d %T')))
+		</if>
+		<if test="shopName!=null and shopName !=''">
+			and us.name like CONCAT("%",#{shopName},"%" )
+		</if>
+		<if test="productNum != null and productNum != ''">
+			and t.product_num like CONCAT("%",#{productNum},"%" )
+		</if>
+		<if test="productName != null and productName != ''">
+			and t.product_name like CONCAT("%",#{productName},"%" )
+		</if>
+		<if test="productNo != null and productNo != ''">
+			and t.product_no like CONCAT("%",#{productNo},"%" )
+		</if>
+		<if test="status != null ">
+			and t.status = #{status}
+		</if>
+		<if test="createDate !=null">
+			and UNIX_TIMESTAMP(NOW())-3600*72 &lt;=UNIX_TIMESTAMP(t.create_date)
+		</if>
+		<if test="sellNumber !=null">
+			and t.sell_number+t.base_number &gt; 0
+		</if>
+		<if test="isIntroduce !=null">
+			and t.recommend &gt;0
+		</if>
+		<if test="geekId !=null">
+			and u.id=#{geekId}
+		</if>
+	</select>
+	
+	<!-- 首页新品推荐-->
+	<!--<select id="indexProductTopFive" resultType="productPojo">
+		select t.unit as unit,(select name from synthetical_dict where value=t.unit and type = 'unit') as unitName,
+		t.product_sketch as productSketch,t.product_num as productNum,t.discount as discount,t.recommend as recommend,t.brand as brand,t.texture as texture,t.age as age,t.product_function as productFunction,t.location as location,t.is_power as isPower,t.pack as pack,t.is_hotsale as isHotsale,
+		t.id as id,t.user_id as userId,t.product_no as productNo,t.product_type_id as productTypeId,substring_index(substring_index(t.product_type_ids,':',2),':',-1) as productTypeIds,
+		t.product_name as productName,t.product_name_en as product_name_en,t.distribution_price as distributionPrice,t.selling_price as sellingPrice,
+		t.lowest_price as lowestPrice,t.minimum as minimum,t.ladder_price as ladderPrice,t.image as image,t.qrcode as qrcode,t.hits as hits,t.is_introduce as isIntroduce,t.sell_number + t.base_number as sellNumber,(select name from sys_dict where value=t.is_introduce and type = 'yes_no') as isIntroduceName,t.sorting as sorting,t.status as status,(select name from sys_dict where value=t.status and type = 'status') as statusName,
+		t.create_by as createBy,t.create_date as createDate,update_by as updateBy,t.update_date as updateDate,t.remarks as remarks,t.version as version,t.is_new as isNew ,t.postage_type as postageType,(select name from sys_dict where value=t.is_new and type = 'yes_no') as isNewName
+		from product t where t.status = 1 and t.recommend =1 order by t.create_date desc limit 5
+	</select>-->
+	<select id="indexProductTopFive" resultType="productPojo">
+		select t.unit as unit,(select name from synthetical_dict where value=t.unit and type = 'unit') as unitName,
+		t.product_sketch as productSketch,t.product_num as productNum,t.discount as discount,t.recommend as recommend,t.brand as brand,t.texture as texture,t.age as age,t.product_function as productFunction,t.location as location,t.is_power as isPower,t.pack as pack,t.is_hotsale as isHotsale,
+		t.id as id,t.user_id as userId,t.product_no as productNo,t.product_type_id as productTypeId,substring_index(substring_index(t.product_type_ids,':',2),':',-1) as productTypeIds,
+		t.product_name as productName,t.product_name_en as product_name_en,t.distribution_price as distributionPrice,t.selling_price as sellingPrice,
+		t.lowest_price as lowestPrice,t.minimum as minimum,t.ladder_price as ladderPrice,t.image as image,t.qrcode as qrcode,t.hits as hits,t.is_introduce as isIntroduce,t.sell_number + t.base_number as sellNumber,(select name from sys_dict where value=t.is_introduce and type = 'yes_no') as isIntroduceName,t.sorting as sorting,t.status as status,(select name from sys_dict where value=t.status and type = 'status') as statusName,
+		t.create_by as createBy,t.create_date as createDate,update_by as updateBy,t.update_date as updateDate,t.remarks as remarks,t.version as version,t.is_new as isNew ,t.postage_type as postageType,(select name from sys_dict where value=t.is_new and type = 'yes_no') as isNewName
+		from product t where  t.recommend =1 order by t.create_date desc limit 5
+	</select>
+	
+	
+	<!--修改首页新品推荐-->
+	<update id="indexProductTopFiveUpdateOld" parameterType="productPojo">
+		update product set recommend=0 where id=#{id} 
+	</update>
+	<!--修改首页新品推荐-->
+	<update id="indexProductTopFiveUpdateNew" parameterType="productPojo">
+		update product set recommend=1,is_new=1 where id=#{id} and status=1
+	</update>
+	
+	<!--首页1-6F数据显示-->
+	
+	<select id="indexShowByFloor" parameterType="String" resultType="productPojo">
+		select t.unit as unit,(select name from synthetical_dict where value=t.unit and type = 'unit') as unitName,
+		t.product_sketch as productSketch,t.product_num as productNum,t.discount as discount,t.recommend as recommend,t.brand as brand,t.texture as texture,t.age as age,t.product_function as productFunction,t.location as location,t.is_power as isPower,t.pack as pack,t.is_hotsale as isHotsale,
+		t.id as id,t.user_id as userId,t.product_no as productNo,t.product_type_id as productTypeId,substring_index(substring_index(t.product_type_ids,':',2),':',-1) as productTypeIds,
+		t.product_name as productName,t.product_name_en as product_name_en,t.distribution_price as distributionPrice,t.selling_price as sellingPrice,
+		t.lowest_price as lowestPrice,t.minimum as minimum,t.ladder_price as ladderPrice,t.image as image,t.qrcode as qrcode,t.hits as hits,t.is_introduce as isIntroduce,t.sell_number + t.base_number as sellNumber,(select name from sys_dict where value=t.is_introduce and type = 'yes_no') as isIntroduceName,t.sorting as sorting,t.status as status,(select name from sys_dict where value=t.status and type = 'status') as statusName,
+		t.create_by as createBy,t.create_date as createDate,update_by as updateBy,t.update_date as updateDate,t.remarks as remarks,t.version as version,t.is_new as isNew ,t.postage_type as postageType,(select name from sys_dict where value=t.is_new and type = 'yes_no') as isNewName
+		from product t where 1=1 and t.product_type_ids like concat("%:",#{productTypeIds},":%") and t.recommend=2  order by t.create_date desc limit 6
+	</select>
+	
+	<!--修改首页楼层推荐-->
+	<update id="indexProductFloorUpdateNew" parameterType="productPojo">
+		update product set recommend=2,is_new=1 where id=#{id} and status=1
+	</update>
+	
+	<!--根据商品类型查询未推荐的商品条数-->
+	<select id="indexProductListsCount" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from product t left join sys_login u on t.user_id = u.id left join product_type pt on t.product_type_id = pt.id left join user_shop us on t.user_id = us.user_id 
+		where t.status=1 and us.status=1 and (t.product_type_id!=6 and t.product_type_ids!=':0:') and t.recommend=0
+		<if test="productTypeIds !=null and productTypeIds != ''">
+			and t.product_type_ids like concat("%:",#{productTypeIds},":%")
+		</if>
+	</select>
+	<!--根据商品类型查询未推荐的商品集合-->
+	<select id="indexProductLists" parameterType="java.util.Map" resultType="productPojo">
+		select t.postage_type as postageType,t.weight as weight,t.unit as unit,(select name from synthetical_dict where value=t.unit and type = 'unit') as unitName,us.name as shopName,
+		t.product_sketch as productSketch,t.product_num as productNum,t.discount as discount,t.recommend as recommend,t.brand as brand,t.texture as texture,t.age as age,t.product_function as productFunction,t.location as location,t.is_power as isPower,t.pack as pack,t.is_hotsale as isHotsale,
+		t.id as id,t.user_id as userId,u.name as userName,t.product_no as productNo,t.product_type_id as productTypeId,pt.name as productTypeName,substring_index(substring_index(t.product_type_ids,':',2),':',-1) as productTypeIds,
+		t.product_name as productName,t.product_name_en as productNameEn,t.distribution_price as distributionPrice,t.selling_price as sellingPrice,t.lowest_price as lowestPrice,t.minimum as minimum,t.content as content,
+		t.ladder_price as ladderPrice,t.image as image,t.qrcode as qrcode,t.hits as hits,t.is_introduce as isIntroduce,(select name from sys_dict where value=t.is_introduce and type = 'yes_no') as isIntroduceName,t.sorting as sorting,t.status as status,(select name from sys_dict where value=t.status and type = 'status') as statusName,(select address from user_shop where user_id = t.user_id) as userAddress,t.create_by as createBy,t.create_date as createDate,t.update_by as updateBy,
+		t.update_date as updateDate,t.remarks as remarks,t.version as version,t.sell_number + t.base_number as sellNumber,t.is_new as isNew,(select name from sys_dict where value=t.is_new and type = 'yes_no') as isNewName ,
+		(select name from synthetical_dict where value=t.is_hotsale and type = 'is_hotsale') as isHotsaleName,
+		(select name from sys_dict where value=t.postage_type and type = 'yes_no') as postageTypeName
+		from product t left join sys_login u on t.user_id = u.id left join product_type pt on t.product_type_id = pt.id left join user_shop us on t.user_id = us.user_id 
+		where 1=1 and t.status=1 and us.status=1 and (t.product_type_id!=6 and t.product_type_ids!=':0:') and t.recommend=0
+		<if test="productTypeIds !=null and productTypeIds != ''">
+			and t.product_type_ids like concat("%:",#{productTypeIds},":%")
+		</if>
+	    <if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	<select id="productForShopId1" parameterType="java.util.Map" resultType="productPojo">
+		select t.unit as unit,(select name from synthetical_dict where value=t.unit and type = 'unit') as unitName,
+		t.product_sketch as productSketch,t.product_num as productNum,t.discount as discount,t.recommend as recommend,t.brand as brand,t.texture as texture,t.age as age,t.product_function as productFunction,t.location as location,t.is_power as isPower,t.pack as pack,t.is_hotsale as isHotsale,
+		t.id as id,t.user_id as userId,t.product_no as productNo,t.product_type_id as productTypeId,substring_index(substring_index(t.product_type_ids,':',2),':',-1) as productTypeIds,
+		t.product_name as productName,t.product_name_en as product_name_en,t.distribution_price as distributionPrice,t.selling_price as sellingPrice,
+		t.lowest_price as lowestPrice,t.minimum as minimum,t.ladder_price as ladderPrice,t.image as image,t.qrcode as qrcode,t.hits as hits,t.is_introduce as isIntroduce,t.sell_number + t.base_number as sellNumber,(select name from sys_dict where value=t.is_introduce and type = 'yes_no') as isIntroduceName,t.sorting as sorting,t.status as status,(select name from sys_dict where value=t.status and type = 'status') as statusName,
+		t.create_by as createBy,t.create_date as createDate,update_by as updateBy,t.update_date as updateDate,t.remarks as remarks,t.version as version ,t.is_new as isNew,t.postage_type as postageType,(select name from sys_dict where value=t.is_new and type = 'yes_no') as isNewName
+		from product t where t.is_introduce = 1 and t.status = 1 
+		<if test="userId !=null and userId != ''">
+			and t.user_id = #{userId} 
+		</if>
+		<if test="productTypeId !=null and productTypeId != ''">
+			and t.product_type_id = #{productTypeId} 
+		</if>
+		<if test="productId !=null and productId != ''">
+			and  t.id !=#{productId}
+		</if>
+		order by t.create_date desc 
+		limit 6
+	</select>
+	
+	<!--每日10件-->
+	<select id="tenOfEveryDay" resultType="productPojo">
+	select t.id as id,
+	substring_index(substring_index(t.product_type_ids,':',2),':',-1) as productTypeIds, 
+	t.image as image,
+	t.product_name as productName,
+	t.distribution_price as distributionPrice,
+	t.selling_price as sellingPrice,
+	t.sell_number + t.base_number as sellNumber,
+	t.base_number as baseNumber
+	from product t where 1=1 and t.status=1 and product_type_id &lt;&gt;6 order by create_date desc LIMIT 10 
+		
+		
+	</select>
+	<select id="productCollectAdd" parameterType="java.util.Map" resultType="productPojo">
+		select 
+		t.postage_type as postageType,
+		t.update_by as updateBy,
+		(select name from sys_login where id=t.update_by)as updateByName,
+		t.weight as weight,
+		t.unit as unit,
+		(select name from synthetical_dict where value=t.unit and type = 'unit') as unitName,
+		us.name as shopName,
+		t.product_sketch as productSketch,
+		t.product_num as productNum,
+		t.discount as discount,
+		t.recommend as recommend,
+		t.brand as brand,
+		t.texture as texture,
+		t.age as age,
+		t.product_function as productFunction,
+		t.location as location,
+		t.is_power as isPower,
+		t.pack as pack,
+		t.is_hotsale as isHotsale,
+		t.id as id,
+		t.product_no as productNo,
+		t.user_id as userId,
+		u.name as userName,
+		t.product_no as productNo,
+		t.product_type_id as productTypeId,
+		pt.name as productTypeName,
+		substring_index(substring_index(t.product_type_ids,':',2),':',-1) as productTypeIds,
+		t.product_name as productName,
+		t.product_name_en as productNameEn,
+		t.distribution_price as distributionPrice,
+		t.proxy_price  as proxyPrice,
+		t.selling_price as sellingPrice,
+		t.lowest_price as lowestPrice,
+		t.minimum as minimum,t.content as content,
+		t.ladder_price as ladderPrice,
+		t.image as image,
+		t.qrcode as qrcode,
+		t.hits as hits,
+		t.is_introduce as isIntroduce,
+		(select name from sys_dict where value=t.is_introduce and type = 'yes_no') as isIntroduceName,
+		t.sorting as sorting,
+		t.status as status,
+		(select name from synthetical_dict where value=t.is_power and type = 'is_power') as isPowerName,
+		(select name from sys_dict where value=t.status and type = 'status') as statusName,
+		(select address from user_info where user_id = t.user_id) as userAddress,
+		t.create_by as createBy,
+		t.create_date as createDate,
+		t.update_by as updateBy,
+		t.update_date as updateDate,
+		t.remarks as remarks,
+		t.version as version,
+		t.sell_number + t.base_number as sellNumber,
+		(select name from synthetical_dict where value=t.brand and type = 'brand') as brandName,
+		(select name from synthetical_dict where value=t.texture and type = 'texture') as textureName,
+		(select name from synthetical_dict where value=t.age and type = 'age') as ageName,
+		t.is_new as isNew,
+		(select name from synthetical_dict where value=t.pack and type = 'pack') as packName,
+		(select name from sys_dict where value=t.is_new and type = 'yes_no') as isNewName ,
+		(select name from synthetical_dict where value=t.is_hotsale and type = 'is_hotsale') as isHotsaleName,
+		(select name from sys_dict where value=t.postage_type and type = 'yes_no') as postageTypeName
+		from product t left join sys_login u on t.user_id = u.id left join product_type pt on t.product_type_id = pt.id left join user_shop us on t.user_id = us.user_id 
+		where t.status = 1
+		<if test="id != null">
+			and t.id = #{id} 
+		</if>
+		<if test="productNo != null">
+			and t.product_no = #{productNo} 
+		</if>
+		<if test="userId != null">
+			and t.user_id = #{userId} 
+		</if>
+		<if test="shopName != null">
+			and us.name like CONCAT("%",#{shopName},"%" ) 
+		</if>
+		<if test="productNum != null and productNum != ''">
+			and t.product_num like CONCAT("%",#{productNum},"%" )
+		</if>
+		<if test="productName != null and productName != ''">
+			and t.product_name like CONCAT("%",#{productName},"%" )
+		</if>
+		order by t.create_date desc
+	    <if test="pageSize!=null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	<!--销售基数-->
+	<update id="updateProductBaseNumber">
+		update product set base_number=Round(rand()*500+100) where base_number is null or base_number = 0
+	</update>
+	
+	<!-- 查询商品所属专场是否为排期完成 -->
+	<select id="findSpecialProductByPid" parameterType="java.util.Map" resultType="int">
+		SELECT count(*) FROM special_product sp LEFT JOIN product p ON sp.product_id=p.id
+		 							 	 LEFT JOIN special_show ss ON sp.special_id=ss.id 
+		 							 	 WHERE sp.product_id=#{productId} AND ss.status=4
+	</select>
+	
+	<!--平台专题查询活动ID-->
+	<select id="findActivityIdByPlatformSpecialProductId" parameterType="java.util.Map" resultType="productPojo">
+	select 	
+		g.time_id as activityId
+		
+		from product t left join sys_login u on t.user_id = u.id left join product_type pt on t.product_type_id = pt.id left join user_shop us on t.user_id = us.user_id 
+		<if test="timeIdIsN != null and timeIdIsN != '' ">
+		left join activity_goods g on g.product_id = t.id 
+		left join activity_time at on g.time_id = at.id
+		left join special_show ss on at.id = ss.activity_id
+		</if>	
+		where 1=1
+			and t.status=1 and us.status=1 and (t.product_type_ids!=':0:' and t.product_type_id!=6)
+		<if test="timeIdIsN != null and timeIdIsN != '' ">
+			and ss.status = 4
+			and g.status = 1
+			and g.time_id is not null
+			and at.channel = 1
+			and at.isdelete = '0'
+			<if test="activityType != null">
+				and at.type = #{activityType}
+			</if>
+			and ((at.type = 0
+			and date_format(now(),'%Y-%m-%d') = date_format(at.activity_date,'%Y-%m-%d')
+			and date_format(now(),'%H:%i') &gt;= at.begin_time 
+			and date_format(now(),'%H:%i') &lt; at.end_time)
+			or (at.type > 0
+			and date_format(now(),'%Y-%m-%d %T') &gt;= date_format(at.begin_time,'%Y-%m-%d %T')
+			and date_format(now(),'%Y-%m-%d %T') &lt; date_format(at.end_time,'%Y-%m-%d %T')))
+		</if>
+		<if test="productId != null">
+			and t.id = #{productId}
+		</if>
+			limit 1
+	    </select>
+	    
+	    <select id="getById" parameterType="Long" resultType="ProductPojo">
+			select
+				<include refid="Base_Column_List" />
+			from
+				product
+			where
+				id = #{id}
+		</select>
+	    
+</mapper>

@@ -1,0 +1,604 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+	<package name="struts-api" extends="iface-default">
+
+<!--接口 工具-->
+		<action name="apiTools" class="com.tzmb2c.web.action.LoginAction"
+			method="sendSMS">
+			<result>/api/apiTools.jsp</result>
+		</action>
+		<!--发送自自定义短信验证码接口 -->
+		<action name="sendSMS" class="com.tzmb2c.web.action.LoginAction"
+			method="sendSMS">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 发送短信验证码接口-->
+		<action name="captcha" class="com.tzmb2c.web.action.AppApiAction"
+			method="captcha">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--会员注册-->
+		<action name="register" class="com.tzmb2c.web.action.AppApiAction" method="register">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 注册检查 -->
+		<action name="checkRegister" class="com.tzmb2c.web.action.AppApiAction" method="checkRegister">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--用户登录-->
+		<action name="login" class="com.tzmb2c.web.action.AppApiAction" method="login">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--批发商用户登录-->
+		<action name="agentlogin" class="com.tzmb2c.web.action.AppApiAction" method="agentlogin">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--分销商注册-->
+		<action name="applyConsumerApi" class="com.tzmb2c.web.action.AppApiAction" method="applyConsumerApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 供应商注册-->
+		<action name="applyManufacturerApi" class="com.tzmb2c.web.action.AppApiAction" method="applyManufacturerApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--修改密码-->
+		<action name="password" class="com.tzmb2c.web.action.AppApiAction" method="password">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--首页搜索产品-->
+		<action name="searchProduct" class="com.tzmb2c.web.action.AppApiAction" method="searchProduct">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--首页搜索店铺-->
+		<action name="searchShop" class="com.tzmb2c.web.action.AppApiAction" method="searchShop">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--首页搜索品牌-->
+		<action name="searchBrand" class="com.tzmb2c.web.action.AppApiAction" method="searchBrand">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 行业资讯-->
+		<action name="newsList" class="com.tzmb2c.web.action.AppApiAction" method="newsList">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 行业资讯详情-->
+		<action name="newsDetail" class="com.tzmb2c.web.action.AppApiAction" method="newsDetail">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 店铺街-->
+		<action name="shopList" class="com.tzmb2c.web.action.AppApiAction" method="shopList">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 店铺详情-->
+		<action name="shopDetail" class="com.tzmb2c.web.action.AppApiAction" method="shopDetail">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 活动-->
+		<action name="activity" class="com.tzmb2c.web.action.AppApiAction" method="activity">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 产品列表-->
+		<action name="product" class="com.tzmb2c.web.action.AppApiAction" method="product">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 产品详情-->
+		<action name="productDetailApi" class="com.tzmb2c.web.action.AppApiAction" method="productDetailApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 产品焦点图详情-->
+		<action name="productDetailFocusImg" class="com.tzmb2c.web.action.AppApiAction" method="productDetailFocusImg">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 产品描述图详情-->
+		<action name="productDetailImg" class="com.tzmb2c.web.action.AppApiAction" method="productDetailImg">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 产品分类-->
+		<action name="productType" class="com.tzmb2c.web.action.AppApiAction" method="productType">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 产品一二级分类-->
+		<action name="productTypeList" class="com.tzmb2c.web.action.AppApiAction" method="productTypeList">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 产品评价详情-->
+		<action name="productDetailComment" class="com.tzmb2c.web.action.AppApiAction" method="productDetailComment">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 产品评价-->
+		<action name="comment" class="com.tzmb2c.web.action.AppApiAction" method="comment">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 供应商产品列表 -->
+		<action name="productLists" class="com.tzmb2c.web.action.AppApiAction" method="productLists">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		
+		
+		<!-- 设置批发商代理产品 -->
+		<action name="toSetAgencyProduct" class="com.tzmb2c.web.action.AppApiAction" method="toSetAgencyProduct">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		
+		
+		
+		<!-- 批发商代理商家产品列表 -->
+		<action name="agencyProductLists" class="com.tzmb2c.web.action.AppApiAction" method="agencyProductLists">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		
+		<!-- 批发商代理产品列表 -->
+		<action name="agencyProducts" class="com.tzmb2c.web.action.AppApiAction" method="agencyProducts">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--修改批发商代理产品库存数量 -->
+		<action name="updateAgencyInventory" class="com.tzmb2c.web.action.AppApiAction" method="updateAgencyInventory">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		
+		<!-- 批发商代理商家产品列表 -->
+		<action name="agencyProductIds" class="com.tzmb2c.web.action.AppApiAction" method="agencyProductIds">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		
+		<!-- 我的收藏列表 -->
+		<action name="favorites" class="com.tzmb2c.web.action.AppApiAction" method="favorites">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 添加收藏 -->
+		<action name="addFavorite" class="com.tzmb2c.web.action.AppApiAction" method="addFavorite">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 收藏判断 -->
+		<action name="isFavorite" class="com.tzmb2c.web.action.AppApiAction" method="isFavorite">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 取消收藏 -->
+		<action name="delFavorite" class="com.tzmb2c.web.action.AppApiAction" method="delFavorite">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 添加地址 -->
+		<action name="addAddress" class="com.tzmb2c.web.action.AppApiAction" method="addAddress">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 默认地址 -->
+		<action name="selectAddress" class="com.tzmb2c.web.action.AppApiAction" method="selectAddress">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 详细地址 -->
+		<action name="addressDetail" class="com.tzmb2c.web.action.AppApiAction" method="addressDetail">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 修改地址 -->
+		<action name="eidtAddress" class="com.tzmb2c.web.action.AppApiAction" method="eidtAddress">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 删除地址 -->
+		<action name="deleteAddress" class="com.tzmb2c.web.action.AppApiAction" method="deleteAddress">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 问题反馈 -->
+		<action name="feedback" class="com.tzmb2c.web.action.AppApiAction" method="feedback">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 访问记录 -->
+		<action name="footprint" class="com.tzmb2c.web.action.AppApiAction" method="footprint">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		
+		<!-- 用户基本信息 -->
+		<action name="myInfo" class="com.tzmb2c.web.action.AppApiAction" method="myInfo">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--查看物流 -->
+		<action name="express" class="com.tzmb2c.web.action.AppApiAction" method="express">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--添加购物车 -->
+		<action name="addcart" class="com.tzmb2c.web.action.AppApiAction" method="addcart">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--添加b2c购物车 -->
+		<action name="toAddcart" class="com.tzmb2c.web.action.AppApiAction" method="toAddcart">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--查看购物车 -->
+		<action name="mycart" class="com.tzmb2c.web.action.AppApiAction" method="mycart">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--查看b2c购物车 -->
+		<action name="tomycart" class="com.tzmb2c.web.action.AppApiAction" method="tomycart">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--修改购物车数量 -->
+		<action name="editCart" class="com.tzmb2c.web.action.AppApiAction" method="editCart">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--修改B2C购物车数量 -->
+		<action name="toEditCart" class="com.tzmb2c.web.action.AppApiAction" method="toEditCart">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--删除购物车产品 -->
+		<action name="delCart" class="com.tzmb2c.web.action.AppApiAction" method="delCart">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--选中提交购物车 -->
+		<action name="orderProduct" class="com.tzmb2c.web.action.AppApiAction" method="orderProduct">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--提交订单 -->
+		<action name="addorder" class="com.tzmb2c.web.action.AppApiAction" method="addorder">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--我的订单 -->
+		<action name="myorder" class="com.tzmb2c.web.action.AppApiAction" method="myorder">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--订单详情 -->
+		<action name="orderdetail" class="com.tzmb2c.web.action.AppApiAction" method="orderdetail">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--确认收货 -->
+		<action name="editOrderStatus" class="com.tzmb2c.web.action.AppApiAction" method="editOrderStatus">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--供应商订单 -->
+		<action name="shopOrder" class="com.tzmb2c.web.action.AppApiAction" method="shopOrder">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--批发商订单 -->
+		<action name="agentOrder" class="com.tzmb2c.web.action.AppApiAction" method="agentOrder">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--我的收货地址 -->
+		<action name="myaddress" class="com.tzmb2c.web.action.AppApiAction" method="myaddress">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--帮助中心-帮助类型 -->
+		<action name="helpCenter" class="com.tzmb2c.web.action.AppApiAction" method="helpCenter">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--帮助中心-帮助类型 -->
+		<action name="helpCenterPid" class="com.tzmb2c.web.action.AppApiAction" method="helpCenterPid">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--帮助中心-帮助类型 -->
+		<action name="helpCenterList" class="com.tzmb2c.web.action.AppApiAction" method="helpCenterList">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--帮助中心-常见问题详情 -->
+		<action name="helpCenterDetail" class="com.tzmb2c.web.action.AppApiAction" method="helpCenterDetail">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--首页焦点图 -->
+		<action name="focus" class="com.tzmb2c.web.action.AppApiAction" method="focus">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--推送消息列表-->
+		<action name="clientInfo" class="com.tzmb2c.web.action.AppApiAction" method="clientInfo">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--推送消息详情-->
+		<action name="clientInfoDetail" class="com.tzmb2c.web.action.AppApiAction" method="clientInfoDetail">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--直接购买-->
+		<action name="addPurchase" class="com.tzmb2c.web.action.AppApiAction" method="addPurchase">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--直接购买提交订单-->
+		<action name="addOrderByPurchase" class="com.tzmb2c.web.action.AppApiAction" method="addOrderByPurchase">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--今日订单量-->
+		<action name="todayOrderNum" class="com.tzmb2c.web.action.AppApiAction" method="todayOrderNum">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--取消订单-->
+		<action name="cancelOrder" class="com.tzmb2c.web.action.AppApiAction" method="cancelOrder">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--今日访问IP列表-->
+		<action name="todaysVisitList" class="com.tzmb2c.web.action.AppApiAction" method="todaysVisitList">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--今日访问IP总数-->
+		<action name="todayVisitNum" class="com.tzmb2c.web.action.AppApiAction" method="todayVisitNum">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--总成交额-->
+		<action name="transactionPriceSum" class="com.tzmb2c.web.action.AppApiAction" method="transactionPriceSum">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--查询省市区名称-->
+		<action name="province" class="com.tzmb2c.web.action.AppApiAction" method="province">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--百度云推送IOS-->
+		<action name="baiduCloudPush" class="com.tzmb2c.web.action.AppApiAction" method="baiduCloudPush">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--查询所有物流公司表-->
+		<action name="logistics" class="com.tzmb2c.web.action.AppApiAction" method="logistics">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--订单单个产品详情-->
+		<action name="orderDetailInfo" class="com.tzmb2c.web.action.AppApiAction" method="orderDetailInfo">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--搜索帮助中心-->
+		<action name="searchHelp" class="com.tzmb2c.web.action.AppApiAction" method="searchHelp">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--查询省市区名称-->
+		<action name="provinceInfo" class="com.tzmb2c.web.action.AppApiAction" method="provinceInfo">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--修改密码-->
+		<action name="reSetPassWord" class="com.tzmb2c.web.action.AppApiAction" method="reSetPassWord">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 退货列表-->
+		<action name="myRefund" class="com.tzmb2c.web.action.AppApiAction" method="myRefund">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--退货申请-->
+		<action name="applyRefund" class="com.tzmb2c.web.action.AppApiAction" method="applyRefund">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--填写物流-->
+		<action name="SubmitLogistics" class="com.tzmb2c.web.action.AppApiAction" method="SubmitLogistics">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--评价返回未申请退货退款售后订单详情数据-->
+		<action name="evaluation" class="com.tzmb2c.web.action.AppApiAction" method="evaluation">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--搜索全部（店铺和产品）-->
+		<action name="searchAll" class="com.tzmb2c.web.action.AppApiAction" method="searchAll">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--返回购物车数量 -->
+		<action name="myCartNum" class="com.tzmb2c.web.action.AppApiAction" method="myCartNum">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--返回用户的默认地址-->
+		<action name="defaultAddress" class="com.tzmb2c.web.action.AppApiAction" method="defaultAddress">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 图片上传struts2 -->
+		 <action name="uploadFile" class="com.tzmb2c.web.action.AppApiAction"  
+            method="uploadFile">  
+            <result name="uploadfile"></result>  
+        </action>   
+        <!-- app活动  -->
+		<action name="appActivityList" class="com.tzmb2c.web.action.AppApiAction" method="appActivityList">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		 <!--供应商评论列表-->
+		<action name="manufacturerCommentList" class="com.tzmb2c.web.action.AppApiAction" method="manufacturerCommentList">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--供应商店铺信息-->
+		<action name="manufacturerShop" class="com.tzmb2c.web.action.AppApiAction" method="manufacturerShop">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--修改店铺信息-->
+		<action name="updateShopInfo" class="com.tzmb2c.web.action.AppApiAction" method="updateShopInfo">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--产品详情Html-->
+		<action name="productDetailHtml" class="com.tzmb2c.web.action.AppApiAction" method="productDetailHtml">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+
+		<!-- 代理商注册-->
+		<action name="applyAgencyApi" class="com.tzmb2c.web.action.AppApiAction" method="applyAgencyApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+
+		<!--我的足迹-->
+		<action name="foot" class="com.tzmb2c.web.action.AppApiAction" method="foot">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		
+		<!--b2c我的足迹-->
+		<action name="footNew" class="com.tzmb2c.web.action.AppApiAction" method="footNew">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		
+		<!--批发商接收的百度推送-->
+		<action name="agencyPush" class="com.tzmb2c.web.action.AppApiAction" method="agencyPush">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		
+		<!--批发商确认百度推送-->
+		<action name="setAgencyPush" class="com.tzmb2c.web.action.AppApiAction" method="setAgencyPush">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		
+		<!--批发商发货填写物流信息-->
+		<action name="delivery" class="com.tzmb2c.web.action.AppApiAction" method="delivery">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		
+		<!--店铺主推产品图片获取-->
+		<action name="getCommentPic" class="com.tzmb2c.web.action.AppApiAction" method="getCommentPic">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--首页顶部推送图获取-->
+		<action name="homePageTop4List" class="com.tzmb2c.web.action.AppApiAction" method="homePageTop4List">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--首页分类推送图获取-->
+		<action name="homePageFloorList" class="com.tzmb2c.web.action.AppApiAction" method="homePageFloorList">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--活动产品获取-->
+		<action name="getActivityProductByType" class="com.tzmb2c.web.action.AppApiAction" method="getActivityProductByType">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--批发商订单详情-->
+		<action name="orderdetailForAgency" class="com.tzmb2c.web.action.AppApiAction" method="orderdetailForAgency">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--产品描述图-->
+		<action name="productDetailApp" class="com.tzmb2c.web.action.AppApiAction" method="productDetailApp">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--查询登录用户信息-->
+		<action name="getUserInfo" class="com.tzmb2c.web.action.AppApiAction" method="getUserInfo">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--更新登录用户信息-->
+		<action name="editUserInfo" class="com.tzmb2c.web.action.AppApiAction" method="editUserInfo">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--批发商申请-->
+		<action name="agencyApply" class="com.tzmb2c.web.action.AppApiAction" method="agencyApply">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--区域列表-->
+		<action name="getAreaInfo" class="com.tzmb2c.web.action.AppApiAction" method="getAreaInfo">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--限时秒杀时间列表-->
+		<action name="activityTimeList" class="com.tzmb2c.web.action.AppApiAction" method="activityTimeList">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--限时秒杀产品列表-->
+		<action name="activityGoods" class="com.tzmb2c.web.action.AppApiAction" method="activityGoods">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--限时秒杀产品列表库存返回-->
+		<action name="activityGoodsStock" class="com.tzmb2c.web.action.AppApiAction" method="activityGoodsStock">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--焦点图返回列表接口-->
+		<action name="getFocusActivityProduct" class="com.tzmb2c.web.action.AppApiAction" method="getFocusActivityProduct">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 删除百度id -->
+		<action name="deleteBaiduUid" class="com.tzmb2c.web.action.AppApiAction" method="deleteBaiduUid">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--用户绑定微信或新浪-->
+		<action name="bundling" class="com.tzmb2c.web.action.AppApiAction" method="bundling">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--订单支付-->
+		<action name="payOrder" class="com.tzmb2c.web.action.AppApiAction" method="payOrder">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--单个产品查询活动时间-->
+		<action name="getProductActivityTime" class="com.tzmb2c.web.action.AppApiAction" method="getProductActivityTime">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--用户优惠券列表-->
+		<action name="getUserCouponList" class="com.tzmb2c.web.action.AppApiAction" method="getUserCouponList">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--订单可用优惠券列表-->
+		<action name="getValidUserCoupon" class="com.tzmb2c.web.action.AppApiAction" method="getValidUserCoupon">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--绑定优惠券-->
+		<action name="addUserCoupon" class="com.tzmb2c.web.action.AppApiAction" method="addUserCoupon">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 更新产品销售基数 -->
+		<action name="addBaseNumber" class="com.tzmb2c.web.action.AppApiAction" method="addBaseNumber">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 获取用户购物车数量 -->
+		<action name="getUserCartNum" class="com.tzmb2c.web.action.AppApiAction" method="getUserCartNum">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 获取商品SKU信息 -->
+		<action name="getProductSkuLink" class="com.tzmb2c.web.action.AppApiAction" method="getProductSkuLink">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 获取商品颜色/规格 -->
+		<action name="getProductSkuList" class="com.tzmb2c.web.action.AppApiAction" method="getProductSkuList">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 微信摇一摇活动 -->
+		<action name="shakeActivity" class="com.tzmb2c.web.action.AppApiAction" method="shakeActivity">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 用户积分任务列表 -->
+		<action name="userScoreTasksList" class="com.tzmb2c.web.action.AppApiAction" method="userScoreTasksList">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 用户积分明细查询 -->
+		<action name="userScoreDetailed" class="com.tzmb2c.web.action.AppApiAction" method="userScoreDetailed">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 场景/套餐活动查询 -->
+		<action name="scenesList" class="com.tzmb2c.web.action.AppApiAction" method="scenesList">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 套餐活动产品查询 -->
+		<action name="packageProductDetailed" class="com.tzmb2c.web.action.AppApiAction" method="packageProductDetailed">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 场景活动产品查询 -->
+		<action name="sceneProductDetailed" class="com.tzmb2c.web.action.AppApiAction" method="sceneProductDetailed">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 生成优惠券 -->
+		<action name="genCouponTest" class="com.tzmb2c.web.action.AppApiAction" method="genCouponTest">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 套餐直接购买 -->
+		<action name="addPkgPurchase" class="com.tzmb2c.web.action.AppApiAction" method="addPkgPurchase">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 套餐直接购买提交订单 -->
+		<action name="addPkgOrderByPurchase" class="com.tzmb2c.web.action.AppApiAction" method="addPkgOrderByPurchase">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 查询用户最近浏览的4只产品 -->
+		<action name="getUserFootByProduct" class="com.tzmb2c.web.action.AppApiAction" method="getUserFootByProduct">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 退款详情 -->
+		<action name="refundDetails" class="com.tzmb2c.web.action.AppApiAction" method="refundDetails">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 退货单个商品详情 -->
+		<action name="refundOneDetails" class="com.tzmb2c.web.action.AppApiAction" method="refundOneDetails">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+			<!-- 退货物流详情 -->
+		<action name="refundExpress" class="com.tzmb2c.web.action.AppApiAction" method="refundExpress">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 支付宝/微信交易查询 -->
+		<action name="queryPayStatus" class="com.tzmb2c.web.action.AppApiAction" method="queryPayStatus">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 获取弹窗设置信息 -->
+		<action name="getPopupManageInfo" class="com.tzmb2c.web.action.AppApiAction" method="getPopupManageInfo">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+	</package>
+	<package name="struts-normalapi" extends="struts-default">
+		<!--今日成交量-->
+		<action name="todayBargainNum" class="com.tzmb2c.web.action.AppApiAction" method="todayBargainNum">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!--淘竹马注册用户数量-->
+		<action name="allUserNum" class="com.tzmb2c.web.action.AppApiAction" method="allUserNum">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 昨日有米注册数量 -->
+		<action name="youmiRegisNum" class="com.tzmb2c.web.action.AppApiAction" method="youmiRegisNum">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+	</package>
+</struts>

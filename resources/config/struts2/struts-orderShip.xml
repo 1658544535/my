@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="orderShip" extends="default">
+
+		<action name="orderShip" class="com.tzmb2c.web.action.OrderShipAction" method="getOrderShipCount">
+			<result>/page/system/user/orderShip.jsp</result>
+		</action>
+		
+		<action name="OrderShipDeleteId" class="com.tzmb2c.web.action.OrderShipAction" method="orderShipDeleteId">
+		
+		</action>
+		
+		<action name="goFindOrderShip" class="com.tzmb2c.web.action.OrderShipAction" method="goFindOrderShip">
+			<result>/page/system/user/orderShipupdate.jsp</result>
+		</action>
+		<action name="updateOrderShip" class="com.tzmb2c.web.action.OrderShipAction" method="updateOrderShip">
+		</action>
+		<!-- 添加发货信息 -->
+		<action name="goOrderShipAdd" class="com.tzmb2c.web.action.OrderShipAction" method="goOrderShipAdd">
+			<result>/page/system/user/orderShipAdd.jsp</result>
+		</action>
+		<action name="addOrderShip" class="com.tzmb2c.web.action.OrderShipAction" method="addOrderShip">
+		</action>
+		
+	</package>
+	
+	<package name="OrderShipCount-json" extends="json-default">
+		<!--平台入口-->
+		<action name="getOrderShipCount" class="com.tzmb2c.web.action.OrderShipAction" method="getOrderShipCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+			<action name="orderShipAllList" class="com.tzmb2c.web.action.OrderShipAction" method="orderShipAllList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="deleOrderShip" class="com.tzmb2c.web.action.OrderShipAction" method="deleOrderShip">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="productStock" extends="default">
+
+		<!-- 产品 -->
+		<action name="productStockManage" class="com.tzmb2c.web.action.ProductStockAction" method="getCountProductStock">
+			<result>/page/system/product/productStockList.jsp</result>
+		</action>
+		
+		
+		<!-- 添加产品-->
+		<action name="goproductStockAdd" class="com.tzmb2c.web.action.ProductStockAction" method="goproductStockAdd">
+			<result>/page/system/product/productStockAdd.jsp</result>
+		</action>
+		
+		<action name="productStockAdd" class="com.tzmb2c.web.action.ProductStockAction" method="productStockAdd">
+				<result name="success" type="redirectAction">
+					<param name="actionName">productStockManage</param>  
+        			<param name="productStockPojo.productId">${productStockPojo.productId}</param>
+        		</result>
+		</action> 
+
+		<!-- 修改产品-->
+		<action name="goFindProductStock" class="com.tzmb2c.web.action.ProductStockAction" method="goFindProductStock">
+			<result>/page/system/product/productStockUpdate.jsp</result>
+		</action>
+		
+		<action name="productStockUpdate" class="com.tzmb2c.web.action.ProductStockAction" method="productStockUpdate">
+				<result name="success" type="redirectAction">
+					<param name="actionName">productStockManage</param>  
+        			<param name="productStockPojo.productId">${productStockPojo.productId}</param>
+        		</result>
+		</action> 
+
+		
+		
+		<!-- 删除全部 -->
+		<action name="productStockDeleteId" class="com.tzmb2c.web.action.ProductStockAction" method="productStockDeleteId">
+		</action>
+		
+		
+	</package>
+	<package name="CountProductStock-json" extends="json-default">
+		<!--平台入口-->
+		<action name="getCountProductStock" class="com.tzmb2c.web.action.ProductStockAction" method="getCountProductStock">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+
+		<!-- 根据条件查找对应产品 -->
+		<action name="getProductStockAll" class="com.tzmb2c.web.action.ProductStockAction"
+			method="getProductStockAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<!-- 删除产品成功回调 -->
+		<action name="deleProductStock" class="com.tzmb2c.web.action.ProductStockAction"
+			method="deleProductStock">
+			<result type="json">
+	       		 <param name="root">result</param>
+	       		 <param name="productStockPojo.productId">${productStockPojo.productId}</param>
+			</result>
+		</action>
+		<!-- 审核 -->
+		<action name="checkProductStock" class="com.tzmb2c.web.action.ProductStockAction" method="checkProductStock">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		
+	</package>
+</struts>

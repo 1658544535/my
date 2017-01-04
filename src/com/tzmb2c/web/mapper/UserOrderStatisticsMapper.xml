@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.UserOrderStatisticsMapper">
+ 
+	<!-- <cache/>  -->
+
+	<select id="getUserOrderStatisticsAll" resultType="userOrderStatisticsPojo">
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.year as year ,
+		t.month as month, 
+		t.money as money,
+		t.is_settle_accounts as isSettleAccounts
+		from user_order_statistics t order by t.create_date desc
+	</select>
+	
+	<select id="getfindByIdUserOrderStatistics" parameterType="Long" resultType="userOrderStatisticsPojo" >
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.year as year ,
+		t.month as month, 
+		t.money as money,
+		t.is_settle_accounts as isSettleAccounts,
+		s.name as userName
+		from user_order_statistics as t left join sys_login s on t.user_id = s.id
+		where
+		t.id = #{id} 
+	</select>
+	
+	<select id="getfindByUserIdUserOrderStatistics" parameterType="Long" resultType="userOrderStatisticsPojo" >
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.year as year ,
+		t.month as month, 
+		t.money as money,
+		t.is_settle_accounts as isSettleAccounts,
+		s.name as userName
+		from user_order_statistics as t left join sys_login s on t.user_id = s.id
+		where
+		t.user_id = #{id} 
+	</select>
+
+	<insert id="insertUserOrderStatistics" parameterType="userOrderStatisticsPojo">
+		insert into
+		user_order_statistics(user_id,year,month,money,is_settle_accounts,create_by,create_date,update_by,update_date,remarks,version)
+		values(#{userId},#{year},#{month},#{money},#{isSettleAccounts},#{createBy},#{createDate},#{updateBy},#{updateDate},#{remarks},#{version})
+	</insert>
+	
+	<delete id="delUserOrderStatistics" parameterType="Long">
+		update user_order_statistics set
+		is_settle_accounts = 1
+		where id = #{id}
+	</delete>
+	
+	<delete id="deleteUserOrderStatistics"  parameterType="Long">
+		delete from user_userOrderStatistics where id = #{id}
+	</delete>
+	
+	<update id="updateUserOrderStatistics" parameterType="userOrderStatisticsPojo">
+	
+		update user_order_statistics set
+		update_by = #{updateBy},
+		update_date = #{updateDate},
+		user_id = #{userId},
+		shop_id =#{shopId},
+		product_id =#{productId},
+		product_name =#{productName},
+		product_model =#{productModel},
+		stock_id =#{stockId},
+		stock_price_old =#{stockPriceOld},
+		stock_price =#{stockPrice},
+		num =#{num},
+		type =#{type},
+		channel =#{channel},
+		status =#{status}
+		where id = #{id}
+	</update>
+	
+	<select id="userOrderStatisticsAllCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from user_order_statistics t left join sys_login s on t.user_id = s.id where
+		1=1
+		<if test="remarks!=null and remarks!=''">
+			and s.name = #{remarks}
+		</if>
+		<if test="year!=null and year!=''">
+			and year = #{year}
+		</if>
+		<if test="month!=null and month!=''">
+			and month = #{month}
+		</if>
+	</select>
+	
+	<select id="userOrderStatisticsAllList" resultType="userOrderStatisticsPojo"
+		parameterType="java.util.Map">
+
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.year as year ,
+		t.month as month, 
+		t.money as money,
+		t.is_settle_accounts as isSettleAccounts,
+		s.name as userName,
+		(select name from sys_dict where value=t.is_settle_accounts and type = 'yes_no') isSettleAccountsName
+		from user_order_statistics as t left join sys_login s on t.user_id = s.id
+		where
+		1=1
+		<if test="remarks!=null and remarks!=''">
+			and s.name = #{remarks}
+		</if>
+		<if test="year!=null and year!=''">
+			and year = #{year}
+		</if>
+		<if test="month!=null and month!=''">
+			and month = #{month}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+		
+	</select>
+	
+</mapper>

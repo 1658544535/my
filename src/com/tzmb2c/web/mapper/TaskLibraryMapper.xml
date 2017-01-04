@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tzmb2c.web.mapper.TaskLibraryMapper">
+
+	<!-- 查询记录的数目 -->
+	<select id="findTaskLibraryCount" resultType="int" parameterType="java.util.Map">
+		select count(*)
+	   	from task_library t
+		where 1=1
+		<if test="isdelete != null and isdelete != '' ">
+			and t.is_delete = #{isdelete}
+		</if>
+		<if test="taskTitle != null and taskTitle != '' ">
+			and t.taskTitle like CONCAT("%",#{taskTitle},"%")
+		</if>
+		<if test="taskAge != null">
+			and t.taskAge = #{taskAge}
+		</if>
+		<if test="ability != null">
+			and t.ability = #{ability}
+		</if>
+		<if test="taskType != null">
+			and t.taskType = #{taskType}
+		</if>
+		<if test="taskTypeLink != null">
+			and t.taskTypeLink = #{taskTypeLink}
+		</if>
+		<if test="taskScore != null">
+			and t.taskScore = #{taskScore}
+		</if>
+	</select>
+	
+	<!-- 查询所有任务 -->
+	<select id="findTaskLibraryList" resultType="TaskPojo" parameterType="java.util.Map">
+		select
+			t.id              as id,
+			t.taskTitle       as taskTitle,
+			t.taskContent     as taskContent,
+			(select s.name from sys_dict s where t.taskType = s.value and s.type = "task_type") as taskTypeMessage,
+			(select s.name from sys_dict s where t.taskAge = s.value and s.type = "user_age")   as taskAgeMessage,
+			(select s.name from sys_dict s where t.ability = s.value and s.type = "ability")    as abilityMessage,
+			(select s.name from sys_dict s where t.taskTypeLink = s.value and s.type = "task_type_link")    as taskTypeLinkMessage,
+			t.taskScore       as taskScore,
+			t.is_delete       as is_delete,
+			t.create_date     as createDate,
+			t.create_by       as createName,
+			t.update_date     as updateDate,
+			t.update_by       as updateName
+	   	from task_library t  LEFT JOIN sys_dict s on t.taskType = s.value and s.type = "task_type"
+		where 1=1
+		<if test="isdelete != null and isdelete != '' ">
+			and t.is_delete = #{isdelete}
+		</if>
+		<if test="taskTitle != null and taskTitle != '' ">
+			and t.taskTitle like CONCAT("%",#{taskTitle},"%")
+		</if>
+		<if test="taskAge != null">
+			and t.taskAge = #{taskAge}
+		</if>
+		<if test="ability != null">
+			and t.ability = #{ability}
+		</if>
+		<if test="taskType != null">
+			and t.taskType = #{taskType}
+		</if>
+		<if test="taskTypeLink != null">
+			and t.taskTypeLink = #{taskTypeLink}
+		</if>
+		<if test="taskScore != null">
+			and t.taskScore = #{taskScore}
+		</if>
+		<if test="option != '' ">
+			order by t.create_date desc
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<!-- 查找单条任务记录  -->	
+	<select id="findTaskLibraryById" resultType="TaskPojo" parameterType="Long">
+		select
+			t.id           as id,
+			t.taskTitle    as taskTitle,
+			t.taskContent  as taskContent,
+			t.taskTypeLink as taskTypeLink,
+			t.ability      as ability,
+			t.taskAge      as taskAge,
+			t.taskType     as taskType,
+			t.taskScore    as taskScore,
+			t.is_delete    as is_delete,
+			t.create_date  as createDate,
+			t.create_by    as createName,
+			t.update_date  as updateDate,
+			t.update_by    as updateName
+	   	from task_library t 
+		where 
+		t.id = #{id}
+	</select>
+	
+	<!-- 插入单条任务记录 -->
+	<insert id="insertTaskLibrary" parameterType="TaskPojo">
+		insert into task_library
+		(taskTitle,taskContent,taskAge,ability,taskType,taskScore,is_delete,create_date,create_by,update_date,update_by,taskTypeLink) 
+		values(#{taskTitle},#{taskContent},#{taskAge},#{ability},#{taskType},#{taskScore},0,now(),#{createName},str_to_date(#{updateDate},'%Y-%m-%d %H:%i:%s'),#{updateName},#{taskTypeLink})
+	</insert>
+	
+	<!-- 删除单条 -->
+	<delete id="delTaskLibrary" parameterType="Long">
+		update task_library t 
+		set t.is_delete = 1,
+		t.update_date = now()
+		where
+		t.id = #{id}
+	</delete>
+	
+	<!--更新单条任务记录-->
+	<update id="updateTaskLibrary" parameterType="TaskPojo">
+		update task_library t set
+		<if test="taskTitle != null and taskTitle != '' ">
+			t.taskTitle = #{taskTitle},
+		</if>
+		<if test="taskContent != null and taskContent != '' ">
+			t.taskContent = #{taskContent},
+		</if>
+		<if test="taskAge != null ">
+			t.taskAge = #{taskAge},
+		</if>
+		<if test="ability != null ">
+			t.ability = #{ability},
+		</if>
+		<if test="taskType != null">
+			t.taskType = #{taskType},
+		</if>
+		<if test="taskTypeLink != null">
+			t.taskTypeLink = #{taskTypeLink},
+		</if>
+		<if test="taskScore != null">
+			t.taskScore = #{taskScore},
+		</if>
+		<if test="updateName != null">
+			t.update_by = #{updateName},
+		</if>
+		
+		update_date = now()
+		where
+		t.id = #{id}
+	</update>	
+	
+	
+</mapper>

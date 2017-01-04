@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.LoginMapper">
+
+	<!-- <cache /> -->
+
+	<select id="getLoginPojoByLoginname" parameterType="string"
+		resultType="sysLoginPojo">
+		select t.id,t.loginname,t.password,t.name,t.openid,t.sorting,t.type,t.status,t.remarks,t.version,t.taobao_user_id as taobao_user_id,t.qq_openid as qqOpenId from sys_login t where
+		t.loginname = #{loginname}
+	</select>
+
+	<select id="getLoginPojoByLoginnameAndPassword" parameterType="sysLoginPojo"
+		resultType="sysLoginPojo">
+		select t.id id,t.loginname loginname,t.name name,t.type
+		type,t.status status from sys_login t where t.loginname
+		= #{loginname}
+		and t.password = #{password} and t.status = 1 
+	</select>
+	
+	<select id="getLoginPojoByLoginnameAndPasswordAndType" parameterType="sysLoginPojo"
+		resultType="sysLoginPojo">
+		select t.id id,t.loginname loginname,t.name name,t.type
+		type,t.status status from sys_login t where t.loginname
+		= #{loginname}
+		and t.password = #{password} and type in ('0','4')
+	</select>
+
+	<insert id="insertLoginPojo" parameterType="sysLoginPojo" useGeneratedKeys="true" keyProperty="id" >
+		insert into sys_login
+		(loginname,password,name,openid,sorting,type,status,create_by,create_date,update_by,update_date,remarks,version,taobao_user_id,qq_openid,external_sign_code,invitation_code)
+		<!-- values
+		(#{loginname}, #{password},#{name},#{openid},#{sorting},#{type},#{status},#{createBy},#{createDate},#{updateBy},#{updateDate},#{remarks},#{version},#{taobao_user_id},#{qqOpenId}) -->
+		select #{loginname}, #{password},#{name},#{openid},#{sorting},#{type},#{status},#{createBy},#{createDate},#{updateBy},#{updateDate},#{remarks},#{version},#{taobao_user_id},#{qqOpenId},#{externalSignCode},#{invitationCode} from dual
+		where (select count(*) from sys_login where loginname = #{loginname}) = 0
+	</insert>
+
+	<update id="updatePassword" parameterType="sysLoginPojo">
+		update sys_login t set
+		t.password = #{password} where t.loginname = #{loginname}
+	</update>
+
+	<update id="updateLoginPojo" parameterType="sysLoginPojo">
+		update sys_login t 
+		<set>
+		<if test="password!=null and password!=''">
+			t.password = #{password},
+		</if>
+		<if test="name!=null and name!=''">
+			t.name = #{name},
+		</if>
+		<if test="openid!=null and openid!=''">
+			t.openid = #{openid},
+		</if>
+		<if test="unionid!=null and unionid!=''">
+			t.unionid = #{unionid},
+		</if>
+		<if test="sorting!=null and sorting!=''">
+			t.sorting = #{sorting},
+		</if>
+		<if test="type!=null and type!=''">
+			t.type = #{type},
+		</if>
+		<if test="status!=null and status!=''">
+			t.status = #{status},
+		</if>
+		<if test="createBy!=null and createBy!=''">
+			t.create_by = #{createBy},
+		</if>
+		<if test="createDate!=null and createDate!=''">
+			t.create_date = #{createDate},
+		</if>
+		<if test="updateBy!=null and updateBy!=''">
+			t.update_by = #{updateBy},
+		</if>
+		<if test="updateDate!=null and updateDate!=''">
+			t.update_date = #{updateDate},
+		</if>
+		<if test="createBy!=null and createBy!=''">
+			t.version = #{version},
+		</if>
+		<if test="taobao_user_id!=null and taobao_user_id!=''">
+			t.taobao_user_id =#{taobao_user_id},
+		</if>
+		<if test="qqOpenId!=null and qqOpenId!=''">
+			t.qq_openid =#{qqOpenId},
+		</if>
+		<if test="token!=null and token!=''">
+			t.token =#{token},
+		</if>
+		<if test="sinaid!=null and sinaid!=''">
+			t.sinaid =#{sinaid},
+		</if>
+		<if test="baidu_uid!=null and baidu_uid!=''">
+			t.baidu_uid =#{baidu_uid},
+		</if>
+		<if test="remarks!=null and remarks!=''">
+			t.remarks = #{remarks},
+		</if>
+		</set>
+		where t.loginname = #{loginname}
+	</update>
+
+	<delete id="deleteLoginPojo" parameterType="sysLoginPojo">
+		delete from mw_login
+		t where t.loginid = #{loginId}
+	</delete>
+
+	<select id="getMenuAllByUserId" parameterType="Long" resultType="MenuPojo">
+		select *
+		from sys_menu
+		where id in (select menu_id from
+		sys_role_menu
+		where role_id in
+		(select role_id from sys_user_role where
+		user_id=#{id})) and level='0' and status='1'
+		order by sorting
+	</select>
+
+	<select id="getMenuAllBySonLevel" parameterType="map"
+		resultType="MenuPojo">
+		select distinct(t.id) temp,t.* from sys_menu t
+		,sys_role_menu r where
+		r.role_id in(select u.role_id from sys_user_role
+		u
+		where
+		u.user_id=#{loginId}) and t.level=#{menuId} and
+		r.menu_id=t.id and t.status='1'
+		order by t.sorting
+
+	</select>
+	
+	<!-- 解除第三方登录绑定-->
+	<update id="updateOauthBrand" parameterType="sysLoginPojo">
+		update sys_login t set
+		<if test="taobao_user_id!=null and taobao_user_id!=''">
+			t.taobao_user_id =null
+		</if>
+		<if test="qqOpenId!=null and qqOpenId!=''">
+			t.qq_openid =null
+		</if>
+		where t.loginname = #{loginname}
+	</update>
+	
+	<update id="updateBaiduUid" parameterType="sysLoginPojo">
+		update sys_login t set t.baidu_uid = #{baidu_uid} where t.loginname=#{loginname}
+	</update>
+
+
+</mapper>

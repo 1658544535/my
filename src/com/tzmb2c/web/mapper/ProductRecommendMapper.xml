@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.ProductRecommendMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id as id,
+		type as type,
+		product_id as productId,
+		activity_id as activityId,
+		sorting as sorting,
+		create_date as createDate,
+		create_by as createBy,
+		update_date as updateDate,
+		update_by as updateBy
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="ProductRecommendPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			product_recommend
+		where
+			id = #{id}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from product_recommend pr
+		left join product p on p.id = pr.product_id
+		where 1=1
+			<if test="id != null ">
+			  and pr.id = #{id}
+			</if>
+			<if test="type != null ">
+			  and pr.type = #{type}
+			</if>
+			<if test="productId != null ">
+			  and pr.product_id = #{productId}
+			</if>
+			<if test="activityId != null ">
+			  and pr.activity_id = #{activityId}
+			</if>
+			<if test="sorting != null ">
+			  and pr.sorting = #{sorting}
+			</if>
+			<if test="createDate != null ">
+			  and pr.create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and pr.create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and pr.update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and pr.update_by = #{updateBy}
+			</if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="ProductRecommendPojo">
+		select
+			pr.id as id,
+			pr.type as type,
+			pr.product_id as productId,
+			pr.activity_id as activityId,
+			pr.sorting as sorting,
+			pr.create_date as createDate,
+			pr.create_by as createBy,
+			pr.update_date as updateDate,
+			pr.update_by as updateBy,
+			p.product_name as name,
+			p.image as image,
+			p.selling_price as sellingPrice,
+			p.distribution_price as price,
+			<if test="activity != null">
+			ag.active_price as activePrice,
+			</if>
+			p.product_sketch as recommendation
+		from product_recommend pr
+		left join product p on p.id = pr.product_id
+		<if test="activity != null">
+		left join activity_goods ag on pr.product_id = ag.product_id and ag.time_id = pr.activity_id
+		</if>
+		where 1=1
+			<if test="id != null ">
+			  and pr.id = #{id}
+			</if>
+			<if test="type != null ">
+			  and pr.type = #{type}
+			</if>
+			<if test="productId != null ">
+			  and pr.product_id = #{productId}
+			</if>
+			<if test="activityId != null ">
+			  and pr.activity_id = #{activityId}
+			</if>
+			<if test="sorting != null ">
+			  and pr.sorting = #{sorting}
+			</if>
+			<if test="createDate != null ">
+			  and pr.create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and pr.create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and pr.update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and pr.update_by = #{updateBy}
+			</if>
+			<if test="proStatus != null ">
+			  and p.status = #{proStatus}
+			</if>
+			<if test="agStatus != null ">
+			  and ag.status = #{agStatus}
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="ProductRecommendPojo">
+		update product_recommend
+		<set>
+			<if test="type != null">
+			  type = #{type},
+			</if>
+			<if test="productId != null">
+			  product_id = #{productId},
+			</if>
+			<if test="activityId != null">
+			  activity_id = #{activityId},
+			</if>
+			<if test="sorting != null">
+			  sorting = #{sorting},
+			</if>
+			  update_date = now(),
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from product_recommend 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="ProductRecommendPojo">
+		insert into product_recommend
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="productId != null">
+				product_id,
+			</if>
+			<if test="activityId != null">
+				activity_id,
+			</if>
+			<if test="sorting != null">
+				sorting,
+			</if>
+				create_date,
+			<if test="createBy != null">
+				create_by,
+			</if>
+				update_date,
+			<if test="updateBy != null">
+				update_by,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="type != null">
+				#{type},
+			</if>
+			<if test="productId != null">
+				#{productId},
+			</if>
+			<if test="activityId != null">
+				#{activityId},
+			</if>
+			<if test="sorting != null">
+				#{sorting},
+			</if>
+				now(),
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+				now(),
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+		</trim>
+	</insert>
+	
+</mapper>

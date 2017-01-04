@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.HonorRuleMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id,
+		age_type as ageType,
+		skill_type as skillType,
+		honor
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="HonorRulePojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			honor_rule
+		where
+			id = #{id}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from honor_rule
+		where 1=1
+		  <if test="id != null ">
+			and id = #{id}
+		  </if>
+		  <if test="ageType != null ">
+			and age_type = #{ageType}
+		  </if>
+		  <if test="skillType != null ">
+			and skill_type = #{skillType}
+		  </if>
+		  <if test="honor != null and honor != '' ">
+			and honor = #{honor}
+		  </if>
+	</select>
+	
+	<select id="selectHonorBy" parameterType="java.util.Map" resultType="HonorRulePojo">
+		select
+			<include refid="Base_Column_List" />
+		from honor_rule
+		where 
+			age_type = #{ageType}
+			and skill_type = #{skillType}
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="HonorRulePojo">
+		select
+			<include refid="Base_Column_List" />
+		from honor_rule
+		where 1=1
+			<if test="id != null ">
+			  and id = #{id}
+			</if>
+			<if test="ageType != null ">
+			  and age_type = #{ageType}
+			</if>
+			<if test="skillType != null ">
+			  and skill_type = #{skillType}
+			</if>
+			<if test="honor != null and honor != '' ">
+			  and honor = #{honor}
+			</if>
+		order by age_type,skill_type
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="HonorRulePojo">
+		update honor_rule
+		<set>
+			<if test="ageType != null">
+			  age_type = #{ageType},
+			</if>
+			<if test="skillType != null">
+			  skill_type = #{skillType},
+			</if>
+			<if test="honor != null">
+			  honor = #{honor},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from honor_rule 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="HonorRulePojo">
+		insert into honor_rule
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="ageType != null">
+				age_type,
+			</if>
+			<if test="skillType != null">
+				skill_type,
+			</if>
+			<if test="honor != null">
+				honor,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="ageType != null">
+				#{ageType},
+			</if>
+			<if test="skillType != null">
+				#{skillType},
+			</if>
+			<if test="honor != null">
+				#{honor},
+			</if>
+		</trim>
+	</insert>
+	
+</mapper>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="activityGoods" extends="default">
+	<!-- 限时秒杀产品列表 -->
+	<action name="activityGoodsManage" class="com.tzmb2c.web.action.ActivityGoodsAction" method="findActivityGoodsCount">
+			<result>/page/system/product/activityGoodsList.jsp</result>
+		</action>
+	<action name="findActivityGoodsById" class="com.tzmb2c.web.action.ActivityGoodsAction" method="findActivityGoodsById">
+			<result>/page/system/product/activityGoodsSet.jsp</result>
+		</action>	
+	<action name="updateActivityGoods" class="com.tzmb2c.web.action.ActivityGoodsAction" method="updateActivityGoods">
+			<result>/page/system/product/activityGoodsList.jsp</result>
+		</action>	
+	<action name="checkActivityGoodsAll" class="com.tzmb2c.web.action.ActivityGoodsAction" method="checkActivityGoodsAll">
+		</action>
+	<action name="delActivityGoodsAll" class="com.tzmb2c.web.action.ActivityGoodsAction" method="delActivityGoodsAll">
+		</action>
+	<action name="walletGoodsAdd" class="com.tzmb2c.web.action.ActivityGoodsAction" method="walletGoodsAdd">
+			<result>/page/system/product/walletGoodsAdd.jsp</result>
+		</action>
+	<action name="activityGoodsAdd" class="com.tzmb2c.web.action.ActivityGoodsAction" method="activityGoodsAdd">
+			<result>/page/system/product/activityGoodsAdd.jsp</result>
+		</action>
+	<action name="insertActivityGoods" class="com.tzmb2c.web.action.ActivityGoodsAction" method="insertActivityGoods">
+			<result>/page/system/product/activityTimeList.jsp</result>
+		</action>
+	<action name="insertWalletGoods" class="com.tzmb2c.web.action.ActivityGoodsAction" method="insertWalletGoods">
+	</action>
+	<action name="insertActivityGoodsAll" class="com.tzmb2c.web.action.ActivityGoodsAction" method="insertActivityGoodsAll">
+			<result>/page/system/product/activityTimeList.jsp</result>
+		</action>	
+	</package>
+	
+	
+	<package name="activityGoods-json" extends="json-default">
+	 <action name="findActivityGoodsList" class="com.tzmb2c.web.action.ActivityGoodsAction" method="findActivityGoodsList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="findActivityGoodsCount" class="com.tzmb2c.web.action.ActivityGoodsAction" method="findActivityGoodsCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+	 <action name="checkActivityGoods" class="com.tzmb2c.web.action.ActivityGoodsAction" method="checkActivityGoods">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+	 <action name="uncheckActivityGoods" class="com.tzmb2c.web.action.ActivityGoodsAction" method="uncheckActivityGoods">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+	<action name="delActivityGoods" class="com.tzmb2c.web.action.ActivityGoodsAction" method="delActivityGoods">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

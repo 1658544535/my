@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.SeckillMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		s.id as id,
+		s.begin_time as beginTime,
+		s.end_time as endTime,
+		s.type as type,
+		s.status as status,
+		(CASE WHEN status = 0 THEN '未审核' WHEN status = 1 THEN '已审核' END)  as statusName,
+		sorting as sorting,
+		(SELECT COUNT(*) FROM groupon_user_record gur 
+			LEFT JOIN groupon_activity_record gar ON gur.attend_id = gar.id
+			left join seckill_goods sg on  sg.activity_id = gar.activity_id
+			WHERE sg.seckill_id = s.id) as numNow,
+		s.is_delete as isDelete,
+		s.create_date as createDate,
+		s.create_by as createBy,
+		s.update_date as updateDate,
+		s.update_by as updateBy
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="SeckillPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			seckill s
+		where
+			id = #{id}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from seckill
+		where 1=1
+		  <if test="id != null ">
+			and id = #{id}
+		  </if>
+			<if test="beginTimeStr !=null and beginTimeStr !=''">
+				and str_to_date(begin_time,'%Y-%m-%d %H:%i:%s') &lt;= #{beginTimeStr}
+			</if>
+			<if test="endTimeStr !=null and endTimeStr !=''">
+				and str_to_date(end_time,'%Y-%m-%d %H:%i:%s') &gt;= #{endTimeStr}
+			</if>
+			<if test="beginTimeStr2 != null and beginTimeStr2 != '' ">
+				and str_to_date(begin_time,'%Y-%m-%d %H:%i:%s') &gt;= #{beginTimeStr2}
+			</if>
+			<if test="endTimeStr2 != null and endTimeStr2 != '' ">
+				and str_to_date(end_time,'%Y-%m-%d %H:%i:%s') &lt;= #{endTimeStr2}
+			</if>
+		  <if test="type != null ">
+			and type = #{type}
+		  </if>
+		  <if test="status != null ">
+			and status = #{status}
+		  </if>
+		  <if test="sorting != null ">
+			and sorting = #{sorting}
+		  </if>
+		  <if test="isDelete != null ">
+			and is_delete = #{isDelete}
+		  </if>
+		  <if test="createDate != null ">
+			and create_date = #{createDate}
+		  </if>
+		  <if test="createBy != null ">
+			and create_by = #{createBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and update_date = #{updateDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and update_by = #{updateBy}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="SeckillPojo">
+		select
+			<include refid="Base_Column_List" />
+		from seckill s
+		where 1=1
+			<if test="id != null ">
+			  and id = #{id}
+			</if>
+			<if test="beginTimeStr !=null and beginTimeStr !=''">
+				and str_to_date(begin_time,'%Y-%m-%d %H:%i:%s') &lt;= #{beginTimeStr}
+			</if>
+			<if test="endTimeStr !=null and endTimeStr !=''">
+				and str_to_date(end_time,'%Y-%m-%d %H:%i:%s') &gt;= #{endTimeStr}
+			</if>
+			<if test="beginTimeStr2 != null and beginTimeStr2 != '' ">
+				and str_to_date(begin_time,'%Y-%m-%d %H:%i:%s') &gt;= #{beginTimeStr2}
+			</if>
+			<if test="endTimeStr2 != null and endTimeStr2 != '' ">
+				and str_to_date(end_time,'%Y-%m-%d %H:%i:%s') &lt;= #{endTimeStr2}
+			</if>
+			<if test="today != null and tomorrow != null">
+			  and begin_time &gt;= #{today}
+			  and end_time &lt;= #{tomorrow}
+			</if>
+			<if test="nowTime != null and nowTime != null">
+			  and end_time &gt;= #{nowTime}
+			</if>
+			<if test="nowTime2 != null and nowTime2 != null">
+			  and begin_time &lt;= #{nowTime2}
+			  and end_time &gt;= #{nowTime2}
+			</if>
+			<if test="type != null ">
+			  and type = #{type}
+			</if>
+			<if test="status != null ">
+			  and status = #{status}
+			</if>
+			<if test="sorting != null ">
+			  and sorting = #{sorting}
+			</if>
+			<if test="isDelete != null ">
+			  and is_delete = #{isDelete}
+			</if>
+			<if test="createDate != null ">
+			  and create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and update_by = #{updateBy}
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="SeckillPojo">
+		update seckill
+		<set>
+			<if test="beginTime != null">
+			  begin_time = #{beginTime},
+			</if>
+			<if test="endTime != null">
+			  end_time = #{endTime},
+			</if>
+			<if test="type != null">
+			  type = #{type},
+			</if>
+			<if test="status != null">
+			  status = #{status},
+			</if>
+			<if test="sorting != null">
+			  sorting = #{sorting},
+			</if>
+			<if test="isDelete != null">
+			  is_delete = #{isDelete},
+			</if>
+			<if test="createDate != null">
+			  create_date = #{createDate},
+			</if>
+			<if test="createBy != null">
+			  create_by = #{createBy},
+			</if>
+			<if test="updateDate != null">
+			  update_date = #{updateDate},
+			</if>
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from seckill 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="SeckillPojo">
+		insert into seckill
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="beginTime != null">
+				begin_time,
+			</if>
+			<if test="endTime != null">
+				end_time,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="sorting != null">
+				sorting,
+			</if>
+			<if test="isDelete != null">
+				is_delete,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+			<if test="updateDate != null">
+				update_date,
+			</if>
+			<if test="updateBy != null">
+				update_by,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="beginTime != null">
+				#{beginTime},
+			</if>
+			<if test="endTime != null">
+				#{endTime},
+			</if>
+			<if test="type != null">
+				#{type},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+			<if test="sorting != null">
+				#{sorting},
+			</if>
+			<if test="isDelete != null">
+				#{isDelete},
+			</if>
+			<if test="createDate != null">
+				#{createDate},
+			</if>
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+			<if test="updateDate != null">
+				#{updateDate},
+			</if>
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+		</trim>
+	</insert>
+	
+</mapper>

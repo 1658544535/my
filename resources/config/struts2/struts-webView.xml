@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+	<package name="strust-webView" extends="struts-default">
+
+		<global-results>
+			<result name="loginweb">/web/login.jsp</result>
+			<result name="registerweb">/web/register.jsp</result>
+			<result name="errorpage">/page/common/error.jsp</result>
+		</global-results>
+		
+		<!-- web活动页面 -->
+		<action name="goWebView" method="goWebView"
+			class="com.tzmb2c.web.action.ActivityTitleAction">
+			<result>/webView/page/webView.jsp</result>
+		</action>
+		
+		<!-- 少儿频道 -->
+		<action name="goChildChannelWeb" method="goChildChannelWeb"
+			class="com.tzmb2c.web.action.ChildrenChannelAction">
+			<result>/webView/page/childChannel.jsp</result>
+		</action>
+		
+		<!-- web活动页面 -->
+		<!-- 帖子/创客专题详情webview -->
+		<action name="goPostView" method="goPostView"
+			class="com.tzmb2c.web.action.UserCirclePostAction">
+			<result>/webView/page/userPost.jsp</result>
+		</action>
+		<!-- 平台专题详情webview -->
+		<action name="goPlatformSpecialView" method="goPlatformSpecialView"
+			class="com.tzmb2c.web.action.PlatformSpecialAction">
+			<result>/webView/page/platformSpecial.jsp</result>
+		</action>
+		<!-- 知识库详情webview -->
+		<action name="goKnowledgeBaseView" method="goKnowledgeBaseView"
+			class="com.tzmb2c.web.action.KnowledgeBaseAction">
+			<result>/webView/page/knowledgeBase.jsp</result>
+		</action>
+		<!-- 创客品牌webview -->
+		<action name="goMakerBrandView" method="goMakerBrandView"
+			class="com.tzmb2c.web.action.UserMakerBrandAction">
+			<result>/webView/page/makerBrand.jsp</result>
+		</action>
+		<!-- 创客主题webview -->
+		<action name="goMakerThemeView" method="goMakerThemeView"
+			class="com.tzmb2c.web.action.UserMakerThemeAction">
+			<result>/webView/page/makerTheme.jsp</result>
+		</action>
+		<!-- 成长线 -->
+		<action name="getGrowthLineWebApi" class="com.tzmb2c.web.action.AppApiBaByMakerAction" method="getGrowthLine">
+			<result name="success">/webView/growthLine/growthLine.jsp</result>
+		</action>
+		<!-- 成长线webview-笔记详情-知识库-专题详情 -->
+		<action name="goPostOrSpecialOrKnowledge" class="com.tzmb2c.web.action.AppApiMakerAction" method="goPostOrSpecialOrKnowledge">
+			<result name="Post">/webView/page/userPost.jsp</result>
+			<result name="KnowledgeBase">/webView/page/knowledgeBase.jsp</result>
+			<result name="PlatformSpecial">/webView/page/platformSpecial.jsp</result>
+			<result name="errorpage">/page/common/error.jsp</result>
+		</action>
+		<!-- 获取分享内容Web-->
+		<action name="getShareContentWebApi" class="com.tzmb2c.web.action.AppApiBaByMakerAction" method="getShareContentWebApi">
+			<result name="success">/webView/page/share.jsp</result>
+			<result name="newpage">/webView/page/newshare.jsp</result>
+		</action>
+		<!-- 笔记可视化Web-->
+		<action name="getUserCirclePostVisApi" class="com.tzmb2c.web.action.UserCirclePostAction" method="getUserCirclePostVisApi">
+			<result name="newPost">/tzmeditor/web2.html</result>
+			<result name="oldPost">/webView/page/userPost.jsp</result>
+		</action>
+		<!-- 平台专题可视化Web-->
+		<action name="getPlatformSpecialVisApi" class="com.tzmb2c.web.action.PlatformSpecialAction" method="getPlatformSpecialVisApi">
+			<result name="newSpecial">/tzmeditor/web2.html</result>
+			<result name="oldSpecial">/webView/page/platformSpecial.jsp</result>
+		</action>
+		<!-- 创客专题可视化Web-->
+		<action name="getMaskerThemeVisApi" class="com.tzmb2c.web.action.UserMakerThemeAction" method="getMaskerThemeVisApi">
+			<result name="newMakerTheme">/tzmeditor/web2.html</result>
+			<result name="oldMakerTheme">/webView/page/makerTheme.jsp</result>
+		</action>
+		<!-- 微页面可视化Web-->
+		<action name="getMicroPageVisApi" class="com.tzmb2c.web.action.MicroPageAction" method="getMicroPageVisApi">
+			<result name="success">/tzmeditor/web2.html</result>
+		</action>
+		<!-- 获取分享内容Web（成长线）-->
+		<!-- <action name="getShareGrowthLineContentWebApi" class="com.tzmb2c.web.action.AppApiMakerAction" method="getShareGrowthLineContentWebApi">
+			<result name="success">/webView/growthLine/shareGrowthLine.jsp</result>
+		</action> -->
+		
+		<!-- 3.3 -->
+		<!-- 根据ID查知识库详情 -->
+		<action name="getKnowledgeView" method="getKnowledgeView"
+			class="com.tzmb2c.web.action.KnowledgeBaseAction">
+			<result>/webView/page/knowledgeBase.jsp</result>
+		</action>
+		<!-- 根据ID商品详情 -->
+		<action name="getProductInfoView" method="getProductInfoView"
+			class="com.tzmb2c.web.action.ProductAction">
+			<result>/webView/product/deta.jsp</result>
+		</action>
+	</package>
+	<package name="webView-json" extends="json-default">
+		<!-- 查询平台专题标签 -->		
+		<action name="getVisTag" class="com.tzmb2c.web.action.AppApiTzmeditorVerAction" method="getVisTag">
+			<result type="json">
+				<param name="root">dataMap</param>
+			</result>
+		</action>	
+	</package>
+
+</struts>

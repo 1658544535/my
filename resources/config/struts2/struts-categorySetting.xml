@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="categorySetting" extends="default">
+	<!--频道列表-->
+	<action name="categorySettingList" class="com.tzmb2c.web.action.CategorySettingAction" method="findCategorySettingCount">
+			<result>/page/system/categorySetting/categorySettingList.jsp</result>
+		</action>	 
+		<!-- 根据ID删除 -->
+		<action name="delCategorySettingById" class="com.tzmb2c.web.action.CategorySettingAction" method="delCategorySettingById">
+		</action>
+		<!-- 根据ID批量删除 -->
+		<action name="delCategorySettingAllById" class="com.tzmb2c.web.action.CategorySettingAction" method="delCategorySettingAllById">
+		</action>
+		<!-- 根据ID编辑(跳转) -->
+		<action name="goUpdateCategorySettingById" class="com.tzmb2c.web.action.CategorySettingAction" method="findCategorySettingById">
+			<result name="success">/page/system/categorySetting/updateCategorySettingList.jsp</result>
+		</action>
+	    <!-- 根据ID编辑 -->
+		<action name="updateCategorySettingById" class="com.tzmb2c.web.action.CategorySettingAction" method="updateCategorySettingById">
+		</action>
+		<!-- 批量通过审核 -->
+		<action name="checkCategorySettingAllById" class="com.tzmb2c.web.action.CategorySettingAction" method="checkCategorySettingAllById">
+		</action>
+		<!-- 通过审核 -->
+		<action name="checkCategorySettingById" class="com.tzmb2c.web.action.CategorySettingAction" method="checkCategorySettingById">
+		</action>
+		<!-- 取消审核 -->
+		<action name="uncheckCategorySettingById" class="com.tzmb2c.web.action.CategorySettingAction" method="uncheckCategorySettingById">
+		</action>
+		<!-- （跳转）新增频道 -->
+		<action name="goAddCategorySettingList" class="com.tzmb2c.web.action.CategorySettingAction" method="goAddCategorySettingList">
+			<result name="success">/page/system/categorySetting/addCategorySettingList.jsp</result>
+		</action>	
+		<!-- 提交新增频道 -->
+		<action name="addCategorySettingListOk" class="com.tzmb2c.web.action.CategorySettingAction" method="addCategorySettingListOk">			
+		</action>		  
+		
+	</package>
+	
+	<package name="categorySetting-json" extends="json-default">
+		    <action name="findCategorySettingList" class="com.tzmb2c.web.action.CategorySettingAction" method="findCategorySettingList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="findCategorySettingCount" class="com.tzmb2c.web.action.CategorySettingAction" method="findCategorySettingCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+	</package>
+</struts>

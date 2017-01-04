@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.AgencyAuthenticationMapper">
+
+<!-- 插入批发商（代理商）认证表 -->
+	<insert id="insertAgencyAuthentication" parameterType="agencyAuthenticationPojo">
+		insert into
+		authentication_agency
+		(agency_id,user_id,realName,id_num,bus_licence,id_front_photo,id_back_photo,id_handle_photo,auth_status,auto_user_id,create_by,create_date,update_by,update_date,remarks,version,auth_licence,auth_manufacturer_id)
+		values
+		(#{agency_id},#{user_id},#{realName},#{id_num}, #{bus_licence}, #{id_front_photo}, #{id_back_photo}, #{id_handle_photo}, #{auth_status}, #{auto_user_id}, #{create_by},now(),#{update_by},now(),#{remarks},#{version},#{auth_licence},#{auth_manufacturer_id})
+	</insert>
+
+<!-- 查询所有关注记录 -->
+	<select id="authenticationAgencyInfoAllList" parameterType="java.util.Map" resultType="AgencyAuthenticationPojo">
+		select a.*,
+		s.name as user_name,
+		(select name from sys_dict where value=a.auth_status and type="auth_status") as statusName
+		from authentication_agency a left join sys_login s on a.user_id = s.id
+		where
+		1=1
+		<if test="user_id!=null and user_id !='' ">
+			and an.user_id like concat("%",#{user_id},"%" )
+		</if>
+		<if test="user_name!=null and user_name !='' ">
+			and s.name like concat("%",#{user_name},"%" )
+		</if>
+		<if test="auth_status !=null">
+			and a.auth_status=#{auth_status}
+		</if>
+		<if test="pageSize != null and pageSize !=''">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+<!-- 查找所有的关注信息数目 -->
+	<select id="authenticationAgencyInfoAllCount" resultType="int"
+		parameterType="java.util.Map">
+		select count(a.user_id)
+		from authentication_agency a left join sys_login s on a.user_id = s.id 
+		where 1=1
+		<if test="user_id!=null and user_id !='' ">
+			and an.user_id like concat("%",#{user_id},"%" )
+		</if>
+		<if test="user_name!=null and user_name !='' ">
+			and s.name like concat("%",#{user_name},"%" )
+		</if>
+		<if test="auth_status !=null">
+			and a.auth_status=#{auth_status}
+		</if>
+		
+	</select>
+<!-- 审核单条 -->
+	<update id="checkAuthenticationInfo" parameterType="agencyAuthenticationPojo">
+		update
+		authentication_agency a set
+		auth_status=1
+		where
+		a.user_id = #{user_id}
+	</update>
+<!-- 查找单条认证信息 -->
+	<select id="findAuthenticationInfoById" resultType="AgencyauthenticationPojo"
+		parameterType="Long">
+		select a.*,
+		s.name as user_name,
+		(select name from sys_dict where value=a.auth_status and type="auth_statuss") as statusName
+		from authentication_agency a left join sys_login s on a.user_id = s.id
+		where
+		a.user_id = #{user_id}
+	</select>
+<!-- 编辑认证信息 -->
+	<update id="updateAuthenticationInfo" parameterType="agencyauthenticationPojo">
+		update authentication_agency a set
+		user_id=#{user_id},realName=#{realName},id_num=#{id_num},bus_licence=#{bus_licence},id_front_photo=#{id_front_photo},
+		id_back_photo=#{id_back_photo},id_handle_photo=#{id_handle_photo},auth_status=#{auth_status},auto_user_id=#{auto_user_id},
+		create_by=#{create_by},update_by=#{update_by},update_date=#{update_date},
+		remarks=#{remarks},version=#{version},auth_licence=#{auth_licence},auth_manufacturer_id=#{auth_manufacturer_id}
+		where
+		a.user_id = #{user_id}
+	</update>
+<!-- 审核全部 -->
+	<update id="checkAllAuthenticationInfoById" parameterType="Long">
+		update
+		authentication_agency a set
+		auth_status=1
+		where
+		a.user_id = #{user_id}
+	</update>
+<!-- 删除单个 -->
+	<delete id="delAuthenticationInfo" parameterType="agencyAuthenticationPojo">
+		delete from
+		authentication_agency
+		where
+		user_id =#{user_id}
+	</delete>
+	
+	
+
+	
+	
+	
+	
+</mapper>

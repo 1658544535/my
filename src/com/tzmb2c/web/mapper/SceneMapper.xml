@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tzmb2c.web.mapper.SceneMapper">
+	<!-- 查询所有的记录 -->
+	<select id="findSceneList" resultType="ScenePojo" parameterType="java.util.Map">
+		select
+			s.id as id,
+			s.name as name,
+			s.image as image,
+			s.introduction as introduction,
+			s.begin_time as beginTime,
+			s.end_time as endTime,
+			s.sorting as sorting,
+			s.status as status,
+			(CASE WHEN s.status = 0 THEN '未通过' WHEN s.status = 1 THEN '已通过' END)  as statusName,
+			s.create_by as createBy,
+			s.create_date as createDate,
+			s.update_by as updateBy,
+			s.update_date as updateDate,
+			s.remarks as remarks,
+			s.version as version,
+			s.preview as preview,
+			(CASE WHEN s.preview = 0 THEN '无效预览' WHEN s.preview = 1 THEN '有效预览' END)  as previewName,
+			s.package_price as packagePrice,
+			s.p_sell_price as psellPrice,
+			s.type as type,
+			s.stock_num as stockNum,
+			s.stock as stock,
+			s.activity_id as activityId
+	   	from scene s
+		where 1=1
+		<if test="isdelete != null and isdelete != '' ">
+			and s.isdelete = #{isdelete}
+		</if>
+		<if test="id != null and id != '' ">
+			and s.id = #{id}
+		</if>
+		<if test="name != null and name != '' ">
+			and s.name like concat("%",#{name},"%")
+		</if>
+		<if test="currentTimeStr !=null and currentTimeStr !=''">
+			and str_to_date(s.begin_time,'%Y-%m-%d %H:%i:%s') &lt;= #{currentTimeStr}
+		</if>
+		<if test="currentTimeStr !=null and currentTimeStr !=''">
+			and str_to_date(s.end_time,'%Y-%m-%d %H:%i:%s') &gt;= #{currentTimeStr}
+		</if>
+		<if test="beginTimeStr !=null and beginTimeStr !=''">
+			and str_to_date(s.begin_time,'%Y-%m-%d') &gt;= #{beginTimeStr}
+		</if>
+		<if test="endTimeStr !=null and endTimeStr !=''">
+			and str_to_date(s.end_time,'%Y-%m-%d') &lt;= #{endTimeStr}
+		</if>
+		<if test="status != null">
+			and s.status = #{status}
+		</if>
+		<if test="preview != null">
+			and s.preview = #{preview}
+		</if>
+		<if test="type != null">
+			and s.type = #{type}
+		</if>
+		order by s.sorting ,s.create_date desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<select id="findSceneCount" resultType="int" parameterType="java.util.Map">
+		select count(*)
+	   	from scene s
+		where 1=1
+		<if test="isdelete != null and isdelete != '' ">
+			and s.isdelete = #{isdelete}
+		</if>
+		<if test="id != null and id != '' ">
+			and s.id = #{id}
+		</if>
+		<if test="status != null">
+			and s.status = #{status}
+		</if>
+					<if test="name != null and name != '' ">
+			and s.name like concat("%",#{name},"%")
+		</if>
+	    <if test="currentTimeStr !=null and currentTimeStr !=''">
+			and str_to_date(s.begin_time,'%Y-%m-%d %H:%i:%s') &lt;= #{currentTimeStr}
+		</if>
+		<if test="currentTimeStr !=null and currentTimeStr !=''">
+			and str_to_date(s.end_time,'%Y-%m-%d %H:%i:%s') &gt;= #{currentTimeStr}
+		</if>
+	    <if test="beginTimeStr !=null and beginTimeStr !=''">
+			and str_to_date(s.begin_time,'%Y-%m-%d') &gt;= #{beginTimeStr}
+		</if>
+		<if test="endTimeStr !=null and endTimeStr !=''">
+			and str_to_date(s.end_time,'%Y-%m-%d') &lt;= #{endTimeStr}
+		</if>
+		<if test="status != null">
+			and s.status = #{status}
+		</if>
+		<if test="preview != null">
+			and s.preview = #{preview}
+		</if>
+		<if test="type != null">
+			and s.type = #{type}
+		</if>
+	</select>
+	
+	<select id="findSceneById" resultType="ScenePojo" parameterType="Long">
+		select
+			s.id as id,
+			s.name as name,
+			s.image as image,
+			s.introduction as introduction,
+			s.begin_time as beginTime,
+			s.end_time as endTime,
+			s.sorting as sorting,
+			s.status as status,
+            (CASE WHEN s.status = 0 THEN '未通过' WHEN s.status = 1 THEN '已通过' END)  as statusName,
+			s.remarks as remarks,
+			s.version as version,
+			s.preview as preview,
+			s.package_price as packagePrice,
+			s.p_sell_price as psellPrice,
+			s.type as type,
+			s.stock_num as stockNum,
+			s.stock as stock,
+			s.activity_id as activityId
+	   	from scene s
+		where
+		s.id = #{id}
+	</select>
+
+	<!-- 插入单条 -->
+	<insert id="insertScene" parameterType="ScenePojo">
+		insert into scene 
+		(name,image,introduction,begin_time,end_time,sorting,status,create_by,create_date,update_by,update_date,remarks,version,preview,package_price,p_sell_price,type,stock_num,stock,activity_id) 
+		values(#{name},#{image},#{introduction},#{beginTime},#{endTime},#{sorting},#{status},#{createBy},now(),#{updateBy},now(),#{remarks},#{version},#{preview},#{packagePrice},#{psellPrice},#{type},#{stockNum},#{stock},#{activityId})
+	</insert>
+	
+	<!-- 删除单条 -->
+	<delete id="delSceneById" parameterType="Long">
+		<!-- delete from scene where id = #{id} -->
+		update scene s set  s.isdelete = 1,
+		update_date = now()
+		where
+		s.id = #{id}
+	</delete>
+	
+    <!-- 审核单条 -->
+	<update id="checkSceneById" parameterType="Long">
+		update scene s set  s.status = 1,
+		update_date = now()
+		where
+		s.id = #{id}
+	</update>
+	<update id="uncheckSceneById" parameterType="Long">
+		update scene s set  s.status = 0,
+		update_date = now()
+		where
+		s.id = #{id}
+	</update>
+	
+	
+	<!--更新单条-->
+	<update id="updateSceneById" parameterType="ScenePojo">
+		update scene set
+		<if test="name != null and name != ''">
+			name = #{name},
+		</if>
+		<if test="image != null">
+			image = #{image},
+		</if>
+		<if test="introduction != null">
+			introduction = #{introduction},
+		</if>
+		<if test="beginTime != null">
+			begin_time = #{beginTime},
+		</if>
+	    <if test="endTime != null">
+			end_time = #{endTime},
+		</if>
+		<if test="sorting != null">
+			sorting = #{sorting},
+		</if>
+	    <if test="status != null">
+			status = #{status},
+		</if>
+	    <if test="remarks != null">
+			remarks = #{remarks},
+		</if>
+		<if test="version != null">
+			version = #{version},
+		</if>
+		<if test="preview != null">
+			preview = #{preview},
+		</if>
+		<if test="packagePrice != null">
+			package_price = #{packagePrice},
+		</if>
+		<if test="psellPrice != null">
+			p_sell_price = #{psellPrice},
+		</if>
+		<!-- <if test="type != null">
+			type = #{type},
+		</if> -->
+		<if test="stockNum != null">
+			stock_num = #{stockNum},
+		</if>
+		<if test="stock != null">
+			stock = #{stock},
+		</if>
+		update_date = now()
+		where id = #{id}
+	</update>
+	
+	<select id="lastInsertId" resultType="Long">
+		select last_insert_id();
+	</select>
+</mapper>

@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="zh">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>demo</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="css/b-reset.css" />
+    <link href="js/umeditor/themes/default/css/umeditor.css" type="text/css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="wrap">
+		<div class="container">
+			<div class="tab-content">
+			    <div role="tabpanel" class=" container-fluid" id="album">
+			    	<div class="col-sm-offset-1 phone-box">
+				    	<div class="phone-view">
+				    		<div id="phoneView"></div>
+			    		</div>
+			    	</div>
+		    		<div class="popover-box">
+		    		<div id="phone_add" class="panel panel-default phone-add">
+					    <div class="panel-heading">添加内容</div>
+					    <div class="panel-body container-fluid">
+					        <ul class="row">
+					        	<li class="col-sm-3 text" style="min-height: 50px;"><button class="btn btn-block btn-warning" type="button" data-type="text">文本</button></li>
+					        	<li class="col-sm-3 ueditor" style="min-height: 50px;"><button class="btn btn-block btn-warning" type="button" data-type="ueditor">富文本</button></li>
+					        	<li class="col-sm-3 videos" style="min-height: 50px;"><button class="btn btn-block btn-warning" type="button" data-type="videos">视频</button></li>
+					        	<li class="col-sm-3 images" style="min-height: 50px;"><button class="btn btn-block btn-warning" type="button" data-type="images">图片</button></li>
+					        	<li class="col-sm-3 goods" style="min-height: 50px;"><button class="btn btn-block btn-warning" type="button" data-type="goods">商品</button></li>
+					        	<li class="col-sm-3 coupon" style="min-height: 50px;"><button class="btn btn-block btn-warning" type="button" data-type="coupon">优惠券</button></li>
+					        </ul>
+					    </div>
+					</div>
+		    			<div class="popover right">
+						    <div class="arrow"></div>
+						    <div id="popover" class="popover-content"></div>
+						    <button type="button" class="btn btn-danger btn-xs popover-close" onclick="$('.popover').hide();"><span class="glyphicon glyphicon-remove"></span></button>
+						</div>
+		    		</div>
+		    		<div class="submit-group clearfix" id="submit">
+						<!-- <button class="btn btn-danger submit">提交</button> -->
+		    			<button class="btn btn-warning save">提交</button>
+		    			<button class="btn btn-default preview" id="webPreview" onclick="goWebPreview();">预览效果</button>
+		    		</div>
+
+			    </div>
+			</div>
+
+		</div>
+    </div>
+
+	<div class="modal fade" id="goods_add" tabindex="-1" role="dialog">
+	    <div class="modal-dialog modal-lg">
+	        <div class="modal-content">
+	            <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">已上架</h4>
+				</div>
+				<div class="modal-body">
+				    <div class="panel panel-default">
+						<div class="panel-heading container-fluid">
+							<div class="row">
+								<h4 class="col-sx-8 pull-left"><strong>玩具</strong></h4>
+								<div class="col-sx-4">
+									<div class="input-group">
+									    <input type="text" class="form-control" name="goodSearch" placeholder="请输入玩具名称...">
+										<span class="input-group-btn" id="goodSearch">
+									        <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+									    </span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="panel-body text-center" id="goodsList_box"></div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<p class="text-left">未找到玩具，要反馈</p>
+					<p class="text-left"><textarea class="form-control" placeholder="如果您能够提供对应商品链接或货号就太棒啦！"></textarea></p>
+					<div class="text-center"><button type="button" class="btn btn-primary">提交反馈</button></div>
+				</div>
+	        </div>
+	    </div>
+	</div>
+	<div class="modal fade" id="coupon_add" tabindex="-1" role="dialog">
+	    <div class="modal-dialog modal-lg">
+	        <div class="modal-content">
+	            <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">优惠券 | <a href="couponList.do" target="_blank">新建优惠券</a></h4>
+				</div>
+				<div class="modal-body">
+				    <div class="panel panel-default">
+						<div class="panel-heading container-fluid">
+							<div class="row">
+								<h4 class="col-sx-8 pull-left"><strong>优惠券</strong></h4>
+							</div>
+						</div>
+						<div class="panel-body text-center" id="couponsList_box"></div>
+					</div>
+				</div>
+	        </div>
+	    </div>
+	</div>
+	<input type="hidden" id="temDataId"/>
+	
+
+
+    <script src="js/jquery-1.11.2.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/baiduTemplate.js"></script>
+    <script src="js/tab.js"></script>
+    <script src="js/popover.js"></script>
+    <script src="js/Sortable.min.js"></script>
+	<script src="js/jquery.ui.widget.js"></script>
+	<script src="js/jquery.iframe-transport.js"></script>
+    <script src="js/jquery.fileupload.js"></script>
+    <script src="js/umeditor/umeditor.config.js"></script>
+    <script src="js/umeditor/umeditor.min.js"></script>
+    <script src="js/app.js"></script>
+
+
+	<!-- 前端模板开始 -->
+    <script id='tpl_text' type="text/template">
+		<section class="view-text" data-type="<%=type%>" data-id=<%=id%>>
+		<%if(!!data.text){%>
+			<%=data.text%>
+		<%}else{%>
+			<p class="text-align">暂无内容，请点击添加</p>
+		<%}%>
+		</section> 
+	</script>
+	<script id='tpl_goods' type="text/template">
+		<section class="view-goods" data-type="<%=type%>" data-id=<%=id%>>
+			<%if(data.view=="big"){%>
+				<ul class="big">
+			<%}else if(data.view=="small"){%>
+				<ul class="small">
+			<%}else{%>
+				<ul class="detail">
+			<%}%>
+				<%if(data.list.length > 0){%>
+					<%for(var i=0;i<data.list.length;i++){%>
+						<li data-goodId="<%=data.list[i]["goodId"]%>" data-activityId=<%=data.list[i]['activityId']%>>
+							<div class="box">
+								<div class="img"><img src="<%=data.list[i]["img"]%>" /></div>
+								<div class="info">
+									<%if(data.viewAttr.title){%>
+										<h3 class="title <%if(!data.viewAttr.title){%> r-hidden<%}%>"><%=data.list[i]["title"]%></h3>
+									<%}%>
+									<div class="clearfix">
+										<div class="oldPrice">￥<%=data.list[i]["oldPrice"]%></div>
+										<div class="price<%if(!data.viewAttr.price){%> r-hidden<%}%>">￥<%=data.list[i]["price"]%></div>
+										<div class="seeDetail<%if(!data.viewAttr.seeDetail){%> r-hidden<%}%>">
+										<button class="btn btn-sm btn-default pull-right" type="button" style="background:#c0504d">立即购买</button></div>
+									</div>
+								</div>
+							</div>
+						</li>
+					<%}%>
+				<%}else{%>
+					<p class="text-align">暂无内容，请点击添加</p>
+				<%}%>
+				</ul>
+		</section>
+	</script>
+    <script id='tpl_video' type="text/template">
+		<section class="view-video" data-type="<%=type%>" data-id=<%=id%>>
+		<%if(!!data.src){%>
+			<div><iframe src="<%=data.src%>" frameborder=0 'allowfullscreen'></iframe></div>
+		<%}else{%>
+			<p class="text-align">暂无内容，请点击添加</p>
+		<%}%>
+		</section> 
+	</script>
+    <script id='tpl_image' type="text/template">
+		<section class="view-image" data-type="<%=type%>" data-id=<%=id%>>
+        	<%if(data.carousel&&data.list.length>0){%>
+				<div><img src="<%=data["list"][0]["img"]%>" /></div>
+        		<div class="pagination">
+		        	<%for(var i=0;i<data.list.length;i++){%>
+						<div></div>
+					<%}%>
+        		</div>
+			<%}else if(data.list.length > 0){%>
+        		<%for(var i=0;i<data.list.length;i++){%>
+					<div><img src="<%=data["list"][i]["img"]%>" /></div>
+				<%}%>
+			<%}else{%>
+				<p class="text-align">暂无内容，请点击添加</p>
+			<%}%>
+		</section> 
+	</script>
+    <script id='tpl_ueditor' type="text/template">
+		<section class="view-ueditor" data-type="<%=type%>" data-id=<%=id%>>
+		<%if(!!data.html){%>
+			<div><%=data.html%></div>
+		<%}else{%>
+			<p class="text-align">暂无内容，请点击添加</p>
+		<%}%>
+		</section> 
+	</script>
+    <script id='tpl_coupon' type="text/template">
+		<section class="view-coupon" data-type="<%=type%>" data-id=<%=id%>>
+			<div>
+				<ul>
+				<%if(data.list.length > 0){%>
+					<%for(var i=0;i<data.list.length;i++){%>
+					<li class="<%if(data["list"][i]["disabled"]){%>disabled<%}%>">
+						<p class="price"><strong><%=data["list"][i]["title"]%></strong></p>
+						<p class="time"><%=data["list"][i]["starTime"]%> - <%=data["list"][i]["endTime"]%></p>
+					</li>
+					<%}%>
+				</ul>
+			<%}else{%>
+				<p class="text-align">暂无内容，请点击添加</p>
+			<%}%>
+			</div>
+		</section> 
+	</script>
+
+    <script id='popover_text' type="text/template">
+		<div class="popover-text">
+			<textarea name="text" class="form-control" rows="3"><%=text%></textarea>
+		</div>
+	</script>
+    <script id='popover_goods' type="text/template">
+		<div class="popover-goods container-fluid">
+			<div class="row form-group" style="margin-top:20px;">
+				<label class="col-xs-3">选择商品:</label>
+				<div class="col-xs-8">
+					<ul class="img">
+						<%for(var i=0;i<list.length;i++){%>
+							<li class="col-xs-3" data-goodid=<%=list[i]["goodId"]%>><div><img src="<%=list[i]["img"]%>" class="img-rounded" /><button type="button" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove good-rel"></span></button></div></li>
+						<%}%>
+						<li class="col-xs-3"><div id="popover_goods_add" data-toggle="modal" data-target="#goods_add"><span class="glyphicon glyphicon-plus"></span></div></li>
+					</ul>
+				</div>
+			</div>
+			<div class="row form-group">
+				<label class="col-xs-3">列表样式:</label>
+				<div class="col-xs-8">
+					<div class="row" id="popover_goods_type">
+						<label class="col-xs-4"><input type="radio" name="goodsType" value="big" <%if(view=="big"){%>checked<%}%> /> 大图</label>
+						<label class="col-xs-4"><input type="radio" name="goodsType" value="small" <%if(view=="small"){%>checked<%}%> /> 小图</label>
+						<label class="col-xs-4"><input type="radio" name="goodsType" value="detail" <%if(view=="detail"){%>checked<%}%> /> 详细列表</label>
+					</div>
+
+					<div class="panel panel-default" <%if(view=="detail"){%>style="display:none;"<%}%>>
+						<div class="panel-body" id="popover_goods_attr">
+							<p><label><input type="checkbox" value="title" <%if(viewAttr.title){%>checked<%}%> /> 显示商品名</label></p>
+							<p><label><input type="checkbox" value="price" <%if(viewAttr.price){%>checked<%}%> /> 显示价格</label></p>
+							<p <%if(view=="small"){%>style="display:none;"<%}%>><label><input type="checkbox" value="seeDetail" <%if(viewAttr.seeDetail){%>checked<%}%> /> 显示查看详情</label></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> 
+	</script>
+    <script id='popover_video' type="text/template">
+		<div class="popover-video">
+			<textarea name="video" class="form-control" rows="3"><%=src%></textarea>
+		</div>
+	</script>
+    <script id='popover_image' type="text/template">
+		<div class="popover-image row">
+			<div id="popover_images_type" class="clearfix form-group" style="margin-top:20px;">
+				<label class="col-xs-3">显示效果：</label>
+				<label class="col-xs-4"><input type="radio" name="imagesCarousel" value="1" <%if(carousel){%>checked<%}%> /> 折叠轮播</label>
+				<label class="col-xs-4"><input type="radio" name="imagesCarousel" value="0" <%if(!carousel){%>checked<%}%> /> 分开展示</label>
+			</div>
+			<%for(var i=0;i<list.length;i++){%>
+				<div class="col-xs-3">
+					<img class="img-rounded" width="120" height="60" src="<%=list[i]["img"]%>" />
+					<button type="button" class="btn btn-danger btn-xs image-rel"><span class="glyphicon glyphicon-remove"></span></button>
+					<p><span class="pull-left">链接: </span><a data-goodId="<%=list[i]["goodId"]%>" class="title btn-link image-link" data-toggle="modal" data-target="#goods_add"><%=list[i]["goodTitle"]%></a></p>
+				</div>
+			<%}%>
+			<div class="image-add">
+				<span class="glyphicon glyphicon-plus"></span> 添加一个图片
+				<input id="fileupload" type="file" name="files" multiple />
+				<div class="mask">加载中...</div>
+			</div>
+		</div>
+	</script>
+    <script id='popover_ueditor' type="text/template">
+		<div class="popover-ueditor">
+			<textarea id="ueditor"><%=html%></textarea>
+		</div>
+	</script>
+    <script id='popover_coupon' type="text/template">
+		<div class="popover-coupon container-fluid">
+			<div class="row form-group" style="margin-top:20px;">
+				<label class="col-xs-3">优惠券:</label>
+				<div class="col-xs-8">
+					<ul class="list-group">
+						<%for(var i=0;i<list.length;i++){%>
+							<li class="list-group-item" data-couponId=<%=list[i]["couponId"]%>>
+								<h4><%=list[i]["title"]%></h4>
+								<p>面值：<%=list[i]["price"]%></p>
+								<button type="button" class="btn btn-danger btn-xs coupon-rel"><span class="glyphicon glyphicon-remove"></span></button>
+							</li>
+						<%}%>
+						<li class="list-group-item" id="popover_coupons_add" data-toggle="modal" data-target="#coupon_add">
+							<span class="glyphicon glyphicon-plus"></span> 添加优惠券
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div> 
+	</script>
+
+
+	<script id='tpl_goodsList' type="text/template">
+		<table id="goodsList" class="table table-hover">
+			<%for(var i=0;i<list.length;i++){%>
+				<tr data-goodId="<%=list[i]['goodId']%>">
+					<td><img src="<%=list[i].img%>" width="80" height="80" /></td>
+					<td class="text-left"><%=list[i].title%></td>
+					<td>
+						<button class="btn btn-primary goods-select">选取</button>
+					</td>
+				</tr>
+			<%}%>
+		</table>
+		<ul id="goodsPager" class="pagination pagination-sm">
+			<%if(pager.now==1){%>
+			    <li class="disabled">
+		    	   <a href="javascript:;" data-page="1" aria-label="Previous">上一页</a>
+		        </li>
+			<%}else{%>
+				<li>
+		    	   <a href="javascript:;" data-page="<%=pager.now-1%>" aria-label="Previous">上一页</a>
+		        </li>
+			<%}%>
+		    <li class="pull-left"><a> <%=pager.now%> / <%=pager.count%> </a></li>
+			<%if(pager.now==pager.count){%>
+			    <li class="disabled">
+		    		<a href="javascript:;" data-page="<%=pager.count%>" aria-label="Next">下一页</a>
+		    	</li>
+			<%}else{%>
+				<li>
+		    		<a href="javascript:;" data-page="<%=pager.now+1%>" aria-label="Next">下一页</a>
+		    	</li>
+			<%}%>
+		</ul>
+	</script>
+	<script id='tpl_couponsList' type="text/template">
+		<table id="couponsList" class="table table-hover">
+			<%for(var i=0;i<list.length;i++){%>
+				<tr data-couponId="<%=list[i]['couponId']%>">
+					<td class="text-left"><%=list[i].title%></td>
+					<td class="text-left"><%=list[i].condition%></td>
+					<td class="text-left">面值<%=list[i].price%>元</td>
+					<td>
+						<button class="btn btn-primary coupon-select">选取</button>
+					</td>
+				</tr>
+			<%}%>
+		</table>
+		<ul id="couponsPager" class="pagination pagination-sm">
+			<%if(pager.now==1){%>
+			    <li class="disabled">
+		    	   <a href="javascript:;" data-page="1" aria-label="Previous">上一页</a>
+		        </li>
+			<%}else{%>
+				<li>
+		    	   <a href="javascript:;" data-page="<%=pager.now-1%>" aria-label="Previous">上一页</a>
+		        </li>
+			<%}%>
+		    <li class="pull-left"><a> <%=pager.now%> / <%=pager.count%> </a></li>
+			<%if(pager.now==pager.count){%>
+			    <li class="disabled">
+		    		<a href="javascript:;" data-page="<%=pager.count%>" aria-label="Next">下一页</a>
+		    	</li>
+			<%}else{%>
+				<li>
+		    		<a href="javascript:;" data-page="<%=pager.now+1%>" aria-label="Next">下一页</a>
+		    	</li>
+			<%}%>
+
+		</ul>
+	</script>
+	<!-- 前端模板结束 -->
+	<script type="text/javascript">
+		function goWebPreview(){
+		   var url='web.html'; //转向网页的地址; 
+           var name='预览'; //网页名称，可为空; 
+           var iWidth=420; //弹出窗口的宽度; 
+           var iHeight=700; //弹出窗口的高度; 
+           //获得窗口的垂直位置 
+           var iTop = (window.screen.availHeight - 30 - iHeight) / 2; 
+           //获得窗口的水平位置 
+           var iLeft = (window.screen.availWidth - 10 - iWidth) / 2; 
+           window.open(url, name, 'height=' + iHeight + ',,innerHeight=' + iHeight + ',width=' + iWidth + ',innerWidth=' + iWidth + ',top=' + iTop + ',left=' + iLeft + ',status=no,toolbar=no,menubar=no,location=no,resizable=no,scrollbars=0,titlebar=no'); 
+		}
+		//预览子窗口调用获取json数据
+		function getPreviewData(){
+			return getSaveData();
+		}
+	</script>
+</body>
+
+</html>

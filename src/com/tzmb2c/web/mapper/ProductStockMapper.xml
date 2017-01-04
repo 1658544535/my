@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.ProductStockMapper">
+
+	<!-- <cache/>  -->
+
+
+	<select id="getProductStockAll" parameterType="java.util.Map" resultType="productStockPojo">
+		select t.id as id,t.user_id as userId,t.product_id as productId,product_name as productName,t.sku as sku,t.stock_no as stockNo,t.weight as weight,
+		t.size as size,t.color as color,t.inventory as inventory,t.warehouse_id as warehouseId,t.sorting as sorting,t.status as status,(select name from sys_dict where value=t.status and type = 'status') as statusName,t.create_by as createBy,t.create_date as createDate,t.update_by as updateBy,
+		t.update_date as updateDate,t.remarks as remarks,t.version as version from product_stock t left join product p on t.product_id=p.id where 1=1
+		<if test="productId != null and productId != ''">
+			and t.product_id=#{productId} 
+		</if>
+	    order by t.sorting
+	    <if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<select id="getCount" parameterType="java.util.Map" resultType="int">
+		select count(*) from product_stock t left join product p on t.product_id=p.id where 1=1 
+		<if test="productId != null and productId != ''">
+			and t.product_id=#{productId} 
+		</if>
+	</select>
+	
+	<select id="findProductStock" parameterType="productStockPojo" resultType="productStockPojo">
+		select t.id as id,t.user_id as userId,t.product_id as productId,t.sku as sku,t.stock_no as stockNo,t.weight as weight,
+		t.size as size,t.color as color,t.inventory as inventory,t.warehouse_id as warehouseId,t.sorting as sorting,t.status as status,(select name from sys_dict where value=t.status and type = 'status') as statusName,t.create_by as createBy,t.create_date as createDate,update_by as updateBy,
+		t.update_date as updateDate,t.remarks as remarks,t.version as version from product_stock t where t.id=#{id}
+	</select>
+	
+	<select id="findByProductStock" parameterType="productStockPojo" resultType="productStockPojo">
+		select t.id as id,t.user_id as userId,t.product_id as productId,t.sku as sku,t.stock_no as stockNo,t.weight as weight,
+		t.size as size,t.color as color,t.inventory as inventory,t.warehouse_id as warehouseId,t.sorting as sorting,t.status as status,(select name from sys_dict where value=t.status and type = 'status') as statusName,t.create_by as createBy,t.create_date as createDate,update_by as updateBy,
+		t.update_date as updateDate,t.remarks as remarks,t.version as version from product_stock t where t.product_id=#{productId}
+	</select>
+	
+	<insert id="addProductStock" parameterType="productStockPojo">
+		insert into product_stock(user_id,product_id,sku,stock_no,weight,size,color,inventory,warehouse_id,sorting,status,create_by,create_date,update_by,update_date,remarks,version)
+		values(#{userId},#{productId},#{sku},#{stockNo},#{weight},#{size},#{color},#{inventory},#{warehouseId},#{sorting},#{status},#{createBy},sysdate(),#{updateBy},sysdate(),#{remarks},#{version})
+	</insert>
+	
+	<update id="productStockUpdate" parameterType="productStockPojo">
+		update product_stock t set
+		t.user_id=#{userId},
+		t.product_id=#{productId},
+		t.sku=#{sku},
+		t.stock_no=#{stockNo},
+		t.weight=#{weight},
+		t.size=#{size},
+		t.color=#{color},
+		t.inventory=#{inventory},
+		t.warehouse_id=#{warehouseId},
+		t.sorting=#{sorting},
+		t.status=#{status}
+		where
+		t.id = #{id}
+	</update>
+	
+	<delete id="deleProductStock" parameterType="Long">
+		delete from product_stock where id=#{id}
+	</delete>
+	
+	<update id="checkProductStock" parameterType="Long">
+		update product_stock set status = 1 where id = #{id}
+	</update>
+</mapper>

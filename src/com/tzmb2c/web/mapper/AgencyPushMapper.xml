@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.AgencyPushMapper">
+
+<!-- 插入推送信息表 -->
+<insert id="insertAgencyPushRecord" parameterType="agencyPushPojo">
+	insert into
+	user_agency_push(status,orderId,agencyId,userId,create_date,update_date,type)
+	values(#{status},#{orderId},#{agencyId},#{userId},now(),now(),#{type})
+</insert>
+
+
+<update id="updateAgencyPushStatus" parameterType="agencyPushPojo">
+		update user_agency_push set
+		status =#{status}
+		where id = #{id}
+	</update>
+	
+	
+<update id="updateAgencyPushOtherStatus" parameterType="agencyPushPojo">
+		update user_agency_push set
+		status =#{status}
+		where id &lt;&gt; #{id} and orderId = #{orderId}
+	</update>
+	
+	<select id="findAgencyPush" resultType="agencyPushPojo"
+	parameterType="agencyPushPojo">
+	select t.id as id, t.status as status, t.orderId as orderId, t.agencyId as agencyId,t.userId as userId,
+	t.create_date as createDate,t.update_date as updateDate
+	from user_agency_push as t
+	where
+	 orderId = #{orderId}  and agencyId = #{agencyId} 
+	 <if test="status>0 and status !=''">
+		 and status = #{status}
+	</if>
+</select>
+	 
+	<select id="findAgencyPushOrder" resultType="agencyPushPojo"
+			parameterType="java.util.Map">
+	select t.id as id, t.status as status, t.orderId as orderId, t.agencyId as agencyId,t.userId as userId,
+	t.create_date as createDate,t.update_date as updateDate,
+	(select s.name from sys_login s where s.id=t.userId)as agencyName,
+	(select o.order_no from user_order o where o.id=t.orderId)as orderNo,
+	(select d.name from sys_dict d where d.type="push_status" and d.value=t.status)as pushStatus
+	from user_agency_push t left join sys_login s on s.id=t.userId
+	left join user_order o on o.id=t.orderId
+	where 1=1
+	<if test="agencyId!=null and agencyId!=''">
+         and agencyId = #{agencyId} 
+	</if> 
+	 <if test="status>0 and status !=''">
+		 and status = #{status}
+	</if>
+	<if test="pushStatus!=null and pushStatus!=''">
+	     and d.name like concat("%",#{pushStatus},"%")
+    </if>
+	<if test="orderNo!=null and orderNo!=''">
+	     and o.order_no like concat("%",#{orderNo},"%")
+	</if>
+	<if test="beganday !=null and beganday !=''">
+	    and str_to_date(t.create_date,'%Y-%m-%d')&gt;=#{beganday}
+	</if>
+	<if test="endday !=null and endday !=''">
+		and str_to_date(t.create_date,'%Y-%m-%d')&lt;=#{endday}
+	</if>    
+	<if test="beganday2 !=null and beganday2 !=''">
+        and str_to_date(t.update_date,'%Y-%m-%d')&gt;=#{beganday2}
+    </if>
+    <if test="endday2 !=null and endday2 !=''">
+	    and str_to_date(t.update_date,'%Y-%m-%d')&lt;=#{endday2}
+    </if>    
+</select>
+	<select id="findAgencyPushCount" resultType="int" parameterType="java.util.Map">
+	select count(*)
+	from user_agency_push t left join sys_login s on s.id=t.userId
+	left join user_order o on o.id=t.orderId
+	where 1=1
+	<if test="agencyId!=null and agencyId!=''">
+         and agencyId = #{agencyId} 
+	</if> 
+	 <if test="status>0 and status !=''">
+		 and status = #{status}
+	</if>
+	<if test="pushStatus!=null and pushStatus!=''">
+        and d.name like concat("%",#{pushStatus},"%")
+    </if>
+        <if test="orderNo!=null and orderNo!=''">
+        and o.order_no like concat("%",#{orderNo},"%")
+    </if>
+    <if test="beganday !=null and beganday !=''">
+        and str_to_date(t.create_date,'%Y-%m-%d')&gt;=#{beganday}
+    </if>
+    <if test="endday !=null and endday !=''">
+	    and str_to_date(t.create_date,'%Y-%m-%d')&lt;=#{endday}
+    </if>    
+    <if test="beganday2 !=null and beganday2 !=''">
+        and str_to_date(t.update_date,'%Y-%m-%d')&gt;=#{beganday2}
+    </if>
+    <if test="endday2 !=null and endday2 !=''">
+        and str_to_date(t.update_date,'%Y-%m-%d')&lt;=#{endday2}
+    </if>    
+</select>
+</mapper>

@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.UserInfoMapper">
+
+	<select id="getUserInfoAll" resultType="userInfoPojo">
+		select 
+		t.id as id,
+		t.user_id as userId, 
+		t.sex as sex ,
+		t.birthday as birthday, 
+		t.email as email,
+		t.tel as tel,
+		t.phone as phone,
+		t.fax as fax,
+		t.address as address,
+		t.web_site as webSite,
+		t.QQ as QQ,
+		t.content as content,
+		t.channel as channel,
+		t.isread as isread,
+		t.qr_code as qrCode,
+		t.status as status,
+		(select name from sys_dict where value=t.status and type = 'status') statusName,
+		(select name from sys_login where id=t.user_id ) userName 
+		from user_info t order by t.create_date desc
+	</select>
+	
+	<select id="getfindByIdUserInfo" parameterType="Long" resultType="userInfoPojo" >
+		select 
+		t.id as id,
+		t.user_id as userId, 
+		t.sex as sex ,
+		t.birthday as birthday, 
+		t.email as email,
+		t.tel as tel,
+		t.phone as phone,
+		t.fax as fax,
+		t.address as address,
+		t.web_site as webSite,
+		t.QQ as QQ,
+		t.content as content,
+		t.channel as channel,
+		t.isread as isread,
+		t.qr_code as qrCode,
+		t.status as status,
+		(select name from sys_dict where value=t.status and type = 'status') statusName,
+		(select name from sys_login where id=t.user_id ) userName 
+		from user_info t where
+		t.id = #{id} 
+	</select>
+	
+	<select id="getfindByUserIdUserInfo" parameterType="Long" resultType="userInfoPojo" >
+		select 
+		t.id as id,
+		t.user_id as userId, 
+		t.sex as sex ,
+		(select name from sys_dict where value=t.sex and type = 'sex') sexName,
+		t.birthday as birthday, 
+		t.email as email,
+		t.tel as tel,
+		t.phone as phone,
+		t.fax as fax,
+		t.address as address,
+		t.web_site as webSite,
+		t.QQ as QQ,
+		t.content as content,
+		t.channel as channel,
+		t.isread as isread,
+		t.qr_code as qrCode,
+		t.status as status,
+		t.baby_birthday as babyBirthday,
+		t.baby_sex as babySex,
+		(select name from sys_dict where value=t.status and type = 'status') statusName,
+		(select name from sys_login where id=t.user_id ) userName,
+		(select image from sys_login where id=t.user_id ) userImage
+		from user_info t where
+		t.user_id = #{id} 
+		limit 1
+	</select>
+	
+	<insert id="insertUserInfo" parameterType="userInfoPojo">
+		insert into
+		user_info(status,user_id,create_by,create_date,update_by,update_date,remarks,version,phone,address,channel,baby_birthday,baby_sex)
+		values(#{status},#{userId},#{createBy},#{createDate},#{updateBy},#{updateDate},#{remarks},#{version},#{phone},#{address},#{channel},#{babyBirthday},#{babySex})
+	</insert>
+	
+	<delete id="delUserInfo" parameterType="Long">
+		delete from user_info where id = #{id}
+	</delete>
+	<delete id="delUserInfobyUserId" parameterType="Long">
+		delete from user_info where user_id = #{id}
+	</delete>
+	<update id="updateUserInfo" parameterType="userInfoPojo">
+		update user_info set
+		<if test="updateBy!=null">
+		update_by = #{updateBy},
+		</if>
+		update_date = now(),
+		<if test="userId!=null">
+		user_id = #{userId},
+		</if>
+		<if test="sex!=null">
+		sex = #{sex},
+		</if>
+		<if test="birthday!=null and birthday!=''">
+		birthday = #{birthday},
+		</if>
+		<if test="email!=null and email!=''">
+		email =#{email},
+		</if>
+		<if test="tel!=null and tel!=''">
+		tel = #{tel},
+		</if>
+		<if test="phone!=null and phone!=''">
+		phone =#{phone},
+		</if>
+		<if test="fax!=null and fax!=''">
+		fax =#{fax},
+		</if>
+		<if test="address!=null and address!=''">
+		address = #{address},
+		</if>
+		<if test="webSite!=null and webSite!=''">
+		web_site = #{webSite},
+		</if>
+		<if test="QQ!=null and QQ!=''">
+		QQ =#{QQ},
+		</if>
+		<if test="content!=null and content!=''">
+		content = #{content},
+		</if>
+		<if test="channel!=null">
+		channel =#{channel},
+		</if>
+		<if test="isread!=null">
+		isread =#{isread},
+		</if>
+		<if test="qrCode!=null and qrCode!=''">
+		qr_code = #{qrCode},
+		</if>
+		<if test="babySex!=null">
+		baby_sex = #{babySex},
+		</if>
+		<if test="babyBirthday!=null and babyBirthday!=''">
+		baby_birthday = #{babyBirthday},
+		</if>
+		<if test="status!=null">
+		status =#{status}
+		</if>
+		
+		
+		where id = #{id}
+	</update>
+	
+	<update id="checkUserInfo" parameterType="Long">
+		update user_info set status = 1,update_date=now() where id = #{id}
+	</update>
+	
+	<select id="userInfoAllCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from user_info where
+		1=1
+		<if test="phone!=null and phone!=''">
+			and phone like CONCAT("%",#{phone},"%")
+		</if>
+		<if test="address!=null and address!=''">
+			and address like CONCAT("%",#{address},"%")
+		</if>
+	</select>
+	
+	<select id="userInfoAllList" resultType="userInfoPojo"
+		parameterType="java.util.Map">
+		select 
+		t.id as id,
+		t.user_id as userId, 
+		t.sex as sex ,
+		t.birthday as birthday, 
+		t.email as email,
+		t.tel as tel,
+		t.phone as phone,
+		t.fax as fax,
+		t.address as address,
+		t.web_site as webSite,
+		t.QQ as QQ,
+		t.content as content,
+		t.channel as channel,
+		t.isread as isread,
+		t.qr_code as qrCode,
+		t.status as status,
+		(select name from sys_dict where value=t.status and type = 'status') statusName,
+		(select name from sys_login where id=t.user_id ) userName 
+		from user_info t where
+		1=1
+		<if test="phone!=null and phone!=''">
+			and phone like CONCAT("%",#{phone},"%")
+		</if>
+		<if test="address!=null and address!=''">
+			and address like CONCAT("%",#{address},"%")
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+		
+	</select>
+	
+	<select id="userInfoAllCount2" resultType="int" parameterType="java.util.Map">
+		select 
+		count(*)
+		from user_info t
+		left join sys_login s on t.user_id = s.id
+		where
+		1=1
+		<if test="loginName!=null and loginName!=''">
+			and s.loginname like CONCAT("%",#{loginName},"%")
+		</if>
+		<if test="userName!=null and userName!=''">
+			and s.name like CONCAT("%",#{userName},"%")
+		</if>
+		<if test="status!=null">
+			and t.status = #{status}
+		</if>
+		<if test="type!=null and type!=''">
+			and s.type = #{type}
+		</if>
+		<if test="QQ!=null and QQ!=''">
+			and t.QQ like CONCAT("%",#{QQ},"%")
+		</if>
+	</select>
+	
+	<select id="userInfoAllList2" resultType="userInfoPojo" parameterType="java.util.Map">
+		select 
+		t.id as id,
+		t.user_id as userId, 
+		s.loginname as loginName,
+		s.name as userName,
+		s.image as image,
+		t.sex as sex ,
+		t.birthday as birthday, 
+		t.email as email,
+		t.tel as tel,
+		t.phone as phone,
+		t.fax as fax,
+		t.address as address,
+		t.web_site as webSite,
+		t.QQ as QQ,
+		t.content as content,
+		t.channel as channel,
+		t.isread as isread,
+		t.qr_code as qrCode,
+		t.status as status,
+		(select name from sys_dict where value=t.status and type = 'status') statusName
+		from user_info t
+		left join sys_login s on t.user_id = s.id
+		where
+		1=1
+		<if test=" userId!=null ">
+			and t.user_id = #{userId}
+		</if>
+		<if test="loginName!=null and loginName!=''">
+			and s.loginname like CONCAT("%",#{loginName},"%")
+		</if>
+		<if test="userName!=null and userName!=''">
+			and s.name like CONCAT("%",#{userName},"%")
+		</if>
+		<if test="status!=null">
+			and t.status = #{status}
+		</if>
+		<if test="type!=null and type!=''">
+			and s.type = #{type}
+		</if>
+		<if test="QQ!=null and QQ!=''">
+			and t.QQ like CONCAT("%",#{QQ},"%")
+		</if>
+		order by t.id desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<select id="findUserInfoById" resultType="userInfoPojo" parameterType="Long">
+		select 
+		t.id as id,
+		t.user_id as userId, 
+		s.loginname as loginName,
+		s.name as userName,
+		s.image as image,
+		t.sex as sex ,
+		t.birthday as birthday, 
+		t.email as email,
+		t.tel as tel,
+		t.phone as phone,
+		t.fax as fax,
+		t.address as address,
+		t.web_site as webSite,
+		t.QQ as QQ,
+		t.content as content,
+		t.channel as channel,
+		t.isread as isread,
+		t.qr_code as qrCode,
+		t.status as status,
+		(select name from sys_dict where value=t.status and type = 'status') statusName
+		from user_info t
+		left join sys_login s on t.user_id = s.id
+		where t.id = #{id}
+	</select>
+	
+	<update id="updateUserInfo2" parameterType="userInfoPojo">
+		update user_info t left join sys_login s on t.user_id = s.id  set
+		t.update_by = #{updateBy},
+		t.update_date = now(),
+		t.sex = #{sex},
+		t.birthday = #{birthday},
+		t.email =#{email},
+		t.tel = #{tel},
+		t.phone =#{phone},
+		t.fax =#{fax},
+		t.address = #{address},
+		t.web_site = #{webSite},
+		t.QQ =#{QQ},
+		t.content = #{content},
+		t.channel =#{channel},
+		t.isread =#{isread},
+		<if test="image!=null and image!=''">
+			s.image = #{image},
+		</if>
+		t.qr_code = #{qrCode},
+		t.status =#{status}
+		where t.id = #{id}
+	</update>
+	
+	<update id="uncheckUserInfo" parameterType="Long">
+		update user_info set status = 0,update_date=now() where id = #{id}
+	</update>
+	
+	<select id="jinwanhaoAllCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from  user_info t  left join sys_login a  on a.id=t.user_id
+		where 1=1
+			<if test="loginName!=null and loginName!=''">
+		and a.loginname=#{loginName} 
+	</if>
+	<if test="address!=null and address!=''">
+		and t.address like CONCAT("%",#{address},"%")
+	</if>
+	<if test="phone!=null and phone!=''">
+		and t.phone like CONCAT("%",#{phone},"%")
+	</if>
+	<if test="QQ!=null and QQ!=''">
+		and t.QQ like CONCAT("%",#{QQ},"%")
+	</if>
+	<if test="userId!=null and userId!=''">
+		and t.user_id=#{userId} 
+	</if>
+	<if test="createDateStr !=null and createDateStr !=''">
+			and str_to_date(t.create_date,'%Y-%m-%d')=#{createDateStr}
+	</if>
+		and a.create_by=-1
+	</select>
+	<select id="jinwanhaoAllList" resultType="userInfoPojo"
+	parameterType="java.util.Map">
+	select 
+	a.loginname as loginName,
+	a.name as userName,
+	(select name from sys_dict where value=t.status and type = 'status') statusName,
+	(select name from sys_login where id=t.user_id ) userName,
+	t.create_by as createBy,
+	t.create_date as createDate,
+	t.update_by as updateBy,
+	t.update_date as updateDate,
+	t.remarks as remarks,
+	t.version as version,
+	t.id as id,
+	t.user_id as userId, 
+	t.tel as tel,
+	t.phone as phone,
+	t.fax as fax,
+	t.address as address,
+	t.web_site as webSite,
+	t.QQ as QQ, 
+	t.email as email,
+	t.channel as channel,
+	t.isread as isread,
+	t.status as status,
+	t.create_date as createDateStr
+	from  user_info t  left join sys_login a  on a.id=t.user_id
+	where
+	1=1 
+	<if test="loginName!=null and loginName!=''">
+		and a.loginname=#{loginName} 
+	</if>
+	<if test="address!=null and address!=''">
+		and t.address like CONCAT("%",#{address},"%")
+	</if>
+	<if test="phone!=null and phone!=''">
+		and t.phone like CONCAT("%",#{phone},"%")
+	</if>
+	<if test="QQ!=null and QQ!=''">
+		and t.QQ like CONCAT("%",#{QQ},"%")
+	</if>
+	<if test="userId!=null and userId!=''">
+		and t.user_id=#{userId} 
+	</if>
+	<if test="createDateStr !=null and createDateStr !=''">
+			and str_to_date(t.create_date,'%Y-%m-%d')=#{createDateStr}
+	</if>
+	and a.create_by=-1
+	order by t.id desc 
+	<if test="pageSize != null">
+	limit #{pageNo} , #{pageSize}
+	</if>
+</select>
+</mapper>

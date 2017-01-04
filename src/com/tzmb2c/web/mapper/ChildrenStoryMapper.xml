@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tzmb2c.web.mapper.ChildrenStoryMapper">
+<select id="findChildrenStoryList" resultType="ChildrenStoryPojo" parameterType="java.util.Map">
+		select
+			c.id          as id,
+			c.title       as title,
+			c.audio_url   as audioUrl,
+		    c.sorting     as sorting,
+			c.status      as status,
+			(CASE WHEN c.status = 0 THEN '未审核' WHEN c.status = 1 THEN '已审核' END) as statusName,
+			c.content     as content,
+			c.type        as type,
+			c.create_date as createDate,
+			c.update_date as updateDate
+        from children_story c 
+	    where 1=1
+	    <if test="title != null and title != '' ">
+			and c.title like concat("%",#{title},"%")
+		</if>
+		<if test="status!=null">
+			and c.status = #{status}
+		</if>
+        order by c.sorting desc,c.create_date desc
+		<if test="pageNo != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+</select>
+<select id="findChildrenStoryCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from children_story c 
+		where 1=1
+		 <if test="title != null and title != '' ">
+			and c.title like concat("%",#{title},"%")
+		</if>
+		<if test="status!=null">
+			and c.status = #{status}
+		</if>
+</select>
+<!-- 查找单条(id) -->
+<select id="findChildrenStoryById" resultType="ChildrenStoryPojo" parameterType="Long">
+		select
+			c.id          as id,
+			c.title       as title,
+			c.audio_url   as audioUrl,
+		    c.sorting     as sorting,
+			c.status      as status,
+			(CASE WHEN c.status = 0 THEN '未审核' WHEN c.status = 1 THEN '已审核' END) as statusName,
+			c.content     as content,
+			c.type        as type,
+			c.create_date as createDate,
+			c.update_date as updateDate
+        from children_story c 
+		where
+		c.id=#{id}
+</select>
+<!--加入某条-->
+<insert id="insertChildrenStory" parameterType="ChildrenStoryPojo">
+		insert into children_story  (title,audio_url,sorting,status,content,type,create_date,update_date,create_by)
+		values(#{title},#{audioUrl},#{sorting},#{status},#{content},0,now(),now(),1)
+</insert>
+<!-- 删除单条(id) -->
+<delete id="delChildrenStory" parameterType="ChildrenStoryPojo">
+		delete from children_story  where id = #{id}
+</delete>
+<!--编辑单条-->
+<update id="updateChildrenStory" parameterType="ChildrenStoryPojo">
+		update children_story set
+        <if test="title != null and title != ''">
+			title = #{title},
+		</if>
+		<if test="audioUrl != null and audioUrl != ''">
+			audio_url = #{audioUrl},
+		</if>
+		<if test="sorting != null">
+			sorting = #{sorting},
+		</if>
+		<if test="status != null">
+			status = #{status},
+		</if>
+		<if test="content != null and content != ''">
+			content = #{content},
+		</if>
+		type = 0
+		where
+		id=#{id}
+</update>
+<!--审核单条-->
+<update id="checkChildrenStory" parameterType="ChildrenStoryPojo">
+		update children_story set
+		status = 1,
+		update_date = now()
+		where
+		id=#{id}
+</update>
+<!--审核单条-->
+<update id="uncheckChildrenStory" parameterType="ChildrenStoryPojo">
+		update children_story set
+		status = 0,
+		update_date = now()
+		where
+		id=#{id}
+</update>
+</mapper>

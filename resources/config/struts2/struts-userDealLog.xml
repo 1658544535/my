@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="userDealLog" extends="default">
+		<!-- 进入列表页面 -->
+		<action name="goUserDealLog" class="com.tzmb2c.web.action.UserDealLogAction" method="goUserDealLog">
+			<result name="success">/page/system/userDealLog/userDealLogList.jsp</result>
+		</action>
+		<!-- 进入列表页面 -->
+		<action name="goPindekeUserDealLog" class="com.tzmb2c.web.action.UserDealLogAction" method="goPindekeUserDealLog">
+			<result name="success">/page/system/userDealLog/pindekeUserDealLogList.jsp</result>
+		</action>
+		<!-- 进入列表页面 -->
+		<action name="goUserEndGroupSettle" class="com.tzmb2c.web.action.UserDealLogAction" method="goUserEndGroupSettle">
+			<result name="success">/page/system/userDealLog/userEndGroupSettleList.jsp</result>
+		</action>
+		<!-- 新增 -->
+		<action name="goAddUserDealLog" class="com.tzmb2c.web.action.UserDealLogAction" method="goAddUserDealLog">
+		    <result name="success">/page/system/userDealLog/addUserDealLog.jsp</result>
+		</action>
+		<!-- 编辑页面 -->
+		<action name="goEditUserDealLog" class="com.tzmb2c.web.action.UserDealLogAction" method="goEditUserDealLog">
+			<result name="success">/page/system/userDealLog/updateUserDealLog.jsp</result>
+		</action>
+		<!-- 编辑提交 -->
+		<action name="updateUserDealLog" class="com.tzmb2c.web.action.UserDealLogAction" method="update">
+		</action>
+	</package>
+	<package name="userDealLog-json" extends="json-default">
+		<!-- 内容 -->
+		<action name="userDealLogList" class="com.tzmb2c.web.action.UserDealLogAction" method="userDealLogList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="userDealLogCnt" class="com.tzmb2c.web.action.UserDealLogAction" method="userDealLogRowCnt">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+		<!-- 内容 -->
+		<action name="pindekeUserDealLogList" class="com.tzmb2c.web.action.UserDealLogAction" method="pindekeUserDealLogList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="pindekeUserDealLogCnt" class="com.tzmb2c.web.action.UserDealLogAction" method="pindekeUserDealLogRowCnt">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+		<!-- 内容 -->
+		<action name="userEndGroupSettleList" class="com.tzmb2c.web.action.UserDealLogAction" method="userEndGroupSettleList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="userEndGroupSettleCnt" class="com.tzmb2c.web.action.UserDealLogAction" method="userEndGroupSettleRowCnt">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+		<!-- 根据ID删除 -->
+		<action name="delUserDealLog" class="com.tzmb2c.web.action.UserDealLogAction" method="delete">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+		<!-- 删除选中 -->
+		<action name="delUserDealLogAll" class="com.tzmb2c.web.action.UserDealLogAction" method="deleteAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 通过审核 -->
+		<action name="checkUserDealLog" class="com.tzmb2c.web.action.UserDealLogAction" method="check">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 取消审核 -->
+		<action name="uncheckUserDealLog" class="com.tzmb2c.web.action.UserDealLogAction" method="uncheck">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中通过审核 -->
+		<action name="checkUserDealLogAll" class="com.tzmb2c.web.action.UserDealLogAction" method="checkAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中取消审核 -->
+		<action name="uncheckUserDealLogAll" class="com.tzmb2c.web.action.UserDealLogAction" method="uncheckAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 新增提交 -->
+		<action name="addUserDealLog" class="com.tzmb2c.web.action.UserDealLogAction" method="add">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+	</package>
+</struts>

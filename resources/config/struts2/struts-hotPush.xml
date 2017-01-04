@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="hotPushShow" extends="default">
+		<!-- 热门推荐跳转 -->
+		<action name="hotPushList" class="com.tzmb2c.web.action.HotPushAction" method="hotPushListCount">
+			<result name="success">/page/system/hotPush/hotPushList.jsp</result>
+		</action>		
+		<!-- 取消上热门 -->
+		<action name="delhotPush" class="com.tzmb2c.web.action.HotPushAction" method="delhotPush">
+		</action>	
+		<!-- 编辑跳转 -->
+		<action name="goHotPush" class="com.tzmb2c.web.action.HotPushAction" method="goHotPush">
+			<result name="success">/page/system/hotPush/editHotPush.jsp</result>
+		</action>	
+		<!-- 编辑提交 -->
+		<action name="editHotPushSubmit" class="com.tzmb2c.web.action.HotPushAction" method="editHotPushSubmit">
+		</action>		
+			
+	</package>
+	<package name="hotPush-json" extends="json-default">
+		<!-- 热门推荐数据 -->
+		<action name="hotPushListAll" class="com.tzmb2c.web.action.HotPushAction" method="hotPushListAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>		
+		<!-- 热门推荐条数 -->
+		<action name="hotPushListCount" class="com.tzmb2c.web.action.HotPushAction" method="hotPushListCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		<!-- 设置排序 -->
+		<action name="setSorting" class="com.tzmb2c.web.action.HotPushAction" method="setSorting">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>	
+	</package>
+</struts>

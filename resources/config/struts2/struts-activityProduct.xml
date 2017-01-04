@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="activityProduct" extends="default">
+
+		<!-- 活动产品设置 -->
+		<action name="activityProductManage" class="com.tzmb2c.web.action.ActivityProductAction" method="getActivityProductList">
+			<result>/page/system/product/activityProductList.jsp</result>
+		</action>
+		<action name="goFindActivityProduct" class="com.tzmb2c.web.action.ActivityProductAction" method="getActivityProductById">
+			<result>/page/system/product/activityProductAdd.jsp</result>
+		</action>
+		<action name="goFindActivityProductSet" class="com.tzmb2c.web.action.ActivityProductAction" method="getActivityProductById">
+			<result>/page/system/product/activityProductSet.jsp</result>
+		</action>
+		<action name="addActivityProduct" class="com.tzmb2c.web.action.ActivityProductAction" method="addActivityProduct">
+		</action>
+		<action name="addActivityProduct1" class="com.tzmb2c.web.action.ActivityProductAction" method="addActivityProduct1">
+		</action>
+		<action name="delActivityProductAll" class="com.tzmb2c.web.action.ActivityProductAction" method="delActivityProductAll">
+		</action>
+		<action name="checkActivityProductAll" class="com.tzmb2c.web.action.ActivityProductAction" method="checkActivityProductAll">
+		</action>
+		<action name="setActivityProductAll" class="com.tzmb2c.web.action.ActivityProductAction" method="setActivityProductAll">
+		</action>
+		<action name="activityPlaceAdd" class="com.tzmb2c.web.action.ActivityProductAction" method="activityPlaceAdd">
+		<result>/page/system/product/activityPlaceAdd.jsp</result>
+	    </action>
+	    <action name="activityPlaceById" class="com.tzmb2c.web.action.ActivityProductAction" method="activityPlaceById">
+		<result>/page/system/product/activityPlaceUpdate.jsp</result>
+	    </action>
+	    <action name="activityPlaceList" class="com.tzmb2c.web.action.ActivityProductAction" method="getActivityPlaceCount">
+		<result>/page/system/product/activityPlaceList.jsp</result>
+	    </action>
+	    <action name="updateActivityProduct" class="com.tzmb2c.web.action.ActivityProductAction" method="updateActivityProduct">
+	    </action>
+	    <action name="delActivityPlaceAll" class="com.tzmb2c.web.action.ActivityProductAction" method="delActivityPlaceAll">
+	    </action>
+	    <action name="checkActivityPlaceAll" class="com.tzmb2c.web.action.ActivityProductAction" method="checkActivityPlaceAll">
+	    </action>
+	    <action name="insertActivityProduct" class="com.tzmb2c.web.action.ActivityProductAction" method="insertActivityProduct">
+	    </action>
+	    <action name="activitySetManage" class="com.tzmb2c.web.action.ActivityProductAction" method="getActivitySetCount">
+		<result>/page/system/product/activitySetList.jsp</result>
+	    </action>
+	    <action name="activitySetAdd" class="com.tzmb2c.web.action.ActivityProductAction" method="activitySetAdd">
+		<result>/page/system/product/activitySetAdd.jsp</result>
+	    </action>
+	    <action name="addActivitySetProduct" class="com.tzmb2c.web.action.ActivityProductAction" method="addActivitySetProduct">
+	    </action>
+	    <action name="delActivitySetAll" class="com.tzmb2c.web.action.ActivityProductAction" method="delActivitySetAll">
+	    </action>
+	    <action name="checkActivitySetAll" class="com.tzmb2c.web.action.ActivityProductAction" method="checkActivitySetAll">
+	    </action>
+	   	<action name="editActivitySetById" class="com.tzmb2c.web.action.ActivityProductAction" method="editActivitySetById">
+		<result>/page/system/product/activitySetUpdate.jsp</result>
+	    </action>
+	    <action name="updateActivitySetProduct" class="com.tzmb2c.web.action.ActivityProductAction" method="updateActivitySetProduct">
+	    </action>
+	    <action name="goCopyActivityProduct" class="com.tzmb2c.web.action.ActivityProductAction" method="goCopyActivityProduct">
+		<result>/page/system/product/copyActivityProduct.jsp</result>
+	    </action>
+	    <action name="copyActivityProduct" class="com.tzmb2c.web.action.ActivityProductAction" method="copyActivityProduct">
+	    </action>
+	</package>
+	
+	<package name="activityProduct-json" extends="json-default">
+		<action name="getActivityProductList" class="com.tzmb2c.web.action.ActivityProductAction" method="getActivityProductList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="getActivityProductCount" class="com.tzmb2c.web.action.ActivityProductAction" method="getActivityProductCount">
+				<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		<action name="checkActivityProduct" class="com.tzmb2c.web.action.ActivityProductAction" method="checkActivityProduct">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		<action name="uncheckActivityProduct" class="com.tzmb2c.web.action.ActivityProductAction" method="uncheckActivityProduct">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		<action name="delActivityProduct" class="com.tzmb2c.web.action.ActivityProductAction" method="delActivityProduct">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		<action name="setActivityProduct" class="com.tzmb2c.web.action.ActivityProductAction" method="setActivityProduct">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		<action name="getActivityPlaceCount" class="com.tzmb2c.web.action.ActivityProductAction" method="getActivityPlaceCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+
+		<!--显示web活动添加的商品列表-->
+		<action name="getActivityPlaceList" class="com.tzmb2c.web.action.ActivityProductAction" method="getActivityPlaceList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<action name="getActivitySetCount" class="com.tzmb2c.web.action.ActivityProductAction" method="getActivitySetCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		<action name="getActivitySetList" class="com.tzmb2c.web.action.ActivityProductAction" method="getActivitySetList">
+				<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+	</package>
+	
+</struts>

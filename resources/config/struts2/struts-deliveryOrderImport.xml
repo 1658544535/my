@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="deliveryOrderImport" extends="default">
+		<!-- 进入列表页面 -->
+		<action name="goDeliveryOrderImport" class="com.tzmb2c.web.action.DeliveryOrderImportAction" method="goDeliveryOrderImport">
+			<result name="success">/page/system/deliveryOrderImport/deliveryOrderImportList.jsp</result>
+		</action>
+		<!-- 新增 -->
+		<action name="goAddDeliveryOrderImport" class="com.tzmb2c.web.action.DeliveryOrderImportAction" method="goAddDeliveryOrderImport">
+		    <result name="success">/page/system/deliveryOrderImport/addDeliveryOrderImport.jsp</result>
+		</action>
+		<!-- 新增提交 -->
+		<action name="addDeliveryOrderImport" class="com.tzmb2c.web.action.DeliveryOrderImportAction" method="add">
+		</action>		
+		<!-- 编辑页面 -->
+		<action name="goEditDeliveryOrderImport" class="com.tzmb2c.web.action.DeliveryOrderImportAction" method="goEditDeliveryOrderImport">
+			<result name="success">/page/system/deliveryOrderImport/updateDeliveryOrderImport.jsp</result>
+		</action>
+		<!-- 编辑提交 -->
+		<action name="updateDeliveryOrderImport" class="com.tzmb2c.web.action.DeliveryOrderImportAction" method="update">
+		</action>
+		
+		
+		<!-- 发货订单处理 页面-->
+		<action name="goOrderDelivery" class="com.tzmb2c.web.action.DeliveryOrderImportAction" method="goOrderDelivery">
+			<result name="success">/page/system/user/delivery.jsp</result>
+		</action>
+		<!--下载发货模板-->
+		<action name="downloadTemplates" class="com.tzmb2c.web.action.DeliveryOrderImportAction" method="downloadTemplates">
+		</action>
+		<!--导入订单EXCEL-->
+		<action name="importOrder" class="com.tzmb2c.web.action.DeliveryOrderImportAction" method="importOrder">
+		</action>
+	</package>
+	<package name="deliveryOrderImport-json" extends="json-default">
+		<!-- 内容 -->
+		<action name="deliveryOrderImportList" class="com.tzmb2c.web.action.DeliveryOrderImportAction" method="deliveryOrderImportList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="deliveryOrderImportCnt" class="com.tzmb2c.web.action.DeliveryOrderImportAction" method="deliveryOrderImportRowCnt">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+		<!-- 根据ID删除 -->
+		<action name="delDeliveryOrderImport" class="com.tzmb2c.web.action.DeliveryOrderImportAction" method="delete">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+		<!-- 删除选中 -->
+		<action name="delDeliveryOrderImportAll" class="com.tzmb2c.web.action.DeliveryOrderImportAction" method="deleteAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 通过审核 -->
+		<action name="checkDeliveryOrderImport" class="com.tzmb2c.web.action.DeliveryOrderImportAction" method="check">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 取消审核 -->
+		<action name="uncheckDeliveryOrderImport" class="com.tzmb2c.web.action.DeliveryOrderImportAction" method="uncheck">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中通过审核 -->
+		<action name="checkDeliveryOrderImportAll" class="com.tzmb2c.web.action.DeliveryOrderImportAction" method="checkAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中取消审核 -->
+		<action name="uncheckDeliveryOrderImportAll" class="com.tzmb2c.web.action.DeliveryOrderImportAction" method="uncheckAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 发货订单列表 -->
+		<action name="orderDeliveryList" class="com.tzmb2c.web.action.DeliveryOrderImportAction" method="orderDeliveryList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<!-- 发货订单列表条数 -->
+		<action name="orderDeliveryCount" class="com.tzmb2c.web.action.DeliveryOrderImportAction" method="goOrderDelivery">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+	</package>
+</struts>

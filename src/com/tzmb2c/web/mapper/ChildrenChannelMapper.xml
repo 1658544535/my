@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.ChildrenChannelMapper">
+<!-- web查询记录 -->
+	<select id="findChildrenChannelWeb" resultType="ChildrenChannelPojo" parameterType="java.util.Map">
+		select c.id as id, c.name as name, c.picture as picture
+	   	from children_channel c
+		where 1=1
+		and c.status = 1
+		order by c.sorting asc ,c.create_date desc  
+		<if test="countWeb != null and countWeb !=''">
+			limit #{countWeb}
+		</if>
+	</select>	
+<!-- 查询所有的记录 -->
+	<select id="findChildrenChannelList" resultType="ChildrenChannelPojo" parameterType="java.util.Map">
+		select
+			c.id as id,
+			c.name as name,
+			c.sorting as sorting,
+			c.status as status,
+			(CASE WHEN c.status = 0 THEN '未审核' WHEN c.status = 1 THEN '已审核' END)  as statusName,
+            c.picture as picture
+	   	from children_channel c
+		where 1=1
+		<if test="name != null and name != '' ">
+			and c.name like concat("%",#{name},"%")
+		</if>
+		<if test="status != null">
+			and c.status = #{status}
+		</if>
+		order by c.sorting
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>	
+	
+	<select id="findChildrenChannelCount" resultType="int" parameterType="java.util.Map">
+		select count(*)
+	   	from children_channel c
+		where 1=1
+		<if test="name != null and name != '' ">
+			and c.name like concat("%",#{name},"%")
+		</if>
+		<if test="status != null">
+			and c.status = #{status}
+		</if>
+	</select>
+	<!-- 删除单条 -->
+	<delete id="delChildrenChannelById" parameterType="Long">
+		delete from children_channel where id = #{id}
+	</delete>
+	 <!-- 审核单条 -->
+	<update id="checkChildrenChannelById" parameterType="Long">
+		update children_channel c set  c.status = 1,
+		update_date = now()
+		where
+		c.id = #{id}
+	</update>
+	<!-- 取消审核 -->
+	<update id="uncheckChildrenChannelById" parameterType="Long">
+		update children_channel c set  c.status = 0,
+		update_date = now()
+		where
+		c.id = #{id}
+	</update>
+	<!-- 插入单条 -->
+	<insert id="insertChildrenChannel" parameterType="ChildrenChannelPojo">
+		insert into children_channel 
+		(id,name,picture,status,sorting,create_date,create_by,update_date,update_by) 
+		values(#{id},#{name},#{picture},#{status},#{sorting},now(),#{createBy},now(),#{updateBy})
+	</insert>
+	<!--根据ID查找信息-->
+	<select id="findChildrenChannelById" resultType="ChildrenChannelPojo" parameterType="Long">
+		select
+			c.id as id,
+			c.name as name,
+			c.picture as picture,
+			c.status as status,
+			c.sorting as sorting,
+			(CASE WHEN c.status = 0 THEN '未审核' WHEN c.status = 1 THEN '已审核' END)  as statusName
+	   	from children_channel c
+		where
+		c.id = #{id}
+	</select>
+	<!--更新单条-->
+	<update id="updateChildrenChannelById" parameterType="ChildrenChannelPojo">
+		update children_channel set
+		<if test="name != null and name != ''">
+			name = #{name},
+		</if>
+		<if test="picture != null and picture != ''">
+			picture = #{picture},
+		</if>
+	    <if test="status != null">
+			status = #{status},
+		</if>
+		update_date = now()
+		where id = #{id}
+	</update>
+</mapper>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="productimages" extends="default">
+
+		<!-- 产品 -->
+		<action name="productImagesManage" class="com.tzmb2c.web.action.ProductImagesAction" method="getCountProductImages">
+			<result>/page/system/product/productImagesList.jsp</result>
+		</action>
+		
+		
+		<!-- 添加产品-->
+		<action name="goproductImagesAdd" class="com.tzmb2c.web.action.ProductImagesAction" method="goproductImagesAdd">
+			<result>/page/system/product/productImagesAdd.jsp</result>
+		</action>
+		
+		<action name="productImagesAdd" class="com.tzmb2c.web.action.ProductImagesAction" method="productImagesAdd">
+				<result name="success" type="redirectAction">
+					<param name="actionName">productImagesManage</param>  
+        			<param name="productImagesPojo.productId">${productImagesPojo.productId}</param>
+        			<param name="productImagesPojo.userId">${productImagesPojo.userId}</param>
+        		</result>
+		</action> 
+
+		<!-- 修改产品-->
+		<action name="goFindProductImages" class="com.tzmb2c.web.action.ProductImagesAction" method="goFindProductImages">
+			<result>/page/system/product/productImagesUpdate.jsp</result>
+		</action>
+		
+		<action name="productImagesUpdate" class="com.tzmb2c.web.action.ProductImagesAction" method="productImagesUpdate">
+				<result name="success" type="redirectAction">
+					<param name="actionName">productImagesManage</param>  
+        			<param name="productImagesPojo.productId">${productImagesPojo.productId}</param>
+        			<param name="productImagesPojo.userId">${productImagesPojo.userId}</param>
+        		</result>
+		</action> 
+
+		<!-- 审核全部 -->
+		<action name="productImagescheckAll" class="com.tzmb2c.web.action.ProductImagesAction" method="productImagescheckAll">
+		</action>
+		
+		<!-- 删除全部 -->
+		<action name="productImagesDeleteId" class="com.tzmb2c.web.action.ProductImagesAction" method="productImagesDeleteId">
+		</action>
+		
+		
+	</package>
+	
+	<package name="CountProductImages-json" extends="json-default">
+		<!--平台入口-->
+		<action name="getCountProductImages" class="com.tzmb2c.web.action.ProductImagesAction" method="getCountProductImages">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+
+		<!-- 根据条件查找对应产品 -->
+		<action name="getProductImagesAll" class="com.tzmb2c.web.action.ProductImagesAction"
+			method="getProductImagesAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<!-- 审核 -->
+		<action name="checkProductImages" class="com.tzmb2c.web.action.ProductImagesAction" method="checkProductImages">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 删除产品成功回调 -->
+		<action name="deleProductImages" class="com.tzmb2c.web.action.ProductImagesAction"
+			method="deleProductImages">
+			<result type="json">
+	       		 <param name="root">result</param>
+	       		 <param name="productImagesPojo.productId">${productImagesPojo.productId}</param>
+			</result>
+		</action>
+	</package>
+</struts>

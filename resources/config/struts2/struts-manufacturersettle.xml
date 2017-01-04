@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+	<package name="manufacturerSettle" extends="default">
+		<action name="manufacturerSettle" class="com.tzmb2c.web.action.ManufacturerSettleAction" method="manufacturerSettleCount">
+			<result>/page/system/manufacturerSettle/manufacturerSettleList.jsp</result>
+		</action>
+		<action name="generateSettleInfo" class="com.tzmb2c.web.action.ManufacturerSettleAction" method="generateSettleInfo">
+			<result name="success" type="redirectAction">manufacturerSettle</result>
+		</action>
+		<action name="genOrderSetterExcel" class="com.tzmb2c.web.action.ManufacturerSettleAction" method="genOrderSetterExcel">
+		</action>
+	</package>
+	<package name="manufacturerSettle-json" extends="json-default">
+		<action name="manufacturerSettleList" class="com.tzmb2c.web.action.ManufacturerSettleAction" method="manufacturerSettleList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="manufacturerSettleCount" class="com.tzmb2c.web.action.ManufacturerSettleAction" method="manufacturerSettleCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		
+		<action name="checkManufacturerSettle" class="com.tzmb2c.web.action.ManufacturerSettleAction" method="checkManufacturerSettle">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+	 	<action name="uncheckManufacturerSettle" class="com.tzmb2c.web.action.ManufacturerSettleAction" method="uncheckManufacturerSettle">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

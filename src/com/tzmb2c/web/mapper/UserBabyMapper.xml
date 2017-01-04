@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.UserBabyMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		  id as id,
+		  user_id as userId,
+		  baby_name as babyName,
+		  baby_sex as babySex,
+		  baby_birthday as babyBirthday,
+		  is_default as isDefault,
+		  is_delete as isDelete,
+		  create_date as createDate,
+		  create_by as createBy,
+		  update_date as updateDate,
+		  update_by as updateBy
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="UserBabyPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			user_baby
+		where
+			id = #{id}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from user_baby
+		where 1=1
+		  <if test="id != null ">
+			and id = #{id}
+		  </if>
+		  <if test="userId != null ">
+			and user_id = #{userId}
+		  </if>
+		  <if test="babyName != null and babyName != '' ">
+			and baby_name = #{babyName}
+		  </if>
+		  <if test="babySex != null ">
+			and baby_sex = #{babySex}
+		  </if>
+		  <if test="babyBirthday != null ">
+			and baby_birthday = #{babyBirthday}
+		  </if>
+		  <if test="isDefault != null ">
+			and is_default = #{isDefault}
+		  </if>
+		  <if test="isDelete != null ">
+			and is_delete = #{isDelete}
+		  </if>
+		  <if test="createDate != null ">
+			and create_date = #{createDate}
+		  </if>
+		  <if test="createBy != null ">
+			and create_by = #{createBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and update_date = #{updateDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and update_by = #{updateBy}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="UserBabyPojo">
+		select
+			<include refid="Base_Column_List" />
+		from user_baby
+		where 1=1
+			<if test="id != null ">
+			  and id = #{id}
+			</if>
+			<if test="userId != null ">
+			  and user_id = #{userId}
+			</if>
+			<if test="babyName != null and babyName != '' ">
+			  and baby_name = #{babyName}
+			</if>
+			<if test="babySex != null ">
+			  and baby_sex = #{babySex}
+			</if>
+			<if test="babyBirthday != null ">
+			  and baby_birthday = #{babyBirthday}
+			</if>
+			<if test="isDefault != null ">
+			  and is_default = #{isDefault}
+			</if>
+			<if test="isDelete != null ">
+			  and is_delete = #{isDelete}
+			</if>
+			<if test="createDate != null ">
+			  and create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and update_by = #{updateBy}
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="UserBabyPojo">
+		update user_baby
+		<set>
+			<if test="userId != null">
+			  user_id = #{userId},
+			</if>
+			<if test="babyName != null">
+			  baby_name = #{babyName},
+			</if>
+			<if test="babySex != null">
+			  baby_sex = #{babySex},
+			</if>
+			<if test="babyBirthday != null">
+			  baby_birthday = #{babyBirthday},
+			</if>
+			<if test="isDefault != null">
+			  is_default = #{isDefault},
+			</if>
+			<if test="isDelete != null">
+			  is_delete = #{isDelete},
+			</if>
+			<if test="createDate != null">
+			  create_date = #{createDate},
+			</if>
+			<if test="createBy != null">
+			  create_by = #{createBy},
+			</if>
+			<if test="updateDate != null">
+			  update_date = #{updateDate},
+			</if>
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from user_baby 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="UserBabyPojo">
+		insert into user_baby
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="babyName != null">
+				baby_name,
+			</if>
+			<if test="babySex != null">
+				baby_sex,
+			</if>
+			<if test="babyBirthday != null">
+				baby_birthday,
+			</if>
+			<if test="isDefault != null">
+				is_default,
+			</if>
+			<if test="isDelete != null">
+				is_delete,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+			<if test="updateDate != null">
+				update_date,
+			</if>
+			<if test="updateBy != null">
+				update_by,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="userId != null">
+				#{userId},
+			</if>
+			<if test="babyName != null">
+				#{babyName},
+			</if>
+			<if test="babySex != null">
+				#{babySex},
+			</if>
+			<if test="babyBirthday != null">
+				#{babyBirthday},
+			</if>
+			<if test="isDefault != null">
+				#{isDefault},
+			</if>
+			<if test="isDelete != null">
+				#{isDelete},
+			</if>
+			<if test="createDate != null">
+				#{createDate},
+			</if>
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+			<if test="updateDate != null">
+				#{updateDate},
+			</if>
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+		</trim>
+	</insert>
+	<select id="getByParams" parameterType="java.util.Map" resultType="UserBabyPojo">
+		select 
+		  ub.id as id,
+		  ub.user_id as userId,
+		  ub.baby_name as babyName,
+		  ub.baby_sex as babySex,
+		  (select ud.name from sys_dict ud where ud.value = ub.baby_sex and type='sex') babySexStr,
+		  ub.baby_birthday as babyBirthday,
+		  ub.is_default as isDefault,
+		  ub.is_delete as isDelete,
+		  ub.create_date as createDate,
+		  ub.create_by as createBy,
+		  ub.update_date as updateDate,
+		  ub.update_by as updateBy
+		from user_baby ub
+		where 1=1
+		  <if test="id != null ">
+			and ub.id = #{id}
+		  </if>
+		  <if test="userId != null ">
+			and ub.user_id = #{userId}
+		  </if>
+		  <if test="babyName != null and babyName != '' ">
+			and ub.baby_name = #{babyName}
+		  </if>
+		  <if test="babySex != null ">
+			and ub.baby_sex = #{babySex}
+		  </if>
+		  <if test="babyBirthday != null ">
+			and ub.baby_birthday = #{babyBirthday}
+		  </if>
+		  <if test="isDefault != null ">
+			and ub.is_default = #{isDefault}
+		  </if>
+		  <if test="isDelete != null ">
+			and ub.is_delete = #{isDelete}
+		  </if>
+		  <if test="createDate != null ">
+			and ub.create_date = #{createDate}
+		  </if>
+		  <if test="createBy != null ">
+			and ub.create_by = #{createBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and ub.update_date = #{updateDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and ub.update_by = #{updateBy}
+		  </if>
+		  limit 1
+	</select>
+	
+</mapper>

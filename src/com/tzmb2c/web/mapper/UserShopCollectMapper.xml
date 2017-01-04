@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.UserShopCollectMapper">
+ 
+	<!-- <cache/>  -->
+
+	<select id="getUserShopCollectAll" resultType="userShopCollectPojo">
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.suser_id as suserId,
+		t.shop_id as shopId 
+		from user_shop_collect t order by t.create_date desc
+	</select>
+	
+	<select id="getfindByIdUserShopCollect" parameterType="Long" resultType="userShopCollectPojo" >
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.suser_id as suserId,
+		t.shop_id as shopId 
+		from user_shop_collect t where
+		t.id = #{id} 
+	</select>
+	
+	<select id="getfindByUserIdUserShopCollect" parameterType="Long" resultType="userShopCollectPojo" >
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.suser_id as suserId,
+		t.shop_id as shopId ,
+		s.status as status,
+		s.name as shopName,
+		s.images as shopImages,
+		s.address as shopAddress,
+		l.name as suserName
+		from user_shop_collect t left join user_shop s on t.shop_id = s.id left join sys_login l on t.suser_id = l.id
+		where
+		t.user_id = #{id} 
+		group by t.shop_id 
+		order by t.create_date desc
+		
+	</select>
+
+	<insert id="insertUserShopCollect" parameterType="userShopCollectPojo">
+		insert into
+		user_shop_collect(user_id,suser_id,shop_id,create_by,create_date,update_by,update_date,remarks,version)
+		values(#{userId},#{suserId},#{shopId},#{createBy},#{createDate},#{updateBy},#{updateDate},#{remarks},#{version})
+	</insert>
+	
+	<delete id="delUserShopCollect" parameterType="Long">
+		delete from user_shop_collect where id = #{id}
+	</delete>
+	
+	<delete id="deleteUserShopCollect"  parameterType="java.util.Map">
+		delete from user_shop_collect where user_id = #{userId} and shop_id=#{shopId}
+	</delete>
+	
+	<update id="updateUserShopCollect" parameterType="userShopCollectPojo">
+	
+		update user_shop_collect set
+		update_by = #{updateBy},
+		update_date = #{updateDate},
+		user_id = #{userId},
+		shop_id =#{shopId},
+		product_id =#{productId},
+		product_name =#{productName},
+		product_model =#{productModel},
+		stock_id =#{stockId},
+		stock_price_old =#{stockPriceOld},
+		stock_price =#{stockPrice},
+		num =#{num},
+		type =#{type},
+		channel =#{channel},
+		status =#{status}
+		where id = #{id}
+	</update>
+	
+	<select id="userShopCollectAllCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from user_shop_collect where
+		1=1
+		<if test="suserId!=null and suserId!=''">
+			and suser_id = #{suserId}
+		</if>
+		<if test="shopId!=null and shopId!=''">
+			and shop_id = #{shopId}
+		</if>
+		<if test="userId!=null and userId!=''">
+			and user_id = #{userId}
+		</if>
+	</select>
+	
+	<select id="userShopCollectAllList" resultType="userShopCollectPojo"
+		parameterType="java.util.Map">
+
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.shop_id as shopId ,
+		t.product_id as productId, 
+		t.product_name as productName,
+		t.product_model as productModel,
+		t.stock_id as stockId ,
+		t.stock_price_old as stockPriceOld,
+		t.stock_price as stockPrice,
+		t.num as num,
+		t.type as type,
+		t.channel as channel,
+		t.status as status,
+		(select name from sys_dict where value=t.status and type = 'status') statusName,
+		(select name from sys_dict where value=t.channel and type = 'channel') channelName,
+		(select name from sys_login where id=t.user_id ) userName,
+		(select name from user_shop where id=t.shop_id ) shopName 
+		from user_shop_collect as t
+		where
+		1=1
+
+		<if test="productName!=null and productName!=''">
+			and product_name like CONCAT("%",#{productName},"%")
+		</if>
+		<if test="productModel!=null and productModel!=''">
+			and product_model like CONCAT("%",#{productModel},"%")
+		</if>
+		<if test="channel!=null ">
+			and channel = #{channel}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+		
+	</select>
+	<select id="findUserShopCollectByShopId" parameterType="userShopCollectPojo" resultType="userShopCollectPojo" >
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.shop_id as shopId
+		from user_shop_collect t where
+		t.shop_id = #{shopId} and 
+		t.user_id = #{userId}
+	</select>
+	
+	<!--我的店铺收藏分页-->
+	<select id="userShopCollectByPage" resultType="userShopCollectPojo"
+		parameterType="java.util.Map">
+		select 
+		t.id as id,
+		t.user_id as userId,
+		t.suser_id as suserId,
+		t.shop_id as shopId ,
+		s.status as status,
+		s.name as shopName,
+		s.images as shopImages,
+		s.address as shopAddress,
+		l.name as suserName
+		from user_shop_collect t left join user_shop s on t.shop_id = s.id left join sys_login l on t.suser_id = l.id
+		where
+		t.user_id = #{userId}
+		group by t.shop_id
+		order by t.id desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+		
+		
+	</select>
+</mapper>

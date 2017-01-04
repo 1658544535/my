@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="groupFreeCouponSetting" extends="default">
+		<!-- 进入列表页面 -->
+		<action name="goGroupFreeCouponSetting" class="com.tzmb2c.web.action.GroupFreeCouponSettingAction" method="goGroupFreeCouponSetting">
+			<result name="success">/page/system/groupFreeCouponSetting/groupFreeCouponSettingList.jsp</result>
+		</action>
+		<!-- 新增 -->
+		<action name="goAddGroupFreeCouponSetting" class="com.tzmb2c.web.action.GroupFreeCouponSettingAction" method="goAddGroupFreeCouponSetting">
+		    <result name="success">/page/system/groupFreeCouponSetting/addGroupFreeCouponSetting.jsp</result>
+		</action>
+		<!-- 新增提交 -->
+		<action name="addGroupFreeCouponSetting" class="com.tzmb2c.web.action.GroupFreeCouponSettingAction" method="add">
+		</action>		
+		<!-- 编辑页面 -->
+		<action name="goEditGroupFreeCouponSetting" class="com.tzmb2c.web.action.GroupFreeCouponSettingAction" method="goEditGroupFreeCouponSetting">
+			<result name="success">/page/system/groupFreeCouponSetting/updateGroupFreeCouponSetting.jsp</result>
+		</action>
+		<!-- 编辑提交 -->
+		<action name="updateGroupFreeCouponSetting" class="com.tzmb2c.web.action.GroupFreeCouponSettingAction" method="update">
+		</action>
+	</package>
+	<package name="groupFreeCouponSetting-json" extends="json-default">
+		<!-- 内容 -->
+		<action name="groupFreeCouponSettingList" class="com.tzmb2c.web.action.GroupFreeCouponSettingAction" method="groupFreeCouponSettingList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="groupFreeCouponSettingCnt" class="com.tzmb2c.web.action.GroupFreeCouponSettingAction" method="groupFreeCouponSettingRowCnt">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+		<!-- 根据ID删除 -->
+		<action name="delGroupFreeCouponSetting" class="com.tzmb2c.web.action.GroupFreeCouponSettingAction" method="delete">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+		<!-- 删除选中 -->
+		<action name="delGroupFreeCouponSettingAll" class="com.tzmb2c.web.action.GroupFreeCouponSettingAction" method="deleteAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 通过审核 -->
+		<action name="checkGroupFreeCouponSetting" class="com.tzmb2c.web.action.GroupFreeCouponSettingAction" method="check">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 取消审核 -->
+		<action name="uncheckGroupFreeCouponSetting" class="com.tzmb2c.web.action.GroupFreeCouponSettingAction" method="uncheck">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中通过审核 -->
+		<action name="checkGroupFreeCouponSettingAll" class="com.tzmb2c.web.action.GroupFreeCouponSettingAction" method="checkAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中取消审核 -->
+		<action name="uncheckGroupFreeCouponSettingAll" class="com.tzmb2c.web.action.GroupFreeCouponSettingAction" method="uncheckAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+	</package>
+</struts>

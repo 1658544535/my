@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="userBrand" extends="default">
+		<!-- 页面（全部）  -->
+		<action name="userBrandList" class="com.tzmb2c.web.action.UserBrandAction" method="userBrandListCount">
+			<result name="success">/page/system/user/userBrandList.jsp</result>
+		</action>	
+		<!-- 根据ID删除    -->
+		<action name="delUserBrand" class="com.tzmb2c.web.action.UserBrandAction" method="delUserBrand">
+		</action>
+		<!-- 页面（编辑） -->
+		<action name="goUpdateUserBrand" class="com.tzmb2c.web.action.UserBrandAction" method="goUpdateUserBrand">
+			<result name="success">/page/system/user/updateUserBrandList.jsp</result>
+		</action>
+		<!-- 编辑                 -->
+		<action name="updateUserBrand" class="com.tzmb2c.web.action.UserBrandAction" method="updateUserBrand">
+		</action>
+		<!-- 通过审核         -->
+		<action name="checkUserBrand" class="com.tzmb2c.web.action.UserBrandAction" method="checkUserBrand">
+		</action>
+		<!-- 取消审核         -->
+		<action name="uncheckUserBrand" class="com.tzmb2c.web.action.UserBrandAction" method="uncheckUserBrand">
+		</action>
+		<!-- 新增                 -->
+		<action name="goAddUserBrandList" class="com.tzmb2c.web.action.UserBrandAction" method="goAddUserBrandList">
+		    <result name="success">/page/system/user/addUserBrandList.jsp</result>
+		</action>
+		<!-- 新增提交         -->
+		<action name="addUserBrandListOK" class="com.tzmb2c.web.action.UserBrandAction" method="addUserBrandListOK">
+		</action>
+	</package>
+	<package name="userBrand-json" extends="json-default">
+		<!-- 内容 -->
+		<action name="userBrandListAll" class="com.tzmb2c.web.action.UserBrandAction" method="userBrandListAll">
+			<result type="json">
+			<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 内容 -->
+		<action name="findUserBrandNameByUserId" class="com.tzmb2c.web.action.UserBrandAction" method="findUserBrandNameByUserId">
+			<result type="json">
+			<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="userBrandListCount" class="com.tzmb2c.web.action.UserBrandAction" method="userBrandListCount">
+			<result type="json">
+			<param name="root">page.rowCount</param>
+			</result>
+		</action>		
+	</package>
+</struts>

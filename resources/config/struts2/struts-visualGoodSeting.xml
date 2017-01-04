@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="visualGoodSeting" extends="default">
+		<!-- 视觉商品设置 -->
+		<action name="visualGoodSeting"
+			class="com.tzmb2c.web.action.VisualGoodSetingAction" method="visualGoodSetingCount">
+			<result name="success">/page/system/childrenChannel/visualGoodSeting.jsp</result>
+		</action>
+		<!-- 批量设置 -->
+		<action name="setSpecialProductAll"
+			class="com.tzmb2c.web.action.VisualGoodSetingAction" method="setSpecialProductAll">
+		</action>
+		<!-- 设为视觉 -->
+		<action name="setSpecialProduct"
+			class="com.tzmb2c.web.action.VisualGoodSetingAction" method="setSpecialProduct">
+		</action>
+		<!-- 取消资格 -->
+		<action name="unsetSpecialProduct"
+			class="com.tzmb2c.web.action.VisualGoodSetingAction" method="unsetSpecialProduct">
+		</action>
+	</package>	
+	<package name="visualGoodSeting-json" extends="json-default">
+		<!-- 视觉商品列表 -->
+		<action name="visualGoodSetingAll"
+			class="com.tzmb2c.web.action.VisualGoodSetingAction" method="visualGoodSetingAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<!-- 视觉商品条数 -->
+		<action name="visualGoodSetingCount"
+			class="com.tzmb2c.web.action.VisualGoodSetingAction" method="visualGoodSetingCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+	</package>
+</struts>

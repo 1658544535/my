@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tzmb2c.web.mapper.SocialCircleTypeMapper">
+   <select id="findSocialCircleTypeList" resultType="SocialCircleTypePojo" parameterType="java.util.Map">
+		SELECT
+		s.id          as id,
+		s.images      as images,
+		s.name        as name,
+		s.sorting     as sorting
+		FROM
+		social_circle_type s
+		WHERE
+		1 = 1
+			and s.is_delete = 0
+		<if test="id != null">
+			and s.id = #{id}
+		</if>
+		<if test="name != null and name != '' ">
+			and s.name = #{name}
+		</if>
+		<if test="status != null">
+			and s.status = #{status}
+		</if>
+		order by s.sorting ,s.create_date desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	<!-- 查询记录的数目 -->
+    <select id="findSocialCircleTypeCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from social_circle_type s
+		where 1=1
+			and s.is_delete = 0
+        <if test="id != null">
+			and s.id = #{id}
+		</if>
+		<if test="ids != null">
+			and s.id &lt;&gt; #{ids}
+		</if>
+		<if test="name != null and name != '' ">
+			and s.name = #{name}
+		</if>
+		<if test="status != null">
+			and s.status = #{status}
+		</if>
+	</select>
+	<!--加入某条-->
+	<insert id="insertSocialCircleType" parameterType="SocialCircleTypePojo">
+		insert into social_circle_type (name,images,is_delete,create_by,create_date,update_by,update_date,sorting)
+		values(#{name},#{images},0,1,now(),1,now(),#{sorting})
+	</insert>
+	<!-- 删除单条(id) -->
+	<update id="delSocialCircleType" parameterType="Long">
+		update social_circle_type set is_delete = 1 where id = #{id}
+	</update>
+	<!-- 查找单条 -->
+	<select id="findSocialCircleTypeById" resultType="SocialCircleTypePojo" parameterType="Long">
+		SELECT
+		s.id          as id,
+		s.images      as images,
+		s.name        as name,
+		s.sorting     as sorting		
+	    from social_circle_type s
+		where
+		s.id=#{id}
+	</select>
+	<!--编辑单条-->
+	<update id="updateSocialCircleType" parameterType="SocialCircleTypePojo">
+		update social_circle_type set
+		<if test="images != null and images != ''">
+			images = #{images},
+		</if>
+        <if test="name != null and name != ''">
+			name = #{name},
+		</if>
+		<if test="sorting != null">
+			sorting = #{sorting},
+		</if>
+		
+		update_date = now()
+		where  id = #{id}			
+	</update>
+</mapper>

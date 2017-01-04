@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="childrenChannel" extends="default">
+	<!--频道列表-->
+	<action name="childrenChannelList" class="com.tzmb2c.web.action.ChildrenChannelAction" method="findChildrenChannelCount">
+			<result>/page/system/childrenChannel/childrenChannelList.jsp</result>
+		</action>	 
+		<!-- 根据ID删除 -->
+		<action name="delChildrenChannelById" class="com.tzmb2c.web.action.ChildrenChannelAction" method="delChildrenChannelById">
+		</action>
+		<!-- 根据ID批量删除 -->
+		<action name="delChildrenChannelAllById" class="com.tzmb2c.web.action.ChildrenChannelAction" method="delChildrenChannelAllById">
+		</action>
+		<!-- 根据ID编辑(跳转) -->
+		<action name="goUpdateChildrenChannelById" class="com.tzmb2c.web.action.ChildrenChannelAction" method="findChildrenChannelById">
+			<result name="success">/page/system/childrenChannel/updateChildrenChannelList.jsp</result>
+		</action>
+	    <!-- 根据ID编辑 -->
+		<action name="updateChildrenChannelById" class="com.tzmb2c.web.action.ChildrenChannelAction" method="updateChildrenChannelById">
+		</action>
+		<!-- 批量通过审核 -->
+		<action name="checkChildrenChannelAllById" class="com.tzmb2c.web.action.ChildrenChannelAction" method="checkChildrenChannelAllById">
+		</action>
+		<!-- 通过审核 -->
+		<action name="checkChildrenChannelById" class="com.tzmb2c.web.action.ChildrenChannelAction" method="checkChildrenChannelById">
+		</action>
+		<!-- 取消审核 -->
+		<action name="uncheckChildrenChannelById" class="com.tzmb2c.web.action.ChildrenChannelAction" method="uncheckChildrenChannelById">
+		</action>
+		<!-- （跳转）新增频道 -->
+		<action name="goAddChildrenChannelList" class="com.tzmb2c.web.action.ChildrenChannelAction" method="goAddChildrenChannelList">
+			<result name="success">/page/system/childrenChannel/addChildrenChannelList.jsp</result>
+		</action>	
+		<!-- 提交新增频道 -->
+		<action name="addChildrenChannelListOk" class="com.tzmb2c.web.action.ChildrenChannelAction" method="addChildrenChannelListOk">			
+		</action>		   
+	</package>
+	
+	<package name="childrenChannel-json" extends="json-default">
+		    <action name="findChildrenChannelList" class="com.tzmb2c.web.action.ChildrenChannelAction" method="findChildrenChannelList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<action name="findChildrenChannelCount" class="com.tzmb2c.web.action.ChildrenChannelAction" method="findChildrenChannelCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+	</package>
+</struts>

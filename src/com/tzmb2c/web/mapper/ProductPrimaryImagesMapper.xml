@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.ProductPrimaryImagesMapper">
+ 
+	<!-- <cache/>  -->
+
+	<select id="getProductPrimaryImagesAll" resultType="productPrimaryImagesPojo">
+		select 
+		t.id as id,
+		t.product_id as productId, 
+		t.user_id as userId,
+		t.images as images,
+		t.sorting as sorting,
+		t.status as status
+		from product_primary_images as t order by t.create_date desc
+	</select>
+	
+	<select id="getfindByIdProductPrimaryImages" parameterType="Long" resultType="productPrimaryImagesPojo" >
+		select 
+		t.id as id,
+		t.product_id as productId, 
+		t.user_id as userId,
+		t.images as images,
+		t.sorting as sorting,
+		t.status as status
+		from product_primary_images as t where
+		t.id = #{id} 
+	</select>
+
+	<insert id="insertProductPrimaryImages" parameterType="productPrimaryImagesPojo">
+		insert into
+		product_primary_images(product_id,user_id,images,sorting,status,create_by,create_date,update_by,update_date,remarks,version)
+		values(#{productId},#{userId},#{images},#{sorting},#{status},#{createBy},#{createDate},#{updateBy},#{updateDate},#{remarks},#{version})
+	</insert>
+	
+	<delete id="delProductPrimaryImages" parameterType="Long">
+		delete from product_primary_images where id = #{id}
+	</delete>
+	
+	<delete id="deleteProductPrimaryImages"  parameterType="Long">
+		delete from product_primary_images where id = #{id}
+	</delete>
+	
+	<update id="updateProductPrimaryImages" parameterType="productPrimaryImagesPojo">
+	
+		update product_primary_images set
+		images = #{images},
+		sorting = #{sorting},
+		status =#{status}
+		where id = #{id}
+	</update>
+	
+	<select id="productPrimaryImagesAllCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from product_primary_images t  where
+		1=1
+		<if test="productId!=null and productId!=''">
+			and t.product_id = #{productId}
+		</if>
+	</select>
+	
+	<select id="productPrimaryImagesAllList" resultType="productPrimaryImagesPojo"
+		parameterType="java.util.Map">
+		select 
+		t.id as id,
+		t.product_id as productId, 
+		t.user_id as userId,
+		t.images as images,
+		t.sorting as sorting,
+		t.status as status
+		from product_primary_images as t
+		where 1=1
+		<if test="productId!=null and productId!=''">
+			and t.product_id = #{productId}
+		</if>
+		
+		order by sorting asc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+		
+	</select>
+	<select id="getPrimaryImagesByProduct" resultType="productPrimaryImagesPojo"
+		parameterType="Long">
+		select 
+		t.id as id,
+		t.product_id as productId, 
+		t.user_id as userId,
+		t.images as images,
+		t.sorting as sorting,
+		t.status as status
+		from product_primary_images as t
+		where 1=1 and t.product_id = #{id}
+		
+		order by sorting asc
+	</select>
+</mapper>

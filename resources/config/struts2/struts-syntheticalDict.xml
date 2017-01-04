@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="syntheticalDict" extends="default">
+
+		<action name="syntheticalDict" class="com.tzmb2c.web.action.SyntheticalDictAction" method="getSyntheticalDictCount">
+			<result>/page/system/sys/syntheticalDict.jsp</result>
+		</action>
+		
+		<action name="SyntheticalDictDeleteId" class="com.tzmb2c.web.action.SyntheticalDictAction" method="syntheticalDictDeleteId">
+		
+		</action>
+		
+		<action name="goFindSyntheticalDict" class="com.tzmb2c.web.action.SyntheticalDictAction" method="goFindSyntheticalDict">
+			<result>/page/system/sys/syntheticalDictupdate.jsp</result>
+		</action>
+		<action name="updateSyntheticalDict" class="com.tzmb2c.web.action.SyntheticalDictAction" method="updateSyntheticalDict">
+		</action>
+		<action name="addSyntheticalDict" class="com.tzmb2c.web.action.SyntheticalDictAction" method="addSyntheticalDict">
+			<result>/page/system/sys/syntheticalDictAdd.jsp</result>
+		</action>
+		<action name="insertSyntheticalDict" class="com.tzmb2c.web.action.SyntheticalDictAction" method="insertSyntheticalDict">
+		</action>
+		<!-- 审核全部 -->
+		<action name="checkAllsyntheticalDict" class="com.tzmb2c.web.action.SyntheticalDictAction"
+			method="verifyAllPushNotice">
+		</action>
+		
+	</package>
+	<package name="syntheticalDict-json" extends="json-default">
+		<action name="deleSyntheticalDict" class="com.tzmb2c.web.action.SyntheticalDictAction" method="deleSyntheticalDict">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		<!--平台入口-->
+		<action name="getSyntheticalDictCount" class="com.tzmb2c.web.action.SyntheticalDictAction" method="getSyntheticalDictCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+			<action name="syntheticalDictAllList" class="com.tzmb2c.web.action.SyntheticalDictAction" method="syntheticalDictAllList">
+			<result type="json">
+				<param name="root">page.result</param>.
+			</result>
+		</action>
+		<action name="getSyntheticalDictListByType" class="com.tzmb2c.web.action.SyntheticalDictAction" method="getSyntheticalDictListByType">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		<!--资讯单条审核.fu-->
+		<action name="update" class="com.tzmb2c.web.action.SyntheticalDictAction"
+			method="update">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

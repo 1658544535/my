@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.GrouponRecommendMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		gr.id as id,
+		gr.activity_id as activityId,
+		gr.product_id as productId,
+		gr.sorting as sorting,
+		gr.create_by as createBy,
+		gr.create_date as createDate,
+		gr.update_by as updateBy,
+		gr.update_date as updateDate,
+		p.product_name as productName,
+		p.distribution_price as distributionPrice,
+		p.image as productImage, 
+		p.image_main as imageMain,
+		p.sell_number + p.base_number as sellNumber,
+		ga.price as price,
+		ga.num as groupNum
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="GrouponRecommendPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			groupon_recommend gr left join product p on p.id= gr.product_id left join groupon_activity ga on ga.id= gr.activity_id
+		where
+			id = #{id}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from groupon_recommend gr left join product p on p.id= gr.product_id left join groupon_activity ga on ga.id= gr.activity_id
+		where 1=1
+		  <if test="id != null ">
+			and gr.id = #{id}
+		  </if>
+		  <if test="activityId != null ">
+			and gr.activity_id = #{activityId}
+		  </if>
+		  <if test="productId != null ">
+			and gr.product_id = #{productId}
+		  </if>
+		  <if test="keywords != null and keywords != ''">
+			and
+				(
+					p.product_name LIKE CONCAT(CONCAT('%', #{keywords}),'%')
+					 or 
+					gr.product_id LIKE CONCAT(CONCAT('%', #{keywords}),'%') 
+				)
+		  </if>
+		  <if test="sorting != null ">
+			and gr.sorting = #{sorting}
+		  </if>
+		  <if test="createBy != null ">
+			and gr.create_by = #{createBy}
+		  </if>
+		  <if test="createDate != null ">
+			and gr.create_date = #{createDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and gr.update_by = #{updateBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and gr.update_date = #{updateDate}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="GrouponRecommendPojo">
+		select
+			<include refid="Base_Column_List" />
+		from groupon_recommend gr left join product p on p.id= gr.product_id left join groupon_activity ga on ga.id= gr.activity_id
+		where 1=1
+			<if test="id != null ">
+			  and gr.id = #{id}
+			</if>
+			<if test="activityId != null ">
+			  and gr.activity_id = #{activityId}
+			</if>
+			<if test="productId != null ">
+			  and gr.product_id = #{productId}
+			</if>
+			<if test="keywords != null and keywords != ''">
+			and
+				(
+					p.product_name LIKE CONCAT(CONCAT('%', #{keywords}),'%')
+					 or 
+					gr.product_id LIKE CONCAT(CONCAT('%', #{keywords}),'%') 
+				)
+		    </if>
+			<if test="sorting != null ">
+			  and gr.sorting = #{sorting}
+			</if>
+			<if test="createBy != null ">
+			  and gr.create_by = #{createBy}
+			</if>
+			<if test="createDate != null ">
+			  and gr.create_date = #{createDate}
+			</if>
+			<if test="updateBy != null ">
+			  and gr.update_by = #{updateBy}
+			</if>
+			<if test="updateDate != null ">
+			  and gr.update_date = #{updateDate}
+			</if>
+			<if test="status !=null">
+			  and ga.status = #{status}
+			</if>
+			<if test="type !=null">
+			  and ga.type = #{type}
+			</if>
+			<if test="beginTimeStr !=null and beginTimeStr !=''">
+			  and str_to_date(ga.begin_time,'%Y-%m-%d %H:%i:%s') &gt;= #{beginTimeStr}
+			</if>
+			<if test="endTimeStr !=null and endTimeStr !=''">
+			  and str_to_date(ga.end_time,'%Y-%m-%d %H:%i:%s') &lt;= #{endTimeStr}
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="GrouponRecommendPojo">
+		update groupon_recommend
+		<set>
+			<if test="activityId != null">
+			  activity_id = #{activityId},
+			</if>
+			<if test="productId != null">
+			  product_id = #{productId},
+			</if>
+			<if test="sorting != null">
+			  sorting = #{sorting},
+			</if>
+			<if test="createBy != null">
+			  create_by = #{createBy},
+			</if>
+			<if test="createDate != null">
+			  create_date = #{createDate},
+			</if>
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+			<if test="updateDate != null">
+			  update_date = #{updateDate},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from groupon_recommend 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="GrouponRecommendPojo">
+		insert into groupon_recommend
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="activityId != null">
+				activity_id,
+			</if>
+			<if test="productId != null">
+				product_id,
+			</if>
+			<if test="sorting != null">
+				sorting,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="updateBy != null">
+				update_by,
+			</if>
+			<if test="updateDate != null">
+				update_date,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="activityId != null">
+				#{activityId},
+			</if>
+			<if test="productId != null">
+				#{productId},
+			</if>
+			<if test="sorting != null">
+				#{sorting},
+			</if>
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+			<if test="createDate != null">
+				#{createDate},
+			</if>
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+			<if test="updateDate != null">
+				#{updateDate},
+			</if>
+		</trim>
+	</insert>
+	
+</mapper>

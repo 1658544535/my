@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.SocialCircleMapper">
+<select id="findSocialCircleList" resultType="SocialCirclePojo" parameterType="java.util.Map">
+		SELECT
+		s.id             as id,
+		s.circle_type_id as circleTypeId,
+		st.name          as typeName,
+		s.title          as title,
+		s.banner         as banner,
+		s.follow_num     as followNum,
+		s.sorting        as sorting,
+		s.status         as status,
+		(case when s.status = 0 then '未审核' when s.status = 1 then '审核成功' when s.status = 2 then '审核失败' end) as statusName,
+		s.create_date    as createDate,
+		s.create_by      as createBy,
+		(select name from sys_login where id=s.create_by ) as nickname,
+		s.update_date    as updateDate,
+	    s.update_by      as updateBy
+		FROM
+		social_circle s 
+		left join social_circle_type st on st.id = s.circle_type_id
+		WHERE
+		1 = 1
+		<if test="id != null">
+			and s.id = #{id}
+		</if>
+		<if test="title != null and title != '' ">
+			and s.title like CONCAT("%",#{title},"%")
+		</if>
+		<if test="circleTypeId != null and circleTypeId != '' ">
+			and s.circle_type_id = #{circleTypeId}
+		</if>
+		<if test="status != null">
+			and s.status = #{status}
+		</if>
+		<if test="isFollow != null">
+			and s.id not in (select ucf.type_id from user_circle_follow ucf where ucf.user_id = #{uid} and ucf.type = 2 and ucf.is_follow = 1)
+		</if>
+		<if test="orderBy != null and orderBy != '' ">
+			<if test="orderBy == 'followNum desc'">
+				order by followNum desc
+			</if>
+		</if>
+		<if test="orderBy == null or orderBy == ''">
+			order by s.create_date desc
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	<!-- 查询记录的数目 -->
+    <select id="findSocialCircleCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from social_circle s left join social_circle_type st on st.id = s.circle_type_id
+		where 1=1
+        <if test="id != null">
+			and s.id = #{id}
+		</if>
+		<if test="title != null and title != '' ">
+			and s.title like CONCAT("%",#{title},"%")
+		</if>
+		<if test="circleTypeId != null">
+			and s.circle_type_id = #{circleTypeId}
+		</if>
+		<if test="status != null">
+			and s.status = #{status}
+		</if>
+	</select>
+	<!--加入某条-->
+	<insert id="insertSocialCircle" parameterType="SocialCirclePojo">
+		insert into social_circle (circle_type_id,title,banner,follow_num,sorting,status,create_by,create_date,update_by,update_date)
+		values(#{circleTypeId},#{title},#{banner},0,#{sorting},#{status},1,now(),1,now())
+	</insert>
+	<!-- 删除单条(id) -->
+	<delete id="delSocialCircle" parameterType="Long">
+		delete from social_circle  where id = #{id}
+	</delete>
+	<!-- 查找单条 -->
+	<select id="findSocialCircleById" resultType="SocialCirclePojo" parameterType="Long">
+		SELECT
+		s.id             as id,
+		s.circle_type_id as circleTypeId,
+		st.name          as typeName,
+		s.title          as title,
+		s.banner         as banner,
+		s.follow_num     as followNum,
+		s.sorting        as sorting,
+		s.status         as status,
+		(select name from sys_login where id=s.create_by ) as nickname,
+		(case when s.status = 0 then '未审核' 
+			  when s.status = 1 then '审核成功'
+			  when s.status = 2 then '审核失败'
+		end) as statusName	
+	    from social_circle s left join social_circle_type st on st.id = s.circle_type_id
+		where
+		s.id=#{id}
+	</select>
+	<!--编辑单条-->
+	<update id="updateSocialCircle" parameterType="SocialCirclePojo">
+		update social_circle set
+        <if test="title != null and title != ''">
+			title = #{title},
+		</if>
+		<if test="circleTypeId != null">
+			circle_type_id = #{circleTypeId},
+		</if>
+		<if test="banner != null and banner != ''">
+			banner = #{banner},
+		</if>
+		<if test="followNum != null">
+			follow_num = #{followNum},
+		</if>
+		<if test="sorting != null">
+			sorting = #{sorting},
+		</if>
+		<if test="status != null">
+			status = #{status},
+		</if>
+		update_date = now()
+		where  id = #{id}			
+	</update>
+	<!--审核单条-->
+	<update id="checkSocialCircle" parameterType="SocialCirclePojo">
+		update social_circle set
+		status = 1,
+		update_date = now()
+		where  id = #{id}			
+	</update>
+	<!--审败单条-->
+	<update id="uncheckSocialCircle" parameterType="SocialCirclePojo">
+		update social_circle set
+		status = 2,
+		update_date = now()
+		where  id = #{id}			
+	</update>
+	<!--添加关注-->
+	<update id="addFollowNumById" parameterType="SocialCirclePojo">
+		update social_circle set
+			<if test="followNum != null">
+				follow_num = follow_num + 1
+			</if>
+		where 
+		id = #{id}		
+	</update>
+	<!--取消关注-->
+	<update id="delFollowNumById" parameterType="SocialCirclePojo">
+		update social_circle set
+			<if test="followNum != null">
+				follow_num = follow_num - 1
+			</if>
+		where 
+		id = #{id} and follow_num &gt; 0
+	</update>
+	
+	<!-- 通过达人id查找达人关注的圈子 -->
+	<select id="findSocialCircleByTarentoId" resultType="SocialCirclePojo" parameterType="java.util.Map">
+		select 
+			sc.id as id,
+			sc.title as title 
+			FROM social_circle sc
+			LEFT JOIN user_circle_follow ucf 
+			on ucf.type_id = sc.id
+			WHERE 1=1
+			<if test="isFollow != null">
+				and ucf.is_follow = #{isFollow}
+			</if>
+			<if test="type != null">
+				and ucf.type = #{type}
+			</if>
+			<if test="userId != null">
+				and ucf.user_id = #{userId}
+			</if>
+			<if test="status != null">
+				and sc.status = #{status}
+			</if>
+			
+	</select>
+	
+</mapper>

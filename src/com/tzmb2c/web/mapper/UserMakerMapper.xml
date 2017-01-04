@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tzmb2c.web.mapper.UserMakerMapper">
+<select id="findUserMakerList" resultType="SysLoginPojo" parameterType="java.util.Map">
+		select
+			s.id          as id,
+		    s.name        as name,
+		    s.loginname   as loginname,
+		    s.image       as image,
+		    s.status      as status,
+		    (CASE WHEN status = 0 THEN '未审核' WHEN status = 1 THEN '审核成功' END) as statusName
+        from sys_login s 
+	    where 1=1
+	    and s.type = 12
+	    <if test="name != null and name != '' ">
+			and s.name like concat("%",#{name},"%")
+		</if>
+		<if test="loginname != null and loginname != '' ">
+			and s.loginname like concat("%",#{loginname},"%")
+		</if>
+		<if test="status != null">
+			and s.status = #{status}
+		</if>
+        order by s.create_date desc 
+		<if test="pageNo != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+</select>
+
+<select id="findUserMakerCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from sys_login s 
+		where 1=1
+		and s.type = 12
+		<if test="name != null and name != '' ">
+			and s.name like concat("%",#{name},"%")
+		</if>
+		<if test="loginname != null and loginname != '' ">
+			and s.loginname like concat("%",#{loginname},"%")
+		</if>
+		<if test="status != null">
+			and s.status = #{status}
+		</if>
+</select>
+<!-- 查找单条(id) -->
+<select id="findUserMakerById" resultType="SysLoginPojo" parameterType="Long">
+		select
+		    s.id          as id,
+		    s.name        as name,
+		    s.loginname   as loginname,
+		    s.image       as image,
+		    s.status      as status,
+		    (CASE WHEN s.status = 0 then '未审核' WHEN s.status = 1 then '审核成功' END) as statusName
+        from sys_login s
+		where
+		s.id=#{id}
+</select>
+<!--加入某条-->
+<insert id="insertUserMaker" parameterType="SysLoginPojo" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_login  (name,loginname,password,external_sign_code,invitation_code,status,type,create_date,update_date)
+		values(#{name},#{loginname},#{password},#{externalSignCode},#{invitationCode},1,12,now(),now())
+</insert>
+<!-- 逻辑删除单条(id) -->
+<delete id="delUserMaker" parameterType="Long">
+		delete from  sys_login  where id = #{id} and type = 12
+</delete>
+<!-- 审成单条(id) -->
+<update id="checkUserMaker" parameterType="Long">
+		update sys_login  set
+		status = 1,
+		update_date = now()
+		where 
+		id = #{id}
+<!-- 审失单条(id) -->
+</update>
+<update id="uncheckUserMaker" parameterType="Long">
+		update sys_login set
+		status = 0,
+		update_date = now()
+		where 
+		id = #{id}
+</update>
+<!--编辑单条-->
+<update id="updateUserMaker" parameterType="SysLoginPojo">
+		update sys_login <set>
+		<if test="name != null and name !=''">
+			name = #{name},
+		</if>
+		<if test="loginname != null and loginname !=''">
+			loginname = #{loginname},
+		</if>
+		<if test="status != null">
+			status = #{status},
+		</if>
+		<if test="password != null">
+			password = #{password}
+		</if>
+		</set>
+		where
+		id=#{id}
+</update>
+</mapper>

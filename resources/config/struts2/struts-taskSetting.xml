@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="taskSetting" extends="default">
+		<!-- 1层页面                           -->
+		<action name="taskSettingList1" class="com.tzmb2c.web.action.TaskSettingAction" method="taskSettingListCount1">
+			<result name="success">/page/system/taskLibrary/taskSetting1.jsp</result>
+		</action>	 
+		<!-- 跳转1层增加日程          -->
+		<action name="goAddTaskSettingDate" class="com.tzmb2c.web.action.TaskSettingAction" method="goAddTaskSettingDate">
+		    <result name="success">/page/system/taskLibrary/addTaskSettingDate.jsp</result>
+		</action>
+		<!-- 增加日程                         -->
+		<action name="addTaskSettingDate" class="com.tzmb2c.web.action.TaskSettingAction" method="addTaskSettingDate">
+		</action>
+		<!-- 跳转2层                          -->
+		<action name="goTaskSetting" class="com.tzmb2c.web.action.TaskSettingAction" method="taskSettingListCount2">
+		    <result name="success">/page/system/taskLibrary/taskSetting2.jsp</result>
+		</action>	
+		<!-- 跳转2层增加任务部分   -->
+		<action name="goAddTaskSetting" class="com.tzmb2c.web.action.TaskLibraryAction" method="taskLibraryListCount">
+		    <result name="success">/page/system/taskLibrary/addTaskSetting.jsp</result>
+		</action>
+		<!-- 增加任务                        -->
+		<action name="addTaskSetting" class="com.tzmb2c.web.action.TaskSettingAction" method="addTaskSetting">
+		</action>
+		<!-- 批量增加任务                  -->
+		<action name="addTaskSettingAll" class="com.tzmb2c.web.action.TaskSettingAction" method="addTaskSettingAll">
+		</action>
+		<!-- 删除任务                        -->
+		<action name="delTaskSetting" class="com.tzmb2c.web.action.TaskSettingAction" method="delTaskSetting">
+		</action>		
+	</package>
+	<package name="taskSetting-json" extends="json-default">
+		<!-- 1层内容 -->
+		<action name="taskSettingListAll1" class="com.tzmb2c.web.action.TaskSettingAction" method="taskSettingListAll1">
+			<result type="json">
+			<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 1层条数 -->
+		<action name="taskSettingListCount1" class="com.tzmb2c.web.action.TaskSettingAction" method="taskSettingListCount1">
+			<result type="json">
+			<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+		
+		<!-- 2层内容 -->
+		<action name="taskSettingListAll2" class="com.tzmb2c.web.action.TaskSettingAction" method="taskSettingListAll2">
+			<result type="json">
+			<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 2层条数 -->
+		<action name="taskSettingListCount2" class="com.tzmb2c.web.action.TaskSettingAction" method="taskSettingListCount2">
+			<result type="json">
+			<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+	</package>
+</struts>

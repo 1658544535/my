@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="userCollect" extends="default">
+
+		<action name="userCollect" class="com.tzmb2c.web.action.UserCollectAction" method="getUserCollectCount">
+			<result>/page/system/user/userCollect.jsp</result>
+		</action>
+		
+		<action name="UserCollectDeleteId" class="com.tzmb2c.web.action.UserCollectAction" method="userCollectDeleteId">
+		
+		</action>
+		
+		<action name="goFindUserCollect" class="com.tzmb2c.web.action.UserCollectAction" method="goFindUserCollect">
+			<result>/page/system/user/userCollectupdate.jsp</result>
+		</action>
+		<action name="updateUserCollect" class="com.tzmb2c.web.action.UserCollectAction" method="updateUserCollect">
+		</action>
+		
+		
+		
+	</package>
+	<package name="UserCollect-json" extends="json-default">
+		<!--平台入口-->
+		<action name="getUserCollectCount" class="com.tzmb2c.web.action.UserCollectAction" method="getUserCollectCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+			<action name="userCollectAllList" class="com.tzmb2c.web.action.UserCollectAction" method="userCollectAllList">
+			<result type="json">
+				<param name="root">page.result</param>.
+			</result>
+		</action>
+		<action name="deleUserCollect" class="com.tzmb2c.web.action.UserCollectAction" method="deleUserCollect">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

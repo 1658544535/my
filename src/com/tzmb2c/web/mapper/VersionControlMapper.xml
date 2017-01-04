@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.VersionControlMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id as id,
+		channel as channel,
+		state as state,
+		last_version as lastVersion,
+		force_version as forceVersion,
+		sketch as sketch,
+		create_by as createBy,
+		create_date as createDate,
+		update_by as updateBy,
+		update_date as updateDate
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="VersionControlPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			version_control
+		where
+			id = #{id}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from version_control
+		where 1=1
+		  <if test="id != null ">
+			and id = #{id}
+		  </if>
+		  <if test="channel != null ">
+			and channel = #{channel}
+		  </if>
+		  <if test="state != null ">
+			and state = #{state}
+		  </if>
+		  <if test="lastVersion != null ">
+			and last_version = #{lastVersion}
+		  </if>
+		  <if test="forceVersion != null ">
+			and force_version = #{forceVersion}
+		  </if>
+		  <if test="sketch != null and sketch != '' ">
+			and sketch = #{sketch}
+		  </if>
+		  <if test="createBy != null ">
+			and create_by = #{createBy}
+		  </if>
+		  <if test="createDate != null ">
+			and create_date = #{createDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and update_by = #{updateBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and update_date = #{updateDate}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="VersionControlPojo">
+		select
+			<include refid="Base_Column_List" />
+		from version_control
+		where 1=1
+			<if test="id != null ">
+			  and id = #{id}
+			</if>
+			<if test="channel != null ">
+			  and channel = #{channel}
+			</if>
+			<if test="state != null ">
+			  and state = #{state}
+			</if>
+			<if test="lastVersion != null ">
+			  and last_version = #{lastVersion}
+			</if>
+			<if test="forceVersion != null ">
+			  and force_version = #{forceVersion}
+			</if>
+			<if test="sketch != null and sketch != '' ">
+			  and sketch = #{sketch}
+			</if>
+			<if test="createBy != null ">
+			  and create_by = #{createBy}
+			</if>
+			<if test="createDate != null ">
+			  and create_date = #{createDate}
+			</if>
+			<if test="updateBy != null ">
+			  and update_by = #{updateBy}
+			</if>
+			<if test="updateDate != null ">
+			  and update_date = #{updateDate}
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="VersionControlPojo">
+		update version_control
+		<set>
+			<if test="channel != null">
+			  channel = #{channel},
+			</if>
+			<if test="state != null">
+			  state = #{state},
+			</if>
+			<if test="lastVersion != null">
+			  last_version = #{lastVersion},
+			</if>
+			<if test="forceVersion != null">
+			  force_version = #{forceVersion},
+			</if>
+			<if test="sketch != null">
+			  sketch = #{sketch},
+			</if>
+			<if test="createBy != null">
+			  create_by = #{createBy},
+			</if>
+			<if test="createDate != null">
+			  create_date = #{createDate},
+			</if>
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+			<if test="updateDate != null">
+			  update_date = #{updateDate},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from version_control 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="VersionControlPojo">
+		insert into version_control
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="channel != null">
+				channel,
+			</if>
+			<if test="state != null">
+				state,
+			</if>
+			<if test="lastVersion != null">
+				last_version,
+			</if>
+			<if test="forceVersion != null">
+				force_version,
+			</if>
+			<if test="sketch != null">
+				sketch,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="updateBy != null">
+				update_by,
+			</if>
+			<if test="updateDate != null">
+				update_date,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="channel != null">
+				#{channel},
+			</if>
+			<if test="state != null">
+				#{state},
+			</if>
+			<if test="lastVersion != null">
+				#{lastVersion},
+			</if>
+			<if test="forceVersion != null">
+				#{forceVersion},
+			</if>
+			<if test="sketch != null">
+				#{sketch},
+			</if>
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+			<if test="createDate != null">
+				#{createDate},
+			</if>
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+			<if test="updateDate != null">
+				#{updateDate},
+			</if>
+		</trim>
+	</insert>
+	
+</mapper>

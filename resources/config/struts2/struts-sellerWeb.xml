@@ -1,0 +1,762 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="sellerWebLogin" extends="struts-default">
+		<global-results>
+			<result name="loginweb">/seller/page/login.jsp</result>
+			<result name="registerweb">/seller/page/reg.jsp</result>
+			<result name="errorpage">/page/common/error.jsp</result>
+		</global-results>
+		
+		<!-- 商家登录前端显示 -->
+		<action name="sellerLogin" class="com.tzmb2c.web.action.SellerWebAction" method="getLoginWeb">
+			<result name="success">/seller/page/login.jsp</result>
+		</action>
+		
+		<!-- 商家登录验证 -->
+		<action name="doSellerLogin" method="getLoginValidate" class="com.tzmb2c.web.action.SellerWebAction">
+			<result name="success" type="redirectAction">goSellerIndex</result>
+		</action>
+		
+		<!-- 商家注册 -->
+		<action name="goRegWeb" method="goRegWeb" class="com.tzmb2c.web.action.SellerRegWebAction">
+			<result>/seller/page/reg.jsp</result>
+		</action>
+		
+		<!-- 商家注册 -->
+		<action name="doRegWeb" method="doRegWeb" class="com.tzmb2c.web.action.SellerRegWebAction">
+			
+		</action>
+		
+		<!-- 商家退出 -->
+		<action name="doSellerLogout" method="doSellerLoginOutWeb" class="com.tzmb2c.web.action.SellerWebAction">
+			<result>/seller/page/login.jsp</result>
+		</action>
+		
+		<!-- 商家详情信息填写操作 -->
+		<action name="doInformationWeb" method="doInformationWeb" class="com.tzmb2c.web.action.SellerRegWebAction">
+			
+		</action>
+		
+		<!--商家信息完善提交 -->
+		<action name="doInformationPerfectWeb" class="com.tzmb2c.web.action.SellerRegWebAction" method="doInformationPerfectWeb">
+		</action>
+		
+		<!--商家帮助中心 -->
+		<action name="goHelpWeb" class="com.tzmb2c.web.action.SellerHelpAction" method="goHelpWeb">
+			<result>/seller/page/help.jsp</result>
+		</action>
+		
+		<!--商家消息中心 -->
+		<action name="goMessagesCenterWeb" class="com.tzmb2c.web.action.MessagesCenterAction" method="goMessagesCenterWeb">
+			<result>/seller/page/messages_center.jsp</result>
+		</action>
+		
+		<!-- 商品预览页面 -->
+		<action name="goPreviewWeb" method="goPreviewWeb" class="com.tzmb2c.web.action.SellerWebAction">
+			<result name="success">/seller/page/productmng/preview.jsp</result>
+		</action>
+		
+		<!-- 售后管理页面 -->
+		<action name="goRefundWeb" method="goRefundWeb" class="com.tzmb2c.web.action.SellerWebAction">
+			<result name="success">/seller/page/trademng/refund.jsp</result>
+		</action>
+		
+		<!-- 售后审核功能 -->
+		<action name="checkOrderRefundWeb" class="com.tzmb2c.web.action.SellerWebAction"
+			method="checkOrderRefundWeb">
+		</action>
+		
+		<!-- 售后申请客服介入功能 -->
+		<action name="updateServiceInvolvedById" class="com.tzmb2c.web.action.SellerWebAction"
+			method="updateServiceInvolvedById">
+		</action>
+		
+	</package>
+	
+	
+	
+	<!-- 前端页面 -->
+	<package name="sellerWeb" extends="sellerweb-default">
+		<global-results>
+			<result name="loginweb">/seller/page/login.jsp</result>
+			<result name="registerweb">/seller/page/reg.jsp</result>
+			<result name="errorpage">/page/common/error.jsp</result>
+			<result name="information">/seller/page/baseinfo/information.jsp</result>
+			<result name="informationPerfect">/seller/page/baseinfo/information_perfect.jsp</result>
+		</global-results>
+		<!-- 商家中心首页显示 -->
+		<action name="goSellerIndex" class="com.tzmb2c.web.action.SellerWebAction" method="goSellerIndex">
+			<result name="success">/seller/page/index.jsp</result>
+		</action>
+		
+		<!-- 品牌列表前端显示 -->
+		<action name="getBrandListWeb" class="com.tzmb2c.web.action.UserBrandWebAction" method="getBrandListWeb">
+			<result name="success">/seller/page/productmng/brand.jsp</result>
+		</action>
+		
+		<!-- 添加品牌前端显示 -->
+		<action name="getBrandAddWeb" class="com.tzmb2c.web.action.UserBrandWebAction" method="getBrandAddWeb">
+			<result name="success">/seller/page/productmng/brand_add.jsp</result>
+		</action>
+		
+		<!-- 添加品牌提交 -->
+		<action name="getBrandAddSubmit" class="com.tzmb2c.web.action.UserBrandWebAction" method="getBrandAddSubmit">
+			
+		</action>
+		
+		<!-- 专场列表前端显示 -->
+		<action name="getMartShowWeb" class="com.tzmb2c.web.action.MartShowWebAction" method="getMartShowCountWeb">
+			<result name="success">/seller/page/martshow/martshow.jsp</result>
+		</action>
+		
+		<!-- 专场申请前端显示 -->
+		<action name="applyMartShowWeb" class="com.tzmb2c.web.action.MartShowWebAction" method="applyMartShowWeb">
+			<result name="success">/seller/page/martshow/apply.jsp</result>
+		</action>
+		
+		<!-- 专场申请提交 -->
+		<action name="submitMartShowWeb" class="com.tzmb2c.web.action.MartShowWebAction" method="submitMartShowWeb">
+			<result name="success" type="redirectAction">getMartShowWeb</result>
+		</action>
+		
+		<!-- 专场产品申请 -->
+		<action name="getMartShowItemWeb" class="com.tzmb2c.web.action.MartShowWebAction" method="getMartShowItemWeb">
+			<result name="success">/seller/page/martshow/items.jsp</result>
+		</action>
+		
+		<!-- 商家专场活动承诺书 -->
+		<action name="getCommitment" class="com.tzmb2c.web.action.MartShowWebAction" method="getCommitment">
+			<result name="success">/seller/page/martshow/commitment.jsp</result>
+		</action>
+		
+		<!-- 质检结果前端显示 -->
+		<action name="getQCResultWeb" class="com.tzmb2c.web.action.UserBrandWebAction" method="getQCResultWeb">
+			<result name="success">/seller/page/productmng/qc_result.jsp</result>
+		</action>
+			
+	   	<!-- 商家中心商品库列表 -->
+		<action name="productManageSellerWeb" class="com.tzmb2c.web.action.SellerWebAction"
+			method="productAllCountWeb">
+			<result>/seller/page/productmng/plist.jsp</result>
+		</action>
+		
+		<!--跳转到添加商品 
+		<action name="goProductAddSellerWeb" class="com.tzmb2c.web.action.SellerWebAction"
+			method="goProductAddWeb">
+			<result>/seller/page/productmng/add_v2.jsp</result>
+		</action>   -->
+		
+		<!--跳转到添加商品 -->
+		<action name="goProductAddSellerWeb" class="com.tzmb2c.web.action.SellerWebAction"
+			method="goProductAddWeb">
+			<result>/seller/page/productmng/addProduct.jsp</result>
+		</action>   
+		<!--添加商品
+		<action name="productAddSellerWeb" class="com.tzmb2c.web.action.SellerWebAction"
+			method="productAddWeb">
+			<result>/seller/page/productmng/plist.jsp</result>
+		</action> -->
+		
+		<!--添加商品详情介绍-->
+		<action name="productAddContent" class="com.tzmb2c.web.action.SellerWebAction"
+			method="productAddContent">
+		</action> 
+		<!-- 跳转到修改产品
+		<action name="goFindProductSellerWeb" class="com.tzmb2c.web.action.SellerWebAction" method="goFindProduct">
+			<result>/seller/page/productmng/update_v2.jsp</result>
+		</action>-->
+		<!-- 跳转到修改产品-->
+		<action name="goFindProductSellerWeb" class="com.tzmb2c.web.action.SellerWebAction" method="goFindProduct">
+			<result>/seller/page/productmng/updateProduct.jsp</result>
+		</action>
+		
+		<!-- 修改产品-->
+		<action name="productUpdateSeller" class="com.tzmb2c.web.action.SellerWebAction" method="productUpdate">
+		</action>  
+		
+		<!-- 产品信息批量删除 -->
+		<action name="productDeleteIdSelllerWeb" class="com.tzmb2c.web.action.SellerWebAction"
+			method="productDeleteIdWeb">
+		</action>
+		
+		<!-- 产品信息批量审核 -->
+		<action name="productCheckSelllerWeb" class="com.tzmb2c.web.action.SellerWebAction"
+			method="productCheckWeb">
+		</action>
+		
+		<!-- 产品信息批量取消审核 -->
+		<action name="productUncheckSelllerWeb" class="com.tzmb2c.web.action.SellerWebAction"
+			method="productUncheckWeb">
+		</action>
+		
+		<!-- 商家中心-我的订单前端页面 -->
+		<action name="getMyOrderWeb" class="com.tzmb2c.web.action.OrderWebAction" method="getMyOrderWeb">
+			<result name="success">/seller/page/trademng/order.jsp</result>
+		</action>
+		
+		<!-- 商家中心-我的订单详情前端页面 -->
+		<action name="getMyOrderDetailWeb" class="com.tzmb2c.web.action.OrderWebAction" method="getMyOrderDetailWeb">
+			<result name="success">/seller/page/trademng/order_detail.jsp</result>
+		</action>
+		
+		<!-- 商家中心-基本信息前端页面 -->
+		<action name="getProfileWeb" class="com.tzmb2c.web.action.SellerBasicInfoWebAction" method="getProfileWeb">
+			<result name="success">/seller/page/baseinfo/profile.jsp</result>
+		</action>
+		
+		<!-- 产品图片集 -->
+		<action name="productImagesManageSellerWeb" class="com.tzmb2c.web.action.SellerWebAction" method="getCountProductImages">
+			<result>/seller/page/productmng/productImagesWebList.jsp</result>
+		</action>
+		
+		<!-- 商家发票信息填写 -->
+		<action name="goInvoiceWeb" method="goInvoiceWeb" class="com.tzmb2c.web.action.SellerRegWebAction">
+			<result name="success">/seller/page/baseinfo/invoice.jsp</result>
+		</action>
+
+		<!-- 产品图片集批量删除 -->
+		<action name="productImagesDeleteIdSellerWeb" class="com.tzmb2c.web.action.SellerWebAction" method="productImagesDeleteId">
+		</action>
+
+		<!-- 产品图片集批量审核 -->
+		<action name="productImagescheckAllSellerWeb" class="com.tzmb2c.web.action.SellerWebAction" method="productImagescheckAll">
+		</action>
+		
+		<!--  跳转到产品图片集修改图片-->
+		<action name="goFindProductImagesSellerWeb" class="com.tzmb2c.web.action.SellerWebAction" method="goFindProductImages">
+			<result>/seller/page/productmng/updateProductImages.jsp</result>
+		</action>
+		
+		<!-- 产品图片集修改图片-->
+		<action name="productImagesUpdateSellerWeb" class="com.tzmb2c.web.action.SellerWebAction" method="productImagesUpdate">
+				<result name="success" type="redirectAction">
+					<param name="actionName">productImagesManageSellerWeb</param>  
+        			<param name="productImagesPojo.productId">${productImagesPojo.productId}</param>
+        			<param name="productImagesPojo.userId">${productImagesPojo.userId}</param>
+        		</result>
+		</action>
+		
+		<!--  跳转到产品图片集添加图片-->
+		<action name="goproductImagesAddSellerWeb" class="com.tzmb2c.web.action.SellerWebAction" method="goproductImagesAddWeb">
+			<result>/seller/page/productmng/batchAddProductImages.jsp</result>
+		</action>
+	
+		<!--  跳转到产品图片集添加图片-->	
+		<action name="productImagesAddSellerWeb" class="com.tzmb2c.web.action.SellerWebAction" method="productImagesAddWeb">
+				<result name="success" type="redirectAction">
+					<param name="actionName">productImagesManageSellerWeb</param>  
+        			<param name="productImagesPojo.productId">${productImagesPojo.productId}</param>
+        			<param name="productImagesPojo.userId">${productImagesPojo.userId}</param>
+        		</result>
+		</action>      
+		<!--  跳转到产品图片集添加图片(批量增加)-->	
+		<action name="productImgBatchAddWeb" class="com.tzmb2c.web.action.SellerWebAction" method="productImgBatchAddWeb">
+		</action>      
+		 		
+		<!-- 修改密码  -->
+		<action name="goPasswdWeb" class="com.tzmb2c.web.action.SellerBasicInfoWebAction" method="goPasswdWeb">
+			<result name="success">/seller/page/baseinfo/passwd.jsp</result>
+		</action>
+		
+		<!-- 保存修改的密码  -->
+		<action name="passChangeWeb" class="com.tzmb2c.web.action.SellerBasicInfoWebAction" method="passChangeWeb">
+		</action>		
+		
+		<!--  商品焦点图片集-->	
+		<action name="productFocusImagesSellerWeb" class="com.tzmb2c.web.action.SellerWebAction" method="getProductFocusImagesCount">
+			<result>/seller/page/productmng/productFocusImagesWeb.jsp</result>
+		</action>
+		
+		<!--  跳转到商品焦点图片更新-->	
+	    <action name="goFindProductFocusImagesSellerWeb" class="com.tzmb2c.web.action.SellerWebAction" method="goFindProductFocusImages">
+			<result>/seller/page/productmng/updateProductFocusImages.jsp</result>
+		</action>
+		
+		<!--  商品焦点图片更新-->
+		<action name="updateProductFocusImagesSellerWeb" class="com.tzmb2c.web.action.SellerWebAction" method="updateProductFocusImages">
+		</action>
+		
+		<!--  跳转到商品焦点图片添加-->
+		<action name="goAddProductFocusImagesSellerWeb" class="com.tzmb2c.web.action.SellerWebAction" method="addProductFocusImages">
+			<result>/seller/page/productmng/addProductFocusImages.jsp</result>
+		</action>
+		
+		<!--  商品焦点图片添加-->
+		<action name="addProductFocusImagesSellerWeb" class="com.tzmb2c.web.action.SellerWebAction" method="insertProductFocusImages">
+		</action>
+		
+		<!-- 商家详情信息填写 -->
+		<action name="goInformationWeb" method="goInformationWeb" class="com.tzmb2c.web.action.SellerRegWebAction">
+			<result name="success">/seller/page/baseinfo/information.jsp</result>
+		</action>
+		
+		<!-- 商家结算前端页面 -->
+		<action name="goSettleWeb" method="goSettleWeb" class="com.tzmb2c.web.action.SellerSettleWebAction">
+			<result name="success">/seller/page/settle/settle.jsp</result>
+		</action>
+		
+		<!--导出订单EXCEL-->
+		<action name="getOrderExcelSeller" class="com.tzmb2c.web.action.OrderWebAction" method="getOrderExcel2">
+		</action>
+		
+		<!--导入订单EXCEL-->
+		<action name="importOrderSeller" class="com.tzmb2c.web.action.OrderWebAction" method="importOrderSeller">
+		</action>
+		
+		<action name="getOrderSetterExcel" class="com.tzmb2c.web.action.SellerSettleWebAction" method="getOrderSetterExcel">
+		</action>
+		
+		<!--跳转到添加发货信息 -->
+		<action name="goOrderShipAddSeller" class="com.tzmb2c.web.action.OrderWebAction" method="goOrderShipAdd">
+			<result>/seller/page/trademng/orderShipWeb.jsp</result>
+		</action>
+		
+		<!--添加发货信息 -->
+		<action name="addOrderShipSeller" class="com.tzmb2c.web.action.OrderWebAction" method="addOrderShip">
+		</action>
+		
+		<!--商家信息完善 -->
+		<action name="goInformationPerfectWeb" class="com.tzmb2c.web.action.SellerRegWebAction" method="goInformationPerfectWeb">
+			<result>/seller/page/baseinfo/information_perfect.jsp</result>
+		</action>
+		
+		<!-- 修改退货地址  -->
+		<action name="goAddressWeb" class="com.tzmb2c.web.action.SellerBasicInfoWebAction" method="goAddressWeb">
+			<result name="success">/seller/page/baseinfo/refund_address.jsp</result>
+		</action>
+		
+		<!-- 删除退货地址  -->
+		<action name="delAddressWeb" class="com.tzmb2c.web.action.SellerBasicInfoWebAction" method="delAddressWeb">
+		</action>
+		
+		<!-- 新增退货地址  -->
+		<action name="addAddressWeb" class="com.tzmb2c.web.action.SellerBasicInfoWebAction" method="addAddressWeb">
+		</action>
+		
+		<!-- 编辑时跳转编辑页面  -->
+		<action name="goUpdateAddressWeb" class="com.tzmb2c.web.action.SellerBasicInfoWebAction" method="goUpdateAddressWeb">
+			<result name="success">/seller/page/baseinfo/refund_address_update.jsp</result>
+		</action>
+		
+		<!-- 编辑地址提交  -->
+		<action name="updateAddressWeb" class="com.tzmb2c.web.action.SellerBasicInfoWebAction" method="updateAddressWeb">
+		</action>
+		
+		<!-- 首页扣分详情页面  -->
+		<action name="goDeductionScoreWeb" class="com.tzmb2c.web.action.SellerDeductionScoreWebAction" method="goDeductionScoreWeb">
+			<result name="success">/seller/page/settle/deduction_score.jsp</result>
+		</action>
+		
+		<!-- 商家提现前端页面 -->
+		<action name="goWithdrawWeb" method="goWithdrawWebCount" class="com.tzmb2c.web.action.SellerSettleWebAction">
+			<result name="success">/seller/page/settle/withdraw.jsp</result>
+		</action>
+		
+		<!-- 商家订单备注 -->
+		<action name="codeWeb" class="com.tzmb2c.web.action.OrderDetailAction" method="codeWeb">
+		</action>
+		
+		<!-- 商家中心-售后详情页面 -->
+		<action name="goRefundDetailWeb" class="com.tzmb2c.web.action.OrderWebAction" method="goRefundDetailWeb">
+			<result name="success">/seller/page/trademng/refund_detail.jsp</result>
+		</action>
+		
+		<!-- 商家中心-售后管理-查看物流-->
+		<action name="goRefundExpressSearch" class="com.tzmb2c.web.action.SellerWebAction" method="goRefundExpressSearch">
+			<result name="success">/seller/page/trademng/logistics_detail.jsp</result>
+		</action>
+		
+		<!-- 商家中心售后管理-上传凭证 -->
+		<action name="submitRejectWeb" class="com.tzmb2c.web.action.OrderWebAction" method="submitRejectWeb">
+			<result name="success">/seller/page/trademng/refund_detail.jsp</result>
+		</action>
+		
+		<!-- 专场预览 -->
+		<action name="goMartShowPreview" class="com.tzmb2c.web.action.MartShowWebAction" method="goMartShowPreview">
+			<result name="success">/seller/page/martshow/preview.jsp</result>
+		</action>
+		
+	</package>
+	
+	
+	
+	<package name="sellerWeb-json" extends="json-default">
+		<!-- 品牌列表数据前端显示-->
+		<action name="getBrandListData" class="com.tzmb2c.web.action.UserBrandWebAction" method="getBrandListData">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<!-- 品牌列表数据条数前端显示-->
+		<action name="getBrandListCount" class="com.tzmb2c.web.action.UserBrandWebAction" method="getBrandListWeb">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		
+		<action name="getMartShowListWeb" class="com.tzmb2c.web.action.MartShowWebAction" method="getMartShowListWeb">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<action name="getMartShowCountWeb" class="com.tzmb2c.web.action.MartShowWebAction" method="getMartShowCountWeb">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+
+		<action name="productAllCountSellerWeb" class="com.tzmb2c.web.action.SellerWebAction"
+			method="productAllCountWeb">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+
+		<action name="getProductAllListSellerWeb" class="com.tzmb2c.web.action.SellerWebAction"
+			method="productAllListWeb">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<!-- 删除产品成功回调 -->
+		<action name="deleProductSeller" class="com.tzmb2c.web.action.SellerWebAction"
+			method="deleProduct">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 审核 -->
+		<action name="checkProductSeller" class="com.tzmb2c.web.action.SellerWebAction" method="checkProduct">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 取消审核 -->
+		<action name="uncheckProductSeller" class="com.tzmb2c.web.action.SellerWebAction" method="uncheckProduct">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 删除产品sku成功回调 -->
+		<action name="deleProductSkuLinkSeller" class="com.tzmb2c.web.action.SellerWebAction"
+			method="deleProductSkuLink">
+			<result type="json">
+	       		 <param name="root">result</param>
+	       		 <param name="productSkuLinkPojo.productId">${productSkuLinkPojo.productId}</param>
+			</result>
+		</action>
+			
+		<!-- 商家中心-我的订单列表 -->
+		<action name="getMyOrderListWeb" class="com.tzmb2c.web.action.OrderWebAction" method="getMyOrderListWeb">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<!-- 商家中心-我的订单列表 -->
+		<action name="getMyOrderCountWeb" class="com.tzmb2c.web.action.OrderWebAction" method="getMyOrderWeb">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		
+		<action name="getUserBrandProducts" class="com.tzmb2c.web.action.MartShowWebAction" method="getUserBrandProducts">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+
+		<action name="getUserBrandProductsCount" class="com.tzmb2c.web.action.MartShowWebAction" method="getUserBrandProductsCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		
+		<!-- 添加专场产品 -->
+		<action name="addMartShowItems" class="com.tzmb2c.web.action.MartShowWebAction" method="addMartShowItems">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 查询专场产品列表 -->
+		<action name="getMartShowItemList" class="com.tzmb2c.web.action.MartShowWebAction" method="getMartShowItemList">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 查询专场产品SKU列表 -->
+		<action name="getMartShowItemSkuList" class="com.tzmb2c.web.action.MartShowWebAction" method="getMartShowItemSkuList">
+			<result type="json">
+				<param name="root">skuResult</param>
+			</result>
+		</action>
+		
+		<!-- 批量修改库存 -->
+		<action name="batchModifySku" class="com.tzmb2c.web.action.MartShowWebAction" method="batchModifySku">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 移除活动商品 -->
+		<action name="delMartShowProduct" class="com.tzmb2c.web.action.MartShowWebAction" method="delMartShowProduct">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 活动商品提交审核 -->
+		<action name="submitMartShowProduct" class="com.tzmb2c.web.action.MartShowWebAction" method="submitMartShowProduct">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 专场提交审核 -->
+		<action name="submitMartShow" class="com.tzmb2c.web.action.MartShowWebAction" method="submitMartShow">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!--产品图片集条数-->
+		<action name="getCountProductImagesSellerWeb" class="com.tzmb2c.web.action.SellerWebAction" method="getCountProductImages">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+
+		<!-- 产品图片集列表 -->
+		<action name="getProductImagesAllSellerWeb" class="com.tzmb2c.web.action.SellerWebAction"
+			method="getProductImagesAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<!-- 产品图片集审核 -->
+		<action name="checkProductImagesSellerWeb" class="com.tzmb2c.web.action.SellerWebAction" method="checkProductImages">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 产品图片集取消审核 -->
+		<action name="unCheckProductImagesSellerWeb" class="com.tzmb2c.web.action.SellerWebAction" method="unCheckProductImages">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 产品图片集删除-->
+		<action name="deleProductImagesSellerWeb" class="com.tzmb2c.web.action.SellerWebAction"
+			method="deleProductImages">
+			<result type="json">
+	       		 <param name="root">result</param>
+	       		 <param name="productImagesPojo.productId">${productImagesPojo.productId}</param>
+			</result>
+		</action>
+		
+		<!-- 商品焦点图片集总数-->
+		<action name="getProductFocusImagesCountSellerWeb" class="com.tzmb2c.web.action.SellerWebAction" method="getProductFocusImagesCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		
+		<!-- 商品焦点图片集列表-->
+		<action name="productFocusImagesAllListSellerWeb" class="com.tzmb2c.web.action.SellerWebAction" method="productFocusImagesAllList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<!-- 商品焦点图片删除-->
+		<action name="deleProductFocusImagesSellerWeb" class="com.tzmb2c.web.action.SellerWebAction" method="deleProductFocusImages">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 商品焦点图片批量删除-->
+		<action name="productFocusImagesDeleteIdSellerWeb" class="com.tzmb2c.web.action.SellerWebAction" method="productFocusImagesDeleteId">	
+		</action>
+		
+		<!-- 商家结算列表 -->
+		<action name="goSettleWebList" method="goSettleWebList" class="com.tzmb2c.web.action.SellerSettleWebAction">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<!-- 商家结算条数 -->
+		<action name="goSettleWebCount" method="goSettleWeb" class="com.tzmb2c.web.action.SellerSettleWebAction">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		
+		<!-- 商家确认结算 -->
+		<action name="doSettleWebCheck" method="doSettleWebCheck" class="com.tzmb2c.web.action.SellerSettleWebAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+					
+		<!-- 上传sku图片-->
+		<action name="uploadSkuImages" class="com.tzmb2c.web.action.SellerWebAction" method="uploadSkuImages">
+			<result type="json">
+	       		 <param name="root">skuImagesUrl</param>
+			</result>
+		</action> 
+		
+		<!-- 商家帮助中心对应内容 -->
+		<action name="doHelpWeb" method="doHelpWeb" class="com.tzmb2c.web.action.SellerHelpAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+				
+		<!-- 获取商品二级类目  -->
+		<action name="getProductType2" class="com.tzmb2c.web.action.SellerWebAction" method="getProductType2">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 获取商品三级类目  -->
+		<action name="getProductType3" class="com.tzmb2c.web.action.SellerWebAction" method="getProductType3">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 用户退货地址内容 -->
+		<action name="getAddressListWeb" class="com.tzmb2c.web.action.SellerBasicInfoWebAction" method="getAddressListWeb">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<!-- 用户退货地址条数 -->
+		<action name="getAddressCountWeb" class="com.tzmb2c.web.action.SellerBasicInfoWebAction" method="getAddressCountWeb" >
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		
+		<!-- 首页扣分详情条数 -->
+		<action name="getDeductionScoreCountWeb" class="com.tzmb2c.web.action.SellerDeductionScoreWebAction" method="goDeductionScoreWeb" >
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		
+		<!-- 首页扣分详情列表 -->
+		<action name="getDeductionScoreListWeb" class="com.tzmb2c.web.action.SellerDeductionScoreWebAction" method="getDeductionScoreListWeb" >
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+				
+		<!-- 商家中心/消息中心/查询全部内容 -->
+		<action name="messagesCenterListWeb" class="com.tzmb2c.web.action.MessagesCenterAction" method="messagesCenterListWeb">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<!-- 商家提现列表 -->
+		<action name="goWithdrawWebList" method="goWithdrawWebList" class="com.tzmb2c.web.action.SellerSettleWebAction">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<!-- 商家提现条数 -->
+		<action name="goWithdrawWebCount" method="goWithdrawWebCount" class="com.tzmb2c.web.action.SellerSettleWebAction">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		
+		<!-- 商家申请提现-->
+		<action name="doWithdrawWebCheck" method="doWithdrawWebCheck" class="com.tzmb2c.web.action.SellerSettleWebAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 商家取消申请提现-->
+		<action name="doWithdrawWebUncheck" method="doWithdrawWebUncheck" class="com.tzmb2c.web.action.SellerSettleWebAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 后台运营不通过商家提现申请-->
+	    <action name="uncheckManufacturerWithdraw" class="com.tzmb2c.web.action.SellerSettleWebAction" method="uncheckManufacturerWithdraw">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+		
+		
+		<!-- 退货count-->
+		<action name="getUserOrderRefundListCount" class="com.tzmb2c.web.action.SellerWebAction" method="goRefundWeb">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		<!-- 退货条数-->
+		<action name="getUserOrderRefundList" class="com.tzmb2c.web.action.SellerWebAction" method="getUserOrderRefundList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		<!-- 根据订单id查询退货商品 -->
+		<action name="findUserOrderRefundListByorderId" class="com.tzmb2c.web.action.SellerWebAction" method="findUserOrderRefundListByorderId">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<!-- 查询商品所属专场是否为排期完成 -->
+		<action name="findSpecialProductByPid" class="com.tzmb2c.web.action.SellerWebAction" method="findSpecialProductByPid">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!--商家消息中心 -->
+		<action name="messagesCenterCountWeb" class="com.tzmb2c.web.action.MessagesCenterAction" method="goMessagesCenterWeb">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		<!--添加商品 -->
+		<action name="productAddSellerWeb" class="com.tzmb2c.web.action.SellerWebAction" method="productAddWeb">
+		<result type="json">
+				<param name="root">result</param>
+		</result>
+		</action>
+		<!-- 修改产品
+		<action name="productUpdateSeller" class="com.tzmb2c.web.action.SellerWebAction" method="productUpdate">
+		<result type="json">
+				<param name="root">result</param>
+		</result>
+		</action>-->
+	</package>
+</struts>

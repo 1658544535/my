@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.DeliveryAddressMapper">
+
+	<!-- 插入 -->
+	<insert id="addDeliveryAddress" useGeneratedKeys="true" keyProperty="id" parameterType="deliveryAddressPojo"> 
+		insert into user_address 
+		(id,user_id,province,city,area,address,postcode,consignee,consignee_phone,sorting,is_default,status,create_by,create_date,update_by,update_date,remarks,version) 
+		values (#{id}, #{userId}, #{province},#{city},#{area},#{address},#{postcode},#{consignee},#{consigneePhone},#{sorting},#{isDefault},#{status},
+		#{createBy},sysdate(),#{updateBy},#{updateDate},#{version},#{remarks}) 
+	</insert> 
+
+	<!--查找单条收货地址信息-->
+	<select id="findDeliveryAddressById" resultType="DeliveryAddressPojo"
+		parameterType="Long">
+		select
+		ua.id as id,
+		ua.user_id as userId,
+		ua.province as province,
+		(select s.name from sys_area s where s.id=ua.province) as provinceName,
+		ua.city,
+		(select s.name from sys_area s where s.id=ua.city) as cityName,
+		ua.area,
+		(select s.name from sys_area s where s.id=ua.area) as areaName,
+		ua.address as address,
+		ua.postcode as postcode,
+		ua.consignee as consignee,
+		ua.consignee_phone as consigneePhone,
+		ua.sorting as sorting,
+		ua.is_default as isDefault,
+		ua.status as status,
+		(select name from sys_dict where value=ua.status and type="status") as statusName,
+		ua.create_by as createBy,
+		ua.create_date as createDate,
+		ua.update_by as updateBy, 
+		ua.update_date as updateDate,
+		ua.remarks as remarks,
+		ua.version as version,
+		sl.name as userName
+		from user_address ua left join sys_login sl on ua.user_id = sl.id
+		where
+		ua.id=#{id}
+	</select>
+
+	<!--前台:修改我的收货地址  -->
+	<update id="updateDeliveryAddress" parameterType="DeliveryAddressPojo"> 
+		update user_address set 
+		province=#{province},city=#{city},area=#{area},address=#{address},postcode=#{postcode},consignee=#{consignee},
+		consignee_phone=#{consigneePhone},sorting=#{sorting}
+		<if test="isDefault!=null">
+			, is_default=#{isDefault}
+		</if>
+		where id = #{id} 
+	</update>
+	
+	<!-- 修改我的地址为默认地址 -->
+	<update id="updateAddressToDefault" parameterType="deliveryAddressPojo">
+		update user_address set
+		is_default = #{isDefault}
+		where id = #{id} and user_id=#{userId}
+	</update>
+	
+	<!-- 修改我的地址为非默认地址 -->
+	<update id="updateAddressToNotDefault" parameterType="deliveryAddressPojo">
+		update user_address set
+		is_default = #{isDefault}
+		where user_id=#{userId} and id not in (#{id})
+	</update>
+
+	<!-- 审核单条收货地址信息 -->
+	<update id="verifyDeliveryAddress" parameterType="DeliveryAddressPojo">
+		update
+		user_address ua
+		set ua.status=1
+		where ua.id = #{id}
+	</update>
+
+	<!-- 批量审核收货地址信息 -->
+	 <update id="checkAllDeliveryAddressById" parameterType="String"> 
+	 update user_address ua 
+	 set ua.status=1 
+	 where ua.id = #{id} 
+	 </update> 
+
+	<!-- 删除全部收货地址信息 -->
+	<delete id="delAllDeliveryAddressById" parameterType="String">
+		delete from
+		user_address
+		where
+		id = #{id}
+	</delete>
+
+	<!-- 删除单条收货地址信息 -->
+	<delete id="delDeliveryAddress" parameterType="DeliveryAddressPojo">
+		delete from
+		user_address
+		where
+		id =
+		#{id}
+	</delete>
+
+	<!-- 查询所有收货地址信息记录 -->
+	<select id="deliveryAddressAllList" resultType="DeliveryAddressPojo"
+		parameterType="java.util.Map">
+		select
+		ua.id as id,
+		ua.user_id as userId,
+		ua.province as province,
+		(select s.name from sys_area s where s.id=ua.province) as provinceName,
+		ua.city,
+		(select s.name from sys_area s where s.id=ua.city) as cityName,
+		ua.area,
+		(select s.name from sys_area s where s.id=ua.area) as areaName,
+		ua.address as address,
+		ua.postcode as postcode,
+		ua.consignee as consignee,
+		ua.consignee_phone as consigneePhone,
+		ua.sorting as sorting,
+		ua.is_default as isDefault,
+		(CASE WHEN ua.is_default = 0 THEN ' ' WHEN ua.is_default = 1 THEN '默认地址' END) as isDefaultName,
+		ua.status as status,
+		(select name from sys_dict where value=ua.status and type="status") as statusName,
+		ua.create_by as createBy,
+		ua.create_date as createDate,
+		ua.update_by as updateBy, 
+		ua.update_date as updateDate,
+		ua.remarks as remarks,
+		ua.version as version,
+		sl.name as userName
+		from user_address ua left join sys_login sl on ua.user_id = sl.id
+		where
+		1=1
+		<if test="isDefault!=null">
+			and ua.is_default=#{isDefault}
+		</if>
+		<if test="userId!=null">
+			and ua.user_id=#{userId}
+		</if>
+		<if test="status!=null">
+			and ua.status=#{status}
+		</if>
+		<if test="userName!=null and userName !='' ">
+			and sl.name like concat("%",#{userName},"%" )
+		</if>
+		<if test="consignee!=null and consignee !='' ">
+			and ua.consignee like concat("%",#{consignee},"%" )
+		</if>
+		<if test="address!=null and address !='' ">
+			and ua.address like concat("%",#{address},"%" )
+		</if>
+		order by ua.is_default desc,ua.create_date desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+
+	<!-- 返回信息记录数目 -->
+	<select id="deliveryAddressAllCount" resultType="int"
+		parameterType="java.util.Map">
+		select count(ua.user_id)
+		from user_address ua left join sys_login sl on ua.user_id = sl.id 
+		where 1=1
+		<if test="status!=null">
+			and ua.status=#{status}
+		</if>
+		<if test="userId!=null and userId !='' ">
+			and ua.user_id=#{userId}
+		</if>
+		<if test="userName!=null and userName !='' ">
+			and sl.name like concat("%",#{userName},"%" )
+		</if>
+		<if test="consignee!=null and consignee !='' ">
+			and ua.consignee like concat("%",#{consignee},"%" )
+		</if>
+		<if test="address!=null and address !='' ">
+			and ua.address like concat("%",#{address},"%" )
+		</if>
+	</select>
+	<!-- 查询所有收货地址信息记录 -->
+	<select id="getAddressByUser" resultType="DeliveryAddressPojo"
+		parameterType="Long">
+		select
+		ua.id as id,
+		ua.user_id as userId,
+		ua.province as province,
+		(select s.name from sys_area s where s.id=ua.province) as provinceName,
+		ua.city,
+		(select s.name from sys_area s where s.id=ua.city) as cityName,
+		ua.area,
+		(select s.name from sys_area s where s.id=ua.area) as areaName,
+		ua.address as address,
+		ua.postcode as postcode,
+		ua.consignee as consignee,
+		ua.consignee_phone as consigneePhone,
+		ua.sorting as sorting,
+		ua.is_default as isDefault,
+		ua.status as status,
+		(select name from sys_dict where value=ua.status and type="status") as statusName,
+		ua.create_by as createBy,
+		ua.create_date as createDate,
+		ua.update_by as updateBy, 
+		ua.update_date as updateDate,
+		ua.remarks as remarks,
+		ua.version as version,
+		sl.name as userName
+		from user_address ua left join sys_login sl on ua.user_id = sl.id
+		where
+		1=1 and ua.user_id = #{userId} 
+	</select>
+	<select id="getAddress" resultType="DeliveryAddressPojo"
+		parameterType="DeliveryAddressPojo">
+		select
+		ua.id as id,
+		ua.user_id as userId,
+		ua.province as province,
+		(select s.name from sys_area s where s.id=ua.province) as provinceName,
+		ua.city,
+		(select s.name from sys_area s where s.id=ua.city) as cityName,
+		ua.area,
+		(select s.name from sys_area s where s.id=ua.area) as areaName,
+		ua.address as address,
+		ua.postcode as postcode,
+		ua.consignee as consignee,
+		ua.consignee_phone as consigneePhone,
+		ua.sorting as sorting,
+		ua.is_default as isDefault,
+		ua.status as status,
+		(select name from sys_dict where value=ua.status and type="status") as statusName,
+		ua.create_by as createBy,
+		ua.create_date as createDate,
+		ua.update_by as updateBy, 
+		ua.update_date as updateDate,
+		ua.remarks as remarks,
+		ua.version as version,
+		sl.name as userName
+		from user_address ua left join sys_login sl on ua.user_id = sl.id
+		where
+		1=1 and ua.user_id = #{userId} and ua.id=#{id}
+	</select>
+	
+	<!-- 删除单条收货地址信息（WEB） -->
+	<delete id="delDeliveryAddressWeb" parameterType="Long">
+		delete from user_address 
+		where id = #{id}
+	</delete>
+	<!-- 修改我的地址为默认地址 -->
+	<update id="updateAddressToDefaultWeb" parameterType="Long">
+		update user_address set
+		is_default = 1
+		where id = #{id}
+	</update>	
+	<!-- 修改我的地址为非默认地址 -->
+	<update id="updateAddressToNotDefaultWeb" parameterType="Long">
+		update user_address set
+		is_default = 0
+		where id = #{id}
+	</update>
+</mapper>

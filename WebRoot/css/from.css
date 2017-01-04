@@ -1,0 +1,55 @@
+.regSteps{height:23px;}
+.regSteps li{display:inline-block; float:left; background:#E4E4E4 url(../images/regStepArrow2.gif) right center no-repeat; font-size:14px; font-weight:bold; color:#404040; height:23px; line-height:23px; width:33.3%; text-align:center;}
+.regSteps li#stepLast{background:#E4E4E4;}
+.regSteps li.current{background:#F60 url(../images/regStepArrow1.gif) right center no-repeat; color:#FFF;}
+.regSteps li.passed{background:#FFE6BA url(../images/regStepArrow3.gif) right center no-repeat; color:#F60;}
+.regSteps li.passed_no1{background:#FFE6BA url(../images/regStepArrow4.gif) right center no-repeat;}
+.regSteps li#stepLast.current_no1{background:#F60;}
+.regInfo ul{padding:8px 0;width:900px;list-style: none;}
+.regInfo li{padding-bottom:8px; color:#333; font-size:14px;}
+.regInfo li a{color:#098BCD;}
+.regInfo li label{}
+.regInfo dl.ott{padding:12px 0; border-bottom:1px solid #DDD;}
+.regInfo dl.ott#third{border-bottom:none;}
+.regInfo dl.ott dt{background:url(../images/stepRound.gif) left center no-repeat; height:24px; line-height:24px;}
+.regInfo dl.ott dt span{color:#FFF; padding:0 16px 0 8px;}
+.regInfo dl.ott dd .ottList label#name{text-align:right; width:200px; display:inline-block; float:left; padding:6px 12px 0 0; vertical-align:middle; font-size:14px;}
+.regInfo dl.ott dd .regTxt{float:left; display:inline-block; padding:3px 4px; width:320px; border:1px solid #CCC; background:#FFF url(../images/regTxtBG.gif) left top no-repeat;}
+.regInfo dl.ott dd select{width:330px; padding:4px;}
+.regInfo dl.ott dd .narrow{width:100px;}
+.regInfo dl.ott dd .addInfo{display:inline-block; float:left; padding:4px 0 0 6px; color:#999;}
+
+p.continue .continue {
+border: 1px solid #C4CCCC;
+border-right: 1px solid #AEB7B4;
+padding: 6px 12px;
+font-weight: bold;
+font-size: 14px;
+color: #333;
+background: #F8EFAE;
+background: -webkit-gradient(linear, 0 0, 0 bottom, from(#F8EFAE), to(#F1D557));
+background: -moz-linear-gradient(#F8EFAE, #F1D557);
+background: linear-gradient(#F8EFAE, #F1D557);
+filter: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#F8EFAE,endColorStr=#F1D557);
+-webkit-box-shadow: 1px 1px 3px #6F7777;
+cursor: pointer;
+}
+p.continue .continue2 {
+border: 1px solid #fff;
+
+width:189px;
+height:59px;
+font-weight: bold;
+font-size: 14px;
+color: #333;
+background: url(../images/sp_reg2.png) no-repeat;
+cursor: pointer;
+}
+
+.clear {
+CLEAR: both;
+OVERFLOW: hidden;
+WIDTH: 100%;
+HEIGHT: 0px;
+overflow: hidden;
+}

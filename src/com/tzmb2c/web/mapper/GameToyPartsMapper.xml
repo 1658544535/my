@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.GameToyPartsMapper">
+	<!-- 查询所有的记录 -->
+	<select id="findGameToyPartsList" resultType="GameToyPartsPojo" parameterType="java.util.Map">
+		select
+		p.id as id,
+		p.toy_id as toyId,
+		p.name as name,
+		p.images  as images ,
+		p.create_time as createTime,
+		p.probability as probability,
+        p.status as status,
+		(select name from sys_dict where value = p.status and type="status") as statusName,
+		p.sorting  as sorting ,
+		p.create_by as createBy,
+		p.create_date as createDate,
+		p.update_by as updateBy,
+		p.update_date as updateDate,
+		t.name as toyName,
+		t.images as toyImages
+		from game_toy_parts p
+		left join game_factory_toy t on t.id = p.toy_id
+		where 1=1
+		and p.toy_id=#{toyId}
+		<if test="status != null">
+			and p.status = #{status}
+		</if>
+		<if test="panduan == 1">
+			and p.name =#{name}
+		</if>
+		<if test="paixu != null and paixu == 1 ">
+        	order by p.id
+        </if>
+        <if test="paixu == null">
+        	order by p.sorting
+        </if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<select id="findGameToyPartsCount" resultType="int" parameterType="java.util.Map">
+		select count(*)
+	   	from game_toy_parts p	   	
+	   	where 1=1
+	   	and p.toy_id=#{toyId}
+	</select>
+	
+	<select id="findGameToyPartsById" resultType="GameToyPartsPojo" parameterType="java.util.Map">
+		select
+		p.id as id,
+		p.toy_id as toyId,
+		p.name as name,
+		p.images  as images ,
+		p.create_time as createTime,
+		p.probability as probability,
+        p.status as status,
+		(select name from sys_dict where value = p.status and type="status") as statusName,
+		p.sorting  as sorting ,
+		p.create_by as createBy,
+		p.create_date as createDate,
+		p.update_by as updateBy,
+		p.update_date as updateDate
+		from game_toy_parts p
+		where p.id = #{id}
+	</select>
+	
+	<!-- 插入单条 -->
+	<insert id="insertGameToyParts" parameterType="GameToyPartsPojo" useGeneratedKeys="true" keyProperty="id">
+		insert into game_toy_parts 
+		(id,name,toy_id,images,create_time,probability,status,sorting,create_by,create_date,update_by,update_date)
+		values(#{id},#{name},#{toyId},#{images},#{createTime},#{probability},#{status},#{sorting},#{createBy},now(),#{updateBy},now())
+	</insert>
+	
+	<!-- 删除单条 -->
+	<delete id="delGameToyParts" parameterType="Long">
+		delete from game_toy_parts where id = #{id}
+	</delete>
+	
+	<!--更新单条-->
+	<update id="updateGameToyParts" parameterType="GameToyPartsPojo">
+		update game_toy_parts set
+		<if test="name!=null and name!='' ">
+		name=#{name},
+		</if>
+		<if test="images!=null and images!='' ">
+		images=#{images},
+		</if>
+		<if test="createTime!=null">
+		create_time=#{createTime},
+		</if>
+		<if test="probability!=null">
+		probability=#{probability},
+		</if>
+		<if test="sorting!=null">
+		sorting = #{sorting},
+		</if>
+		<if test="status!=null">
+		status = #{status},
+		</if>
+		<if test="updateBy!=null and updateBy!='' ">
+		update_by = #{updateBy},
+		</if>
+		update_date = now()
+		where id = #{id}
+	</update>
+	
+	<!--更新单条状态-->
+	<update id="checkGameToyParts" parameterType="Long">
+		update game_toy_parts set status = 1,update_date = now() where id = #{id}
+	</update>
+	<!--更新单条状态-->
+	<update id="uncheckGameToyParts" parameterType="Long">
+		update game_toy_parts set status = 0,update_date = now() where id = #{id}
+	</update>
+</mapper>

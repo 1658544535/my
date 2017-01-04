@@ -1,0 +1,63 @@
+/*bootstrap reset*/
+.container{width:1170px!important;}
+.breadcrumb{background-color:#fff;}
+.nav-tabs{border:1px solid #ddd;border-radius:5px;}
+.nav-tabs li{padding:0;margin-bottom:0;}
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{color:#d50d57;border:none;border-radius:0;background:#ffdf00;}
+.nav-tabs > li > a{margin-right:0;color:#333;font-size:15px;border:none;}
+.popover.right > .arrow{top:30px;}
+.r-hidden{display:none;}
+.modal-backdrop{z-index:1061;}
+.modal{z-index:1062;}
+.table td{vertical-align:middle!important;}
+
+/*手机视图css*/
+.view-text{padding:10px;font-size:14px;color:#585858;}
+
+.view-goods ul,.view-goods li{margin:0;padding:0;list-style:none;}
+.view-goods ul{margin:10px;overflow:hidden;}
+.view-goods ul .img{position:relative;width:100%;padding-bottom:100%;overflow:hidden;margin-bottom:10px;}
+.view-goods ul .img img{position:absolute;top:0;left:0;width:100%;height:100%;}
+.view-goods ul .title{margin:10px 0;font-size:16px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.view-goods ul .price{font-size:16px;color:#d50d57;line-height:30px;}
+.view-goods ul.big li{margin-bottom:20px;}
+.view-goods ul.big .price{float:left;}
+.view-goods ul.big .seeDetail button{background:#d50d57;color:#fff;border:none;}
+.view-goods ul.small li{float:left;width:50%;}
+.view-goods ul.small{margin:10px 5px;}
+.view-goods ul.small li .box{padding:5px;}
+.view-goods ul.small .title,.view-goods ul.small .price{margin-bottom:0;text-align:center;}
+.view-goods ul.detail li{clear:both;overflow:hidden;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid #ddd;}
+.view-goods ul.detail li:last-child{border-bottom:0;margin-bottom:0;}
+.view-goods ul.detail .img{float:left;width:100px;height:100px;padding:0;}
+.view-goods ul.detail .info{margin-left:110px;text-align:right;margin-top:0;padding-top:10px;}
+.view-goods ul.detail .oldPrice{text-decoration:line-through;color:#999;}
+.view-goods ul.small .oldPrice,.view-goods ul.small .seeDetail,.view-goods ul.big .oldPrice,.view-goods ul.detail .seeDetail{display:none;}
+
+.view-video>div{margin:5px 10px;}
+.view-video>div>iframe{width:100%;}
+
+.view-image>div{margin:5px 10px;}
+.view-image img{display:block;width:100%;}
+.view-image .swiper-wrapper{width:auto;}
+.view-image .swiper-pagination-bullet{width:10px;height:10px;background:#666;border:1px solid #666;opacity:1;}
+.view-image .swiper-pagination-bullet-active{background:#fff;}
+
+.view-ueditor>div{margin:10px;margin-left:17px;}
+
+.view-coupon>div{margin:10px 15px;}
+.view-coupon>div>ul{padding:0;list-style:none;}
+.view-coupon>div>ul li{position:relative;margin:5px 0;padding-bottom:25.25%;padding-right:23%;overflow:hidden;background:url(../images/coupon.png) no-repeat 0 0;background-size:100% auto;color:#fff;font-size:12px;}
+.view-coupon>div>ul li.disabled{background-image:url(../images/coupon-disable.png);}
+.view-coupon>div>ul li p{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.view-coupon>div>ul li .price{position:absolute;width:77%;left:0;top:20%;margin:0;text-align:center;color:#f9f3cf;}
+.view-coupon>div>ul li .price strong{font-size:20px;padding-right:2px;}
+.view-coupon>div>ul li .condition{position:absolute;width:77%;left:0;top:45%;margin:0;text-align:center;color:#f9f3cf;}
+.view-coupon>div>ul li .time{position:absolute;width:77%;left:0;bottom:20%;margin:0;text-align:center;color:#f9f3cf;}
+
+
+
+
+
+
+

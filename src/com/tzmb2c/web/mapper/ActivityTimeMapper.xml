@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.ActivityTimeMapper">
+ <!--获得专场的标题-->
+    <select id="getActivityTimeList" resultType="ActivityTimePojo" parameterType="ActivityTimePojo">
+        select t.id as id, t.title as title from activity_time t
+        where 1=1
+		<if test="isdelete != null and isdelete != '' ">
+			and t.isdelete = #{isdelete}
+		</if>		
+		<if test="channel != null">
+			and t.channel = #{channel}
+		</if>
+		<if test="type != null">
+			and t.type = #{type}
+		</if>
+		and t.begin_time &lt;= now()
+		and t.end_time &gt;= now()
+		<if test="productId != null">
+		and not exists ( select * from activity_goods b where  t.id = b.time_id 		
+		and b.product_id = #{productId} )
+		</if>
+    </select>
+<!-- 查询所有的记录 -->
+	<select id="findActivityTimeList" resultType="ActivityTimePojo" parameterType="java.util.Map">
+		select
+			t.id as id,
+			t.title as title,
+			t.begin_time as beginTime,
+			t.end_time as endTime,
+			t.activity_date as activityDate,
+			t.create_by as createBy,
+			t.create_date as createDate,
+			t.update_by as updateBy,
+			t.update_date as updateDate,
+			CONCAT(t.begin_time,'至',t.end_time) as activityTime,
+			t.channel as channel,
+			t.banner as banner
+	   	from activity_time t
+		where 1=1
+		<if test="isdelete != null and isdelete != '' ">
+			and t.isdelete = #{isdelete}
+		</if>
+		<if test="beginTime!=null and beginTime!='' ">
+			and t.begin_time &gt;= #{beginTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and t.end_time &lt;= #{endTime}
+		</if>
+		<if test="beginTimeApi != null and beginTimeApi != '' ">
+			and t.begin_time &lt;= #{beginTimeApi}
+		</if>
+		<if test="endTimeApi != null and endTimeApi != '' ">
+			and t.end_time &gt;= #{endTimeApi}
+		</if>
+		<if test="channel!=null">
+			and t.channel = #{channel}
+		</if>
+		<if test="op != null and op == 2">
+			and t.type = 1
+		</if>
+		<if test="op != null and op == 1">
+			and t.type = 0
+		</if>
+		<if test="type != null">
+			and t.type = #{type}
+		</if>
+		<if test="sort != null and sort == 1">
+			order by t.create_date
+		</if>
+		<if test="sort == null">
+			order by t.activity_date,t.begin_time,t.end_time
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<select id="findActivityTimeCount" resultType="int" parameterType="java.util.Map">
+		select count(*)
+	   	from activity_time t
+		where 1=1
+		<if test="isdelete != null and isdelete != '' ">
+			and t.isdelete = #{isdelete}
+		</if>
+		<if test="beginTime!=null and beginTime!='' ">
+			and t.begin_time &gt;= #{beginTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and t.end_time &lt;= #{endTime}
+		</if>
+		<if test="channel!=null">
+			and t.channel = #{channel}
+		</if>
+		<if test="op != null and op == 2">
+			and t.type = 1
+		</if>
+		<if test="op != null and op == 1">
+			and t.type = 0
+		</if>
+		<if test="type != null">
+			and t.type = #{type}
+		</if>
+		<if test="id != null">
+			and t.id = #{id}
+		</if>
+		
+	</select>
+	
+	<select id="findActivityTimeById" resultType="ActivityTimePojo" parameterType="java.util.Map">
+		select
+			t.id as id,
+			t.title as title,
+			t.begin_time as beginTime,
+			t.end_time as endTime,
+			t.activity_date as activityDate,
+			t.channel as channel,
+			t.create_by as createBy,
+			t.create_date as createDate,
+			t.update_by as updateBy,
+			t.update_date as updateDate,
+			t.banner as banner,
+			t.type as type,
+			(select status from special_show where activity_id=t.id limit 1) as specialStatus
+	   	from activity_time t
+		where t.id = #{id}
+	</select>
+	
+	<!-- 插入单条 -->
+	<insert id="insertActivityTime" parameterType="ActivityTimePojo" useGeneratedKeys="true" keyProperty="id">
+		insert into activity_time (title,begin_time,end_time,activity_date,create_by,create_date,update_by,update_date,channel,banner,type)
+		values(#{title},#{beginTime},#{endTime},#{activityDate},#{createBy},now(),#{updateBy},now(),#{channel},#{banner},#{type})
+	</insert>
+	
+	<!-- 删除单条 -->
+	<delete id="delActivityTime" parameterType="Long">
+		<!-- delete from activity_time where id = #{id} -->
+		update activity_time a 
+		set    a.isdelete = 1,
+		update_date = now()
+		where
+		a.id = #{id}
+	</delete>
+	
+	<!--更新单条-->
+	<update id="updateActivityTime" parameterType="ActivityTimePojo">
+		update activity_time set
+		activity_date = #{activityDate},
+		begin_time = #{beginTime},
+		end_time = #{endTime},
+		title = #{title},
+		<if test="channel != null">
+			channel = #{channel},
+		</if>
+		<if test="banner != null and banner != '' ">
+			banner = #{banner},
+		</if>
+		<if test="updateBy!=null and updateBy!='' ">
+			update_by = #{updateBy},
+		</if>
+		<if test="type!=null">
+			type = #{type},
+		</if>
+		update_date = now()
+		where id = #{id}
+	</update>
+	
+</mapper>

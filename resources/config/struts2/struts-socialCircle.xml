@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="socialCircle" extends="default">
+		<!-- 社圈管理 -->
+		<action name="socialCircle" class="com.tzmb2c.web.action.SocialCircleAction" method="socialCircleListCount">
+			<result name="success">/page/system/socialCircle/socialCircle.jsp</result>
+		</action>		
+		<!-- 根据ID删除 -->
+		<action name="delSocialCircle" class="com.tzmb2c.web.action.SocialCircleAction" method="delSocialCircle">
+		</action>
+		<!-- 根据ID编辑(跳转) -->
+		<action name="goUpdateSocialCircle" class="com.tzmb2c.web.action.SocialCircleAction" method="goUpdateSocialCircle">
+			<result name="success">/page/system/socialCircle/updateSocialCircle.jsp</result>
+		</action>
+	    <!-- 根据ID编辑 -->
+		<action name="updateSocialCircle" class="com.tzmb2c.web.action.SocialCircleAction" method="updateSocialCircle">
+		</action>
+		<!-- 通过审核 -->
+		<action name="checkSocialCircle" class="com.tzmb2c.web.action.SocialCircleAction" method="checkSocialCircle">
+		</action>
+		<!-- 取消审核 -->
+		<action name="uncheckSocialCircle" class="com.tzmb2c.web.action.SocialCircleAction" method="uncheckSocialCircle">
+		</action>
+		<!-- （跳转）新增社圈 -->
+		<action name="goAddSocialCircle" class="com.tzmb2c.web.action.SocialCircleAction" method="goAddSocialCircle">
+			<result name="success">/page/system/socialCircle/addSocialCircle.jsp</result>
+		</action>	
+		<!-- 提交新增社圈 -->
+		<action name="addSocialCircle" class="com.tzmb2c.web.action.SocialCircleAction" method="addSocialCircle">			
+		</action>		
+	</package>
+	<package name="socialCircle-json" extends="json-default">
+		<!-- 社圈列表 -->
+		<action name="socialCircleListAll" class="com.tzmb2c.web.action.SocialCircleAction" method="socialCircleListAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>		
+		<!-- 社圈条数 -->
+		<action name="socialCircleListCount" class="com.tzmb2c.web.action.SocialCircleAction" method="socialCircleListCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+	</package>
+</struts>

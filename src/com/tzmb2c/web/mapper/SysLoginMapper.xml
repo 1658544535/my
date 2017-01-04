@@ -1,0 +1,821 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.SysLoginMapper">
+ 	<select id="getSysLoginByLoginName" parameterType="String" resultType="sysLoginPojo">
+		select t.id as id, t.type as type, t.name as name ,t.loginname as loginname, t.password as password,t.image as image,t.sorting as sorting,t.status as status,t.baidu_uid as baidu_uid,t.token as token,t.openid as openid,t.sinaid as sinaid,t.unionid as unionid,t.is_pindeke as isPindeke 
+		from sys_login t where t.loginname=#{loginname}
+	</select>
+	
+ 	<select id="qrySysLoginByThirdId" parameterType="java.util.Map" resultType="sysLoginPojo">
+		select 
+		  t.id as id,
+		  t.type as type,
+		  t.name as name, 
+		  t.loginname as loginname, 
+		  t.password as password, 
+		  t.image as image, 
+		  t.sorting as sorting, 
+		  t.status as status, 
+		  t.baidu_uid as baidu_uid, 
+		  t.token as token, 
+		  t.openid as openid, 
+		  t.sinaid as sinaid, 
+		  t.unionid as unionid, 
+		  t.qq_openid as qqOpenId,
+		  t.is_pindeke as isPindeke 
+		from sys_login t where 1=1
+		<if test="unionid!=null and unionid!=''">
+			and t.unionid = #{unionid}
+		</if>
+		<if test="openid!=null and openid!=''">
+			and t.openid = #{openid}
+		</if>
+		<if test="sinaid!=null and sinaid!=''">
+			and t.sinaid = #{sinaid}
+		</if>
+		<if test="qqOpenId!=null and qqOpenId!=''">
+			and t.qq_openid = #{qqOpenId}
+		</if>
+	</select>
+ 	
+ 	<select id="getSysLoginByName" parameterType="String" resultType="sysLoginPojo">
+		select t.id as id, t.type as type, t.name as name ,t.loginname as loginname, t.password as password,t.sorting as sorting,t.status as status,t.is_pindeke as isPindeke 
+		from sys_login t where t.name=#{name}
+	</select>
+	
+	<select id="getSysLoginCountByName" parameterType="String" resultType="int">
+		select count(*) 
+		from sys_login t where t.name=#{name}
+	</select>
+	
+	<insert id="insertSysLoginReturnID"   useGeneratedKeys="true"  keyProperty="id"  parameterType="sysLoginPojo" >
+		insert into
+		sys_login(loginname,password,name,type,status,create_by,create_date,update_by,update_date,remarks,version,taobao_user_id,qq_openid,external_sign_code,invitation_code,image)
+		<!-- values(#{loginname},#{password},#{name},#{type},#{status},#{createBy},#{createDate},#{updateBy},#{updateDate},#{remarks},#{version},#{taobao_user_id},#{qqOpenId}) -->
+		select #{loginname},#{password},#{name},#{type},#{status},#{createBy},#{createDate},#{updateBy},#{updateDate},#{remarks},#{version},#{taobao_user_id},#{qqOpenId},#{externalSignCode},#{invitationCode},#{image} from dual
+		where (select count(*) from sys_login where loginname = #{loginname}) = 0
+	</insert>
+	
+  	<select id="getCountByLoginName" parameterType="String" resultType="Integer">
+		select count(*) from sys_login t where t.loginname=#{loginname};
+	</select>
+ 
+	<!-- <cache/>  -->
+	<select id="getSysLoginAll" resultType="sysLoginPojo">
+		select t.id as id, t.type as type, t.name as name ,t.loginname as loginname, t.password as password,t.sorting as sorting,t.status as status 
+		from sys_login t where t.type='0' order by t.create_date desc
+	</select>
+	<select id="getSysLoginMF" resultType="sysLoginPojo">
+		select t.id as id, t.type as type, t.name as name ,t.loginname as loginname, t.password as password,t.sorting as sorting,t.status as status 
+		from sys_login t where t.type='2'
+	</select>
+	<select id="getfindByIdSysLogin" parameterType="Long" resultType="sysLoginPojo" >
+		select t.id as id, 
+		t.type as type, 
+		t.name as name ,
+		t.loginname as loginname,
+		t.password as password,
+		t.image as image,
+		t.sorting as sorting,
+		t.status as status,
+		t.token as token,
+		t.openid,
+		t.is_pindeke as isPindeke,
+		t.create_date as createDate,
+		t.inviter_id as inviterId,
+		t.invitation_code as invitationCode,
+		t.black_flag as blackFlag,
+		t.is_pindeke as isPindeke,
+		ui.sex as userSex,
+		ui.baby_birthday as babyBirthday,
+		t.balance as balance,
+		t.total_balance as totalBalance
+		from sys_login t 
+		left join user_info ui on t.id = ui.user_id
+		where
+		t.id = #{id} 
+	</select>
+	
+	<select id="getfindCountByIdSysLogin" parameterType="Long" resultType="int" >
+		select count(*) 
+		from sys_login t where
+		t.id = #{id} 
+	</select>
+
+	<insert id="insertSysLogin" parameterType="sysLoginPojo" useGeneratedKeys="true"  keyProperty="id" >
+		insert into
+		sys_login(loginname,password,name,type,status,create_by,create_date,update_by,update_date,remarks,version,taobao_user_id,qq_openid,baidu_uid,openid,sinaid,external_sign_code,unionid,reg_channel,invitation_code,imei,source)
+		values(#{loginname},#{password},#{name},#{type},#{status},#{createBy},now(),#{updateBy},#{updateDate},#{remarks},#{version},#{taobao_user_id},#{qqOpenId},#{baidu_uid},#{openid},#{sinaid},#{externalSignCode},#{unionid},#{regChannel},#{invitationCode},#{imei},#{source})
+		<!--select #{loginname},#{password},#{name},#{type},#{status},#{createBy},now(),#{updateBy},#{updateDate},#{remarks},#{version},#{taobao_user_id},#{qqOpenId},#{baidu_uid},#{openid},#{sinaid},#{externalSignCode},#{unionid},#{regChannel},#{invitationCode},#{imei} from dual
+		where (select count(*) from sys_login where loginname = #{loginname}) = 0-->
+	</insert>
+	
+	<select id="sysLoginFindId" resultType="sysLoginPojo"
+		parameterType="java.util.Map">
+		select t.id as id, 
+		t.type as type, 
+		t.name as name ,
+		t.loginname as loginname, 
+		t.password as password,
+		t.sorting as sorting,
+		t.status as status,
+		(select name from sys_dict where value=t.type and type = 'sys_login_type') typeName,
+		(select name from sys_dict where value=t.status and type = 'status') statusName ,
+		t.invitation_code as invitationCode
+		from sys_login as t
+		where
+		1=1
+		<if test="name!=null and name!=''">
+			and name = #{name}
+		</if>
+		<if test="loginname!=null and loginname!='' ">
+			and loginname = #{loginname}
+		</if>
+		<if test="password!=null and password!='' ">
+			and password = #{password}
+		</if>
+		<if test="type!=null and type!='' ">
+			and type = #{type}
+		</if>
+	</select>
+	
+	<delete id="delSysLogin" parameterType="Long">
+		update sys_login set
+		status = 1
+		where id = #{id}
+	</delete>
+	
+	<delete id="deleteSysLogin"  parameterType="Long">
+		delete from sys_login where id = #{id}
+	</delete>
+	
+	<update id="updateStatus" parameterType="sysLoginPojo">
+		update sys_login set
+		status = #{status}
+		where id = #{id}
+	</update>
+	
+	<update id="updateType" parameterType="sysLoginPojo">
+	
+		update sys_login set
+		update_by = #{updateBy},
+		update_date = #{updateDate}
+		<if test="type!=null and type!='' ">
+			, type = #{type}
+		</if>
+		where id = #{id}
+	</update>
+	
+	<update id="updatePassword" parameterType="sysLoginPojo">
+	
+		update sys_login set
+		password = #{password}
+		where id = #{id}
+	</update>
+	
+	<update id="updateSysLogin" parameterType="sysLoginPojo">
+	
+		update sys_login set
+		<if test="updateBy != null">
+			update_by = #{updateBy},
+		</if>
+		<if test="updateDate != null">
+			update_date = #{updateDate},
+		</if>
+		<if test="name != null and name != '' ">
+			name =#{name},
+		</if>
+		<if test="image != null and image != '' ">
+			image =#{image},
+		</if>
+		<if test="loginname != null and loginname != '' ">
+			loginname =#{loginname},
+		</if>
+		<if test="password != null and password != '' ">
+			password =#{password},
+		</if>
+		<if test="sorting != null">
+			sorting =#{sorting},
+		</if>
+		<if test="status != null">
+			status =#{status},
+		</if>
+		<if test="blackFlag != null">
+			black_flag =#{blackFlag},
+		</if>
+		<if test="externalSignCode != null and externalSignCode != '' ">
+			external_sign_code =#{externalSignCode},
+		</if>
+		<if test="inviterId != null and inviterId != '' ">
+			inviter_id =#{inviterId},
+		</if>
+		<if test="isPindeke != null">
+			is_pindeke =#{isPindeke},
+		</if>
+		<if test="balanceAdd != null ">
+			balance = balance + #{balanceAdd},
+		</if>
+		<if test="totalBalanceAdd != null ">
+			total_balance = total_balance + #{totalBalanceAdd},
+		</if>
+		<if test="balanceReduce != null ">
+			balance = balance - #{balanceReduce},
+		</if>
+		<if test="balance != null">
+			balance =#{balance},
+		</if>
+		<if test="totalBalance != null">
+			total_balance =#{totalBalance},
+		</if>
+		version = 0
+		where id = #{id}
+		<if test="inviterId != null and inviterId != '' ">
+			and (inviter_id is null or inviter_id = '')
+		</if>
+		<if test="balanceReduce != null ">
+			and balance &gt;= #{balanceReduce}
+		</if>
+	</update>
+	
+	
+	<!-- 供应商/采购商 -->
+	<select id="sysLoginAllCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from sys_login as t 
+		left join user_agency a on a.user_id=t.id
+		left join user_consumer u on u.user_id=t.id
+		left join user_manufacturer d on d.user_id=t.id
+		where 1=1 
+		<if test="id!=null and id!='' ">
+			and t.id = #{id}
+		</if>
+		<if test="judgeSource == 1 ">
+			and t.source in(1,2)
+		</if>
+		<if test="judgeSource == 2 ">
+			and t.source =3
+		</if>
+		<if test="form==null or form==''">
+			and (t.create_by &lt;&gt; -1 or t.create_by is null)
+		</if>
+		<if test="name!=null and name!=''">
+			and t.name like CONCAT("%",#{name},"%")
+		</if>
+		<if test="loginname!=null and loginname!=''">
+			and t.loginname like CONCAT("%",#{loginname},"%")
+		</if>
+		
+		<if test="QQ!=null and QQ!=''">	
+			and u.qq like CONCAT("%",#{QQ},"%")
+		</if>	
+		<if test="QQs!=null and QQs!=''">	
+			and a.qq like CONCAT("%",#{QQs},"%")
+		</if>	
+		
+		<if test="os!=null and os!='' ">
+			and t.type = #{os}
+		</if>
+	    <if test="channel != null and channel==1">
+			and (t.openid ='' OR t.openid is null)
+        </if>
+        <if test="channel != null and channel==2">
+            and t.openid != '' 
+        </if>
+        <if test="regChannel != null and regChannel != ''">
+            and t.reg_channel = #{regChannel}
+        </if>
+		<if test="createDateStartStr !=null and createDateStartStr !=''">
+			and UNIX_TIMESTAMP(t.create_date) >= UNIX_TIMESTAMP(CONCAT(#{createDateStartStr},':00'))
+		</if>
+		<if test="createDateEndStr !=null and createDateEndStr !=''">
+			and UNIX_TIMESTAMP(CONCAT(#{createDateEndStr},':00')) >= UNIX_TIMESTAMP(t.create_date)
+		</if>
+	</select>
+	
+	<!-- 昨日有米注册数量 -->
+	<select id="sysLoginAllCountByYoumi" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from ad_spread as ad 
+		where 1=1 
+		and status = 1 
+        <if test="channel != null and channel != ''">
+            and ad.channel = #{channel}
+        </if>
+			and UNIX_TIMESTAMP(ad.create_date) >= UNIX_TIMESTAMP(CONCAT(date_sub(curdate(),interval 1 day) ,' 00:00:00'))
+			and UNIX_TIMESTAMP(CONCAT(date_sub(curdate(),interval 1 day),' 23:59:59')) >= UNIX_TIMESTAMP(ad.create_date)
+	</select>
+	
+	<select id="sysLoginAllList" resultType="sysLoginPojo"
+		parameterType="java.util.Map">
+		select t.id as id, 
+		t.source as source,
+		t.type as type, 
+		<!--
+		u.QQ as QQ,
+		a.QQ as QQs,
+		-->
+		(select login_date from sys_login_log l where l.user_id=t.id order by l.id desc limit 1) as login_date,
+		t.name as name ,
+		t.loginname as loginname, 
+		t.password as password,
+		t.sorting as sorting,
+		t.status as status,
+		t.is_pindeke as isPindeke,
+		t.create_date as createDate,
+		d.create_date as manufacturerdate,
+		<!--
+		u.create_date as consumerdate,
+		a.create_date as agencydate,
+		-->
+		(select name from sys_dict where value=t.type and type = 'sys_login_type') typeName,
+		(select name from sys_dict where value=t.status and type = 'status') statusName,
+		t.openid as openid,
+		(CASE WHEN (t.openid!='' and t.openid is not null) THEN '微信' ELSE 'APP' END ) as channel,
+		t.external_sign_code as externalSignCode,
+		t.invitation_code as invitationCode
+		from sys_login as t 
+		<!--
+		left join user_agency a on a.user_id=t.id
+		left join user_consumer u on u.user_id=t.id
+		-->
+		left join user_manufacturer d on d.user_id=t.id
+		where 1=1 
+		<if test="id!=null and id!='' ">
+			and t.id = #{id}
+		</if>
+		<if test="judgeSource == 1 ">
+			and t.source in(1,2)
+		</if>
+		<if test="judgeSource == 2 ">
+			and t.source =3
+		</if>
+		<if test="form==null or form==''">
+			and (t.create_by &lt;&gt; -1 or t.create_by is null)
+		</if>
+		<if test="name!=null and name!=''">
+			and t.name like CONCAT("%",#{name},"%")
+		</if>
+		<if test="loginname!=null and loginname!=''">
+			and t.loginname like CONCAT("%",#{loginname},"%")
+		</if>
+		<!--
+		<if test="QQ!=null and QQ!=''">	
+			and u.qq like CONCAT("%",#{QQ},"%")
+		</if>			
+		<if test="QQs!=null and QQs!=''">	
+			and a.qq like CONCAT("%",#{QQs},"%")
+		</if>
+		-->
+		<if test="channel != null and channel==1">
+			and (t.openid ='' OR t.openid is null)
+        </if>
+        <if test="channel != null and channel==2">
+            and t.openid != '' 
+        </if>
+        <if test="regChannel != null and regChannel != ''">
+            and t.reg_channel = #{regChannel}
+        </if>
+		<if test="createDateStartStr !=null and createDateStartStr !=''">
+			and UNIX_TIMESTAMP(t.create_date) >= UNIX_TIMESTAMP(CONCAT(#{createDateStartStr},':00'))
+		</if>
+		<if test="createDateEndStr !=null and createDateEndStr !=''">
+			and  UNIX_TIMESTAMP(CONCAT(#{createDateEndStr},':00')) >= UNIX_TIMESTAMP(t.create_date)
+		</if>
+		<if test="id!=null and id!=''">
+			and t.id=#{id}
+		</if>
+		<if test="os!=null and os!='' ">
+			and t.type = #{os}
+		</if>
+		<if test="userManufacturerIsNotNull != null and userManufacturerIsNotNull == 1">
+			and d.id is not null and d.status = 1
+		</if>
+		order by t.create_date desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	<select id="sysLoginAllLists" resultType="sysLoginPojo"
+	parameterType="java.util.Map">
+	select t.id as id, 
+	t.type as type, 
+	<!--
+	a.QQ as QQ,
+	-->
+	(select login_date from sys_login_log l where l.user_id=t.id order by l.id desc limit 1) as login_date,
+	t.name as name ,
+	t.loginname as loginname, 
+	t.password as password,
+	t.sorting as sorting,
+	t.status as status,
+	t.is_pindeke as isPindeke,
+	t.create_date as createDateStr,
+	d.create_date as manufacturerdate,
+	<!--
+	u.create_date as consumerdate,
+	a.create_date as agencydate,
+	-->
+	(select name from sys_dict where value=t.type and type = 'sys_login_type') typeName,
+	(select name from sys_dict where value=t.status and type = 'status') statusName 
+	from sys_login as t 
+	<!--
+	left join user_agency a on a.user_id=t.id
+	left join user_consumer u on u.user_id=t.id
+	-->
+	left join user_manufacturer d on d.user_id=t.id
+	 where 1=1 
+    <if test="name!=null and name!=''">
+		and t.name like CONCAT("%",#{name},"%")
+	</if>
+	<if test="loginname!=null and loginname!=''">
+		and t.loginname like CONCAT("%",#{loginname},"%")
+	</if>
+	<!--
+	<if test="QQ!=null and QQ!=''">	
+		and a.qq like CONCAT("%",#{QQ},"%")
+	</if>	
+	-->
+	<if test="id!=null and id!=''">
+		and t.id=#{id}
+	</if>
+	<if test="os!=null and os!='' ">
+		and t.type = #{os}
+	</if>
+	order by t.create_date desc
+	<if test="pageSize != null">
+		limit #{pageNo} , #{pageSize}
+	</if>
+</select>
+	
+	<select id="getLoginPojoByLoginIdAndLoginPd" parameterType="sysLoginPojo"
+		resultType="sysLoginPojo">
+		select t.loginname,t.password from sys_login t 
+		where t.loginname =#{loginname} and t.password = #{password}
+	</select>
+	
+	<select id="findSysLoginByLoginname" parameterType="sysLoginPojo"
+		resultType="sysLoginPojo">
+		select t.id as id, t.type as type, t.name as name ,t.loginname as loginname, t.password as password,t.sorting as sorting,t.status as status,t.token as token,t.openid as openid,t.sinaid as sinaid,t.unionid as unionid,t.create_date as createDate,t.is_pindeke as isPindeke
+		from sys_login t where t.loginname = #{loginname}
+	</select>
+	
+	<select id="findSysLoginCountByLoginname" parameterType="sysLoginPojo"
+		resultType="int">
+		select count(*) 
+		from sys_login t where t.loginname = #{loginname}
+	</select>
+	
+	<select id="getSysLoginByTaobao_user_id" parameterType="String" resultType="sysLoginPojo">
+		select t.id as id, t.type as type, t.name as name ,t.loginname as loginname, t.password as password,t.sorting as sorting,t.status as status,t.taobao_user_id as taobao_user_id 
+		from sys_login t where t.taobao_user_id = #{id}
+	</select>
+	<!-- 根据QQOpenID查询用户信息-->
+	<select id="getSysLoginByOpenId" parameterType="String" resultType="sysLoginPojo">
+		select t.id as id, t.type as type, t.name as name ,t.loginname as loginname, t.password as password,t.sorting as sorting,t.status as status,t.openid as openid,t.qq_openid as qqOpenId,t.taobao_user_id as taobao_user_id ,t.unionid as unionid
+		from sys_login t where t.qq_openid = #{id}
+	</select>
+	
+		<!-- 获取所有用户的ID -->
+	<select id="getAllUserId" resultType="Long" >
+		select  t.id from sys_login as t;
+	</select>
+	<!-- 根据ID查询登录用户信息 -->
+	<select id="getUserInfoById" parameterType="Long" resultType="sysLoginPojo" >
+		select  t.id as id,
+		t.name as name,
+		t.image as image,
+		t.status,
+		t.invitation_code as invitationCode,
+		t.is_pindeke as isPindeke,
+		u.sex as sex,
+		u.birthday as birthday,
+		u.baby_sex as babySex,
+		(select name from sys_dict where value = u.baby_sex and type = 'baby_sex') as babySexName,
+		u.baby_birthday as babyBirthday,
+		u.QQ as QQ
+		from sys_login t
+		left join user_info u on t.id = u.user_id
+		where t.id = #{id};
+	</select>
+	<!-- 更新登录用户信息 -->
+	<update id="updateUserInfoById" parameterType="sysLoginPojo">
+		update sys_login t left join user_info u on t.id = u.user_id set
+		t.name = #{name},
+		<if test="image!=null and image!='' ">
+		t.image = #{image},
+		</if>
+		<if test="token!=null and token!='' ">
+		t.token = #{token},
+		</if>
+		<if test="birthday!=null and birthday!='' ">
+		u.birthday = #{birthday},
+		</if>
+		<if test="babySex != null and babySex != '' ">
+		u.baby_sex = #{babySex},
+		</if>
+		<if test="babyBirthday != null and babyBirthday != '' ">
+		u.baby_birthday = #{babyBirthday},
+		</if>
+		<if test="QQ != null and QQ != '' ">
+		u.QQ = #{QQ},
+		</if>
+		u.sex = #{sex}
+		where t.id = #{id};
+	</update>
+	
+	
+	<select id="getExternalCodeNullList" resultType="sysLoginPojo">
+		select t.id as id, 
+		t.loginname as loginname, 
+		t.status as status
+		from sys_login t 
+		where t.external_sign_code =''
+	</select>
+	
+	<update id="updateSysloginForExternalCode" parameterType="sysLoginPojo">
+		update sys_login
+		set external_sign_code = #{externalSignCode}
+		where id = #{id}
+	</update>
+	
+	<select id="getInvitationCodeNullList" resultType="sysLoginPojo">
+		select t.id as id, 
+		t.loginname as loginname, 
+		t.status as status
+		from sys_login t 
+		where t.invitation_code=''
+	</select>
+	
+	<update id="updateSysloginForInvitationCode" parameterType="sysLoginPojo">
+		update sys_login
+		set invitation_code = #{invitationCode}
+		where id = #{id}
+	</update>
+	
+	<select id="getUserIdByInvitationCode" resultType="sysLoginPojo" parameterType="sysLoginPojo">
+		select t.id as id
+		from sys_login t 
+		where t.invitation_code = #{invitationCode} and t.status = 1
+	</select>
+	
+	<select id="findHotPlayerList" resultType="HotPlayerPojo" parameterType="java.util.Map">
+		select 
+			s.id           as id,
+		    (SELECT COUNT(id) FROM user_circle_follow ucf WHERE ucf.type_id=s.id AND ucf.is_follow=1 AND ucf.type in (1,3)) followNum,
+		    (CASE WHEN s.type = '11' THEN 1 ELSE 2 END ) as type,
+		    s.image        as userImage,
+		    s.loginname    as loginname,
+		    s.name         as userName,
+			s.create_date  as createDate,
+			s.update_date  as updateDate
+        from sys_login s
+	    where s.type in ('11','12') and s.status = 1
+	    <if test="loginname != null and loginname != '' ">
+			and s.loginname  = #{loginname}
+		</if>
+
+		<if test="userName != null and userName != '' ">
+			and s.name like concat("%",#{userName},"%")
+		</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	<!-- 查询当天注册数-->
+	<select id="userCnt" resultType="int">
+		select count(*) from sys_login 
+		where 
+		<if test="beginTime != null and endTime != null">
+			create_date between #{beginTime} and #{endTime} and type =1
+		</if>
+		<if test="beginTime == null or endTime == null">
+			to_days(create_date) = to_days(now()) and type =1
+		</if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="SysLoginPojo">
+		select
+			id as id,
+			loginname as loginname,
+			password as password,
+			name as name,
+			openid as openid,
+			sorting as sorting,
+			type as type,
+			status as status,
+			create_by as createBy,
+			create_date as createDate,
+			update_by as updateBy,
+			update_date as updateDate,
+			remarks as remarks,
+			version as version,
+			taobao_user_id as taobaoUserId,
+			qq_openid as qqOpenid,
+			baidu_uid as baiduUid,
+			image as image,
+			token as token,
+			sinaid as sinaid,
+			external_sign_code as externalSignCode,
+			unionid as unionid,
+			inviter_id as inviterId,
+			reg_channel as regChannel,
+			invitation_code as invitationCode,
+			black_flag as blackFlag,
+			imei as imei,
+			is_lvb as isLvb,
+			source as source,
+			is_pindeke as isPindeke
+		from sys_login
+		where 1=1
+			<if test="id != null ">
+			  and id = #{id}
+			</if>
+			<if test="loginname != null and loginname != '' ">
+			  and loginname = #{loginname}
+			</if>
+			<if test="password != null and password != '' ">
+			  and password = #{password}
+			</if>
+			<if test="name != null and name != '' ">
+			  and name = #{name}
+			</if>
+			<if test="openid != null and openid != '' ">
+			  and openid = #{openid}
+			</if>
+			<if test="sorting != null ">
+			  and sorting = #{sorting}
+			</if>
+			<if test="type != null and type != '' ">
+			  and type = #{type}
+			</if>
+			<if test="status != null ">
+			  and status = #{status}
+			</if>
+			<if test="createBy != null ">
+			  and create_by = #{createBy}
+			</if>
+			<if test="createDate != null ">
+			  and create_date = #{createDate}
+			</if>
+			<if test="updateBy != null ">
+			  and update_by = #{updateBy}
+			</if>
+			<if test="updateDate != null ">
+			  and update_date = #{updateDate}
+			</if>
+			<if test="remarks != null and remarks != '' ">
+			  and remarks = #{remarks}
+			</if>
+			<if test="version != null ">
+			  and version = #{version}
+			</if>
+			<if test="taobaoUserId != null and taobaoUserId != '' ">
+			  and taobao_user_id = #{taobaoUserId}
+			</if>
+			<if test="qqOpenid != null and qqOpenid != '' ">
+			  and qq_openid = #{qqOpenid}
+			</if>
+			<if test="baiduUid != null and baiduUid != '' ">
+			  and baidu_uid = #{baiduUid}
+			</if>
+			<if test="image != null and image != '' ">
+			  and image = #{image}
+			</if>
+			<if test="token != null and token != '' ">
+			  and token = #{token}
+			</if>
+			<if test="sinaid != null and sinaid != '' ">
+			  and sinaid = #{sinaid}
+			</if>
+			<if test="externalSignCode != null and externalSignCode != '' ">
+			  and external_sign_code = #{externalSignCode}
+			</if>
+			<if test="unionid != null and unionid != '' ">
+			  and unionid = #{unionid}
+			</if>
+			<if test="inviterId != null ">
+			  and inviter_id = #{inviterId}
+			</if>
+			<if test="regChannel != null and regChannel != '' ">
+			  and reg_channel = #{regChannel}
+			</if>
+			<if test="invitationCode != null and invitationCode != '' ">
+			  and invitation_code = #{invitationCode}
+			</if>
+			<if test="blackFlag != null ">
+			  and black_flag = #{blackFlag}
+			</if>
+			<if test="imei != null and imei != '' ">
+			  and imei = #{imei}
+			</if>
+			<if test="isLvb != null ">
+			  and is_lvb = #{isLvb}
+			</if>
+			<if test="source != null ">
+			  and source = #{source}
+			</if>
+			<if test="isPindeke != null ">
+			  and is_pindeke = #{isPindeke}
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<select id="getSysLoginAll2" resultType="sysLoginExcelPojo"
+		parameterType="java.util.Map">
+		select t.id as id, 
+		t.source as source,
+		(case when t.source=3 then "微信" when t.source!=3 then "APP" end) as sourceName,
+		t.type as type, 
+		<!--
+		u.QQ as QQ,
+		a.QQ as QQs,
+		-->
+		(select login_date from sys_login_log l where l.user_id=t.id order by l.id desc limit 1) as login_date,
+		t.name as name ,
+		t.loginname as loginname, 
+		t.password as password,
+		t.sorting as sorting,
+		t.status as status,
+		t.is_pindeke as isPindeke,
+		t.create_date as createDate,
+		d.create_date as manufacturerdate,
+		<!--
+		u.create_date as consumerdate,
+		a.create_date as agencydate,
+		-->
+		(select name from sys_dict where value=t.type and type = 'sys_login_type') typeName,
+		(select name from sys_dict where value=t.status and type = 'status') statusName,
+		t.openid as openid,
+		(CASE WHEN (t.openid!='' and t.openid is not null) THEN '微信' ELSE 'APP' END ) as channel,
+		t.external_sign_code as externalSignCode,
+		t.invitation_code as invitationCode
+		from sys_login as t 
+		<!--
+		left join user_agency a on a.user_id=t.id
+		left join user_consumer u on u.user_id=t.id
+		-->
+		left join user_manufacturer d on d.user_id=t.id
+		where 1=1 
+		<if test="judgeSource == 1 ">
+			and t.source in(1,2)
+		</if>
+		<if test="judgeSource == 2 ">
+			and t.source =3
+		</if>
+		<if test="form==null or form==''">
+			and (t.create_by &lt;&gt; -1 or t.create_by is null)
+		</if>
+		<if test="name!=null and name!=''">
+			and t.name like CONCAT("%",#{name},"%")
+		</if>
+		<if test="loginname!=null and loginname!=''">
+			and t.loginname like CONCAT("%",#{loginname},"%")
+		</if>
+		<!--
+		<if test="QQ!=null and QQ!=''">	
+			and u.qq like CONCAT("%",#{QQ},"%")
+		</if>			
+		<if test="QQs!=null and QQs!=''">	
+			and a.qq like CONCAT("%",#{QQs},"%")
+		</if>
+		-->	
+		<if test="channel != null and channel==1">
+			and (t.openid ='' OR t.openid is null)
+        </if>
+        <if test="channel != null and channel==2">
+            and t.openid != '' 
+        </if>
+        <if test="regChannel != null and regChannel != ''">
+            and t.reg_channel = #{regChannel}
+        </if>
+		<if test="createDateStartStr !=null and createDateStartStr !=''">
+			and UNIX_TIMESTAMP(t.create_date) >= UNIX_TIMESTAMP(CONCAT(#{createDateStartStr},':00'))
+		</if>
+		<if test="createDateEndStr !=null and createDateEndStr !=''">
+			and  UNIX_TIMESTAMP(CONCAT(#{createDateEndStr},':00')) >= UNIX_TIMESTAMP(t.create_date)
+		</if>
+		<if test="id!=null and id!=''">
+			and t.id=#{id}
+		</if>
+		<if test="os!=null and os!='' ">
+			and t.type = #{os}
+		</if>
+		<if test="userManufacturerIsNotNull != null and userManufacturerIsNotNull == 1">
+			and d.id is not null and d.status = 1
+		</if>
+		order by t.create_date desc
+		limit 30000
+	</select>
+</mapper>

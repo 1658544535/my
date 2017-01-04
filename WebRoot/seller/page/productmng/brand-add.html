@@ -1,0 +1,585 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>商家中心</title>
+		<link rel="stylesheet" href="../../css/default.css" media="all" />
+		<link rel="stylesheet" href="../../css/seller_common.css" type="text/css" media="all" />
+    </head>
+	<body>
+		<div id="head">
+			<div class="wrapper">
+				<div class="main-logo ">
+					<a class="main-logo-a" href="#" title="返回首页">
+						&nbsp;
+					</a>
+					<span class="sec-title">
+						<i class="b-inco">
+						</i>
+						<a href='../index.html'>
+							商家中心
+						</a>
+					</span>
+					<div id="st-nav">
+						<span id="login-status" class="op" data-status="1">
+							<a class="st-icons account" href="#">
+								yunyingbu@5315.cn
+							</a>
+							<a href="../login.html" rel="nofollow">
+								退出
+							</a>
+							|
+							<a href="../message.html">
+								消息
+							</a>
+						</span>
+						|
+						<a href="#" target="_blank">
+							商家咨询
+						</a>
+						|
+						<a class="bold" href="#">
+							帮助中心
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="container">
+			<div class="ui-nav seller-nav">
+				<div class="ui-nav-main  seller-nav-bg">
+					<ul class="wrapper seller-nav-main" id="J_sellerNav">
+                        <li class="ui-nav-item">
+                            <a href="../index.html">
+                                首页
+                            </a>
+                        </li>
+                        <li class="ui-nav-item has-sub">
+                            <a href="../baseinfo/profile.html">
+                                基本信息
+                                <i class="iconfont">
+                                    &#xe601;
+                                </i>
+                            </a>
+                            <ul class="ui-nav-submain">
+                                <li class="ui-nav-subitem">
+                                    <a href="../baseinfo/profile.html">
+                                        基本信息
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="../baseinfo/pay_account.html">
+                                        收款银行账户
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="../baseinfo/invoice.html">
+                                        开票信息
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="../baseinfo/refund_address.html">
+                                        退货地址管理
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="../baseinfo/passwd.html">
+                                        修改密码
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="ui-nav-item has-sub">
+                            <a href="plist.html" class="active">
+                                商品管理
+                                <i class="iconfont">
+                                    &#xe601;
+                                </i>
+                            </a>
+                            <ul class="ui-nav-submain">
+                                <li class="ui-nav-subitem">
+                                    <a href="plist.html">
+                                        商品库
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="select_v2.html">
+                                        添加商品
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="brand.html">
+                                        品牌列表
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="brand-add.html">
+                                        添加品牌
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="ui-nav-item has-sub">
+                            <a href="../martshow/martshow.html">
+                                品牌特卖
+                                <i class="iconfont">
+                                    &#xe601;
+                                </i>
+                            </a>
+                            <ul class="ui-nav-submain">
+                                <li class="ui-nav-subitem">
+                                    <a href="../martshow/martshow.html">
+                                        专场列表
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="../martshow/apply.html">
+                                        报名专场
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="ui-nav-item has-sub">
+                            <a href="../trademng/order.html">
+                                交易管理
+                                <i class="iconfont">
+                                    &#xe601;
+                                </i>
+                            </a>
+                            <ul class="ui-nav-submain">
+                                <li class="ui-nav-subitem">
+                                    <a href="../trademng/order.html">
+                                        我的订单
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem pageSellerOrderShipexportlist">
+                                    <a href="../trademng/ship.html">
+                                        发货
+                                    </a>
+                                </li>
+                                <li class="ui-nav-subitem">
+                                    <a href="../trademng/refund.html">
+                                        售后管理
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+				</div>
+			</div>
+			<div id="content" class="wrapper">
+                <div class="pure-g admin-wrapper">
+                    <div class="pure-u-1 main">
+                        <style>
+                           .ui-nav-item-current a,.ui-nav-item-current a:hover{filter:none;background:none;color:#fff;}.ui-nav-item-current .ui-nav-submain{display:none;background:#fff;}.ui-nav-subitem-current a,.ui-nav-subitem-current a:hover{border:none;-webkit-box-shadow:none;box-shadow:none;}.uploadify{position:relative;height: 120px; width: 120px;text-align:center;border:1px solid #ddd;}.uploadPreview_note{width:120px;height:120px;line-height:120px;}.uploadPreview_imgfile{position:absolute;width:100%;height:100%;left:0;top:0;opacity:0;z-index:3;filter:alpha(opacity=0);cursor:pointer;}
+                        </style>
+                        <div class="addBrank">
+                            <div class="title">
+                                <label>
+                                    添加/删除品牌
+                                </label>
+                                <a href="brand.html">
+                                    返回品牌管理&gt;&gt;
+                                </a>
+                            </div>
+                            <form action="#" accept-charset="utf-8" class="addForm" method="">
+                                <div class="brand-box clearfix mt10">
+                                    <span class="tit fl">
+                                        <span>
+                                            *
+                                        </span>
+                                        选择品牌：
+                                    </span>
+                                    <div class="chooseBrand fl">
+                                        <input type="text" placeholder="输入关键词搜索品牌" class="view-SearchBrandInput"
+                                        name="brandName" value="">
+                                        <i class="view-SearchBrandInputBtn searchBtn iconfont ">&#xf012c;</i>
+                                        <select size="11" name="" class="view-SelectBrandList">
+                                        </select>
+                                        <p class="errorInfo">
+                                        </p>
+                                        <p class="errorInfo">
+                                        </p>
+                                    </div>
+                                    <div class="qqInfo fl">
+                                        <p>
+                                            找不到想要的品牌？联系客服。
+                                        </p>
+                                        <p>
+                                            商家咨询：
+                                            <span style="position:relative;top:7px;">
+                                                <img alt="商家咨询" src="../../images/help_contact_d1.png">
+                                            </span>
+                                        </p>
+                                        <p>
+                                            咨询电话：
+                                            <span>
+                                                400-668-0000 转4号线
+                                            </span>
+                                        </p>
+                                        <p>
+                                            工作时间：周一到周五 9:00-18:00
+                                        </p>
+                                        <a class="red" style="margin-left:0px;" target="_blank" href="http://seller.beibei.com/help/brand_management.html">
+                                            品牌申请被退回常见问题&gt;&gt;
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="brandName mt10">
+                                    <span class="tit">
+                                        已选品牌：
+                                    </span>
+                                    <span class="view-ChooseBrank">
+                                    </span>
+                                </div>
+                                <div class="brandType mt10 clearfix">
+                                    <span class="tit fl">
+                                        <span>
+                                            *
+                                        </span>
+                                        授权类型：
+                                    </span>
+                                    <div class="brandTypeInfo fl">
+                                        <label>
+                                            <input type="radio" name="license_type" value="1">
+                                            自有品牌
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="license_type" value="2">
+                                            独家代理
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="license_type" value="3">
+                                            一级代理
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="license_type" value="4">
+                                            二级代理
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="license_type" value="5">
+                                            三级代理
+                                        </label>
+                                        <p class="errorInfo">
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="brandDate mt10 clearfix">
+                                    <span class="tit fl">
+                                        <span>
+                                            *
+                                        </span>
+                                        品牌有效期/授权有效期：
+                                    </span>
+                                    <div class="brandDateInfo  fl">
+                                        <input type="text" name="start_time" placeholder="开始日期" id="start-time" class="createtime-start view-CreatStartTime" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'end-time\')}'})" value="">
+                                        -
+                                        <input type="text" name="end_time" placeholder="结束日期" id="end-time" class="createtime-end view-CreatEndTime" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'start-time\')}'})" value="">
+                                        <span>
+                                            &nbsp;&nbsp;若为授权品牌，请按授权书的授权期限选择起止时间
+                                        </span>
+                                        <p class="errorInfo">
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="brandCategray mt10 clearfix">
+                                    <span class="tit fl">
+                                        <span>
+                                            *
+                                        </span>
+                                        主营类目：
+                                    </span>
+                                    <div class="brandCategrayInfo fl" style="width:666px;">
+                                        <label style="display:inline-block;">
+                                            <input type="radio" name="main_category" value="1">
+                                            童装
+                                        </label>
+                                        <label style="display:inline-block;">
+                                            <input type="radio" name="main_category" value="2">
+                                            童鞋
+                                        </label>
+                                        <label style="display:inline-block;">
+                                            <input type="radio" name="main_category" value="3">
+                                            玩具文体
+                                        </label>
+                                        <label style="display:inline-block;">
+                                            <input type="radio" name="main_category" value="4">
+                                            婴儿装
+                                        </label>
+                                        <label style="display:inline-block;">
+                                            <input type="radio" name="main_category" value="5">
+                                            婴童用品
+                                        </label>
+                                        <label style="display:inline-block;">
+                                            <input type="radio" name="main_category" value="6">
+                                            孕妈服装
+                                        </label>
+                                        <label style="display:inline-block;">
+                                            <input type="radio" name="main_category" value="7">
+                                            孕妈用品
+                                        </label>
+                                        <label style="display:inline-block;">
+                                            <input type="radio" name="main_category" value="217">
+                                            亲子装
+                                        </label>
+                                        <label style="display:inline-block;">
+                                            <input type="radio" name="main_category" value="233">
+                                            儿童配饰
+                                        </label>
+                                        <label style="display:inline-block;">
+                                            <input type="radio" name="main_category" value="154">
+                                            纸尿裤
+                                        </label>
+                                        <label style="display:inline-block;">
+                                            <input type="radio" name="main_category" value="315">
+                                            奶粉/辅食
+                                        </label>
+                                        <label style="display:inline-block;">
+                                            <input type="radio" name="main_category" value="1242">
+                                            休闲食品
+                                        </label>
+                                        <label style="display:inline-block;">
+                                            <input type="radio" name="main_category" value="449">
+                                            女装配饰
+                                        </label>
+                                        <label style="display:inline-block;">
+                                            <input type="radio" name="main_category" value="562">
+                                            女鞋
+                                        </label>
+                                        <label style="display:inline-block;">
+                                            <input type="radio" name="main_category" value="571">
+                                            箱包
+                                        </label>
+                                        <label style="display:inline-block;">
+                                            <input type="radio" name="main_category" value="591">
+                                            美妆个护
+                                        </label>
+                                        <label style="display:inline-block;">
+                                            <input type="radio" name="main_category" value="393">
+                                            居家
+                                        </label>
+                                        <p class="errorInfo">
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="brandRegBook mt10 clearfix">
+                                    <span class="tit fl">
+                                        <span>
+                                            *
+                                        </span>
+                                        商标注册证/商标受理通知书：
+                                    </span>
+                                    <div class="fl picInfo">
+                                        <div class="uploadify">
+                                            <p class="uploadPreview_note">
+                                                <i class="iconfont">&#xf00f7;</i>
+                                                添加图片
+                                            </p>
+                                            <div class="uploadPreview_img" style="display:none;">
+                                                <img style="width:120px;height:120px;">
+                                            </div>
+                                            <input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="">
+                                        </div>
+                                        <span>
+                                            &nbsp;&nbsp;若商标还在注册受理中，请提供商标受理通知书；若商标为个人所有，且为法人，请一并上传营业执照
+                                        </span>
+                                        <p class="errorInfo">
+                                        </p>
+                                        <div class="view-ImgList picBorderInfo clearfix" num="10">
+                                            <input type="hidden" class="input-PicUp1" name="trade_mark_license" value="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="brandImpower mt10 clearfix">
+                                    <span class="tit fl">
+                                        <span>
+                                            *
+                                        </span>
+                                        品牌授权证书：
+                                    </span>
+                                    <div class="fl picInfo">
+                                        <div class="uploadify">
+                                            <p class="uploadPreview_note">
+                                                <i class="iconfont">&#xf00f7;</i>
+                                                添加图片
+                                            </p>
+                                            <div class="uploadPreview_img" style="display:none;">
+                                                <img style="width:120px;height:120px;">
+                                            </div>
+                                            <input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="">
+                                        </div>
+                                        <span>
+                                            &nbsp;&nbsp; [
+                                            <a href="http://b0.hucdn.com/files/seller/PinPai-ShouQuanShu-BeiBei.pdf"
+                                            target="_blank">
+                                                授权书模板
+                                            </a>
+                                            ] 若非一级代理，请上传各级代理的正规品牌授权文件或证明文件
+                                        </span>
+                                        <p class="errorInfo">
+                                        </p>
+                                        <div class="view-ImgList picBorderInfo clearfix" num="10">
+                                            <input type="hidden" class="input-PicUp2" name="cert" value="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="brandOther mt10 clearfix">
+                                    <span class="tit fl">
+                                        <span>
+                                            *
+                                        </span>
+                                        质检报告/3C认证：
+                                    </span>
+                                    <div class="fl picInfo" style="width:650px;">
+                                        <div class="uploadify">
+                                            <p class="uploadPreview_note" style="line-height:120px;">
+                                                <i class="iconfont">&#xf00f7;</i>
+                                                添加图片
+                                            </p>
+                                            <div class="uploadPreview_img" style="display:none;">
+                                                <img style="width:120px;height:120px;">
+                                            </div>
+                                            <input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="">
+                                        </div>                                        
+                                        <p class="errorInfo">
+                                        </p>
+                                        <p>
+                                            *质检报告及其他资质：
+                                        </p>
+                                        <p>
+                                            包括但不限于：
+                                        </p>
+                                        <p>
+                                            1. 每个品牌必须提供一份两年内的质检报告（一次性卫生用品要求一年内的质检报告）。
+                                            <a href="#"
+                                            target="_blank">
+                                                查看详细说明&gt;&gt;
+                                            </a>
+                                        </p>
+                                        <p>
+                                            2. 符合强制性认证产品目录的商品（童车、童床、玩具类）必须提供CCC认证《强制性产品认证证书》。
+                                        </p>
+                                        <p>
+                                            3. 进口商品需提供《中华人民共和国海关进口货物报送单》和《入境货物检验检疫证明》。
+                                        </p>
+                                        <p>
+                                            4. 食品、美妆、洗护用品等特殊类目资质要求请
+                                            <a href="#" target="_blank">
+                                                查看明细&gt;&gt;
+                                            </a>
+                                        </p>
+                                        <p class="red">
+                                            请上传真实有效的品牌资质，若核实资质造假，将严格按照《淘竹马商家违规处罚规则》中“资料不实”进行处罚。
+                                        </p>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn-submit view-BtnSubmit">
+                                    下一步
+                                </button>
+                                <a class="btn-cancel" href="brand.html">
+                                    取消
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</div>
+		<div class="m-feedback J_feedback">
+		</div>
+		<div class="m-fb-shadow J_fb-shadow">
+		</div>
+		<div class="m-fb-dialog J_fb-dialog">
+            <form action="">
+                <div class="title">
+                    意见反馈
+                </div>
+                <div class="mnc">
+                    <p class="control-label">
+                        您的意见：
+                    </p>
+                    <textarea class="control-text J_fb-text" placeholder="请给我们提意见哟，么么哒！"></textarea>
+                </div>
+                <div class="footer">
+                    <button class="btn btn-sure">
+                        确定
+                    </button>
+                    <button class="btn btn-cancel">
+                        取消
+                    </button>
+                </div>
+            </form>
+		</div>
+		<div id="footer">
+			<div class="footer-nav">
+				<a rel="nofollow" href="../index.html">
+					首页
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="../help.html">
+					关于淘竹马
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="../help.html">
+					商家入驻
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="../help.html">
+					正品保证
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="../help.html">
+					人才招聘
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="../help.html">
+					联系我们
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="../help.html">
+					帮助中心
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="../help.html">
+					友情链接
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="#">
+					手机客户端
+				</a>
+				|
+				<a rel="nofollow" target="_blank" href="../help.html">
+					客服在线
+				</a>
+			</div>
+			<div class="footer-content">
+				<div class="wrapper">
+					<p>
+                    	广东群宇互动科技有限公司 Copyright © 2014 All Rights Reserved 版权所有 粤ICP备13081564号
+					</p>
+				</div>
+			</div>
+		</div>
+		<script src="../../js/jquery-1.11.2.min.js" type="text/javascript"></script>
+		<script src="../../js/base.js" type="text/javascript"></script>
+		<script src="../../js/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+        <script>
+		$(function(){
+			$(document).delegate(".uploadPreview_imgfile","change",function(){
+				var _this = $(this);
+				var url = _this.val();
+				if (window.createObjectURL != undefined) { // basic
+					url = window.createObjectURL(_this.get(0).files[0]);
+				} else if (window.URL != undefined) { // mozilla(firefox)
+					url = window.URL.createObjectURL(_this.get(0).files[0]);
+				} else if (window.webkitURL != undefined) { // webkit or chrome
+					url = window.webkitURL.createObjectURL(_this.get(0).files[0]);
+				}
+				_this.siblings(".uploadPreview_img").find("img").attr("src", url);
+				_this.siblings(".uploadPreview_img").show();
+				_this.siblings(".uploadPreview_note").hide()
+			});
+		});
+		</script>
+	</body>
+</html>

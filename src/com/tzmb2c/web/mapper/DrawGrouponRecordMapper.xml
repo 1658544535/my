@@ -1,0 +1,797 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.DrawGrouponRecordMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id as id,
+		activity_type as activityType,
+		activity_id as activityId,
+		attend_id as attendId,
+		user_id as userId,
+		status as status,
+		is_head as isHead,
+		attend_time as attendTime,
+		coupon_id as couponId,
+		price as price,
+		prize as prize,
+		version as version,
+		create_date as createDate,
+		create_by as createBy,
+		update_date as updateDate,
+		update_by as updateBy,
+		is_rec_coupon as isRecCoupon,
+		is_alert as isAlert
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="DrawGrouponRecordPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			groupon_user_record
+		where
+			id = #{id}
+	</select>
+	<select id="findByParams" parameterType="java.util.Map" resultType="DrawGrouponRecordPojo">
+		select
+			gur.id as id,
+			gur.activity_type as activityType,
+			gur.activity_id as activityId,
+			gur.attend_id as attendId,
+			gur.user_id as userId,
+			sl.name as userName,
+			sl.image as userImage,
+			gur.status as status,
+			gur.is_head as isHead,
+			gur.attend_time as attendTime,
+			gur.coupon_id as couponId,
+			gur.price as price,
+			gur.prize as prize,
+			gur.version as version,
+			gur.create_date as createDate,
+			gur.create_by as createBy,
+			gur.update_date as updateDate,
+			gur.update_by as updateBy,
+			gur.is_rec_coupon as isRecCoupon,
+			gur.is_alert as isAlert
+		from
+			groupon_user_record gur
+			left join sys_login sl on sl.id = gur.user_id
+		where
+			1 = 1
+		  <if test="id != null ">
+			and gur.id = #{id}
+		  </if>
+		  <if test="activityType != null ">
+			and gur.activity_type = #{activityType}
+		  </if>
+		  <if test="activityId != null ">
+			and gur.activity_id = #{activityId}
+		  </if>
+		  <if test="attendId != null ">
+			and gur.attend_id = #{attendId}
+		  </if>
+		  <if test="userId != null ">
+			and gur.user_id = #{userId}
+		  </if>
+		  <if test="status != null ">
+			and gur.status = #{status}
+		  </if>
+		  <if test="isHead != null ">
+			and gur.is_head = #{isHead}
+		  </if>
+		  <if test="attendTime != null ">
+			and gur.attend_time = #{attendTime}
+		  </if>
+		  <if test="couponId != null ">
+			and gur.coupon_id = #{couponId}
+		  </if>
+		  <if test="minPrice != null">
+		    and gur.price &gt;= #{minPrice}
+		  </if>
+		  <if test="maxPrice != null">
+		    and gur.price &lt;= #{maxPrice}
+		  </if>
+		  <if test="prize != null ">
+			and gur.prize = #{prize}
+		  </if>
+		  <if test="version != null ">
+			and gur.version = #{version}
+		  </if>
+		  <if test="createDate != null ">
+			and gur.create_date = #{createDate}
+		  </if>
+		  <if test="createBy != null ">
+			and gur.create_by = #{createBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and gur.update_date = #{updateDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and gur.update_by = #{updateBy}
+		  </if>
+		  <if test="updateBy != null ">
+			and gur.update_by = #{updateBy}
+		  </if>
+		  <if test="isAlert != null ">
+			and gur.is_alert = #{isAlert}
+		  </if>
+		  limit 1
+	</select>
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from groupon_user_record gur
+		left join sys_login sl on sl.id = gur.user_id
+		left join groupon_activity ga on ga.id = gur.activity_id
+		left join groupon_activity_record gar on gar.id = gur.attend_id
+		left join product p on ga.product_id = p.id
+		<if test="source != null ">
+			left join user_order uo on uo.source_id = gur.attend_id and uo.user_id = gur.user_id
+		</if>
+		where 1=1
+		  <if test="keywords != null and keywords != '' and source = null">
+			  and
+				(
+					sl.name LIKE CONCAT(CONCAT('%', #{keywords}),'%')
+					 or 
+					sl.id LIKE CONCAT(CONCAT('%', #{keywords}),'%') 
+					 or 
+					gur.attend_id LIKE CONCAT(CONCAT('%', #{keywords}),'%') 
+				)
+			</if>
+			<if test="source != null and keywords != null and keywords != ''">
+				and
+				(
+					sl.name LIKE CONCAT(CONCAT('%', #{keywords}),'%')
+					 or 
+					sl.id LIKE CONCAT(CONCAT('%', #{keywords}),'%') 
+					 or 
+					gur.attend_id LIKE CONCAT(CONCAT('%', #{keywords}),'%') 
+					 or
+					uo.order_no LIKE CONCAT(CONCAT('%',#{keywords}),'%')
+				)
+			</if>
+		  <if test="id != null ">
+			and gur.id = #{id}
+		  </if>
+		  <if test="activityType != null ">
+			and gur.activity_type = #{activityType}
+		  </if>
+		  <if test="activityId != null and activityId != '' ">
+			  and gur.activity_id = #{activityId}
+			</if>
+		  <if test="gaActivityId != null ">
+			and ga.id = #{gaActivityId}
+		  </if>
+		  <if test="attendId != null ">
+			and gur.attend_id = #{attendId}
+		  </if>
+		  <if test="userId != null ">
+			and gur.user_id = #{userId}
+		  </if>
+		  <if test="status != null ">
+			and gur.status = #{status}
+		  </if>
+		  <if test="isHead != null ">
+			and gur.is_head = #{isHead}
+		  </if>
+		  <if test="attendTime != null ">
+			and gur.attend_time = #{attendTime}
+		  </if>
+		  <if test="couponId != null ">
+			and gur.coupon_id = #{couponId}
+		  </if>
+		  <if test="minPrice != null">
+		    and gur.price &gt;= #{minPrice}
+		  </if>
+		  <if test="maxPrice != null">
+		    and gur.price &lt;= #{maxPrice}
+		  </if>
+		  <if test="prize != null ">
+			and gur.prize = #{prize}
+		  </if>
+		  <if test="version != null ">
+			and gur.version = #{version}
+		  </if>
+		  <if test="createDate != null ">
+			and gur.create_date = #{createDate}
+		  </if>
+		  <if test="createBy != null ">
+			and gur.create_by = #{createBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and gur.update_date = #{updateDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and gur.update_by = #{updateBy}
+		  </if>
+		  <if test="isAlert != null ">
+			and gur.is_alert = #{isAlert}
+		  </if>
+		  <if test="currentTime !=null and currentTime !='' ">
+			and #{currentTime} &gt;= str_to_date(ga.begin_time,'%Y-%m-%d %H:%i:%s')
+			and #{currentTime} &lt; str_to_date(ga.end_time,'%Y-%m-%d %H:%i:%s')
+		  </if>
+		  <if test="source != null ">
+		  	  <if test="orderSource !=null and orderSource !='' ">
+				and uo.source = #{orderSource}
+	  		  </if>
+		  </if>
+		  <if test="recStatus != null ">
+		  	  and gar.status = #{recStatus}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="DrawGrouponRecordPojo">
+		select
+			gur.id as id,
+			gur.activity_type as activityType,
+			gur.activity_id as activityId,
+			gur.attend_id as attendId,
+			gur.user_id as userId,
+			sl.name as userName,
+			sl.image as userLogo,
+			gur.status as status,
+			gur.is_head as isHead,
+			gur.attend_time as attendTime,
+			gur.coupon_id as couponId,
+			gur.price as price,
+			gur.prize as prize,
+			(CASE WHEN gur.prize = 0 THEN '未得奖' WHEN gur.prize = 1 THEN '一等奖' WHEN gur.prize = 2 THEN '二等奖' WHEN gur.prize = 3 THEN '三等奖' END) as prizeName,
+			gur.version as version,
+			gur.create_date as createDate,
+			gur.create_by as createBy,
+			gur.update_date as updateDate,
+			gur.update_by as updateBy,
+			gur.is_rec_coupon as isRecCoupon,
+			gur.is_alert as isAlert,
+			ga.activity_status as activityStatus,
+			ga.product_id as productId,
+			ga.price_min as priceMin,
+			ga.price_max as priceMax,
+			ga.begin_time as beginTime,
+			ga.end_time as endTime,
+			ga.num as groupNum,
+			ga.price as groupPrice,
+			p.product_name as productName,
+			p.image as productImage,
+			p.distribution_price as distributionPrice,
+			<if test="source != null ">
+				uo.id as orderId,
+				uo.order_status as orderStatus,
+				uo.pay_status as payStatus,
+				uo.all_price as allPrice,
+				uo.fact_price as factPrice,
+				uo.order_no as orderNo,
+			</if>
+			gar.status as recordStatus
+		from groupon_user_record gur
+		left join sys_login sl on sl.id = gur.user_id
+		left join groupon_activity ga on gur.activity_id = ga.id
+		left join groupon_activity_record gar on gar.id = gur.attend_id
+		left join product p on ga.product_id = p.id
+		<if test="source != null ">
+			left join user_order uo on uo.source_id = gur.attend_id and uo.user_id = gur.user_id
+		</if>
+		where 1=1
+			<if test="prizes != null ">
+				and gur.prize in
+			   <foreach item="item" index="index" collection="prizes" open="(" separator="," close=")">  
+			  		#{item}
+			   </foreach>
+			</if>
+			<if test="activityStatuss != null ">
+				and ga.activity_status in
+			   <foreach item="item" index="index" collection="activityStatuss" open="(" separator="," close=")">  
+			  		#{item}
+			   </foreach>
+			</if>
+			<if test="keywords != null and keywords != '' and source = null">
+			  and
+				(
+					sl.name LIKE CONCAT(CONCAT('%', #{keywords}),'%')
+					 or 
+					sl.id LIKE CONCAT(CONCAT('%', #{keywords}),'%') 
+					 or 
+					gur.attend_id LIKE CONCAT(CONCAT('%', #{keywords}),'%') 
+				)
+			</if>
+			<if test="source != null and keywords != null and keywords != ''">
+				and
+				(
+					sl.name LIKE CONCAT(CONCAT('%', #{keywords}),'%')
+					 or 
+					sl.id LIKE CONCAT(CONCAT('%', #{keywords}),'%') 
+					 or 
+					gur.attend_id LIKE CONCAT(CONCAT('%', #{keywords}),'%') 
+					 or
+					uo.order_no LIKE CONCAT(CONCAT('%',#{keywords}),'%')
+				)
+			</if>
+			<if test="activityStatus != null ">
+			  and ga.activity_status = #{activityStatus}
+			</if>
+			<if test="id != null ">
+			  and gur.id = #{id}
+			</if>
+			<if test="activityType != null ">
+			  and gur.activity_type = #{activityType}
+			</if>
+			<if test="gaActivityId != null ">
+				and ga.id = #{gaActivityId}
+			</if>
+			<if test="activityTypes != null ">
+			  and gur.activity_type in
+			  <foreach collection="activityTypes" index="index" open="(" separator="," close=")" item="item">
+			  	#{item}
+			  </foreach>
+			</if>
+			<if test="activityId != null ">
+			  and gur.activity_id = #{activityId}
+			</if>
+			<if test="attendId != null ">
+			  and gur.attend_id = #{attendId}
+			</if>
+			<if test="userId != null ">
+			  and gur.user_id = #{userId}
+			</if>
+			<if test="status != null ">
+			  and gur.status = #{status}
+			</if>
+			<if test="recordStatus != null ">
+			  and gar.status = #{recordStatus}
+			</if>
+			<!-- <if test="orderStatus != null ">
+			  and uo.is_success = #{orderStatus}
+			</if> -->
+			<if test="isHead != null ">
+			  and gur.is_head = #{isHead}
+			</if>
+			<if test="attendTime != null ">
+			  and gur.attend_time = #{attendTime}
+			</if>
+			<if test="couponId != null ">
+			  and gur.coupon_id = #{couponId}
+			</if>
+			<if test="minPrice != null">
+			  and gur.price &gt;= #{minPrice}
+			</if>
+			<if test="maxPrice != null">
+			  and gur.price &lt;= #{maxPrice}
+			</if>
+			<if test="prize != null ">
+			  and gur.prize = #{prize}
+			</if>
+			<if test="version != null ">
+			  and gur.version = #{version}
+			</if>
+			<if test="createDate != null ">
+			  and gur.create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and gur.create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and gur.update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and gur.update_by = #{updateBy}
+			</if>
+			<if test="isRecCoupon != null ">
+			  and gur.is_rec_coupon = #{isRecCoupon}
+			</if>
+			<if test="isAlert != null ">
+			  and gur.is_alert = #{isAlert}
+			</if>
+			<if test="nowTime != null ">
+			  and ga.begin_time &lt; #{nowTime}
+			  and ga.end_time &gt; #{nowTime}
+			</if>
+			<if test="overTime !=null and overTime !='' ">
+				and #{overTime} &gt;= str_to_date(ga.end_time,'%Y-%m-%d %H:%i:%s')
+		  	</if>
+			<if test="isNotPublic !=null and isNotPublic !='' ">
+				and ga.activity_status != 3
+		  	</if>
+		  	<if test="source != null ">
+			  	<if test="orderSource !=null and orderSource !='' ">
+					and uo.source = #{orderSource}
+		  		</if>
+			</if>
+			<if test="recStatus != null ">
+		  	   and gar.status = #{recStatus}
+		    </if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="DrawGrouponRecordPojo">
+		update groupon_user_record
+		<set>
+			<if test="activityType != null">
+			  activity_type = #{activityType},
+			</if>
+			<if test="activityId != null">
+			  activity_id = #{activityId},
+			</if>
+			<if test="attendId != null">
+			  attend_id = #{attendId},
+			</if>
+			<if test="userId != null">
+			  user_id = #{userId},
+			</if>
+			<if test="status != null">
+			  status = #{status},
+			</if>
+			<if test="isHead != null">
+			  is_head = #{isHead},
+			</if>
+			<if test="attendTime != null">
+			  attend_time = #{attendTime},
+			</if>
+			<if test="couponId != null">
+			  coupon_id = #{couponId},
+			</if>
+			<if test="price != null">
+			  price = #{price},
+			</if>
+			<if test="prize != null">
+			  prize = #{prize},
+			</if>
+			<if test="version != null">
+			  version = #{version},
+			</if>
+			<if test="createDate != null">
+			  create_date = #{createDate},
+			</if>
+			<if test="createBy != null">
+			  create_by = #{createBy},
+			</if>
+			<if test="updateDate != null">
+			  update_date = #{updateDate},
+			</if>
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+			<if test="isRecCoupon != null">
+			  is_rec_coupon = #{isRecCoupon},
+			</if>
+			<if test="isAlert != null">
+			  is_alert = #{isAlert},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<update id="openWinHandle" parameterType="DrawGrouponRecordPojo">
+		update groupon_user_record gur 
+		set 
+		gur.prize=(
+			case 
+			when gur.price = #{realPrice} then 1 
+			when gur.price between #{realPrice}-5 and #{realPrice}+5 then 2 
+			else 3
+			end
+			) ,
+			gur.status = 2
+		<!-- gur.status=(
+			case 
+			when gur.price = #{realPrice} then 2 
+			when gur.price between #{realPrice}-5 and #{realPrice}+5 then 2 
+			else 2
+			end
+			)  -->
+			where gur.activity_id=#{activityId}
+	</update>
+	
+	<update id="updateIsRecCoupon" parameterType="java.util.Map">
+		update groupon_user_record gur 
+		set 
+		gur.is_rec_coupon = 1
+		where gur.activity_id=#{activityId}
+		and gur.user_id in
+	   <foreach item="item" index="index" collection="userIds" open="(" separator="," close=")">  
+	  		#{item}
+	   </foreach>
+	</update>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from groupon_user_record 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="DrawGrouponRecordPojo">
+		insert into groupon_user_record
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="activityType != null">
+				activity_type,
+			</if>
+			<if test="activityId != null">
+				activity_id,
+			</if>
+			<if test="attendId != null">
+				attend_id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="isHead != null">
+				is_head,
+			</if>
+			<if test="attendTime != null">
+				attend_time,
+			</if>
+			<if test="couponId != null">
+				coupon_id,
+			</if>
+			<if test="price != null">
+				price,
+			</if>
+			<if test="prize != null">
+				prize,
+			</if>
+			<if test="version != null">
+				version,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+			<if test="updateDate != null">
+				update_date,
+			</if>
+			<if test="updateBy != null">
+				update_by,
+			</if>
+			<if test="isRecCoupon != null">
+				is_rec_coupon,
+			</if>
+			<if test="isAlert != null">
+				is_alert,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="activityType != null">
+				#{activityType},
+			</if>
+			<if test="activityId != null">
+				#{activityId},
+			</if>
+			<if test="attendId != null">
+				#{attendId},
+			</if>
+			<if test="userId != null">
+				#{userId},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+			<if test="isHead != null">
+				#{isHead},
+			</if>
+			<if test="attendTime != null">
+				#{attendTime},
+			</if>
+			<if test="couponId != null">
+				#{couponId},
+			</if>
+			<if test="price != null">
+				#{price},
+			</if>
+			<if test="prize != null">
+				#{prize},
+			</if>
+			<if test="version != null">
+				#{version},
+			</if>
+			<if test="createDate != null">
+				#{createDate},
+			</if>
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+			<if test="updateDate != null">
+				#{updateDate},
+			</if>
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+			<if test="isRecCoupon != null">
+				#{isRecCoupon},
+			</if>
+			<if test="isAlert != null">
+				#{isAlert},
+			</if>
+		</trim>
+	</insert>
+	
+	<select id="listPage2" parameterType="java.util.Map" resultType="DrawGrouponRecordPojo">
+		select
+			gar.id as id,
+			gur.status as status,
+			sl.loginname as loginName,
+			gar.invitation_user_id as userId,
+			upi.id as pdkId,
+			gur.attend_id as attendId,
+			(select ifnull(count(*),0) from groupon_user_record gur2 where gur2.attend_id = gar.id) as counts,
+			gar.status as recordStatus,
+			ga.begin_time as beginTime,
+			ga.end_time as endTime
+		from groupon_activity_record gar
+			left join sys_login sl on sl.id = gar.invitation_user_id and sl.is_pindeke = 1
+			left join user_pindeke_info upi on upi.user_id = gar.invitation_user_id
+			left join groupon_user_record gur on gur.attend_id = gar.id
+			left join groupon_activity ga on ga.id = gar.activity_id
+		where 1 = 1
+		<if test="isRebate != null">
+	  		and gar.is_rebate = #{isRebate}
+	    </if>
+		<if test="pdkStatus != null">
+	  		and upi.status = #{pdkStatus}
+	    </if>
+	    <if test="invitationUserIdStr != null and invitationUserIdStr != '' ">
+	  		and ${invitationUserIdStr}
+	    </if>
+	    <if test="recordStatusStr != null and recordStatusStr != '' ">
+	  		and ${recordStatusStr}
+	    </if>
+	    <if test="status != null ">
+			and gur.status = #{status}
+		</if>
+		<if test="activityType != null ">
+			<!-- and gur.activity_type = #{activityType} -->
+			and gar.activity_type = #{activityType}
+		</if>
+		<if test="recordStatus != null ">
+			and gar.status = #{recordStatus}
+		</if>
+		<if test="loginName != null and loginName != '' ">
+			and sl.loginname like concat('%',#{loginName},'%')
+		</if>
+		<if test="beginTimeStr != null and beginTimeStr != '' and endTimeStr != null and endTimeStr != '' ">
+			and ga.end_time between #{beginTimeStr} and #{endTimeStr}
+		</if>
+		<if test="groupBy != null and groupBy !=''">
+			group by ${groupBy}
+		</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<select id="countBy2" parameterType="java.util.Map" resultType="int">
+		select
+			count(t.counts)
+		from
+		(
+		select
+			count(*) as counts
+		from groupon_activity_record gar
+			left join sys_login sl on sl.id = gar.invitation_user_id and sl.is_pindeke = 1
+			left join user_pindeke_info upi on upi.user_id = gar.invitation_user_id
+			left join groupon_user_record gur on gur.attend_id = gar.id
+			left join groupon_activity ga on ga.id = gar.activity_id
+		where 1 = 1
+		<if test="isRebate != null">
+	  		and gar.is_rebate = #{isRebate}
+	    </if>
+		<if test="pdkStatus != null">
+	  		and upi.status = #{pdkStatus}
+	    </if>
+	    <if test="invitationUserIdStr != null and invitationUserIdStr != '' ">
+	  		and ${invitationUserIdStr}
+	    </if>
+	    <if test="recordStatusStr != null and recordStatusStr != '' ">
+	  		and ${recordStatusStr}
+	    </if>
+	    <if test="status != null ">
+			and gur.status = #{status}
+		</if>
+		<if test="activityType != null ">
+			<!-- and gur.activity_type = #{activityType} -->
+			and gar.activity_type = #{activityType}
+		</if>
+	    <if test="recordStatus != null ">
+			and gar.status = #{recordStatus}
+		</if>
+		<if test="loginName != null and loginName != '' ">
+			and sl.loginname like concat('%',#{loginName},'%')
+		</if>
+		<if test="beginTimeStr != null and beginTimeStr != '' and endTimeStr != null and endTimeStr != '' ">
+			and ga.end_time between #{beginTimeStr} and #{endTimeStr}
+		</if>
+		<if test="groupBy != null and groupBy !=''">
+			group by ${groupBy}
+		</if>
+		) t
+	</select>
+	
+	
+	<select id="countBy3" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from groupon_activity_record gar
+		left join sys_login sl on sl.id = gar.user_id
+		left join groupon_activity ga on ga.id = gar.activity_id
+		where 1=1 
+			<if test="id != null and id !=''">
+				and gar.activity_id = #{id}
+			</if>
+		 	<if test="activityType != null and activityType !=''">
+				and ga.type = #{activityType} 
+			</if>
+			<if test="beginTimeStr !=null and beginTimeStr !=''">
+			  and str_to_date(gar.begin_time,'%Y-%m-%d %H:%i:%s') &gt;= #{beginTimeStr}
+		    </if>
+			<if test="endTimeStr !=null and endTimeStr !=''">
+			  and str_to_date(gar.end_time,'%Y-%m-%d %H:%i:%s') &lt;= #{endTimeStr}
+		    </if>
+		    <if test="keywords != null and keywords != ''">
+			  and gar.id LIKE CONCAT(CONCAT('%', #{keywords}),'%')
+			</if>
+			<if test="groupStatus != null">
+				and gar.status = #{groupStatus} 
+			</if>
+	</select>
+	
+	<select id="listPage3" parameterType="java.util.Map" resultType="DrawGrouponRecordPojo">
+		select
+			gar.id as id,
+			gar.activity_type as activityType,
+			gar.activity_id as activityId,
+			gar.begin_time as beginTime,
+			gar.end_time as endTime,
+			gar.user_id as userId,
+			sl.name as userName,
+			gar.num as num,
+			gar.status as status,
+			ga.activity_status as activityStatus,
+			gar.create_date as createDate,
+			(select count(*) from groupon_user_record where attend_id = gar.id) as num1
+			
+		from groupon_activity_record gar
+		left join sys_login sl on sl.id = gar.user_id
+		left join groupon_activity ga on ga.id = gar.activity_id
+		where 1=1 
+			<if test="id != null and id !=''">
+				and gar.activity_id = #{id}
+			</if>
+		 	<if test="activityType != null and activityType !=''">
+				and ga.type = #{activityType} 
+			</if>
+			<if test="beginTimeStr !=null and beginTimeStr !=''">
+			  and str_to_date(gar.begin_time,'%Y-%m-%d %H:%i:%s') &gt;= #{beginTimeStr}
+		    </if>
+			<if test="endTimeStr !=null and endTimeStr !=''">
+			  and str_to_date(gar.end_time,'%Y-%m-%d %H:%i:%s') &lt;= #{endTimeStr}
+		    </if>
+		    <if test="keywords != null and keywords != ''">
+			  and gar.id LIKE CONCAT(CONCAT('%', #{keywords}),'%')
+			</if>
+			<if test="groupStatus != null">
+				and gar.status = #{groupStatus} 
+			</if>
+			<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+</mapper>

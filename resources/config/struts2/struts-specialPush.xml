@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="specialPush" extends="default">
+		<!-- 专场推送 -->
+		<action name="specialPushList" class="com.tzmb2c.web.action.SpecialPushAction" method="specialPushListCount">
+			<result name="success">/page/system/special/specialPushList.jsp</result>
+		</action>		
+		<!-- 根据ID删除 -->
+		<action name="delSpecialPush" class="com.tzmb2c.web.action.SpecialPushAction" method="delSpecialPush">
+		</action>
+		<!-- 根据ID批量删除 -->
+		<action name="delSpecialPushAll" class="com.tzmb2c.web.action.SpecialPushAction" method="delSpecialPushAll">
+		</action>
+		<!-- 根据ID编辑(跳转) -->
+		<action name="goUpdateSpecialPush" class="com.tzmb2c.web.action.SpecialPushAction" method="goUpdateSpecialPush">
+			<result name="success">/page/system/special/updateSpecialPush.jsp</result>
+		</action>
+	    <!-- 根据ID编辑 -->
+		<action name="updateSpecialPush" class="com.tzmb2c.web.action.SpecialPushAction" method="updateSpecialPush">
+		</action>
+		<!-- 批量通过审核 -->
+		<action name="checkSpecialPushAll" class="com.tzmb2c.web.action.SpecialPushAction" method="checkSpecialPushAll">
+		</action>
+		<!-- 通过审核 -->
+		<action name="checkSpecialPush" class="com.tzmb2c.web.action.SpecialPushAction" method="checkSpecialPush">
+		</action>
+		<!-- 取消审核 -->
+		<action name="uncheckSpecialPush" class="com.tzmb2c.web.action.SpecialPushAction" method="uncheckSpecialPush">
+		</action>
+		<!-- （跳转）新增专场推送 -->
+		<action name="goAddSpecialPush" class="com.tzmb2c.web.action.SpecialPushAction" method="addSpecialPush">
+			<result name="success">/page/system/special/addSpecialPush.jsp</result>
+		</action>	
+		<!-- 提交新增专场推送 -->
+		<action name="addSpecialPushOk" class="com.tzmb2c.web.action.SpecialPushAction" method="addSpecialPushOk">			
+		</action>		
+	</package>
+	<package name="specialPush-json" extends="json-default">
+		<!-- 专场推送列表 -->
+		<action name="specialPushListAll" class="com.tzmb2c.web.action.SpecialPushAction" method="specialPushListAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>		
+		<!-- 专场推送条数 -->
+		<action name="specialPushListCount" class="com.tzmb2c.web.action.SpecialPushAction" method="specialPushListCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+	</package>
+</struts>

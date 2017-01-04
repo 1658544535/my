@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="activityProductComment" extends="default">
+		<!-- 进入列表页面 -->
+		<action name="goActivityProductComment" class="com.tzmb2c.web.action.ActivityProductCommentAction" method="goActivityProductComment">
+			<result name="success">/page/system/activityProductComment/activityProductCommentList.jsp</result>
+		</action>
+		<!-- 新增 -->
+		<action name="goAddActivityProductComment" class="com.tzmb2c.web.action.ActivityProductCommentAction" method="goAddActivityProductComment">
+		    <result name="success">/page/system/activityProductComment/addActivityProductComment.jsp</result>
+		</action>
+		<!-- 新增提交 -->
+		<action name="addActivityProductComment" class="com.tzmb2c.web.action.ActivityProductCommentAction" method="add">
+		</action>		
+		<!-- 编辑页面 -->
+		<action name="goEditActivityProductComment" class="com.tzmb2c.web.action.ActivityProductCommentAction" method="goEditActivityProductComment">
+			<result name="success">/page/system/activityProductComment/updateActivityProductComment.jsp</result>
+		</action>
+		<!-- 查看页面 -->
+		<action name="goCheckActivityProductComment" class="com.tzmb2c.web.action.ActivityProductCommentAction" method="goEditActivityProductComment">
+			<result name="success">/page/system/activityProductComment/checkActivityProductComment.jsp</result>
+		</action>
+		<!-- 编辑提交 -->
+		<action name="updateActivityProductComment" class="com.tzmb2c.web.action.ActivityProductCommentAction" method="update">
+		</action>
+	</package>
+	<package name="activityProductComment-json" extends="json-default">
+		<!-- 内容 -->
+		<action name="activityProductCommentList" class="com.tzmb2c.web.action.ActivityProductCommentAction" method="activityProductCommentList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="activityProductCommentCnt" class="com.tzmb2c.web.action.ActivityProductCommentAction" method="activityProductCommentRowCnt">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+		<!-- 根据ID删除 -->
+		<action name="delActivityProductComment" class="com.tzmb2c.web.action.ActivityProductCommentAction" method="delete">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+		<!-- 删除选中 -->
+		<action name="delActivityProductCommentAll" class="com.tzmb2c.web.action.ActivityProductCommentAction" method="deleteAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 通过审核 -->
+		<action name="checkActivityProductComment" class="com.tzmb2c.web.action.ActivityProductCommentAction" method="check">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 取消审核 -->
+		<action name="uncheckActivityProductComment" class="com.tzmb2c.web.action.ActivityProductCommentAction" method="uncheck">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中通过审核 -->
+		<action name="checkActivityProductCommentAll" class="com.tzmb2c.web.action.ActivityProductCommentAction" method="checkAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中取消审核 -->
+		<action name="uncheckActivityProductCommentAll" class="com.tzmb2c.web.action.ActivityProductCommentAction" method="uncheckAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+	</package>
+</struts>

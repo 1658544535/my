@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="userTalentAuth" extends="default">
+		<!-- 页面（全部）  -->
+		<action name="userTalentAuth" class="com.tzmb2c.web.action.UserTalentAuthAction" method="userTalentAuthListCount">
+			<result name="success">/page/system/userTalentAuth/userTalentAuth.jsp</result>
+		</action>	
+		<!-- 页面（编辑） -->
+		<action name="goCheckUserTalentAuth" class="com.tzmb2c.web.action.UserTalentAuthAction" method="goCheckUserTalentAuth">
+			<result name="success">/page/system/userTalentAuth/checkUserTalentAuth.jsp</result>
+		</action>
+		<!-- 通过审核         -->
+		<action name="checkUserTalentAuth" class="com.tzmb2c.web.action.UserTalentAuthAction" method="checkUserTalentAuth">
+		</action>
+		<!-- 取消审核         -->
+		<action name="uncheckUserTalentAuth" class="com.tzmb2c.web.action.UserTalentAuthAction" method="uncheckUserTalentAuth">
+		</action>
+	</package>
+	<package name="userTalentAuth-json" extends="json-default">
+		<!-- 内容 -->
+		<action name="userTalentAuthListAll" class="com.tzmb2c.web.action.UserTalentAuthAction" method="userTalentAuthListAll">
+			<result type="json">
+			<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="userTalentAuthListCount" class="com.tzmb2c.web.action.UserTalentAuthAction" method="userTalentAuthListCount">
+			<result type="json">
+			<param name="root">page.rowCount</param>
+			</result>
+		</action>		
+	</package>
+</struts>

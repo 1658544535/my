@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="userMakerShop" extends="default">
+		<!-- 页面（全部）  -->
+		<action name="userMakerShop" class="com.tzmb2c.web.action.UserMakerShopAction" method="userMakerShopListCount">
+			<result name="success">/page/system/userMaker/userMakerShop.jsp</result>
+		</action>	
+		<!-- 根据ID删除    -->
+		<action name="delUserMakerShop" class="com.tzmb2c.web.action.UserMakerShopAction" method="delUserMakerShop">
+		</action>
+		<!-- 通过审核         -->
+		<action name="checkUserMakerShop" class="com.tzmb2c.web.action.UserMakerShopAction" method="checkUserMakerShop">
+		</action>
+		<!-- 取消审核         -->
+		<action name="uncheckUserMakerShop" class="com.tzmb2c.web.action.UserMakerShopAction" method="uncheckUserMakerShop">
+		</action>
+		<!-- 跳转新增        -->
+		<action name="goDetailedUserMakerShop" class="com.tzmb2c.web.action.UserMakerShopAction" method="goDetailedUserMakerShop">
+		    <result name="success">/page/system/userMaker/detailedUserMakerShop.jsp</result>
+		</action>
+		<!-- 设置创阁操作    -->
+		<action name="setGenCabinetType" class="com.tzmb2c.web.action.UserMakerShopAction" method="setGenCabinetType">
+		</action>
+		<!-- 详情页面修改提交        -->
+		<action name="updateDetailedUserMakerShop" class="com.tzmb2c.web.action.UserMakerShopAction" method="updateDetailedUserMakerShop">
+		</action>
+	</package>
+	<package name="userMakerShop-json" extends="json-default">
+		<!-- 内容 -->
+		<action name="userMakerShopListAll" class="com.tzmb2c.web.action.UserMakerShopAction" method="userMakerShopListAll">
+			<result type="json">
+			<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="userMakerShopListCount" class="com.tzmb2c.web.action.UserMakerShopAction" method="userMakerShopListCount">
+			<result type="json">
+			<param name="root">page.rowCount</param>
+			</result>
+		</action>		
+	</package>
+</struts>

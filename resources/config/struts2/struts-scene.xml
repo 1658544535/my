@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="scene" extends="default">
+		<!-- 场景管理 -->
+		<action name="sceneList" class="com.tzmb2c.web.action.SceneAction" method="sceneListCount">
+			<result name="success">/page/system/scene/sceneList.jsp</result>
+		</action>
+		
+		<!-- 根据ID删除 -->
+		<action name="delSceneById" class="com.tzmb2c.web.action.SceneAction" method="delSceneById">
+		</action>
+		<!-- 根据ID批量删除 -->
+		<action name="delSceneAllById" class="com.tzmb2c.web.action.SceneAction" method="delSceneAllById">
+		</action>
+		<!-- 根据ID编辑(跳转) -->
+		<action name="goUpdateSceneById" class="com.tzmb2c.web.action.SceneAction" method="goUpdateSceneById">
+			<result name="success">/page/system/scene/updateSceneList.jsp</result>
+		</action>
+	    <!-- 根据ID编辑 -->
+		<action name="updateSceneById" class="com.tzmb2c.web.action.SceneAction" method="updateSceneById">
+		</action>
+		<!-- 批量通过审核 -->
+		<action name="checkSceneAllById" class="com.tzmb2c.web.action.SceneAction" method="checkSceneAllById">
+		</action>
+		<!-- 通过审核 -->
+		<action name="checkSceneById" class="com.tzmb2c.web.action.SceneAction" method="checkSceneById">
+		</action>
+		<!-- 取消审核 -->
+		<action name="uncheckSceneById" class="com.tzmb2c.web.action.SceneAction" method="uncheckSceneById">
+		</action>
+		<!-- （跳转）新增场景 -->
+		<action name="goAddSceneList" class="com.tzmb2c.web.action.SceneAction" method="goAddSceneList">
+			<result name="success">/page/system/scene/addSceneList.jsp</result>
+		</action>	
+		<!-- 提交新增场景 -->
+		<action name="addSceneListOk" class="com.tzmb2c.web.action.SceneAction" method="addSceneListOk">			
+		</action>		
+	</package>
+	<package name="scene-json" extends="json-default">
+
+		<!-- 场景列表 -->
+		<action name="sceneListAll" class="com.tzmb2c.web.action.SceneAction" method="sceneListAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<!-- 场景条数 -->
+		<action name="sceneListCount" class="com.tzmb2c.web.action.SceneAction" method="sceneListCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+		<!-- 删除场景 -->
+		<action name="deleteScene" class="com.tzmb2c.web.action.SceneAction" method="deleteScene">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>	
+	</package>
+</struts>

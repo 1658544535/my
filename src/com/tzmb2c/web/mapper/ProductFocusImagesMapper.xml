@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.ProductFocusImagesMapper">
+ 
+	<!-- <cache/>  -->
+	
+	<select id="getProductFocusImagesByPid" parameterType="Long" resultType="productFocusImagesPojo">
+		select 
+		t.id as id,
+		t.product_id as productId, 
+		t.user_id as userId,
+		t.images as images,
+		t.sorting as sorting,
+		t.status as status,
+		t.alts as alts
+		from product_focus_images as t where
+		t.product_id = #{id} and t.status = 1 order by t.sorting asc
+	</select>
+
+	<select id="getProductFocusImagesAll" resultType="productFocusImagesPojo">
+		select 
+		t.id as id,
+		t.product_id as productId, 
+		t.user_id as userId,
+		t.images as images,
+		t.sorting as sorting,
+		t.status as status,
+		t.alts as alts
+		from product_focus_images as t order by t.create_date desc
+	</select>
+	
+	<select id="getfindByIdProductFocusImages" parameterType="Long" resultType="productFocusImagesPojo" >
+		select 
+		t.id as id,
+		t.product_id as productId, 
+		t.user_id as userId,
+		t.images as images,
+		t.sorting as sorting,
+		t.status as status,
+		t.alts as alts
+		from product_focus_images as t where
+		t.id = #{id} 
+	</select>
+	
+	<select id="getfindByPidProductFocusImages" parameterType="Long" resultType="productFocusImagesPojo" >
+		select 
+		t.id as id,
+		t.product_id as productId, 
+		t.user_id as userId,
+		t.images as images,
+		t.sorting as sorting,
+		t.status as status,
+		t.alts as alts
+		from product_focus_images as t where
+		t.product_id = #{productId} 
+		order by t.sorting limit 6
+	</select>
+
+	<insert id="insertProductFocusImages" parameterType="productFocusImagesPojo">
+		insert into
+		product_focus_images(product_id,user_id,images,sorting,status,create_by,create_date,update_by,update_date,remarks,version,alts)
+		values(#{productId},#{userId},#{images},#{sorting},#{status},#{createBy},now(),#{updateBy},now(),#{remarks},#{version},#{alts})
+	</insert>
+	
+	<delete id="delProductFocusImages" parameterType="Long">
+		delete from product_focus_images where id = #{id}
+	</delete>
+	
+	<delete id="deleteProductFocusImages"  parameterType="Long">
+		delete from product_focus_images where id = #{id}
+	</delete>
+	
+	<update id="updateProductFocusImages" parameterType="productFocusImagesPojo">
+	
+		update product_focus_images set
+		<if test="images !=null and images !=''">
+			images = #{images},
+		</if>
+		<if test="status !=null ">
+			status =#{status},
+		</if>
+		<if test="alts !=null and alts !=''">
+			alts = #{alts},
+		</if>
+		sorting = #{sorting}	
+		where id = #{id}
+	</update>
+	
+	<select id="productFocusImagesAllCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from product_focus_images t  where
+		1=1
+		<if test="productId!=null and productId!=''">
+			and t.product_id = #{productId}
+		</if>
+		<if test="images!=null and images!=''">
+			and t.images like CONCAT("%",#{images},"%" )
+		</if>
+	</select>
+	
+	<select id="productFocusImagesAllList" resultType="productFocusImagesPojo"
+		parameterType="java.util.Map">
+		select 
+		t.id as id,
+		t.product_id as productId, 
+		t.user_id as userId,
+		t.images as images,
+		t.sorting as sorting,
+		t.status as status,
+		t.alts as alts,
+		p.product_name as productName,
+		p.product_num as productNum
+		from product_focus_images as t
+		left join product p on t.product_id=p.id
+		where 1=1
+		<if test="productId!=null">
+			and t.product_id = #{productId}
+		</if>
+		<if test="images!=null and images!=''">
+			and t.images like CONCAT("%",#{images},"%" )
+		</if>
+		<if test="cids != null and cids !='' ">
+			and t.id not in 
+			<foreach collection="cids" item="cids" index="index" open="(" separator="," close=")">
+				#{cids}
+			</foreach>
+		</if>
+		order by sorting asc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+		
+	</select>
+	
+</mapper>

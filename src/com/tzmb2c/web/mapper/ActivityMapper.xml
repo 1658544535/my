@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.ActivityMapper">
+	<!-- 查询所有的记录 -->
+	<select id="findAll" resultType="ActivityPojo" parameterType="java.util.Map">
+		select
+		a.id as id,
+	    a.title as title,
+	    a.image as image,
+	    (select s.name from sys_dict s where s.type='product_category' and  a.main_category=s.value) as mainCategory, 
+	    a.create_date as createDate, 
+	    a.type as type,
+	    a.type_id as typeId
+	   	from activity a
+		where
+		1=1
+		<if test="mainCategory!=null and mainCategory!='' ">
+			and main_Category=#{mainCategory}
+		</if>
+		<if test="title!=null and title!=''">
+			and title like concat("%",#{title},"%")
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	<select id="findAllCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from activity a
+		where
+		1=1
+		<if test="mainCategory!=null and mainCategory!='' ">
+			and main_Category=#{mainCategory}
+		</if>
+		<if test="title!=null and title!=''">
+			and title like concat("%",#{title},"%")
+		</if>
+	</select>
+	<insert id="insertActivity" parameterType="java.util.Map">
+		insert into activity (type,image,title,create_date,create_by,type_id,main_category)
+		values(#{type},#{image},#{title},now(),#{create_by},#{typeId},#{mainCategory})
+	</insert>
+	<!-- 删除单条 -->
+	<delete id="delActivity" parameterType="ActivityPojo">
+		delete from activity
+		where
+		id = #{id}
+	</delete>
+	
+	<!-- 查找单条 -->
+	<select id="findActivityById" resultType="ActivityPojo"
+		parameterType="Long">
+		select
+		a.id as id,
+	    a.title as title,
+	    a.image as image,
+	    a.main_category as mainCategory, 
+	    a.create_date as createDate, 
+	    a.type as type,
+	    a.type_id as typeId
+	    from activity a
+		where
+		a.id=#{id}
+	</select>
+	<!--更新单条-->
+	<update id="updateActivity" parameterType="ActivityPojo">
+		update activity  set
+		title=#{title},main_category=#{mainCategory},type=#{type},type_id=#{typeId},update_date=date_format(now(),'%Y-%m-%d')
+		<if test="image!=null and image!='' ">
+			,image=#{image}
+		</if>
+		where
+		id = #{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,209 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimal-ui, user-scalable=0" name="viewport">
+<title>成长线</title>
+<style>
+html,body{width:100%;margin:0;padding:0;font-family:Helvetica;}
+html{font-size:12px;-webkit-text-size-adjust:none;}
+body{background:#eeeeee;}
+body,div,ul,li,h1,h2,h3,h4,p,dl,dt,dd{margin:0px;padding:0px;}
+h1,h2,h3,h4,h5{font-size:1rem;font-weight:normal;}
+a{-webkit-tap-highlight-color:rgba(0,0,0,0);outline:none;text-decoration:none;}
+input[type="text"],input[type="password"]{-webkit-appearance:none;appearance:none;outline:none;-webkit-tap-highlight-color:rgba(0,0,0,0);border-radius:0;}
+ul,li{list-style:none;}
+table{border-collapse:collapse;}
+img{max-width:100%;border:none;-webkit-touch-callout:none;}
+
+.c-pink{color:#c82276;}
+
+.growthLine-margin{padding:10px 0;background:#fff;}
+.growthLine-box{position:relative;width:100%;padding-bottom:79.866666667%;}
+.growthLine{position:absolute;width:100%;height:100%;top:0;left:0;}
+
+.listItem{clear:both;margin-top:10px;background:#fff;}
+.item-title{height:40px;line-height:40px;padding:0 10px;font-size:14px;color:#2f2f2f;overflow:hidden;}
+.item-title img.icon{float:left;width:27px;height:40px;margin-right:8px;}
+
+.glory>li{min-height:54px;padding:0 10px;overflow:hidden;}
+.glory>li .icon{float:left;width:54px;height:54px;margin:0 10px;}
+.glory>li div.info{margin-left:74px;border-bottom:1px solid #eee;}
+.glory>li div.info:last-child{border-bottom:none;}
+.glory>li .title{padding:10px 10px 3px 0;font-size:14px;color:#343434;font-weight:bold;}
+.glory>li .tips{padding:3px 10px 10px 0;font-size:12px;color:#6d6d6d;}
+
+.linkItem,.linkBlockItem{padding:0 10px 10px;}
+.linkItem>li{min-height:64px;margin-top:10px;overflow:hidden;border:1px solid #eee;}
+.linkItem>li a{display:block;background:url(images/icon_go.png) no-repeat right center;background-size:17px 14px;}
+.linkItem>li img.img{float:left;width:80px;height:64px;}
+.linkItem>li p.txt{margin-left:80px;padding:10px;color:#636363;font-size:12px;line-height:22px;}
+
+.linkBlockItem>li{margin-top:10px;}
+.linkBlockItem>li a{display:block;}
+.linkBlockItem>li img.img{display:block;width:100%;}
+
+</style>
+</head>
+
+<body>
+    <div class="wraper">
+        <!-- 成长线 -->
+        <div class="growthLine-margin"><div class="growthLine-box"><div class="growthLine">
+            <div id="growthLine" style="width: 100%;height:100%;"></div>
+        </div></div></div>
+
+        <!-- 成长荣耀 -->
+        <div class="listItem">
+            <div class="item-title"><img class="icon" src="images/growthLine_1.png" width="27" height="40" />成长荣耀</div>
+            <ul class="glory">
+                <li>
+                    <img class="icon" src="images/growthLine_5.png" width="54" height="54" />
+                    <div class="info">
+                        <h4 class="title">您的宝宝已经获得了<span class="c-pink">情感小大人</span>的称号</h4>
+                        <p class="tips">本月运动能力有较大的提升哦</p>
+                    </div>
+                </li>
+                <li>
+                    <img class="icon" src="images/growthLine_6.png" width="54" height="54" />
+                    <div class="info">
+                        <h4 class="title">您的宝宝将来可能是文学家</h4>
+                        <p class="tips">本月运动能力有较大的提升哦</p>
+                    </div>
+                </li>
+                <li>
+                    <img class="icon" src="images/growthLine_7.png" width="54" height="54" />
+                    <div class="info">
+                        <h4 class="title">您的宝宝下阶段可增强方面</h4>
+                        <p class="tips">
+                            <span class="c-pink">1.想象能力</span>&nbsp;&nbsp;
+                            <span class="c-pink">2.语言能力</span>&nbsp;&nbsp;
+                        </p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 相关知识 -->
+        <div class="listItem">
+            <div class="item-title"><img class="icon" src="images/growthLine_2.png" width="27" height="40" />相关知识</div>
+            <ul class="linkItem">
+                <li><a href="#">
+                    <img class="img" src="images/img2.png" width="80" height="64" />
+                    <p class="txt">六个月的宝宝如何开发语言能力？3个小妙招，妥妥的</p>
+                </a></li>
+            </ul>
+        </div>
+
+        <!-- 相关宝典 -->
+        <div class="listItem">
+            <div class="item-title"><img class="icon" src="images/growthLine_3.png" width="27" height="40" />相关宝典</div>
+            <ul class="linkItem">
+                <li><a href="#">
+                    <img class="img" src="images/img2.png" width="80" height="64" />
+                    <p class="txt">[宝宝想象力开发]</p>
+                </a></li>
+            </ul>
+        </div>
+
+        <!-- 相关好玩 -->
+        <div class="listItem">
+            <div class="item-title"><img class="icon" src="images/growthLine_4.png" width="27" height="40" />相关好玩</div>
+            <ul class="linkBlockItem">
+                <li><a href="#">
+                    <img class="img" src="images/img3.png" />
+                </a></li>
+            </ul>
+        </div>
+    	
+        
+    </div>
+
+    <script src="js/echarts.min.js"></script>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('growthLine'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            legend: {
+                orient: "vertical",     //纵向
+                right: 0,
+                bottom: 0,
+                itemWidth: 14,
+                itemHeight: 14,
+                data: ["上个月","6月11日"]
+            },
+            tooltip: {},
+            radar: {
+                indicator: [
+                   { name: '视觉能力', max: 60},
+                   { name: '语言能力', max: 60},
+                   { name: '情感社交', max: 60},
+                   { name: '动作发育', max: 60},
+                   { name: '听发能力', max: 60},
+                   { name: '触觉能力', max: 60}
+                ],
+                name: {
+                    textStyle: {
+                        color: '#585858',
+                        fontWeight: 'bold',
+                        fontSize: 13
+                    }
+                },
+                splitNumber: 6,     //分割几块
+                splitLine: {
+                    lineStyle: {
+                        color: '#fff',
+                        width: 2
+                    }
+                },
+                splitArea: {
+                    areaStyle: {
+                        color: ['#fac73a', '#f8bc4a', '#fff8ba', '#fff9bf', '#fff9bf', '#fff9bf']
+                    }
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#fff',
+                        width: 2
+                    }
+                }
+            },
+            series: [{
+                name: '上个月 vs 6月11日',
+                type: 'radar',
+                symbolSize: 0,
+                lineStyle: {
+                    normal: {
+                        width: 2
+                    }
+                },
+                data : [
+                    {
+                        value : [30, 30, 20, 30, 30, 40],
+                        name : '上个月',
+                        itemStyle: {
+                            normal:{
+                                color: '#015da6'
+                            }
+                        }
+                    },
+                     {
+                        value : [40, 50, 30, 40, 40, 50],
+                        name : '6月11日',
+                        itemStyle: {
+                            normal:{
+                                color: '#e62119'
+                            }
+                        }
+                    }
+                ]
+            }]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+</body>
+</html>

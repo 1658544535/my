@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.UserToyLogMapper">
+	<!-- 查询所有的记录 -->
+	<select id="findAll" resultType="UserToyLogPojo" parameterType="java.util.Map">
+		select
+		t.id as id, 
+		t.user_id as userId, 
+		t.username as username, 
+		l.name as loginName,
+		t.toy_id as toyId,
+		gft.name as toyName,
+		gft.images as toyImages,
+		t.address as address, 
+		t.telphone as telphone, 
+		t.express_no as expressNo, 
+		t.express_name as expressName, 
+		t.create_date as createDate, 
+		t.create_by as createBy, 
+		t.update_date as updateDate, 
+		t.update_by as updateBy 
+	   	from user_toy_log t
+	   	left join game_factory_toy gft on gft.id=t.toy_id
+	   	left join sys_login l on t.user_id = l.id 
+		where
+		1=1
+		<if test="userId != null">
+			and t.user_id = #{userId}
+		</if>
+		<if test="updateDate != null and updateDate != '' ">
+			and (t.update_date is null or t.update_date = '')
+		</if>
+		<if test="loginName != null and loginName!=''">
+			and l.name like CONCAT("%",#{loginName},"%")
+		</if>
+		<if test="telphone != null and telphone!=''">
+			and t.telphone like CONCAT("%",#{telphone},"%")
+		</if>
+		<if test="toyName != null and toyName!=''">
+			and gft.name like CONCAT("%",#{toyName},"%")
+		</if>
+		<if test="beginday !=null and beginday !=''">
+			and UNIX_TIMESTAMP(t.create_date) >= UNIX_TIMESTAMP(CONCAT(#{beginday},':00'))
+		</if>
+		<if test="endday !=null and endday !=''">
+			and  UNIX_TIMESTAMP(CONCAT(#{endday},':00')) >= UNIX_TIMESTAMP(t.create_date)
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+		
+	</select>
+	<select id="findAllCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from user_toy_log t 
+		left join game_factory_toy gft on gft.id=t.toy_id
+		left join sys_login l on t.user_id = l.id
+		where
+		1=1
+		<if test="loginName != null and loginName!=''">
+			and l.name like CONCAT("%",#{loginName},"%")
+		</if>
+		<if test="telphone != null and telphone!=''">
+			and t.telphone like CONCAT("%",#{telphone},"%")
+		</if>
+		<if test="toyName != null and toyName!=''">
+			and gft.name like CONCAT("%",#{toyName},"%")
+		</if>
+		<if test="beginday !=null and beginday !=''">
+			and UNIX_TIMESTAMP(t.create_date) >= UNIX_TIMESTAMP(CONCAT(#{beginday},':00'))
+		</if>
+		<if test="endday !=null and endday !=''">
+			and  UNIX_TIMESTAMP(CONCAT(#{endday},':00')) >= UNIX_TIMESTAMP(t.create_date)
+		</if>
+	</select>
+	<!-- 删除单条 -->
+	<delete id="delUserToyLog" parameterType="UserToyLogPojo">
+		delete from user_toy_log
+		where
+		id = #{id}
+	</delete>
+	<!-- 查找单条 -->
+	<select id="findUserToyLogById" resultType="UserToyLogPojo"
+		parameterType="Long">
+		select 
+		t.id as id, 
+		t.user_id as userId,
+		t.username as username, 
+		t.toy_id as toyId, 
+		t.address as address, 
+		t.telphone as telphone, 
+		t.express_no as expressNo, 
+		t.express_name as expressName, 
+		t.create_date as createDate, 
+		t.create_by as createBy, 
+		t.update_date as updateDate, 
+		t.update_by as updateBy
+	   	from user_toy_log t
+		where
+		t.id=#{id}
+	</select>
+	<!--更新单条-->
+	<update id="updateUserToyLog" parameterType="UserToyLogPojo">
+		update user_toy_log set
+		<if test="userId != null">
+			user_id = #{userId},
+		</if>
+		<if test="username != null and username !=''">
+			username = #{username},
+		</if>
+		<if test="toyId != null">
+			toy_id = #{toyId},
+		</if>
+		<if test="address != null and address!=''">
+			address = #{address},
+		</if>
+		<if test="telphone != null and telphone!=''">
+			telphone = #{telphone},
+		</if>
+		<if test="expressNo != null and expressNo!=''">
+			express_no = #{expressNo},
+		</if>
+		<if test="expressName != null and expressName!=''">
+			express_name = #{expressName},
+		</if>
+		update_date = now()
+		where
+		id = #{id}
+	</update>
+	<!-- 添加用户玩具记录 -->
+	<insert id="addUserToyLog" parameterType="UserToyLogPojo">
+		INSERT INTO user_toy_log 
+		(user_id, username, toy_id, address, telphone, express_no, express_name, create_date, create_by) 
+		VALUES 
+		(#{userId}, #{username}, #{toyId}, #{address}, #{telphone}, #{expressNo}, #{expressName}, now(), #{createBy});
+	</insert>
+</mapper>

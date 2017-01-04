@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="userWallet" extends="default">
+		<!-- 显示页面 -->
+		<action name="userWallet" class="com.tzmb2c.web.action.UserWalletAction" method="userWalletCount">
+			<result name="success">/page/system/wallet/userWallet.jsp</result>
+		</action>	
+		<!-- 删除 -->
+		<action name="delUserWallet" class="com.tzmb2c.web.action.UserWalletAction" method="delUserWallet">
+		</action>
+		<!-- 批量删除 -->
+		<action name="delUserWalletAll" class="com.tzmb2c.web.action.UserWalletAction" method="delUserWalletAll">
+		</action>
+		<!-- 编辑(跳转) -->
+		<action name="goUpdateUserWallet" class="com.tzmb2c.web.action.UserWalletAction" method="goUpdateUserWallet">
+			<result name="success">/page/system/wallet/updateUserWallet.jsp</result>
+		</action>
+	    <!-- 编辑 -->
+		<action name="updateUserWallet" class="com.tzmb2c.web.action.UserWalletAction" method="updateUserWallet">
+		</action>		
+		<!-- 新增（跳转）-->
+		<action name="goAddUserWallet" class="com.tzmb2c.web.action.UserWalletAction" method="goAddUserWallet">
+			<result name="success">/page/system/wallet/addUserWallet.jsp</result>
+		</action>	
+		<!-- 提交新增 -->
+		<action name="addUserWallet" class="com.tzmb2c.web.action.UserWalletAction" method="addUserWallet">			
+		</action>	
+		<!-- 导出钱包 -->
+		<action name="getWalletExcel" class="com.tzmb2c.web.action.UserWalletAction" method="getWalletExcel">
+		</action>	
+	</package>
+	<package name="userWallet-json" extends="json-default">
+		<!-- 明细列表 -->
+		<action name="userWalletAll" class="com.tzmb2c.web.action.UserWalletAction" method="userWalletAll">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 明细条数 -->
+		<action name="userWalletCount" class="com.tzmb2c.web.action.UserWalletAction" method="userWalletCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>		
+	</package>
+</struts>

@@ -1,0 +1,49 @@
+ul{margin:0;padding:0;}a img{border:0;}
+/*slide*/
+.slide{
+	position:relative;
+	float:left;
+	width:184px;
+	height:184px;
+	overflow:hidden;
+}
+.slide ul{
+	position:absolute;
+}
+.slide li{
+	float:left;
+	width:120px;
+	height:120px;
+	overflow:hidden;
+	margin:32px;
+}
+.slide .o-control{
+	display:none;
+	position:absolute;
+	top:60px;
+	width:28px;
+	height:28px;
+	cursor:pointer;
+}
+.slide .control{
+	position:relative;
+	top:13px;
+	left:1px;
+	display:inline-block;
+	width:28px;
+	height:28px;
+	background:url(img/bg_index.png);
+}
+.slide #goback{
+	left:0px;
+}
+#goback .control{
+	background-position:0px -35px;
+}
+.slide #forward{
+	right:10px;
+}
+#forward .control{
+	left:15px;
+	background-position:-35px -35px;
+}

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.CategoryDetailSettingMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		s.id as id,
+		s.category_id as categoryId,
+		s.type_id as typeId,
+		s.sorting as sorting,
+		s.create_by as createBy,
+		s.create_date as createDate,
+		s.update_by as updateBy,
+		s.update_date as updateDate,
+		t.name as name,
+		tt.name as parentName,
+		t.image as image
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="CategoryDetailSettingPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			category_detail_setting s
+		left join 
+			product_type t on s.type_id = t.id left join product_type tt on t.pid=tt.id
+		where
+			s.id = #{id}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from category_detail_setting s
+		left join product_type t on s.type_id = t.id left join product_type tt on t.pid=tt.id
+		where 1=1
+		  <if test="id != null ">
+			and s.id = #{id}
+		  </if>
+		  <if test="categoryId != null ">
+			and s.category_id = #{categoryId}
+		  </if>
+		  <if test="typeId != null ">
+			and s.type_id = #{typeId}
+		  </if>
+		  <if test="sorting != null ">
+			and s.sorting = #{sorting}
+		  </if>
+		  <if test="createBy != null ">
+			and s.create_by = #{createBy}
+		  </if>
+		  <if test="createDate != null ">
+			and s.create_date = #{createDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and s.update_by = #{updateBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and s.update_date = #{updateDate}
+		  </if>
+		  <if test="status != null ">
+			and t.status = #{status}
+		  </if>
+		  <if test="visable != null ">
+			and t.visable = #{visable}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="CategoryDetailSettingPojo">
+		select
+			<include refid="Base_Column_List" />
+		from category_detail_setting s
+		left join product_type t on s.type_id = t.id left join product_type tt on t.pid=tt.id
+		where 1=1
+			<if test="id != null ">
+			  and s.id = #{id}
+			</if>
+			<if test="categoryId != null ">
+			  and s.category_id = #{categoryId}
+			</if>
+			<if test="typeId != null ">
+			  and s.type_id = #{typeId}
+			</if>
+			<if test="sorting != null ">
+			  and s.sorting = #{sorting}
+			</if>
+			<if test="createBy != null ">
+			  and s.create_by = #{createBy}
+			</if>
+			<if test="createDate != null ">
+			  and s.create_date = #{createDate}
+			</if>
+			<if test="updateBy != null ">
+			  and s.update_by = #{updateBy}
+			</if>
+			<if test="updateDate != null ">
+			  and s.update_date = #{updateDate}
+			</if>
+			<if test="status != null ">
+			  and t.status = #{status}
+			</if>
+			<if test="visable != null ">
+			  and t.visable = #{visable}
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="CategoryDetailSettingPojo">
+		update category_detail_setting
+		<set>
+			<if test="categoryId != null">
+			  category_id = #{categoryId},
+			</if>
+			<if test="typeId != null">
+			  type_id = #{typeId},
+			</if>
+			<if test="sorting != null">
+			  sorting = #{sorting},
+			</if>
+			<if test="createBy != null">
+			  create_by = #{createBy},
+			</if>
+			<if test="createDate != null">
+			  create_date = #{createDate},
+			</if>
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+			<if test="updateDate != null">
+			  update_date = #{updateDate},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from category_detail_setting 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="CategoryDetailSettingPojo">
+		insert into category_detail_setting
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="categoryId != null">
+				category_id,
+			</if>
+			<if test="typeId != null">
+				type_id,
+			</if>
+			<if test="sorting != null">
+				sorting,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="updateBy != null">
+				update_by,
+			</if>
+			<if test="updateDate != null">
+				update_date,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="categoryId != null">
+				#{categoryId},
+			</if>
+			<if test="typeId != null">
+				#{typeId},
+			</if>
+			<if test="sorting != null">
+				#{sorting},
+			</if>
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+			<if test="createDate != null">
+				#{createDate},
+			</if>
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+			<if test="updateDate != null">
+				#{updateDate},
+			</if>
+		</trim>
+	</insert>
+	
+</mapper>

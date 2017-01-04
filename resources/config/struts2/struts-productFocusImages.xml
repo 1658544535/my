@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="productFocusImages" extends="default">
+
+		<action name="productFocusImages" class="com.tzmb2c.web.action.ProductFocusImagesAction" method="getProductFocusImagesCount">
+			<result>/page/system/product/productFocusImages.jsp</result>
+		</action>
+		
+		<action name="ProductFocusImagesDeleteId" class="com.tzmb2c.web.action.ProductFocusImagesAction" method="productFocusImagesDeleteId">
+		
+		</action>
+		
+		<action name="goFindProductFocusImages" class="com.tzmb2c.web.action.ProductFocusImagesAction" method="goFindProductFocusImages">
+			<result>/page/system/product/productFocusImagesupdate.jsp</result>
+		</action>
+		<action name="updateProductFocusImages" class="com.tzmb2c.web.action.ProductFocusImagesAction" method="updateProductFocusImages">
+		</action>
+		<action name="addProductFocusImages" class="com.tzmb2c.web.action.ProductFocusImagesAction" method="addProductFocusImages">
+			<result>/page/system/product/productFocusImagesAdd.jsp</result>
+		</action>
+		<action name="insertProductFocusImages" class="com.tzmb2c.web.action.ProductFocusImagesAction" method="insertProductFocusImages">
+		</action>
+		
+	</package>
+	<package name="ProductFocusImages-json" extends="json-default">
+		<!--平台入口-->
+		<action name="getProductFocusImagesCount" class="com.tzmb2c.web.action.ProductFocusImagesAction" method="getProductFocusImagesCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+			<action name="productFocusImagesAllList" class="com.tzmb2c.web.action.ProductFocusImagesAction" method="productFocusImagesAllList">
+			<result type="json">
+				<param name="root">page.result</param>.
+			</result>
+		</action>
+		<action name="deleProductFocusImages" class="com.tzmb2c.web.action.ProductFocusImagesAction" method="deleProductFocusImages">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

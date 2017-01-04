@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="tarentoWebLogin" extends="struts-default">
+		<global-results>
+			<result name="gkloginweb">/tarento/page/login.jsp</result>
+			<result name="errorpage">/page/common/error.jsp</result>
+			<result name="tarentoWeb">/tarento/page/index.jsp</result>
+		</global-results>
+		
+		<!-- 达人中心登录前端显示 -->
+		<action name="tarentoLogin" class="com.tzmb2c.web.action.TarentoWebAction" method="tarentoLogin">
+			<result name="success">/tarento/page/login.jsp</result>
+		</action>
+		<!-- 达人中心登录验证 -->
+		<action name="doTarentoLogin" class="com.tzmb2c.web.action.TarentoWebAction" method="getLoginValidate">
+			<result name="success" type="redirectAction">tarentoWeb</result>
+		</action>
+		<!-- 达人中心首页 -->
+	    <action name="tarentoWeb" class="com.tzmb2c.web.action.TarentoWebAction" method="tarentoWebHomePage">
+			<result>/tarento/page/index.jsp</result>
+		</action>
+		<!-- 达人退出 -->
+		<action name="doTarentoLogout" class="com.tzmb2c.web.action.TarentoWebAction" method="doTarentoLogoutWeb">
+			<result>/tarento/page/login.jsp</result>
+		</action>
+		<!-- 笔记列表前端显示 -->
+		<action name="getUserCirclePostListWeb" class="com.tzmb2c.web.action.TarentoWebAction" method="getUserCirclePostListWeb">
+			<result name="success">/tarento/page/userCirclePost/userCirclePostList.jsp</result>
+		</action>
+		<!-- 跳转到新增笔记页面 -->
+		<action name="goAddUCPost" class="com.tzmb2c.web.action.TarentoWebAction" method="goAddUCPost">
+			<result name="success">/tarento/page/userCirclePost/addUserCirclePost.jsp</result>
+		</action>
+		<!-- 跳转到编辑笔记页面-->
+		<action name="goUpdateUCPost" class="com.tzmb2c.web.action.TarentoWebAction" method="goUpdateUCPost">
+			<result name="success">/tarento/page/userCirclePost/updateUserCirclePost.jsp</result>
+			<result name="oldVersion">/tarento/page/userCirclePost/oldUpdateUserCirclePost.jsp</result>
+		</action>
+		<!--删除笔记 -->
+		<action name="delUCPost" class="com.tzmb2c.web.action.TarentoWebAction" method="delUCPost">
+		</action>
+
+	</package>	
+
+	<package name="tarentoWeb-json" extends="json-default">	
+	<!-- 笔记列表数据前端显示-->
+		<action name="getUserCirclePostListData" class="com.tzmb2c.web.action.TarentoWebAction" method="getUserCirclePostListData">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<!-- 笔记列表条数前端显示-->
+		<action name="getUserCirclePostListCount" class="com.tzmb2c.web.action.TarentoWebAction" method="getUserCirclePostListWeb">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		<!--添加笔记 -->
+		<action name="addUCPost" class="com.tzmb2c.web.action.TarentoWebAction" method="addUCPost">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<!-- 编辑笔记 -->
+		<action name="updateUCPost" class="com.tzmb2c.web.action.TarentoWebAction" method="updateUCPost">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

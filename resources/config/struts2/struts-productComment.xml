@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+	<package name="productcomment" extends="default">
+
+
+		<!-- 商品评论统计-->
+		<action name="productCommentHg" class="com.tzmb2c.web.action.ProductCommentAction"
+			method="getProductCommentCountHg">
+			<result name="success">/page/system/productcomment/productcommentHg.jsp
+			</result>
+		</action>
+			<!-- 商品分值记录-->
+		<action name="productCommentWe" class="com.tzmb2c.web.action.ProductCommentAction"
+			method="getProductCommentCountWe">
+			<result name="success">/page/system/productcomment/productcommentWe.jsp
+			</result>
+		</action>
+		<!--获取记录数目 -->
+		<action name="productCommentManage" class="com.tzmb2c.web.action.ProductCommentAction"
+			method="getProductCommentCount">
+			<result name="success">/page/system/productcomment/productcomment.jsp
+			</result>
+		</action>
+
+		<!-- 审核  -->
+		<action name="checkOneProductComment" class="com.tzmb2c.web.action.ProductCommentAction"
+			method="checkOneProductComment">
+		</action>
+		
+
+		<!-- 审核全部  -->
+		<action name="checkAllProductCommentById" class="com.tzmb2c.web.action.ProductCommentAction"
+			method="checkAllProductCommentById">
+		</action>
+		
+
+		<!-- 删除 -->
+		<action name="delProductComment" class="com.tzmb2c.web.action.ProductCommentAction"
+			method="delProductComment">
+		</action>
+
+		<!-- 删除全部-->
+		<action name="productCommentDeleteIds" class="com.tzmb2c.web.action.ProductCommentAction"
+			method="delAllProductCommentByIds">
+		</action>
+		
+		<!-- 审核全部-->
+		<action name="productCommentCheckIds" class="com.tzmb2c.web.action.ProductCommentAction"
+			method="checkAllProductCommentByIds">
+		</action>
+ 		
+	</package>
+
+	<package name="comment-json" extends="json-default">
+		<!--平台入口 -->
+		<action name="getProductCommentCount" class="com.tzmb2c.web.action.ProductCommentAction"
+			method="getProductCommentCount">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+
+		<action name="productCommentAllList" class="com.tzmb2c.web.action.ProductCommentAction"
+			method="ProductCommentAllList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+
+		<action name="delProductComment" class="com.tzmb2c.web.action.ProductCommentAction"
+			method="delProductComment">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="checkProductComment" class="com.tzmb2c.web.action.ProductCommentAction"
+			method="checkProductComment">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="uncheckProductComment" class="com.tzmb2c.web.action.ProductCommentAction"
+			method="uncheckProductComment">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+
+		<!--  
+		<action name="verifyPushNotice" class="com.tzmb2c.web.action.ProductCommentAction"
+			method="verifyPushNotice">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		-->	
+		
+		<action name="getProductCommentCountWe" class="com.tzmb2c.web.action.ProductCommentAction"
+			method="getProductCommentCountWe">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		<action name="productCommentAllListWe" class="com.tzmb2c.web.action.ProductCommentAction"
+			method="ProductCommentAllListWe">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		
+		<action name="getProductCommentCountHg" class="com.tzmb2c.web.action.ProductCommentAction"
+			method="getProductCommentCountHg">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+		<action name="productCommentAllListHg" class="com.tzmb2c.web.action.ProductCommentAction"
+			method="ProductCommentAllListHg">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+	</package>
+
+</struts>

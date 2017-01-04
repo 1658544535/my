@@ -1,0 +1,868 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>jQuery Pagination分页插件参数可编辑demo</title>
+	<link rel="stylesheet" href="./Pagination/pagination.css">
+		<style type="text/css">
+body {
+	font-size: 84%;
+	color: #333333;
+	line-height: 1.4;
+}
+
+a {
+	color: #34538b;
+}
+
+#Searchresult {
+	width: 300px;
+	padding: 20px;
+	background: #f0f3f9;
+}
+</style>
+		<script type="text/javascript" src="./Pagination/jquery.js"></script>
+		<script type="text/javascript" src="./Pagination/jquery_002.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				//总数目
+				var length = $("#hiddenresult .show").length;
+				//从表单获取分页元素参数
+				var optInit = getOptionsFromForm();
+				$("#Pagination").pagination(length, optInit);
+
+				// 按钮事件
+				$("#setoptions").click(function() {
+					var opt = getOptionsFromForm();
+					// 重新创建分页参数
+					$("#Pagination").pagination(length, opt);
+				});
+				//-----------------------------------
+				function getOptionsFromForm() {
+					var opt = {
+						callback : pageselectCallback
+					};
+					// 从文本域中收集参数 - 这些空间名与参数名相对应
+					$("input:text")
+							.each(
+									function() {
+										opt[this.name] = this.className
+												.match(/numeric/) ? parseInt(this.value)
+												: this.value;
+									});
+					//避免demo重引入HTML
+					var htmlspecialchars = {
+						"&" : "&amp;",
+						"<":"&lt;", ">" : "&gt;",
+						'"' : "&quot;"
+					}
+					$.each(htmlspecialchars, function(k, v) {
+						opt.prev_text = opt.prev_text.replace(k, v);
+						opt.next_text = opt.next_text.replace(k, v);
+					})
+					return opt;
+				}
+				//-------------------------------
+				function pageselectCallback(page_index, jq) {
+					// 从表单获取每页的显示的列表项数目
+					var items_per_page = $("#items_per_page").val();
+					var max_elem = Math.min((page_index + 1) * items_per_page,
+							length);
+
+					$("#Searchresult").html("");
+					// 获取加载元素
+					for ( var i = page_index * items_per_page; i < max_elem; i++) {
+						$("#Searchresult").append(
+								$("#hiddenresult .show:eq(" + i + ")").clone());
+					}
+					//阻止单击事件
+					return false;
+				}
+			});
+		</script>
+</head>
+
+<body>
+	<h1>jQuery Pagination分页插件ajax demo</h1>
+	<div id="Pagination" class="pagination">
+		<span class="current prev">上一页</span><span class="current">1</span><a
+			href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#">5</a><a
+			href="#">6</a><a href="#">7</a><a href="#">8</a><a href="#">9</a><a
+			href="#">10</a><span>...</span><a href="#">19</a><a href="#">20</a><a
+			class="next" href="#">下一页</a>
+	</div>
+	<h3>列表内容显示</h3>
+	<div id="Searchresult">
+		<dl class="show">
+			<dt>
+				<strong>这是标题1</strong>
+			</dt>
+			<dd>这是标题1下的内容1</dd>
+			<dd>这是标题1下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题2</strong>
+			</dt>
+			<dd>这是标题2下的内容1</dd>
+			<dd>这是标题2下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题3</strong>
+			</dt>
+			<dd>这是标题3下的内容1</dd>
+			<dd>这是标题3下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题4</strong>
+			</dt>
+			<dd>这是标题4下的内容1</dd>
+			<dd>这是标题4下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题5</strong>
+			</dt>
+			<dd>这是标题5下的内容1</dd>
+			<dd>这是标题5下的内容2</dd>
+		</dl>
+	</div>
+	<div id="hiddenresult" style="display: none;">
+		<dl class="show">
+			<dt>
+				<strong>这是标题1</strong>
+			</dt>
+			<dd>这是标题1下的内容1</dd>
+			<dd>这是标题1下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题2</strong>
+			</dt>
+			<dd>这是标题2下的内容1</dd>
+			<dd>这是标题2下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题3</strong>
+			</dt>
+			<dd>这是标题3下的内容1</dd>
+			<dd>这是标题3下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题4</strong>
+			</dt>
+			<dd>这是标题4下的内容1</dd>
+			<dd>这是标题4下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题5</strong>
+			</dt>
+			<dd>这是标题5下的内容1</dd>
+			<dd>这是标题5下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题6</strong>
+			</dt>
+			<dd>这是标题6下的内容1</dd>
+			<dd>这是标题6下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题7</strong>
+			</dt>
+			<dd>这是标题7下的内容1</dd>
+			<dd>这是标题7下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题8</strong>
+			</dt>
+			<dd>这是标题8下的内容1</dd>
+			<dd>这是标题8下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题9</strong>
+			</dt>
+			<dd>这是标题9下的内容1</dd>
+			<dd>这是标题9下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题10</strong>
+			</dt>
+			<dd>这是标题10下的内容1</dd>
+			<dd>这是标题10下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题11</strong>
+			</dt>
+			<dd>这是标题11下的内容1</dd>
+			<dd>这是标题11下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题12</strong>
+			</dt>
+			<dd>这是标题12下的内容1</dd>
+			<dd>这是标题12下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题13</strong>
+			</dt>
+			<dd>这是标题13下的内容1</dd>
+			<dd>这是标题13下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题14</strong>
+			</dt>
+			<dd>这是标题14下的内容1</dd>
+			<dd>这是标题14下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题15</strong>
+			</dt>
+			<dd>这是标题15下的内容1</dd>
+			<dd>这是标题15下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题16</strong>
+			</dt>
+			<dd>这是标题16下的内容1</dd>
+			<dd>这是标题16下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题17</strong>
+			</dt>
+			<dd>这是标题17下的内容1</dd>
+			<dd>这是标题17下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题18</strong>
+			</dt>
+			<dd>这是标题18下的内容1</dd>
+			<dd>这是标题18下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题19</strong>
+			</dt>
+			<dd>这是标题19下的内容1</dd>
+			<dd>这是标题19下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题20</strong>
+			</dt>
+			<dd>这是标题20下的内容1</dd>
+			<dd>这是标题20下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题21</strong>
+			</dt>
+			<dd>这是标题21下的内容1</dd>
+			<dd>这是标题21下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题22</strong>
+			</dt>
+			<dd>这是标题22下的内容1</dd>
+			<dd>这是标题22下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题23</strong>
+			</dt>
+			<dd>这是标题23下的内容1</dd>
+			<dd>这是标题23下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题24</strong>
+			</dt>
+			<dd>这是标题24下的内容1</dd>
+			<dd>这是标题24下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题25</strong>
+			</dt>
+			<dd>这是标题25下的内容1</dd>
+			<dd>这是标题25下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题26</strong>
+			</dt>
+			<dd>这是标题26下的内容1</dd>
+			<dd>这是标题26下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题27</strong>
+			</dt>
+			<dd>这是标题27下的内容1</dd>
+			<dd>这是标题27下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题28</strong>
+			</dt>
+			<dd>这是标题28下的内容1</dd>
+			<dd>这是标题28下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题29</strong>
+			</dt>
+			<dd>这是标题29下的内容1</dd>
+			<dd>这是标题29下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题30</strong>
+			</dt>
+			<dd>这是标题30下的内容1</dd>
+			<dd>这是标题30下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题31</strong>
+			</dt>
+			<dd>这是标题31下的内容1</dd>
+			<dd>这是标题31下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题32</strong>
+			</dt>
+			<dd>这是标题32下的内容1</dd>
+			<dd>这是标题32下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题33</strong>
+			</dt>
+			<dd>这是标题33下的内容1</dd>
+			<dd>这是标题33下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题34</strong>
+			</dt>
+			<dd>这是标题34下的内容1</dd>
+			<dd>这是标题34下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题35</strong>
+			</dt>
+			<dd>这是标题35下的内容1</dd>
+			<dd>这是标题35下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题36</strong>
+			</dt>
+			<dd>这是标题36下的内容1</dd>
+			<dd>这是标题36下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题37</strong>
+			</dt>
+			<dd>这是标题37下的内容1</dd>
+			<dd>这是标题37下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题38</strong>
+			</dt>
+			<dd>这是标题38下的内容1</dd>
+			<dd>这是标题38下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题39</strong>
+			</dt>
+			<dd>这是标题39下的内容1</dd>
+			<dd>这是标题39下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题40</strong>
+			</dt>
+			<dd>这是标题40下的内容1</dd>
+			<dd>这是标题40下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题41</strong>
+			</dt>
+			<dd>这是标题41下的内容1</dd>
+			<dd>这是标题41下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题42</strong>
+			</dt>
+			<dd>这是标题42下的内容1</dd>
+			<dd>这是标题42下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题43</strong>
+			</dt>
+			<dd>这是标题43下的内容1</dd>
+			<dd>这是标题43下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题44</strong>
+			</dt>
+			<dd>这是标题44下的内容1</dd>
+			<dd>这是标题44下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题45</strong>
+			</dt>
+			<dd>这是标题45下的内容1</dd>
+			<dd>这是标题45下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题46</strong>
+			</dt>
+			<dd>这是标题46下的内容1</dd>
+			<dd>这是标题46下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题47</strong>
+			</dt>
+			<dd>这是标题47下的内容1</dd>
+			<dd>这是标题47下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题48</strong>
+			</dt>
+			<dd>这是标题48下的内容1</dd>
+			<dd>这是标题48下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题49</strong>
+			</dt>
+			<dd>这是标题49下的内容1</dd>
+			<dd>这是标题49下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题50</strong>
+			</dt>
+			<dd>这是标题50下的内容1</dd>
+			<dd>这是标题50下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题51</strong>
+			</dt>
+			<dd>这是标题51下的内容1</dd>
+			<dd>这是标题51下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题52</strong>
+			</dt>
+			<dd>这是标题52下的内容1</dd>
+			<dd>这是标题52下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题53</strong>
+			</dt>
+			<dd>这是标题53下的内容1</dd>
+			<dd>这是标题53下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题54</strong>
+			</dt>
+			<dd>这是标题54下的内容1</dd>
+			<dd>这是标题54下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题55</strong>
+			</dt>
+			<dd>这是标题55下的内容1</dd>
+			<dd>这是标题55下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题56</strong>
+			</dt>
+			<dd>这是标题56下的内容1</dd>
+			<dd>这是标题56下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题57</strong>
+			</dt>
+			<dd>这是标题57下的内容1</dd>
+			<dd>这是标题57下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题58</strong>
+			</dt>
+			<dd>这是标题58下的内容1</dd>
+			<dd>这是标题58下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题59</strong>
+			</dt>
+			<dd>这是标题59下的内容1</dd>
+			<dd>这是标题59下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题60</strong>
+			</dt>
+			<dd>这是标题60下的内容1</dd>
+			<dd>这是标题60下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题61</strong>
+			</dt>
+			<dd>这是标题61下的内容1</dd>
+			<dd>这是标题61下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题62</strong>
+			</dt>
+			<dd>这是标题62下的内容1</dd>
+			<dd>这是标题62下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题63</strong>
+			</dt>
+			<dd>这是标题63下的内容1</dd>
+			<dd>这是标题63下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题64</strong>
+			</dt>
+			<dd>这是标题64下的内容1</dd>
+			<dd>这是标题64下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题65</strong>
+			</dt>
+			<dd>这是标题65下的内容1</dd>
+			<dd>这是标题65下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题66</strong>
+			</dt>
+			<dd>这是标题66下的内容1</dd>
+			<dd>这是标题66下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题67</strong>
+			</dt>
+			<dd>这是标题67下的内容1</dd>
+			<dd>这是标题67下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题68</strong>
+			</dt>
+			<dd>这是标题68下的内容1</dd>
+			<dd>这是标题68下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题69</strong>
+			</dt>
+			<dd>这是标题69下的内容1</dd>
+			<dd>这是标题69下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题70</strong>
+			</dt>
+			<dd>这是标题70下的内容1</dd>
+			<dd>这是标题70下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题71</strong>
+			</dt>
+			<dd>这是标题71下的内容1</dd>
+			<dd>这是标题71下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题72</strong>
+			</dt>
+			<dd>这是标题72下的内容1</dd>
+			<dd>这是标题72下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题73</strong>
+			</dt>
+			<dd>这是标题73下的内容1</dd>
+			<dd>这是标题73下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题74</strong>
+			</dt>
+			<dd>这是标题74下的内容1</dd>
+			<dd>这是标题74下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题75</strong>
+			</dt>
+			<dd>这是标题75下的内容1</dd>
+			<dd>这是标题75下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题76</strong>
+			</dt>
+			<dd>这是标题76下的内容1</dd>
+			<dd>这是标题76下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题77</strong>
+			</dt>
+			<dd>这是标题77下的内容1</dd>
+			<dd>这是标题77下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题78</strong>
+			</dt>
+			<dd>这是标题78下的内容1</dd>
+			<dd>这是标题78下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题79</strong>
+			</dt>
+			<dd>这是标题79下的内容1</dd>
+			<dd>这是标题79下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题80</strong>
+			</dt>
+			<dd>这是标题80下的内容1</dd>
+			<dd>这是标题80下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题81</strong>
+			</dt>
+			<dd>这是标题81下的内容1</dd>
+			<dd>这是标题81下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题82</strong>
+			</dt>
+			<dd>这是标题82下的内容1</dd>
+			<dd>这是标题82下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题83</strong>
+			</dt>
+			<dd>这是标题83下的内容1</dd>
+			<dd>这是标题83下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题84</strong>
+			</dt>
+			<dd>这是标题84下的内容1</dd>
+			<dd>这是标题84下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题85</strong>
+			</dt>
+			<dd>这是标题85下的内容1</dd>
+			<dd>这是标题85下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题86</strong>
+			</dt>
+			<dd>这是标题86下的内容1</dd>
+			<dd>这是标题86下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题87</strong>
+			</dt>
+			<dd>这是标题87下的内容1</dd>
+			<dd>这是标题87下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题88</strong>
+			</dt>
+			<dd>这是标题88下的内容1</dd>
+			<dd>这是标题88下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题89</strong>
+			</dt>
+			<dd>这是标题89下的内容1</dd>
+			<dd>这是标题89下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题90</strong>
+			</dt>
+			<dd>这是标题90下的内容1</dd>
+			<dd>这是标题90下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题91</strong>
+			</dt>
+			<dd>这是标题91下的内容1</dd>
+			<dd>这是标题91下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题92</strong>
+			</dt>
+			<dd>这是标题92下的内容1</dd>
+			<dd>这是标题92下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题93</strong>
+			</dt>
+			<dd>这是标题93下的内容1</dd>
+			<dd>这是标题93下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题94</strong>
+			</dt>
+			<dd>这是标题94下的内容1</dd>
+			<dd>这是标题94下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题95</strong>
+			</dt>
+			<dd>这是标题95下的内容1</dd>
+			<dd>这是标题95下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题96</strong>
+			</dt>
+			<dd>这是标题96下的内容1</dd>
+			<dd>这是标题96下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题97</strong>
+			</dt>
+			<dd>这是标题97下的内容1</dd>
+			<dd>这是标题97下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题98</strong>
+			</dt>
+			<dd>这是标题98下的内容1</dd>
+			<dd>这是标题98下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题99</strong>
+			</dt>
+			<dd>这是标题99下的内容1</dd>
+			<dd>这是标题99下的内容2</dd>
+		</dl>
+		<dl class="show">
+			<dt>
+				<strong>这是标题100</strong>
+			</dt>
+			<dd>这是标题100下的内容1</dd>
+			<dd>这是标题100下的内容2</dd>
+		</dl>
+	</div>
+	<h3>每页参数配置表单</h3>
+	<!-- 此表单用来证明一些参数的作用 -->
+	<form name="paginationoptions">
+		<p>
+			<label for="items_per_page">每页显示的列表数：</label><input value="5"
+				name="items_per_page" id="items_per_page" class="numeric"
+				type="text">
+		</p>
+		<p>
+			<label for="num_display_entries">分页链接显示数：</label><input value="10"
+				name="num_display_entries" id="num_display_entries" class="numeric"
+				type="text">
+		</p>
+		<p>
+			<label for="num">起始与结束点的数目：</label><input value="2"
+				name="num_edge_entries" id="num_edge_entries" class="numeric"
+				type="text">
+		</p>
+		<p>
+			<label for="prev_text">“上一页”标签：</label><input value="Prev"
+				name="prev_text" id="prev_text" type="text">
+		</p>
+		<p>
+			<label for="next_text">“下一页”标签：</label><input value="Next"
+				name="next_text" id="next_text" type="text">
+		</p>
+		<input id="setoptions" value="设置选项" type="button">
+	</form>
+	<p>
+		Copyright © <a href="http://www.zhangxinxu.com/wordpress/">张鑫旭-鑫空间-鑫生活</a>
+	</p>
+
+
+</body>
+</html>

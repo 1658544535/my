@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+	<package name="homePackage" extends="default">
+		<!-- 首页套餐设置 -->
+		<action name="homePackageManage" class="com.tzmb2c.web.action.HomePackageAction" method="homePackageManage">
+			<result name="success">/page/system/homePackage/homePackageManage.jsp</result>
+		</action>
+		
+		<!-- 添加/修改首页套餐 -->
+		<action name="homePackageAdd" class="com.tzmb2c.web.action.HomePackageAction" method="homePackageAdd">
+			<result name="success">/page/system/homePackage/homePackageAdd.jsp</result>
+		</action>
+		
+		<!-- 添加/修改首页套餐提交 -->
+		<action name="homePackageAddOk" class="com.tzmb2c.web.action.HomePackageAction" method="homePackageAddOk">
+		</action>
+		
+		<!-- 批量删除首页套餐 -->
+		<action name="deletePackageAll" class="com.tzmb2c.web.action.HomePackageAction" method="deletePackageAll">
+		</action>
+		
+		<!-- 批量审核首页套餐 -->
+		<action name="checkPackageAll" class="com.tzmb2c.web.action.HomePackageAction" method="checkPackageAll">
+		</action>
+		
+		
+	</package>
+	<package name="homePackage-json" extends="json-default">
+		<!-- 套餐列表 -->
+		<action name="homePackageCount" class="com.tzmb2c.web.action.HomePackageAction" method="homePackageManage">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+
+		<!-- 套餐条数 -->
+		<action name="homePackageAllList" class="com.tzmb2c.web.action.HomePackageAction" method="homePackageAllList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<!--  删除首页套餐 -->
+		<action name="deletePackage" class="com.tzmb2c.web.action.HomePackageAction" method="deletePackage">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 审核首页套餐 -->
+		<action name="checkPackage" class="com.tzmb2c.web.action.HomePackageAction" method="checkPackage">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- 取消审核首页套餐 -->
+		<action name="uncheckPackage" class="com.tzmb2c.web.action.HomePackageAction" method="uncheckPackage">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		
+	</package>
+</struts>

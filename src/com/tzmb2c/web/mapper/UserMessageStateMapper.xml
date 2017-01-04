@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.UserMessageStateMapper">
+
+	<!-- 插入单条 -->
+	<insert id="addUserMsg" parameterType="userMessageStatePojo">
+		insert into user_message_state
+		(user_id,message_id,is_reader,create_date,update_date)
+		values
+		(#{userId}, #{messageId},#{isReader},now(),now())
+	</insert>
+	
+	<!-- 查询消息状态 -->
+ 	<select id="getUserMsgReadState" parameterType="userMessageStatePojo" resultType="String">
+		select t.is_reader
+		from user_message_state t where t.user_id=#{userId} and t.message_id=#{messageId}
+	</select>
+	
+	<!-- 更新记录 -->
+	<update id="updateUserMsgState" parameterType="userMessageStatePojo">
+		update user_message_state set 
+			update_date = now(),
+		<if test="isReader!=null and isReader!='' ">
+			is_reader = #{isReader}
+		</if>
+		where user_id = #{userId} and message_id = #{messageId}
+	</update>
+	
+</mapper>

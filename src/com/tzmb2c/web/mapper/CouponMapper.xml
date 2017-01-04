@@ -1,0 +1,820 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.CouponMapper">
+
+	<!-- 查询所有的优惠卷记录 -->
+	<select id="getcouponList" resultType="couponPojo" parameterType="java.util.Map">
+		select coupon_id as couponId,
+		name as name,
+		type as type,
+		(CASE WHEN type = 0 THEN '兑换产品' WHEN type = 1 THEN '满m减n金额' WHEN type = 2 THEN '直减金额' END) as typeName,
+		status as status,
+		(CASE WHEN status = 0 THEN '禁用' WHEN status = 1 THEN '启用' END) as statusName,
+		valid_stime as validStime,
+		valid_etime as validEtime,
+		create_time as createTime,
+		content as content,
+		sheet_num as sheetNum,
+		surplus_num as surplusNum,
+		is_product as isProduct,
+		product_id as productId,
+		caption
+		from coupon where 1=1 and is_delete = 0
+		<if test="couponId != null">
+			and coupon_id=#{couponId}
+		</if>
+		<if test="name != null and name != ''">
+			and name like CONCAT("%",#{name},"%")
+		</if>
+		<if test="status != null">
+			and status=#{status}
+		</if>
+		<if test="type != null">
+			and type=#{type}
+		</if>
+		<if test="content != null and content != ''">
+			and content=#{content}
+		</if>
+		<if test="validStime != null">
+			and valid_stime>=#{validStime}
+			<!-- and valid_stime 
+			BETWEEN 
+			#{validStime} 
+			AND 
+			#{validStime} + 86399 -->
+		</if>
+		<if test="validEtime != null">
+			and valid_etime&lt;=#{validEtime}
+			<!-- and valid_etime 
+			BETWEEN 
+			#{validEtime} 
+			AND 
+			#{validEtime} + 86399 -->
+		</if>
+		<if test="createTime != null">
+			and create_time>=#{createTime}
+			<!-- and create_time 
+			BETWEEN 
+			#{createTime} 
+			AND 
+			#{createTime} + 86399 -->
+		</if>
+		<if test="isProduct != null">
+			and is_product = #{isProduct}
+		</if>
+		<if test="productId != null">
+			and product_id = #{productId}
+		</if>
+		<if test="channel != null">
+			and channel = #{channel}
+		</if>
+		<if test="couponName != null and couponName != ''">
+			and name = #{couponName}
+		</if>
+		order by coupon_id desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	<!-- 查询所有的优惠卷记录 -->
+	<select id="getCouponCount" resultType="int" parameterType="java.util.Map">
+		select 
+			count(*)
+		from coupon where 1=1 and is_delete = 0
+		<if test="couponId != null">
+			and coupon_id=#{couponId}
+		</if>
+		<if test="name != null and name != ''">
+			and name like CONCAT("%",#{name},"%")
+		</if>
+		<if test="status != null">
+			and status=#{status}
+		</if>
+		<if test="type != null">
+			and type=#{type}
+		</if>
+		<if test="content != null and content != ''">
+			and content=#{content}
+		</if>
+		<if test="validStime != null">
+			and valid_stime>=#{validStime}
+		</if>
+		<if test="validEtime != null">
+			and valid_etime&lt;=#{validEtime}
+		</if>
+		<if test="createTime != null">
+			and create_time>=#{createTime}
+		</if>
+	</select>
+	<!-- 根据ID查询优惠券 -->
+	<select id="getcouponById" resultType="couponPojo" parameterType="Long">
+		select coupon_id as couponId,
+		name as name,
+		type as type,
+		(CASE WHEN type = 0 THEN '兑换产品' WHEN type = 1 THEN '满m减n金额' WHEN type = 2 THEN '直减金额' END) as typeName,
+		status as status,
+		(CASE WHEN status = 0 THEN '禁用' WHEN status = 1 THEN '启用' END) as statusName,
+		valid_stime as validStime,
+		valid_etime as validEtime,
+		create_time as createTime,
+		content as content,
+		sheet_num as sheetNum,
+		surplus_num as surplusNum,
+		is_product as isProduct,
+		product_id as productId,
+		is_delete as isDelete,
+		caption
+		from coupon where coupon_id=#{couponId}
+	</select>
+	
+	<!-- 根据id删除优惠卷 -->
+	<delete id="deletecouponById" parameterType="Long">
+		<!-- delete from coupon where coupon_id = #{id} -->
+		update coupon set is_delete = 1 where coupon_id = #{id}
+	</delete>
+	
+	<!-- 根据id启用优惠卷 -->
+	<update id="checkcouponById" parameterType="Long">
+		update coupon set status = 1 where coupon_id = #{id}
+	</update>
+	
+	<!-- 根据id禁用优惠卷 -->
+	<update id="uncheckcouponById" parameterType="Long">
+		update coupon set status = 0 where coupon_id = #{id}
+	</update>
+	
+	<!-- 添加优惠卷 -->
+	<insert id="addcoupon" useGeneratedKeys="true" keyProperty="couponId" parameterType="CouponPojo">
+		insert into coupon
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="couponId != null">
+				coupon_id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="validStime != null">
+				valid_stime,
+			</if>
+			<if test="validEtime != null">
+				valid_etime,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="content != null">
+				content,
+			</if>
+			<if test="sheetNum != null">
+				sheet_num,
+			</if>
+			<if test="surplusNum != null">
+				surplus_num,
+			</if>
+			<if test="isProduct != null">
+				is_product,
+			</if>
+			<if test="productId != null">
+				product_id,
+			</if>
+			<if test="isDelete != null">
+				is_delete,
+			</if>
+			<if test="caption != null">
+				caption,
+			</if>
+			<if test="channel != null">
+				channel,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="couponId != null">
+				#{couponId},
+			</if>
+			<if test="name != null">
+				#{name},
+			</if>
+			<if test="type != null">
+				#{type},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+			<if test="validStime != null">
+				#{validStime},
+			</if>
+			<if test="validEtime != null">
+				#{validEtime},
+			</if>
+			<if test="createTime != null">
+				#{createTime},
+			</if>
+			<if test="content != null">
+				#{content},
+			</if>
+			<if test="sheetNum != null">
+				#{sheetNum},
+			</if>
+			<if test="surplusNum != null">
+				#{surplusNum},
+			</if>
+			<if test="isProduct != null">
+				#{isProduct},
+			</if>
+			<if test="productId != null">
+				#{productId},
+			</if>
+			<if test="isDelete != null">
+				#{isDelete},
+			</if>
+			<if test="caption != null">
+				#{caption},
+			</if>
+			<if test="channel != null">
+				#{channel},
+			</if>
+		</trim>
+	</insert>
+	
+	<!-- 修改优惠卷 -->
+	<update id="updatecouponById" parameterType="couponPojo">
+		update coupon
+		<set>
+			<if test="name != null">
+			  name = #{name},
+			</if>
+			<if test="type != null">
+			  type = #{type},
+			</if>
+			<if test="status != null">
+			  status = #{status},
+			</if>
+			<if test="validStime != null">
+			  valid_stime = #{validStime},
+			</if>
+			<if test="validEtime != null">
+			  valid_etime = #{validEtime},
+			</if>
+			<if test="createTime != null">
+			  create_time = #{createTime},
+			</if>
+			<if test="content != null">
+			  content = #{content},
+			</if>
+			<if test="sheetNum != null">
+			  sheet_num = #{sheetNum},
+			</if>
+			<if test="surplusNum != null">
+			  surplus_num = #{surplusNum},
+			</if>
+			<if test="surplusNumM != null">
+			  surplus_num = surplus_num - 1,
+			</if>
+			<if test="isProduct != null">
+			  is_product = #{isProduct},
+			</if>
+			<if test="productId != null">
+			  product_id = #{productId},
+			</if>
+			<if test="isDelete != null">
+			  is_delete = #{isDelete},
+			</if>
+			<if test="caption != null">
+			  caption = #{caption},
+			</if>
+		</set>
+		where
+			coupon_id = #{couponId}
+	</update>
+	
+	<!-- 查询用户优惠券 -->
+	<select id="getuserCouponList" resultType="userCouponPojo" parameterType="java.util.Map">
+		select u.coupon_no as couponNo,
+		u.user_id as userId,
+		(select name from sys_login where id = u.user_id) as userName,
+		u.coupon_id as couponId,
+		c.name as couponName,
+		c.type as type,
+		(CASE WHEN c.type = 0 THEN '兑换产品' WHEN c.type = 1 THEN '满m减n金额' WHEN c.type = 2 THEN '直减金额' END) as typeName,
+		u.status as status,
+		(CASE WHEN u.status = 0 THEN '禁用' WHEN u.status = 1 THEN '启用' END) as statusName,
+		u.gen_time as genTime,
+		u.used as used,
+		(CASE WHEN u.used = 0 THEN '未使用' WHEN u.used = 1 THEN '已使用' END) as usedName,
+		u.use_time as useTime,
+        u.valid_stime  as validstime,
+        u.valid_etime as validetime,
+        u.source as source,
+        u.version as version,
+        c.content as content,
+        u.product_id as productId,
+        c.is_product as isProduct,
+        u.source_id as sourceId
+		from user_coupon u
+		left join coupon c on c.coupon_id=u.coupon_id
+		where 1=1
+		<if test="couponNo != null and couponNo !=''">
+			and u.coupon_no like CONCAT("%",#{couponNo},"%")
+		</if>
+		<if test="userId != null">
+			and u.user_id=#{userId}
+		</if>
+		<if test="couponId != null">
+			and u.coupon_id=#{couponId}
+		</if>
+		<if test="status != null">
+			and u.status=#{status}
+		</if>
+		<if test="used != null">
+			and u.used=#{used}
+		</if>
+		<if test="sourceId != null">
+			and u.source_id=#{sourceId}
+		</if>
+		<choose>
+		<when test="couponNum != null">
+			<if test="validStime != null">
+				and #{validStime}>=u.valid_stime
+			</if>
+			<if test="validEtime != null">
+				and #{validEtime}&lt;=u.valid_etime
+			</if>
+		</when>
+		<otherwise>
+		<if test="validStime != null">
+			and u.valid_stime>=#{validStime}
+			<!-- and valid_stime 
+			BETWEEN 
+			#{validStime} 
+			AND 
+			#{validStime} + 86399 -->
+		</if>
+		<if test="validEtime != null">
+			and u.valid_etime&lt;=#{validEtime}
+			<!-- and valid_etime 
+			BETWEEN 
+			#{validEtime} 
+			AND 
+			#{validEtime} + 86399 -->
+		</if>
+		<if test="nowTime != null">
+			<if test="ltFlag != null">
+				and u.valid_etime&lt;#{nowTime}
+			</if>
+			<if test="gtFlag != null">
+				and u.valid_etime&gt;#{nowTime}
+			</if>
+		</if>
+		</otherwise>
+		</choose>
+		<if test="genTime != null">
+			and u.gen_time>=#{genTime}
+			<!-- and u.gen_time 
+			BETWEEN 
+			#{genTime} 
+			AND 
+			#{genTime} + 86399 -->
+		</if>
+		<if test="useTime != null">
+			and u.use_time>=#{useTime}
+			<!-- and u.use_time 
+			BETWEEN 
+			#{useTime} 
+			AND 
+			#{useTime} + 86399 -->
+		</if>
+		<if test="type != null">
+			and c.type=#{type}
+		</if>
+		<if test="couponName != null and couponName != ''">
+			and c.name=#{couponName}
+		</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="orderBy == null or orderBy ==''">
+			order by u.user_id,u.used,u.valid_etime desc
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	<!-- 查询用户优惠券 -->
+	<select id="getuserCouponCount" resultType="int" parameterType="java.util.Map">
+		select count(*)
+		from user_coupon u
+		left join coupon c on c.coupon_id=u.coupon_id
+		where 1=1
+		<if test="couponNo != null and couponNo !=''">
+			and u.coupon_no like CONCAT("%",#{couponNo},"%")
+		</if>
+		<if test="userId != null">
+			and u.user_id=#{userId}
+		</if>
+		<if test="couponId != null">
+			and u.coupon_id=#{couponId}
+		</if>
+		<if test="status != null">
+			and u.status=#{status}
+		</if>
+		<if test="used != null">
+			and u.used=#{used}
+		</if>
+		<if test="sourceId != null">
+			and u.source_id=#{sourceId}
+		</if>
+		<choose>
+		<when test="couponNum != null">
+			<if test="validStime != null">
+				and #{validStime}>=u.valid_stime
+			</if>
+			<if test="validEtime != null">
+				and #{validEtime}&lt;=u.valid_etime
+			</if>
+		</when>
+		<otherwise>
+		<if test="validStime != null">
+			and u.valid_stime>=#{validStime}
+			<!-- and valid_stime 
+			BETWEEN 
+			#{validStime} 
+			AND 
+			#{validStime} + 86399 -->
+		</if>
+		<if test="validEtime != null">
+			and u.valid_etime&lt;=#{validEtime}
+			<!-- and valid_etime 
+			BETWEEN 
+			#{validEtime} 
+			AND 
+			#{validEtime} + 86399 -->
+		</if>
+		<if test="nowTime != null">
+			<if test="ltFlag != null">
+				and u.valid_etime&lt;#{nowTime}
+			</if>
+			<if test="gtFlag != null">
+				and u.valid_etime&gt;#{nowTime}
+			</if>
+		</if>
+		</otherwise>
+		</choose>
+		<if test="genTime != null">
+			and u.gen_time>=#{genTime}
+			<!-- and u.gen_time 
+			BETWEEN 
+			#{genTime} 
+			AND 
+			#{genTime} + 86399 -->
+		</if>
+		<if test="useTime != null">
+			and u.use_time>=#{useTime}
+			<!-- and u.use_time 
+			BETWEEN 
+			#{useTime} 
+			AND 
+			#{useTime} + 86399 -->
+		</if>
+		<if test="type != null">
+			and c.type=#{type}
+		</if>
+		<if test="couponName != null and couponName != ''">
+			and c.name=#{couponName}
+		</if>
+	</select>
+	<!-- 优惠券码查询用户优惠券 -->
+	<select id="getUserCouponByNo" resultType="userCouponPojo" parameterType="java.util.Map">
+		select u.coupon_no as couponNo,
+		u.user_id as userId,
+		(select name from sys_login where id = u.user_id) as userName,
+		u.coupon_id as couponId,
+		c.name as couponName,
+		c.type as type,
+		(CASE WHEN c.type = 0 THEN '兑换产品' WHEN c.type = 1 THEN '满m减n金额' WHEN c.type = 2 THEN '直减金额' END) as typeName,
+		u.status as status,
+		(CASE WHEN u.status = 0 THEN '禁用' WHEN u.status = 1 THEN '启用' END) as statusName,
+		u.gen_time as genTime,
+		u.used as used,
+		(CASE WHEN u.used = 0 THEN '未使用' WHEN u.used = 1 THEN '已使用' END) as usedName,
+		u.use_time as useTime,
+        u.valid_stime  as validstime,
+        u.valid_etime as validetime,
+        u.source as source,
+        c.content as content,
+        u.product_id as productId,
+        u.version as version,
+        c.is_product as isProduct,
+        u.source_id as sourceId
+		from user_coupon u
+		left join coupon c on c.coupon_id=u.coupon_id
+		where 1=1
+		<if test="couponNo != null and couponNo !=''">
+			and u.coupon_no = #{couponNo}
+		</if>
+		<if test="userId != null">
+			and u.user_id=#{userId}
+		</if>
+		<if test="couponId != null">
+			and u.coupon_id=#{couponId}
+		</if>
+		<if test="status != null">
+			and u.status=#{status}
+		</if>
+		<if test="used != null">
+			and u.used=#{used}
+		</if>
+		<if test="genTime != null">
+			and u.gen_time>=#{genTime}
+		</if>
+		<if test="useTime != null">
+			and u.use_time>=#{useTime}
+		</if>
+		<if test="sourceId != null">
+			and u.source_id>=#{sourceId}
+		</if>
+		<if test="type != null">
+			and c.type=#{type}
+		</if>
+	</select>
+	
+	<update id="updateUserCoupon" parameterType="userCouponPojo">
+		update user_coupon set
+		<if test="couponId != null">
+			coupon_id = #{couponId},
+		</if>
+		<if test="userId != null">
+			user_id = #{userId},
+		</if>
+		<if test="used != null">
+			used = #{used},
+		</if>
+		<if test="useTime != null">
+			use_time = #{useTime},
+		</if>
+		<if test="validstime != null">
+			valid_stime = #{validstime},
+		</if>
+		<if test="validetime != null">
+			valid_etime = #{validetime},
+		</if>
+		<if test="source != null">
+			source = #{source},
+		</if>
+		<if test="versions != null">
+			version = #{version} + 1,
+		</if>
+		<if test="sourceId != null">
+			source_id = #{sourceId},
+		</if>
+		status = #{status}
+		where coupon_no = #{couponNo}
+		<if test="versions != null">
+			and version = #{version}
+		</if>
+	</update>
+	<!-- 审核优惠券 -->
+	<update id="checkUserCoupon" parameterType="userCouponPojo">
+		update user_coupon set
+		status = #{status}
+		where coupon_no = #{couponNo}
+	</update>
+	
+	<!-- 删除优惠券 -->
+	<delete id="delUserCouponByNo" parameterType="String">
+		delete from user_coupon where coupon_no = #{couponNo}
+	</delete>
+	
+	<!-- 添加用户优惠券 -->
+	<insert id="addUserCoupon" parameterType="userCouponPojo">
+		insert into user_coupon (coupon_no,user_id,coupon_id,status,gen_time,used,use_time,valid_stime,valid_etime,source,product_id,source_id) 
+		values (#{couponNo},#{userId},#{couponId},#{status},#{genTime},#{used},#{useTime},#{validstime},#{validetime},#{source},#{productId},#{sourceId})
+	</insert>
+	
+	<!-- 批量添加用户优惠券 -->
+	<insert id="addUserCouponBatch" parameterType="java.util.List">
+		insert into user_coupon (coupon_no,user_id,coupon_id,status,gen_time,used,use_time,valid_stime,valid_etime,source,product_id,source_id) 
+		values 
+		<foreach collection="list" item="item" index="index" separator="," >  
+        	(#{item.couponNo},#{item.userId},#{item.couponId},#{item.status},#{item.genTime},#{item.used},#{item.useTime},#{item.validstime},#{item.validetime},#{item.source},#{item.productId},#{item.sourceId}) 
+    	</foreach>
+	</insert>
+	
+	<!-- 添加订单优惠券使用记录 -->
+	<insert id="addCouponOrder" parameterType="couponOrderPojo">
+		insert into coupon_order (order_id,coupon_no,rel_time,used_price,status) 
+		values (#{orderId},#{couponNo},#{relTime},#{usedPrice},#{status})
+	</insert>
+	<!-- 更新订单优惠券使用记录状态 -->
+	<update id="updateCouponOrderStatus" parameterType="couponOrderPojo">
+		update coupon_order set
+		status = #{status}
+		where coupon_no = #{couponNo}
+		<if test="orderId != null">
+			and order_id=#{orderId}
+		</if>
+	</update>
+	
+	<!-- 查询抽奖记录 -->
+	<select id="getLotteryLogList" resultType="lotteryLogPojo" parameterType="java.util.Map">
+		select lottery_log_id as lotteryLogId,
+		user_id as userId,
+		(select name from sys_login where id = user_id) as userName,
+		time,
+		prize,
+		prize_type as prizeType,
+		(CASE WHEN prize_type = -1 THEN '不中' WHEN prize_type = 0 THEN '微信红包'
+		 WHEN prize_type = 1 THEN '优惠券' WHEN prize_type = 2 THEN '转发攒运气' END) as prizeTypeName,
+		prize_val as prizeVal
+		from lottery_log where 1=1
+		<if test="lotteryLogId != null">
+			and lottery_log_id=#{lotteryLogId}
+		</if>
+		<if test="userId != null">
+			and user_id=#{userId}
+		</if>
+		<if test="time != null">
+			and time>=#{time}
+			<!-- and time 
+			BETWEEN 
+			#{time} 
+			AND 
+			#{time} + 86399 -->
+		</if>
+		<if test="prize != null and prize != ''">
+			and prize like CONCAT("%",#{prize},"%")
+		</if>
+		<if test="prizeType != null">
+			and prize_type=#{prizeType}
+		</if>
+		<if test="prizeVal != null and prizeVal != ''">
+			and prize_val like CONCAT("%",#{prizeVal},"%")
+		</if>
+		order by lottery_log_id desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<!-- 查询转发抽奖记录 -->
+	<select id="getLotteryForwardList" resultType="lotteryForwardPojo" parameterType="java.util.Map">
+		select l.id as id,
+		l.user_id as userId,
+		s.name as userName,
+		l.time
+		from lottery_forward l
+		left join sys_login s on s.id=l.user_id
+		where 1=1
+		<if test="id != null">
+			and l.id=#{id}
+		</if>
+		<if test="userId != null">
+			and l.user_id=#{userId}
+		</if>
+		<if test="userName != null and userName != ''">
+			and s.name like CONCAT("%",#{userName},"%")
+		</if>
+		<if test="time != null">
+			and l.time>=#{time}
+			<!-- and l.time 
+			BETWEEN 
+			#{time} 
+			AND 
+			#{time} + 86399 -->
+		</if>
+		order by l.id desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<!-- 查询优惠券订单关联记录 -->
+	<select id="getcouponOrderList" resultType="couponOrderPojo" parameterType="java.util.Map">
+		select c.order_id as orderId,
+		u.order_no as orderNo,
+		c.coupon_no as couponNo,
+		(select name from coupon where coupon_id = (
+		select coupon_id from user_coupon where coupon_no = c.coupon_no)) as couponName,
+		c.rel_time as relTime,
+		c.used_price as usedPrice,
+		c.status as status,
+		(CASE WHEN c.status = 0 THEN '无效使用' WHEN c.status = 1 THEN '有效使用' END) as statusName
+		from coupon_order c
+		left join user_order u on u.id=c.order_id
+		where 1=1
+		<if test="orderId != null">
+			and c.order_id=#{orderId}
+		</if>
+		<if test="orderNo != null and orderNo != ''">
+			and u.order_no like CONCAT("%",#{orderNo},"%")
+		</if>
+		<if test="couponNo != null and couponNo != ''">
+			and c.coupon_no like CONCAT("%",#{couponNo},"%")
+		</if>
+		<if test="status != null">
+			and c.status = #{status}
+		</if>
+		<if test="relTime != null">
+			and c.rel_time>=#{relTime}
+			<!-- and c.rel_time 
+			BETWEEN 
+			#{relTime} 
+			AND 
+			#{relTime} + 86399 -->
+		</if>
+		order by c.rel_time desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<!-- 抽奖 -->
+	<select id="getLotteryList" resultType="lotteryPojo" parameterType="java.util.Map">
+		select lottery_id as lotteryId,
+		subject as subject,
+		status as status,
+		(CASE WHEN status = 0 THEN '禁用' WHEN status = 1 THEN '启用' END) as statusName,
+		start_time as startTime,
+		end_time as endTime
+		from lottery
+		where 1=1
+		<if test="lotteryId != null">
+			and lottery_id=#{lotteryId}
+		</if>
+		<if test="subject != null and subject != ''">
+			and subject like CONCAT("%",#{subject},"%")
+		</if>
+		<if test="status != null">
+			and status=#{status}
+		</if>
+		<if test="startTime != null">
+			and start_time>=#{startTime}
+			<!-- and start_time 
+			BETWEEN 
+			#{startTime} 
+			AND 
+			#{startTime} + 86399 -->
+		</if>
+		<if test="endTime != null">
+			and end_time&lt;=#{endTime}
+			<!-- and end_time 
+			BETWEEN 
+			#{endTime} 
+			AND 
+			#{endTime} + 86399 -->
+		</if>
+		order by lottery_id desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	<!-- 红包记录 -->
+	<select id="getHongbaoLogList" resultType="hongbaoLogPojo" parameterType="java.util.Map">
+		select h.id as id,
+		h.user_id as userId,
+		s.name as userName,
+		h.log_time as logTime,
+		h.money as money,
+		h.remark as remark
+		from hongbao_log h
+		left join sys_login s on s.id=h.user_id
+		where 1=1
+		<if test="id != null">
+			and h.id=#{id}
+		</if>
+		<if test="userId != null">
+			and h.user_id=#{userId}
+		</if>
+		<if test="userName != null and userName != ''">
+			and s.name like CONCAT("%",#{userName},"%")
+		</if>
+		<if test="logTime != null">
+			and h.log_time>=#{logTime}
+			<!-- and h.log_time 
+			BETWEEN 
+			#{logTime} 
+			AND 
+			#{logTime} + 86399 -->
+		</if>
+		<if test="money != null">
+			and h.money=#{money}
+		</if>
+		<if test="remark != null and remark != ''">
+			and h.remark like CONCAT("%",#{remark},"%")
+		</if>
+		order by id desc
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+	</select>
+	
+	
+</mapper>

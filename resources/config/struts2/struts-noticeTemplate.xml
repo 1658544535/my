@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="noticeTemplate" extends="default">
+		<!-- 进入列表页面 -->
+		<action name="goNoticeTemplate" class="com.tzmb2c.web.action.NoticeTemplateAction" method="goNoticeTemplate">
+			<result name="success">/page/system/noticeTemplate/noticeTemplateList.jsp</result>
+		</action>
+		<!-- 新增 -->
+		<action name="goAddNoticeTemplate" class="com.tzmb2c.web.action.NoticeTemplateAction" method="goAddNoticeTemplate">
+		    <result name="success">/page/system/noticeTemplate/addNoticeTemplate.jsp</result>
+		</action>
+		<!-- 新增提交 -->
+		<action name="addNoticeTemplate" class="com.tzmb2c.web.action.NoticeTemplateAction" method="add">
+		</action>		
+		<!-- 编辑页面 -->
+		<action name="goEditNoticeTemplate" class="com.tzmb2c.web.action.NoticeTemplateAction" method="goEditNoticeTemplate">
+			<result name="success">/page/system/noticeTemplate/updateNoticeTemplate.jsp</result>
+		</action>
+		<!-- 编辑提交 -->
+		<action name="updateNoticeTemplate" class="com.tzmb2c.web.action.NoticeTemplateAction" method="update">
+		</action>
+	</package>
+	<package name="noticeTemplate-json" extends="json-default">
+		<!-- 内容 -->
+		<action name="noticeTemplateList" class="com.tzmb2c.web.action.NoticeTemplateAction" method="noticeTemplateList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="noticeTemplateCnt" class="com.tzmb2c.web.action.NoticeTemplateAction" method="noticeTemplateRowCnt">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+		<!-- 根据ID删除 -->
+		<action name="delNoticeTemplate" class="com.tzmb2c.web.action.NoticeTemplateAction" method="delete">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+		<!-- 删除选中 -->
+		<action name="delNoticeTemplateAll" class="com.tzmb2c.web.action.NoticeTemplateAction" method="deleteAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 通过审核 -->
+		<action name="checkNoticeTemplate" class="com.tzmb2c.web.action.NoticeTemplateAction" method="check">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 取消审核 -->
+		<action name="uncheckNoticeTemplate" class="com.tzmb2c.web.action.NoticeTemplateAction" method="uncheck">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中通过审核 -->
+		<action name="checkNoticeTemplateAll" class="com.tzmb2c.web.action.NoticeTemplateAction" method="checkAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中取消审核 -->
+		<action name="uncheckNoticeTemplateAll" class="com.tzmb2c.web.action.NoticeTemplateAction" method="uncheckAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+	</package>
+</struts>

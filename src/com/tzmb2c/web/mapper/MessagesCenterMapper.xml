@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tzmb2c.web.mapper.MessagesCenterMapper">
+<!-- 查找内容 -->
+<select id="findMessagesCenterList" resultType="MessagesCenterPojo" parameterType="java.util.Map">
+		select
+			m.id          as id,
+			m.user_id     as userId,
+		    m.message     as message,
+		    m.login_name  as loginName,
+			m.is_read     as isRead,
+			(case when m.is_read = 0 then "未读" when m.is_read = 1 then "已读" end) as isReadName,
+			m.is_delete   as isDelete,
+			(case when m.is_delete = 0 then "未删除" when m.is_delete = 1 then "已删除" end) as isDeleteName,
+			m.status      as status,
+			(case when m.status = 0 then "未审核" when m.status = 1 then "已审核" end) as statusName,
+			m.create_date as createDate,
+			m.create_by   as createBy,
+			m.update_date as updateDate,
+			m.update_by   as updateBy,
+			m.sorting     as sorting
+        from messages_center m
+	    where 1=1
+		<if test="isRead!=null">
+			and m.is_read  = #{isRead}
+		</if>
+		<if test="isDelete!=null">
+			and m.is_delete  = #{isDelete}
+		</if>
+		<if test="userId!=null">
+			and m.user_id  = #{userId}
+		</if>
+		<if test="loginName != null and loginName != '' ">
+			and m.login_name like concat("%",#{loginName},"%")
+		</if>
+		<if test="status != null">
+			and m.status  = #{status}
+		</if>
+		<if test="beginTimeStr !=null and beginTimeStr !=''">
+			and UNIX_TIMESTAMP(m.create_date) >= UNIX_TIMESTAMP(CONCAT(#{beginTimeStr}))
+		</if>
+		<if test="endTimeStr !=null and endTimeStr !=''">
+			and UNIX_TIMESTAMP(CONCAT(#{endTimeStr})) >= UNIX_TIMESTAMP(m.create_date)
+		</if>
+		<if test="sorting != null">
+			and sorting = #{sorting}
+		</if>
+		<if test="paixu != null and paixu == 1 ">
+        order by m.id desc
+        </if>
+        <if test="paixu != null and paixu == 2 ">
+        order by m.sorting desc,m.create_date desc
+        </if>
+		<if test="pageNo != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+</select>
+<!-- 查找条数 -->
+<select id="findMessagesCenterCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from messages_center m
+	    where 1=1
+		<if test="isRead!=null">
+			and m.is_read  = #{isRead}
+		</if>
+		<if test="isDelete!=null">
+			and m.is_delete  = #{isDelete}
+		</if>
+		<if test="userId!=null">
+			and m.user_id  = #{userId}
+		</if>
+		<if test="loginName != null and loginName != '' ">
+			and m.login_name like concat("%",#{loginName},"%")
+		</if>
+		<if test="status != null">
+			and m.status  = #{status}
+		</if>
+		<if test="beginTimeStr !=null and beginTimeStr !=''">
+			and UNIX_TIMESTAMP(m.create_date) >= UNIX_TIMESTAMP(CONCAT(#{beginTimeStr}))
+		</if>
+		<if test="endTimeStr !=null and endTimeStr !=''">
+			and UNIX_TIMESTAMP(CONCAT(#{endTimeStr})) >= UNIX_TIMESTAMP(m.create_date)
+		</if>
+		<if test="sorting != null">
+			and sorting = #{sorting}
+		</if>
+</select>
+<!-- 查找单条(id) -->
+<select id="findMessagesCenterById" resultType="MessagesCenterPojo" parameterType="Long">
+		select
+			m.id          as id,
+			m.user_id     as userId,
+		    m.message     as message,
+		    m.login_name  as loginName,
+			m.is_read     as isRead,
+			(case when m.is_read = 0 then "未读" when m.is_read = 1 then "已读" end) as isReadName,
+			m.is_delete   as isDelete,
+			(case when m.is_delete = 0 then "未删除" when m.is_delete = 1 then "已删除" end) as isDeleteName,
+			m.status      as status,
+			(case when m.status = 0 then "未审核" when m.status = 1 then "已审核" end) as statusName,
+			m.create_date as createDate,
+			m.create_by   as createBy,
+			m.update_date as updateDate,
+			m.update_by   as updateBy,
+			m.sorting     as sorting
+        from messages_center m
+		where
+		m.id=#{id}
+</select>
+<!--审核某条-->
+<update id="checkMessagesCenter" parameterType="Long">
+		update messages_center m set
+			status = 1,
+			update_date = now()
+		where 
+		m.id = #{id}
+</update>	
+<!--取审某条-->
+<update id="uncheckMessagesCenter" parameterType="Long">
+		update messages_center m set
+			status = 0,
+			update_date = now()
+		where 
+		m.id = #{id}
+</update>
+<!--取审某条-->
+<update id="delMessagesCenterWeb" parameterType="Long">
+		update messages_center m set
+			is_delete = 1,
+			update_date = now()
+		where 
+		m.id = #{id}
+</update>
+<!--阅读某条-->
+<update id="readMessagesCenterWeb" parameterType="Long">
+		update messages_center m set
+			is_read = 1,
+			update_date = now()
+		where 
+		m.id = #{id}
+</update>
+<!--加入某条-->
+<insert id="insertMessagesCenter" parameterType="MessagesCenterPojo">
+		insert into messages_center  (user_id,message,login_name,is_read,is_delete,status,create_date,create_by,update_date,update_by,sorting)
+		values(#{userId},#{message},#{loginName},#{isRead},#{isDelete},#{status},now(),#{createBy},now(),#{updateBy},#{sorting})
+</insert>
+<!-- 删除单条(id) -->
+<delete id="delMessagesCenter" parameterType="Long">
+		delete from messages_center  where id = #{id}
+</delete>
+<!--编辑单条-->
+<update id="updateMessagesCenter" parameterType="MessagesCenterPojo">
+		update messages_center set
+        <if test="userId != null">
+			user_id = #{userId},
+		</if>
+		<if test="message != null and message != ''">
+			message = #{message},
+		</if>
+		<if test="loginName != null and loginName != ''">
+			login_name = #{loginName},
+		</if>
+		<if test="isRead != null">
+			is_read = #{isRead},
+		</if>
+		<if test="isDelete != null">
+			is_delete = #{isDelete},
+		</if>
+		<if test="status != null">
+			status = #{status},
+		</if>
+		<if test="sorting != null">
+			sorting = #{sorting},
+		</if>
+		update_date = now()
+		where
+		id=#{id}
+</update>
+</mapper>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tzmb2c.web.mapper.ProductAccessLogMapper">
+	
+	<select id="productAccessLogAllCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(*)
+		from product_access_log as t left join sys_login s on t.user_id = s.id left join product p on t.product_id = p.id
+		where
+		1=1
+		<if test="userName!=null  and userName != '' ">
+			and s.name like CONCAT("%",#{userName},"%")
+		</if>
+		<if test="productName!=null  and productName != '' ">
+			and p.product_name like CONCAT("%",#{productName},"%")
+		</if>
+		<if test="beganday!=null and beganday !='' ">
+			and UNIX_TIMESTAMP(t.path_date) >= UNIX_TIMESTAMP(CONCAT(#{beganday},' 00:00:00'))
+		</if>
+		<if test="endday!=null and endday !='' ">
+			and UNIX_TIMESTAMP(CONCAT(#{endday},' 00:00:00')) >= UNIX_TIMESTAMP(t.path_date)
+		</if>
+	</select>
+	
+	<select id="productAccessLogAllList" resultType="productAccessLogPojo"
+		parameterType="java.util.Map">
+		select 
+		t.id as id, 
+		t.user_id as userId, 
+		t.product_id as productId,
+		t.path as path, 
+		t.path_date as pathDate, 
+		t.path_date as path_datestr,
+		t.version as version, 
+		(select name from sys_login where id=t.user_id ) userName,
+		(select product_name from product where id=t.product_id ) productName
+		from product_access_log as t left join sys_login s on t.user_id = s.id left join product p on t.product_id = p.id
+		where
+		1=1
+		<if test="userName!=null  and userName != '' ">
+			and s.name like CONCAT("%",#{userName},"%")
+		</if>
+		<if test="productName!=null  and productName != '' ">
+			and p.product_name like CONCAT("%",#{productName},"%")
+		</if>
+		<if test="beganday!=null and beganday !='' ">
+			and UNIX_TIMESTAMP(t.path_date) >= UNIX_TIMESTAMP(CONCAT(#{beganday},' 00:00:00'))
+		</if>
+		<if test="endday!=null and endday !='' ">
+			and UNIX_TIMESTAMP(CONCAT(#{endday},' 00:00:00')) >= UNIX_TIMESTAMP(t.path_date)
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+		
+	</select>
+	
+	
+	<select id="productAccessLogAllListHot" resultType="productAccessLogPojo"
+		parameterType="java.util.Map">
+		select 
+		count(t.user_id) as nums,
+		t.user_id as userId, 
+		(select name from sys_login where id=t.user_id ) userName
+		from product_access_log as t left join sys_login s on t.user_id = s.id
+		where
+		1=1
+		<if test="beganday!=null and beganday !='' ">
+			and UNIX_TIMESTAMP(t.path_date) >= UNIX_TIMESTAMP(CONCAT(#{beganday},' 00:00:00'))
+		</if>
+		<if test="endday!=null and endday !='' ">
+			and UNIX_TIMESTAMP(CONCAT(#{endday},' 00:00:00')) >= UNIX_TIMESTAMP(t.path_date)
+		</if>
+		group by userId
+		<if test="pageSize != null">
+			limit #{pageNo} , #{pageSize}
+		</if>
+		
+	</select>
+	
+</mapper>
