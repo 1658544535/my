@@ -285,6 +285,9 @@ public class UserRedeemCodeAction extends SuperAction {
         sysLoginPojo = sysLoginService.getSysLoginByLoginName(userRedeemCodePojo.getLoginname());
         if (sysLoginPojo != null) {
           userRedeemCodePojo.setUserId(sysLoginPojo.getId());
+        } else {
+          FileUtil.alertMessageBySkip("用户名不存在！请输入正确用户名。", "goEditUserRedeemCode.do?code="
+              + userRedeemCodePojo.getCode());
         }
       }
       try {
