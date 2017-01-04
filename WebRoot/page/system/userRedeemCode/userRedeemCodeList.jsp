@@ -34,7 +34,7 @@
 							</select></td>
 					</tr>
 					<tr>
-					    <td align="right">优惠券码：</td>
+					    <td align="right">兑换码：</td>
 						<td><label><input type="text" name="keywords" id="keywords" value=""></label></td>
 						<td align="right">生成时间：</td>
 						<td>
