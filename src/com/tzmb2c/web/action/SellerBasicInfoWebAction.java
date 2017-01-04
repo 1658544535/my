@@ -412,4 +412,58 @@ public class SellerBasicInfoWebAction extends SuperAction {
     }
     return null;
   }
+
+  /**
+   * 忘记密码页面
+   * 
+   * @return
+   */
+  public String goForgetPasswordWeb() {
+
+    return SUCCESS;
+  }
+
+  /**
+   * 忘记密码操作
+   * 
+   * @return
+   * @throws SQLException
+   */
+  public String doForgetPassword() throws SQLException {
+    try {
+      SysLoginPojo sysLogin = UserUtil.getWebUser();
+      if (sysLogin == null) {
+        FileUtil.alertMessageBySkip("请先登录", "sellerLogin.do");
+      }
+      uLoginname = sysLogin.getLoginname();
+      SysLoginPojo sysLoginPojo = new SysLoginPojo();
+      sysLoginPojo.setLoginname(uLoginname);
+      oldPass = sysLoginService.sysLoginFindId(sysLoginPojo).getPassword();
+      if (oldPasswd == null || "".equals(oldPasswd.trim())) {
+        FileUtil.alertMessageBySkip("输入的旧密码不能为空！", "goPasswdWeb.do");
+      } else if (oldPasswd != null && !"".equals(oldPasswd)
+          && !MD5Util.MD5(oldPasswd).equals(oldPass)) {
+        FileUtil.alertMessageBySkip("请输入正确的旧密码！", "goPasswdWeb.do");
+      } else if (newPasswd == null || "".equals(newPasswd.trim())) {
+        FileUtil.alertMessageBySkip("请输入新密码！", "goPasswdWeb.do");
+      } else if (newPasswdRepeat == null || "".equals(newPasswdRepeat.trim())) {
+        FileUtil.alertMessageBySkip("请输入两次新密码！", "goPasswdWeb.do");
+      } else if (newPasswd != null && !"".equals(newPasswd.trim()) && newPasswdRepeat != null
+          && !"".equals(newPasswdRepeat.trim()) && !newPasswd.equals(newPasswdRepeat)) {
+        FileUtil.alertMessageBySkip("两次输入的新密码必须一致！", "goPasswdWeb.do");
+      } else if (newPasswd != null && newPasswd.length() < 6) {
+        FileUtil.alertMessageBySkip("新密码强度太弱，请换个！", "goPasswdWeb.do");
+      } else if (newPasswd != null && oldPasswd != null && oldPasswd.equals(newPasswd)) {
+        FileUtil.alertMessageBySkip("新密码与旧密码相同，请换个！", "goPasswdWeb.do");
+      } else if (newPasswd != null && !"".equals(newPasswd.trim()) && newPasswdRepeat != null
+          && !"".equals(newPasswdRepeat.trim()) && newPasswd.equals(newPasswdRepeat)) {
+        sysLogin.setPassword(MD5Util.MD5(newPasswd));
+        sysLoginService.updatePassword(sysLogin);
+        FileUtil.alertMessageBySkip("修改成功！", "doSellerLogout.do");
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
 }
