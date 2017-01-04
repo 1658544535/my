@@ -296,9 +296,8 @@
 								+ "</td><td>"
 								+ "<img src='<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/upfiles/product/"+ this.productImage + "' height='80px' />"+ "</td><td>"
 								+ this.productName
-							<!--	+ "</td><td>"
-								+ ss
-								-->
+								//+ "</td><td>"
+								//+ ss
 								+ "</td><td>"
 								+ this.serialNumber
 								+ "</td><td>"
