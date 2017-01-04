@@ -412,8 +412,8 @@ public class AppApiPinDeKeAction extends SuperAction {
   /**
    * 三级分类ID
    */
-  private String type1,type2,type3;
-  
+  private String type1, type2, type3;
+
 
   /**
    * src:来源：1 平台专题 2 创客专题 3笔记 4微页面
@@ -2127,20 +2127,20 @@ public class AppApiPinDeKeAction extends SuperAction {
         params.put("nowTime", new Date());
         params.put("pageNo", (pageNo - 1) * pageSize);
         params.put("pageSize", pageSize);
-        
+
         params.put("productName", name);
-        if (source == null){
+        if (source == null) {
           params.put("orderBy", "ga.sorting desc, ga.create_date desc");
         } else if (source == 1) {
-          params.put("orderBy","p.sell_number + p.base_number desc");
+          params.put("orderBy", "p.sell_number + p.base_number desc");
         } else if (source == 11) {
-          params.put("orderBy","p.sell_number + p.base_number asc");
+          params.put("orderBy", "p.sell_number + p.base_number asc");
         } else if (source == 2) {
-          params.put("orderBy","ga.price desc");
+          params.put("orderBy", "ga.price desc");
         } else if (source == 22) {
-          params.put("orderBy","ga.price asc");
+          params.put("orderBy", "ga.price asc");
         }
-        
+
         if (type1 != null && type2 == null && type3 == null) {
           params.put("productType1", type1);
         } else if (type1 != null && type2 != null && type3 == null) {
@@ -2148,7 +2148,7 @@ public class AppApiPinDeKeAction extends SuperAction {
         } else if (type1 != null && type2 != null && type3 != null) {
           params.put("productTypeId", type3);
         }
-        
+
         List<GrouponActivityPojo> grouponActivitys = grouponActivityService.listPage(params);
         if (grouponActivitys != null && grouponActivitys.size() > 0) {
           Map<String, Object> item = null;
@@ -2567,8 +2567,8 @@ public class AppApiPinDeKeAction extends SuperAction {
       msg = "收货地址不能为空！";
     } else if (channel == null || !(channel == 1 || channel == 2)) {
       msg = "订单渠道错误！";
-    } else if (payMethod == null || channel == 2 && payMethod != 8 || channel != 2
-        && payMethod != 1 && payMethod != 2 && payMethod != 4) {
+    } else if (payMethod == null || channel == 2 && payMethod != 8 && payMethod != 4
+        || channel != 2 && payMethod != 1 && payMethod != 2 && payMethod != 4) {
       // 1-支付宝 2-微信APP支付 3-货到付款 4-钱包支付 5-银联支付 6-苹果支付 7-招行支付 8-微信公众号支付
       msg = "支付方式有误哦！";
     } else if (4 == payMethod && user.getBalance() == 0) {
