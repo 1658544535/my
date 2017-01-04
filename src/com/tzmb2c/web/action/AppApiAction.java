@@ -11119,7 +11119,7 @@ public class AppApiAction extends SuperAction {
           orderRefundPojo.setDetailId(s);
           orderRefundPojo.setUserId(uid);
           orderRefundPojo.setShopId(sid);
-          orderRefundPojo.setType(Long.valueOf(type));
+          orderRefundPojo.setType(Integer.valueOf(type));
           orderRefundPojo.setRefundType(refundType);
           orderRefundPojo.setRefundReason(refundReason);
           orderRefundPojo.setStatus(1);
