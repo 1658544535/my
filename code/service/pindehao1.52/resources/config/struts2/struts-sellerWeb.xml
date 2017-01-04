@@ -74,6 +74,10 @@
 			method="updateServiceInvolvedById">
 		</action>
 		
+		<!-- 忘记密码  -->
+		<action name="goForgetPasswordWeb" class="com.tzmb2c.web.action.SellerBasicInfoWebAction" method="goForgetPasswordWeb">
+			<result name="success">/seller/page/baseinfo/forget_passwd.jsp</result>
+		</action>
 	</package>
 	
 	
@@ -379,11 +383,16 @@
 			<result name="success">/seller/page/martshow/preview.jsp</result>
 		</action>
 		
+		
 	</package>
 	
 	
 	
 	<package name="sellerWeb-json" extends="json-default">
+		<!-- 保存修改的密码  -->
+		<action name="doForgetPassword" class="com.tzmb2c.web.action.SellerBasicInfoWebAction" method="doForgetPassword">
+		</action>		
+		
 		<!-- 品牌列表数据前端显示-->
 		<action name="getBrandListData" class="com.tzmb2c.web.action.UserBrandWebAction" method="getBrandListData">
 			<result type="json">

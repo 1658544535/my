@@ -79,6 +79,15 @@
                         <input type="checkbox" checked="checked" id="remember-me" name="rememberme">
                         &nbsp;&nbsp;记住我（下次自动登录）　
                     </div> -->
+                    <div class="ipt-quick">
+                        <span class="f-fr">
+                            <span>
+                            </span>
+                            <a class="u-hp-target" href="goForgetPasswordWeb.do">
+                                忘记密码
+                            </a>
+                        </span>
+                    </div>
                     <div class="ipt-btn-area">
                         <!--<input id="sbutton" type="button" value="登录" class="ipt-btn J_iptBtn" style="border:none;width:100%;" />-->
                         <button id="sbutton" class="ipt-btn J_iptBtn" style="border:none;width:100%;">登录</button>
