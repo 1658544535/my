@@ -738,7 +738,7 @@ public class AppApiWalletAction extends SuperAction {
     Map<String, Object> map1 = new HashMap<String, Object>();
     HashMap<String, Object> detail = new HashMap<String, Object>();
     List<HashMap<String, Object>> details = new ArrayList<HashMap<String, Object>>();
-    DecimalFormat df = new DecimalFormat("#.0");
+    DecimalFormat df = new DecimalFormat("0.0");
     if (uid != null) {
       page = new Pager();
       if (pageNo == null || pageNo.equals("")) {

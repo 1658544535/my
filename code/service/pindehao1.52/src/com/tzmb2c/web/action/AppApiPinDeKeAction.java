@@ -4037,7 +4037,7 @@ public class AppApiPinDeKeAction extends SuperAction {
     boolean b = false;
     Map<String, Object> map = new HashMap<String, Object>();
     Map<String, Object> map1 = new HashMap<String, Object>();
-    DecimalFormat df = new DecimalFormat("#.##");
+    DecimalFormat df = new DecimalFormat("0.0");
     if (uid != null) {
       // UserWalletPojo userWallet = userWalletService.findUserWalletByUserId(uid);
       // if (userWallet != null) {
