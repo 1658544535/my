@@ -42,7 +42,7 @@
                             <span class="identi">
                                 <i class="iconfont">&#xf012d;</i>
                             </span>
-                            <input type="text" class="ipt-input J_iptUsername" placeholder="您的帐号" name="username" value="" >
+                            <input type="text" class="ipt-input J_iptUsername" placeholder="您的手机号码" name="username" value="" >
                             <div class="single-notice J_singleNotice" data-error="">
                             </div>
                             <span id="usernameMsg"></span>

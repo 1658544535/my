@@ -18,20 +18,25 @@ import com.tzmb2c.utils.UserUtil;
 import com.tzmb2c.web.pojo.DeliveryAddressPojo;
 import com.tzmb2c.web.pojo.ManufacturerPojo;
 import com.tzmb2c.web.pojo.SysLoginPojo;
+import com.tzmb2c.web.pojo.UserVerifyPojo;
 import com.tzmb2c.web.service.DeliveryAddressService;
 import com.tzmb2c.web.service.ManufacturerService;
 import com.tzmb2c.web.service.SysLoginService;
+import com.tzmb2c.web.service.UserVerifyService;
 
 public class SellerBasicInfoWebAction extends SuperAction {
 
   @Autowired
   private ManufacturerService manufacturerService;
-  private ManufacturerPojo manufacturerPojo;
-  private List<ManufacturerPojo> manufacturerPojos;
   @Autowired
   private DeliveryAddressService deliveryAddressService;
   @Autowired
-  SysLoginService sysLoginService;
+  private SysLoginService sysLoginService;
+  @Autowired
+  private UserVerifyService userVerifyService;
+
+  private ManufacturerPojo manufacturerPojo;
+  private List<ManufacturerPojo> manufacturerPojos;
   private SysLoginPojo sysLoginPojo;
   private String uLoginname;
   private String oldPass;
@@ -43,6 +48,15 @@ public class SellerBasicInfoWebAction extends SuperAction {
   private DeliveryAddressPojo deliveryAddressPojo1;
   private DeliveryAddressPojo deliveryAddressPojo2;
   private Long t;
+  private String phonecode;
+
+  public String getPhonecode() {
+    return phonecode;
+  }
+
+  public void setPhonecode(String phonecode) {
+    this.phonecode = phonecode;
+  }
 
   public Long getT() {
     return t;
@@ -431,35 +445,35 @@ public class SellerBasicInfoWebAction extends SuperAction {
    */
   public String doForgetPassword() throws SQLException {
     try {
-      SysLoginPojo sysLogin = UserUtil.getWebUser();
-      if (sysLogin == null) {
-        FileUtil.alertMessageBySkip("请先登录", "sellerLogin.do");
-      }
-      uLoginname = sysLogin.getLoginname();
-      SysLoginPojo sysLoginPojo = new SysLoginPojo();
-      sysLoginPojo.setLoginname(uLoginname);
-      oldPass = sysLoginService.sysLoginFindId(sysLoginPojo).getPassword();
-      if (oldPasswd == null || "".equals(oldPasswd.trim())) {
-        FileUtil.alertMessageBySkip("输入的旧密码不能为空！", "goPasswdWeb.do");
-      } else if (oldPasswd != null && !"".equals(oldPasswd)
-          && !MD5Util.MD5(oldPasswd).equals(oldPass)) {
-        FileUtil.alertMessageBySkip("请输入正确的旧密码！", "goPasswdWeb.do");
-      } else if (newPasswd == null || "".equals(newPasswd.trim())) {
-        FileUtil.alertMessageBySkip("请输入新密码！", "goPasswdWeb.do");
-      } else if (newPasswdRepeat == null || "".equals(newPasswdRepeat.trim())) {
-        FileUtil.alertMessageBySkip("请输入两次新密码！", "goPasswdWeb.do");
-      } else if (newPasswd != null && !"".equals(newPasswd.trim()) && newPasswdRepeat != null
-          && !"".equals(newPasswdRepeat.trim()) && !newPasswd.equals(newPasswdRepeat)) {
-        FileUtil.alertMessageBySkip("两次输入的新密码必须一致！", "goPasswdWeb.do");
-      } else if (newPasswd != null && newPasswd.length() < 6) {
-        FileUtil.alertMessageBySkip("新密码强度太弱，请换个！", "goPasswdWeb.do");
-      } else if (newPasswd != null && oldPasswd != null && oldPasswd.equals(newPasswd)) {
-        FileUtil.alertMessageBySkip("新密码与旧密码相同，请换个！", "goPasswdWeb.do");
-      } else if (newPasswd != null && !"".equals(newPasswd.trim()) && newPasswdRepeat != null
-          && !"".equals(newPasswdRepeat.trim()) && newPasswd.equals(newPasswdRepeat)) {
-        sysLogin.setPassword(MD5Util.MD5(newPasswd));
-        sysLoginService.updatePassword(sysLogin);
-        FileUtil.alertMessageBySkip("修改成功！", "doSellerLogout.do");
+      if (sysLoginPojo != null && sysLoginPojo.getLoginname2() != null
+          && !"".equals(sysLoginPojo.getLoginname2().trim()) && phonecode != null
+          && !"".equals(phonecode.trim())) {
+        SysLoginPojo sysLogin =
+            sysLoginService.getSysLoginByLoginName(sysLoginPojo.getLoginname2().trim());
+        if (sysLogin != null) {
+          UserVerifyPojo userVerify = new UserVerifyPojo();
+          userVerify.setLoginname(sysLoginPojo.getLoginname2().trim());
+          userVerify = userVerifyService.findNewestByPhone(userVerify);
+          if (userVerify == null || userVerify.getCaptcha() == null
+              || !phonecode.trim().equals(userVerify.getCaptcha())) {
+            FileUtil.alertMessageBySkip("验证码错误，请重新输入！~", "goForgetPasswordWeb.do");
+          } else {
+            if (sysLoginPojo.getPassword() == null || "".equals(sysLoginPojo.getPassword())) {
+              FileUtil.alertMessageBySkip("请输入新密码！~", "goForgetPasswordWeb.do");
+            } else if (sysLoginPojo.getPassword() != null
+                && sysLoginPojo.getPassword().length() < 6) {
+              FileUtil.alertMessageBySkip("新密码强度太弱，请换个！~", "goForgetPasswordWeb.do");
+            } else {
+              SysLoginPojo sysLogin2 = new SysLoginPojo();
+              sysLogin2.setPassword(MD5Util.MD5(sysLoginPojo.getPassword()));
+              sysLogin2.setId(sysLogin.getId());
+              sysLoginService.updatePassword(sysLogin2);
+              FileUtil.alertMessageBySkip("修改成功！", "sellerLogin.do");
+            }
+          }
+        } else {
+          FileUtil.alertMessageBySkip("该手机号码尚未注册！~", "goForgetPasswordWeb.do");
+        }
       }
     } catch (Exception e) {
       e.printStackTrace();
