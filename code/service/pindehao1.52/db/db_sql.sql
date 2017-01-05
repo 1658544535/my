@@ -708,3 +708,10 @@ INSERT INTO sys_role_menu (role_id, menu_id) VALUES (1, 305);
 
 ##增加-团记录表
 alter table groupon_activity_record add pdk_uid bigint(20) COMMENT '拼得客uid';
+
+##增加-订单表
+alter table user_order add auto_rec_time datetime default NULL COMMENT '自动收货时间';
+alter table user_order add seller_deduct double(20,2) default '0.00' COMMENT '商家扣款';
+alter table user_order add platform_msg varchar(500) default '' COMMENT '平台留言';
+alter table user_order add order_profit double(20,2) default '0.00' COMMENT '订单利润';
+alter table user_order add seller_goods_price double(20,2) default '0.00' COMMENT '商家货款';
