@@ -130,6 +130,11 @@
 		t.is_rebate as isRebate,
 		t.rebate_price as rebatePrice,
 		t.rebate_time as rebateTime,
+		t.auto_rec_time as autoRecTime,
+		t.seller_deduct as sellerDeduct,
+		t.platform_msg as platformMsg,
+		t.order_profit as orderProfit,
+		t.seller_goods_price as sellerGoodsPrice,
 		(select p.product_name from product p where uod.product_id = p.id limit 1) as productName,
 		(select p.image from product p where uod.product_id = p.id limit 1) as productImage,
 		uod.num as num,
@@ -332,70 +337,85 @@
 		    uo.confirmDate= now(),
 		</if>
 		<if test="consignee!=null and consignee !=''">
-		uo.consignee = #{consignee},
+			uo.consignee = #{consignee},
 		</if>
 		<if test="consigneeAddress!=null and consigneeAddress !=''">
-		uo.consignee_address =#{consigneeAddress},
+			uo.consignee_address =#{consigneeAddress},
 		</if>
 		<if test="consigneePhone!=null and consigneePhone !=''">
-		uo.consignee_phone =#{consigneePhone},
+			uo.consignee_phone =#{consigneePhone},
 		</if>
 		<if test="buyerMessage!=null and buyerMessage !=''">
-		uo.buyer_message =#{buyerMessage},
+			uo.buyer_message =#{buyerMessage},
 		</if>
 		<if test="consigneeType != null">
-		uo.consignee_type =#{consigneeType},
+			uo.consignee_type =#{consigneeType},
 		</if>	
 		<if test="payStatus != null">
-		uo.pay_status =#{payStatus},
+			uo.pay_status =#{payStatus},
 		</if>
 		<if test="orderStatus != null">
-		uo.order_status=#{orderStatus},
+			uo.order_status=#{orderStatus},
 		</if>
 		<if test="factPrice != null">
-		uo.fact_price =#{factPrice},
+			uo.fact_price =#{factPrice},
 		</if>
 		<if test="remarks!=null and remarks !=''">
-		uo.remarks=#{remarks},
+			uo.remarks=#{remarks},
 		</if>
 		<if test="groupDate !=null and groupDate !=''">
-		uo.group_date=#{groupDate},
+			uo.group_date=#{groupDate},
 		</if>
 		<if test="isRefund != null and isRefund != ''">
-		uo.is_refund =#{isRefund},
+			uo.is_refund =#{isRefund},
 		</if>
 		<if test="outRefundNo != null and outRefundNo != ''">
-		uo.out_refund_no =#{outRefundNo},
+			uo.out_refund_no =#{outRefundNo},
 		</if>
 		<if test="refundDate != null and refundDate != ''">
-		uo.refund_date =#{refundDate},
+			uo.refund_date =#{refundDate},
 		</if>
 		<if test="rebatePrice != null and rebatePrice != ''">
-		uo.rebate_price =#{rebatePrice},
+			uo.rebate_price =#{rebatePrice},
 		</if>
 		<if test="isRebate != null and isRebate != ''">
-		uo.is_rebate =#{isRebate},
+			uo.is_rebate =#{isRebate},
 		</if>
 		<if test="rebateTime != null and rebateTime != ''">
-		uo.rebate_time =#{rebateTime},
+			uo.rebate_time =#{rebateTime},
 		</if>
 		<if test="pdkUid != null and pdkUid != ''">
-		uo.pdk_uid =#{pdkUid},
+			uo.pdk_uid =#{pdkUid},
+		</if>
+		<if test="autoRecTime != null">
+			uo.auto_rec_time = #{autoRecTime},
+		</if>
+		<if test="sellerDeduct != null">
+			uo.seller_deduct = #{sellerDeduct},
+		</if>
+		<if test="platformMsg != null">
+			uo.platform_msg = #{platformMsg},
+		</if>
+		<if test="orderProfit != null">
+			uo.order_profit = #{orderProfit},
+		</if>
+		<if test="sellerGoodsPrice != null">
+			uo.seller_goods_price = #{sellerGoodsPrice},
 		</if>
 		<if test="consignor!=null and consignor !=''">
-		uop.consignor = #{consignor},
+			uop.consignor = #{consignor},
 		</if>
 		<if test="consignorAddress!=null and consignorAddress !=''">
-		uop.consignor_address =#{consignorAddress},
+			uop.consignor_address =#{consignorAddress},
 		</if>
 		<if test="shipPhone!=null and shipPhone !=''">
-		uop.ship_phone =#{shipPhone},
+			uop.ship_phone =#{shipPhone},
 		</if>
 		<if test="logisticsName != null and logisticsName != ''">
-		uop.logistics_name =#{logisticsName},
+			uop.logistics_name =#{logisticsName},
 		</if>
 		<if test="logisticsNo != null and logisticsNo != ''">
-		uop.logistics_no =#{logisticsNo},
+			uop.logistics_no =#{logisticsNo},
 		</if>
 		uop.update_by = #{updateBy},
 		uop.update_date = now()
@@ -538,7 +558,12 @@
 		t.is_cancel_order as isCancelOrder,
 		t.espress_price as espressPrice,
 		(select name from sys_login where id=t.user_id ) userName,
-		t.wallet_price as walletPrice
+		t.wallet_price as walletPrice,
+		t.auto_rec_time as autoRecTime,
+		t.seller_deduct as sellerDeduct,
+		t.platform_msg as platformMsg,
+		t.order_profit as orderProfit,
+		t.seller_goods_price as sellerGoodsPrice
 		from user_order as t left join user_order_ship s on s.order_id = t.id
 		where 1=1 and is_delete_order=0
 		<if test="orderStatus!=null  ">
@@ -558,6 +583,21 @@
 		</if>
 		<if test="payStatus!=null  ">
 			and t.pay_status = #{payStatus}
+		</if>
+		<if test="autoRecTime != null">
+		    and t.auto_rec_time = #{autoRecTime}
+		</if>
+		<if test="sellerDeduct != null">
+		    and t.seller_deduct = #{sellerDeduct}
+		</if>
+		<if test="platformMsg != null">
+		    and t.platform_msg = #{platformMsg}
+		</if>
+		<if test="orderProfit != null">
+		    and t.order_profit = #{orderProfit}
+		</if>
+		<if test="sellerGoodsPrice != null">
+		    and t.seller_goods_price = #{sellerGoodsPrice}
 		</if>
 		<if test="overdue==1 and orderStatus==3">
 			and s.create_date&lt;date_sub(now(),interval 15 day)
@@ -723,6 +763,21 @@
 		<if test="channel!=null  ">
 			and t.channel = #{channel}
 		</if>
+		<if test="autoRecTime != null">
+		    and t.auto_rec_time = #{autoRecTime}
+		</if>
+		<if test="sellerDeduct != null">
+		    and t.seller_deduct = #{sellerDeduct}
+		</if>
+		<if test="platformMsg != null">
+		    and t.platform_msg = #{platformMsg}
+		</if>
+		<if test="orderProfit != null">
+		    and t.order_profit = #{orderProfit}
+		</if>
+		<if test="sellerGoodsPrice != null">
+		    and t.seller_goods_price = #{sellerGoodsPrice}
+		</if>
 		<if test="logisticsName!=null and logisticsName!=''">
 			and (s.logistics_name like concat("%",(SELECT name_en FROM sys_dict WHERE NAME LIKE concat("%",#{logisticsName},"%") AND TYPE = 'logistics_type'),"%")
 			 or s.logistics_name like concat("%",#{logisticsName},"%"))
@@ -831,7 +886,12 @@
 		(select attend_time from groupon_user_record where attend_id=t.source_id and is_head=1 and activity_id = t.activity_id limit 1) as headAttendTime,
 		(select is_head from groupon_user_record where attend_id=t.source_id and user_id=t.user_id limit 1) as isHead,
 		t.source_id as attendId,
-		t.is_refund as isRefund
+		t.is_refund as isRefund,
+		t.auto_rec_time as autoRecTime,
+		t.seller_deduct as sellerDeduct,
+		t.platform_msg as platformMsg,
+		t.order_profit as orderProfit,
+		t.seller_goods_price as sellerGoodsPrice
 		from user_order as t 
 		left join user_order_ship s on s.order_id = t.id
 		<!--left join user_agency ua on ua.user_id=t.agency_user_id-->
@@ -858,9 +918,6 @@
 		</if>
 		<if test="attendId != null ">
 			and t.source_id = #{attendId}
-		</if>
-		<if test="loginname != null and loginname != '' ">
-			and a.loginname = #{loginname}
 		</if>
 		<if test="source != null">
 			and t.source = #{source}
@@ -940,20 +997,17 @@
 		<!-- <if test="endday1 !=null and endday1 !=''">
 			and  UNIX_TIMESTAMP(CONCAT(#{endday1},':00')) >= UNIX_TIMESTAMP(gur.attend_time)
 		</if> -->
-		 <if test="beganSendDate !=null and beganSendDate !=''">
+		<if test="beganSendDate !=null and beganSendDate !=''">
 			and UNIX_TIMESTAMP(t.sendDate) >= UNIX_TIMESTAMP(CONCAT(#{beganSendDate},':00'))
 		</if>
 		<if test="endSendDate !=null and endSendDate !=''">
 			and  UNIX_TIMESTAMP(CONCAT(#{endSendDate},':00')) >= UNIX_TIMESTAMP(t.sendDate)
 		</if>
-	   <if test="createDate !=null and createDate !=''">
-		and str_to_date(t.create_date,'%Y-%m-%d')=#{createDate}
-	   </if>
+	    <if test="createDate !=null and createDate !=''">
+			and str_to_date(t.create_date,'%Y-%m-%d')=#{createDate}
+	    </if>
 		<if test="sendDate !=null and sendDate !=''">
 			and str_to_date(t.sendDate,'%Y-%m-%d')=#{sendDate}
-		</if>
-		<if test="userName !=null and userName !=''">
-			and a.name like concat("%",#{userName},"%")
 		</if>
 		<if test="consigneeType!=null and consigneeType!=''">
 			and t.consignee_type = #{consigneeType}
@@ -964,39 +1018,29 @@
 		<if test="channel!=null  ">
 			and t.channel = #{channel}
 		</if>
-		<if test="logisticsName!=null and logisticsName!=''">
-			and (s.logistics_name like concat("%",(SELECT name_en FROM sys_dict WHERE NAME LIKE concat("%",#{logisticsName},"%") AND TYPE = 'logistics_type'),"%")
-			 or s.logistics_name like concat("%",#{logisticsName},"%"))
-		</if>
-		<if test="logisticsNo!=null and logisticsNo!=''">
-			and s.logistics_no = #{logisticsNo}
-		</if>
 		<if test="tids !=null and tids !=''">
-		and t.id in 
-		<foreach collection="tids" item="tids" index="index" open="(" separator="," close=")">
-		#{tids}
-		</foreach>
+			and t.id in 
+			<foreach collection="tids" item="tids" index="index" open="(" separator="," close=")">
+				#{tids}
+			</foreach>
 		</if>
 		<if test="notuserIds !=null and notuserIds !=''">
-		and t.user_id  not in 
-		<foreach collection="notuserIds" item="notuserIds" index="index" open="(" separator="," close=")">
-		#{notuserIds}
-		</foreach>
+			and t.user_id  not in 
+			<foreach collection="notuserIds" item="notuserIds" index="index" open="(" separator="," close=")">
+				#{notuserIds}
+			</foreach>
 		</if>
 		<if test="userIds !=null and userIds !=''">
-		and t.user_id in 
-		<foreach collection="userIds" item="userIds" index="index" open="(" separator="," close=")">
-		#{userIds}
-		</foreach>
+			and t.user_id in 
+			<foreach collection="userIds" item="userIds" index="index" open="(" separator="," close=")">
+				#{userIds}
+			</foreach>
 		</if>
 		<if test="userId != null and userId != ''">
 			and t.user_id = #{userId}
 		</if>
 		<if test="suserId != null and suserId != ''">
 			and t.suser_id = #{suserId}
-		</if>
-		<if test="overdue==1 and orderStatus==3">
-			and s.create_date&lt;date_sub(now(),interval 15 day)
 		</if>
 		<if test="orderType != null ">
 			and t.order_type = #{orderType}
@@ -1006,6 +1050,37 @@
 		</if>
 		<if test="pdkLoginname != null and pdkLoginname != ''">
 			and t.pdk_uid = (select sl.id from sys_login sl where sl.loginname=#{pdkLoginname} )
+		</if>
+		<if test="autoRecTime != null">
+		    and t.auto_rec_time = #{autoRecTime}
+		</if>
+		<if test="sellerDeduct != null">
+		    and t.seller_deduct = #{sellerDeduct}
+		</if>
+		<if test="platformMsg != null">
+		    and t.platform_msg = #{platformMsg}
+		</if>
+		<if test="orderProfit != null">
+		    and t.order_profit = #{orderProfit}
+		</if>
+		<if test="sellerGoodsPrice != null">
+		    and t.seller_goods_price = #{sellerGoodsPrice}
+		</if>
+		<if test="userName !=null and userName !=''">
+			and a.name like concat("%",#{userName},"%")
+		</if>
+		<if test="loginname != null and loginname != '' ">
+			and a.loginname = #{loginname}
+		</if>
+		<if test="overdue==1 and orderStatus==3">
+			and s.create_date&lt;date_sub(now(),interval 15 day)
+		</if>
+		<if test="logisticsName!=null and logisticsName!=''">
+			and (s.logistics_name like concat("%",(SELECT name_en FROM sys_dict WHERE NAME LIKE concat("%",#{logisticsName},"%") AND TYPE = 'logistics_type'),"%")
+			 or s.logistics_name like concat("%",#{logisticsName},"%"))
+		</if>
+		<if test="logisticsNo!=null and logisticsNo!=''">
+			and s.logistics_no = #{logisticsNo}
 		</if>
 		<if test="orderStatus==3 and orderType != 1">
 			order by t.update_date desc
@@ -2235,6 +2310,11 @@
 			t.is_rebate as isRebate,
 			t.rebate_price as rebatePrice,
 			t.rebate_time as rebateTime,
+			t.auto_rec_time as autoRecTime,
+			t.seller_deduct as sellerDeduct,
+			t.platform_msg as platformMsg,
+			t.order_profit as orderProfit,
+			t.seller_goods_price as sellerGoodsPrice,
 			c.used_price as usedPrice,
 			d.id as orderDid,
 			d.product_id as productId,
@@ -2387,6 +2467,21 @@
 			<if test="isNotSource != null ">
 			  and t.source != #{isNotSource}
 			</if>
+			<if test="autoRecTime != null">
+			  and t.auto_rec_time = #{autoRecTime}
+			</if>
+			<if test="sellerDeduct != null">
+			  and t.seller_deduct = #{sellerDeduct}
+			</if>
+			<if test="platformMsg != null">
+			  and t.platform_msg = #{platformMsg}
+			</if>
+			<if test="orderProfit != null">
+			  and t.order_profit = #{orderProfit}
+			</if>
+			<if test="sellerGoodsPrice != null">
+			  and t.seller_goods_price = #{sellerGoodsPrice}
+			</if>
 			<if test="isFreeDraw != null ">
 			  and ga.num > (select count(*) from groupon_user_record where attend_id=t.source_id) 
 			</if>
@@ -2538,6 +2633,21 @@
 			</if>
 			<if test="sourceId != null ">
 			  and t.source_id = #{sourceId}
+			</if>
+			<if test="autoRecTime != null">
+			  and t.auto_rec_time = #{autoRecTime}
+			</if>
+			<if test="sellerDeduct != null">
+			  and t.seller_deduct = #{sellerDeduct}
+			</if>
+			<if test="platformMsg != null">
+			  and t.platform_msg = #{platformMsg}
+			</if>
+			<if test="orderProfit != null">
+			  and t.order_profit = #{orderProfit}
+			</if>
+			<if test="sellerGoodsPrice != null">
+			  and t.seller_goods_price = #{sellerGoodsPrice}
 			</if>
 			<if test="refund != null and refund == 0 ">
 			  and d.re_status = 0
@@ -2708,7 +2818,21 @@
 			<if test="pdkUid != null and pdkUid != ''">
 				pdk_uid,
 			</if>
-			
+			<if test="autoRecTime != null">
+			    auto_rec_time,
+			</if>
+			<if test="sellerDeduct != null">
+			    seller_deduct,
+			</if>
+			<if test="platformMsg != null">
+			    platform_msg,
+			</if>
+			<if test="orderProfit != null">
+			    order_profit,
+			</if>
+			<if test="sellerGoodsPrice != null">
+			    seller_goods_price,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -2870,6 +2994,21 @@
 			<if test="pdkUid != null and pdkUid != ''">
 				#{pdkUid},
 			</if>
+			<if test="autoRecTime != null">
+			    #{autoRecTime},
+			</if>
+			<if test="sellerDeduct != null">
+			    #{sellerDeduct},
+			</if>
+			<if test="platformMsg != null">
+			    #{platformMsg},
+			</if>
+			<if test="orderProfit != null">
+			    #{orderProfit},
+			</if>
+			<if test="sellerGoodsPrice != null">
+			    #{sellerGoodsPrice},
+			</if>
 		</trim>
 	</insert>
 	<update id="updateOrderRefund" parameterType="java.util.Map">
@@ -2953,6 +3092,11 @@
 			t.is_refund as isRefund,
 			t.out_refund_no as outRefundNo,
 			t.refund_date as refundDate,
+			t.auto_rec_time as autoRecTime,
+			t.seller_deduct as sellerDeduct,
+			t.platform_msg as platformMsg,
+			t.order_profit as orderProfit,
+			t.seller_goods_price as sellerGoodsPrice,
 			c.used_price as usedPrice,
 			d.id as orderDid,
 			d.product_id as productId,
@@ -3105,6 +3249,21 @@
 			</if>
 			<if test="isRefund != null ">
 			  and t.is_refund = #{isRefund}
+			</if>
+			<if test="autoRecTime != null">
+			  and t.auto_rec_time = #{autoRecTime}
+			</if>
+			<if test="sellerDeduct != null">
+			  and t.seller_deduct = #{sellerDeduct}
+			</if>
+			<if test="platformMsg != null">
+			  and t.platform_msg = #{platformMsg}
+			</if>
+			<if test="orderProfit != null">
+			  and t.order_profit = #{orderProfit}
+			</if>
+			<if test="sellerGoodsPrice != null">
+			  and t.seller_goods_price = #{sellerGoodsPrice}
 			</if>
 			<if test="refund != null and refund == 0 ">
 			  and d.re_status not in (4,7)
@@ -3262,6 +3421,21 @@
 			</if>
 			<if test="isRefund != null ">
 			  and t.is_refund = #{isRefund}
+			</if>
+			<if test="autoRecTime != null">
+			  and t.auto_rec_time = #{autoRecTime}
+			</if>
+			<if test="sellerDeduct != null">
+			  and t.seller_deduct = #{sellerDeduct}
+			</if>
+			<if test="platformMsg != null">
+			  and t.platform_msg = #{platformMsg}
+			</if>
+			<if test="orderProfit != null">
+			  and t.order_profit = #{orderProfit}
+			</if>
+			<if test="sellerGoodsPrice != null">
+			  and t.seller_goods_price = #{sellerGoodsPrice}
 			</if>
 			<if test="refund != null and refund == 0 ">
 			  and d.re_status = 0
