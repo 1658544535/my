@@ -203,7 +203,7 @@ public class SellerRegWebAction extends SuperAction {
       ActionContext actionContext = ActionContext.getContext();
       SysLoginPojo s = sysLoginService.getSysLoginByLoginName(sysLoginPojo.getLoginname());
       if (s != null) {
-        setMsg("该会员帐号已经被注册了!");
+        setMsg("该手机号已经被注册了!");
         return "registerweb";
       }
       UserVerifyPojo userVerify = new UserVerifyPojo();
