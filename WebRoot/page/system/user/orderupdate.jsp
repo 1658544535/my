@@ -6,21 +6,15 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <script type="text/javascript" src="<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/js/jquery/jquery-1.10.1.js"></script>
-<script type="text/javascript"
-	src="<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/js/jquery-ui-1.10.3/ui/jquery-ui.js"></script>
+<script type="text/javascript" src="<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/js/jquery-ui-1.10.3/ui/jquery-ui.js"></script>
 <script type="text/javascript" src="<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/js/base/operation/shop/shop.js"></script>
-<link type="text/css" rel="stylesheet"
-	href="<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/js/testJSP/js/validate/css/validate.css" />
-<script src="<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/js/testJSP/js/validate/talent-validate-all.js"
-	language="javascript"></script>
+<link type="text/css" rel="stylesheet" href="<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/js/testJSP/js/validate/css/validate.css" />
+<script src="<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/js/testJSP/js/validate/talent-validate-all.js" language="javascript"></script>
 <script type="text/javascript" src="<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/js/base/operation/shop/shop.js"></script>
-<link type="text/css" rel="stylesheet"
-	href="<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/js/testJSP/js/validate/css/validate.css" />
+<link type="text/css" rel="stylesheet" href="<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/js/testJSP/js/validate/css/validate.css" />
 <jsp:include page="../../common/top.jsp"></jsp:include>
-
 <jsp:include page="../../common/common_head.jsp"></jsp:include>
-<script type="text/javascript"
-	src="<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/js/system/help/helpCommon.js"></script>
+<script type="text/javascript" src="<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/js/system/help/helpCommon.js"></script>
 <script type="text/javascript">
 function manySend(href){
 	var form = document.getElementById("form8");
@@ -64,16 +58,11 @@ function returnGoods(val)
 				<input name="pageNoVal" id="" value="${pageNoVal}" type="hidden">
 				<table width="100%" border="0" cellpadding="0" cellspacing="0"
 					class="info_table">
-					<input name="formParam" id="" value="${formParam}"
-						class="inputText" type="hidden">
-					<input name="order.id" id="orderId" value="${orderPojo.id}"
-						class="inputText" type="hidden">
-					<input name="order.orderNo" id="orderNo" value="${orderPojo.orderNo}"
-						class="inputText" type="hidden">
-					<input name="order.sourceId" id="sourceId" value="${orderPojo.sourceId}"
-						class="inputText" type="hidden">
-					<input name="order.activityId" id="activityId" value="${orderPojo.activityId}"
-						class="inputText" type="hidden">
+					<input name="formParam" id="" value="${formParam}" class="inputText" type="hidden">
+					<input name="order.id" id="orderId" value="${orderPojo.id}" class="inputText" type="hidden">
+					<input name="order.orderNo" id="orderNo" value="${orderPojo.orderNo}" class="inputText" type="hidden">
+					<input name="order.sourceId" id="sourceId" value="${orderPojo.sourceId}" class="inputText" type="hidden">
+					<input name="order.activityId" id="activityId" value="${orderPojo.activityId}" class="inputText" type="hidden">
 					<tr>
 						<td align="right" class="grey" width="15%">订单号:</td>
 						<td width="35%">${orderPojo.orderNo}
@@ -86,25 +75,21 @@ function returnGoods(val)
 						<td align="right" class="grey" width="15%">下单时间:</td>
 						<td width="35%">${orderPojo.creatDateString}</td>
 					</tr>
-					
 					<tr>
-					<td align="right" class="grey" width="15%">订单状态:</td>
-					   	
+						<td align="right" class="grey" width="15%">订单状态:</td>
    						<td>
-						<c:forEach items="${orderStatus}" var="orderStatus">
-						<c:if test="${orderPojo.orderStatus==orderStatus.value}">
-							<label  name="order.orderStatus" class="floatLeft">${orderStatus.name}</label>
-							</c:if>
-						</c:forEach>
-						<span id="factPrice"></span>
+							<c:forEach items="${orderStatus}" var="orderStatus">
+								<c:if test="${orderPojo.orderStatus==orderStatus.value}">
+									<label  name="order.orderStatus" class="floatLeft">${orderStatus.name}</label>
+								</c:if>
+							</c:forEach>
+							<span id="factPrice"></span>
 					    </td>
 						<td align="right" class="grey" width="15%">付款时间:</td>
 						<td width="35%">${orderPojo.paymentDateStr}</td>
 					</tr>
-					
 					<tr>
 						<td align="right" class="grey" width="15%">支付状态:</td>
-						
 						<td>
 							<c:forEach items="${payStatus}" var="payStatus">
 								<c:if test="${orderPojo.payStatus==payStatus.value}">
@@ -116,7 +101,6 @@ function returnGoods(val)
 						<td align="right" class="grey" width="15%">参团时间:</td>
 						<td width="35%">${orderPojo.groupDateStr}</td>
 					</tr>
-					
 					<tr>
 						<td align="right" class="grey" width="15%">快递公司:</td>
 						<td>
@@ -153,9 +137,7 @@ function returnGoods(val)
 						</td>
 						<td align="right" class="grey" width="15%">发货时间:</td>
 						<td width="35%">${orderPojo.sendDateStr}</td>
-							
 					</tr>
-
 					<tr>
 						<td align="right" class="grey" width="15%">快递单号:</td>
 						 <td><input value="${orderPojo.logisticsNo}" name="order.logisticsNo"/></td>
@@ -175,15 +157,38 @@ function returnGoods(val)
 						<td width="35%">${orderPojo.usedPrice}</td>	
 					</tr>
 					<tr>
+						<td align="right" class="grey" width="15%">订单利润:</td>
+						 <td><label class="floatLeft">${orderPojo.orderProfit}</label></td>
+						<td align="right" class="grey" width="15%">商家扣款:</td>
+						<td width="35%"><input value='${orderPojo.sellerDeduct}' name="orderPojo.sellerDeduct"/></td>	
+					</tr>
+					<tr>
+						<td align="right" class="grey" width="15%">自动收货时间:</td>
+						 <td><label class="floatLeft">${orderPojo.autoRecTime}</label></td>
+						<td align="right" class="grey" width="15%">商家货款:</td>
+						<td width="35%">${orderPojo.sellerGoodsPrice}</td>	
+					</tr>
+					<tr>
 						<td align="center" class="grey" width="15%"  colspan="4"><input type="button" class="ok_btn" value="修改" id="sbutton5" /></td>
 					</tr>
 				</table>
+				<table width="100%" border="1" class="Info_list_table">
+					<tr>
+						<td align="right" class="grey" width="15%"  colspan="4">平台留言:</td>
+					</tr>
+					<tr>
+						<td align="right" class="grey" width="6%">平台留言:</td>
+						<td width="35%" class="grey">
+							<textarea class="floatLeft" rows="5" cols="50" name="order.platformMsg" id="content">${orderPojo.platformMsg}</textarea>
+							<span id="remarks"></span>
+						</td>
+					</tr>
+					<tr>
+						<td align="right" class="grey" width="15%"  colspan="4"><input type="button" class="ok_btn" value="修改" id="sbutton3" /></td>
+					</tr>
+				</table>
 			</form>
-			<script type="text/javascript">
-				
-			</script>
 		</div>
-		
 		<c:if test="${orderDetails.size()!=0}">
 			<div>
 				<table width="100%" border="1" class="Info_list_table">
@@ -198,7 +203,6 @@ function returnGoods(val)
 						<th>实付金额</th>
 					<!--<th>操作</th>-->
 					</tr>
-
 					<c:forEach items="${orderDetails}" var="trealProject">
 						<tr></tr>
 				        <tr> 
@@ -213,63 +217,52 @@ function returnGoods(val)
 						<td align="center">${orderPojo.factPrice}</td>
 						<!--	<td align="center"><a class="edit_btn" href="goReturnGoods.do?order.id=${orderPojo.id}">退货</a></td>-->
 						</tr>
-
 					</c:forEach>
-
 				</table>
 			</div>
 		</c:if>
-		<div style="margin : 15px 150px">
-		<form action="updateOrder.do?os=${os}&guide=${guide}" method="post" id="from1">
-					<input name="pageNoVal" id="" value="${pageNoVal}" type="hidden">
-					<input name="formParam" id="" value="${formParam}"
-						class="inputText" type="hidden">
-					<input name="order.id" id="orderId" value="${orderPojo.id}"
-						class="inputText" type="hidden">
-					<input name="order.orderNo" id="orderNo" value="${orderPojo.orderNo}"
-						class="inputText" type="hidden">
-					<input name="order.sourceId" id="orderNo" value="${orderPojo.sourceId}"
-						class="inputText" type="hidden">
-					<input name="order.activityId" id="orderNo" value="${orderPojo.activityId}"
-						class="inputText" type="hidden">
-					<input name="order.source" id="orderNo" value="${orderPojo.source}"
-						class="inputText" type="hidden">
-					<input name="order.userId" id="orderNo" value="${orderPojo.userId}"
-						class="inputText" type="hidden">
-				<table width="100%" border="1" class="Info_list_table">
+		<div>
+			<form action="updateOrder.do?os=${os}&guide=${guide}" method="post" id="from1">
+			<input name="pageNoVal" id="" value="${pageNoVal}" type="hidden">
+			<input name="formParam" id="" value="${formParam}" class="inputText" type="hidden">
+			<input name="order.id" id="orderId" value="${orderPojo.id}" class="inputText" type="hidden">
+			<input name="order.orderNo" id="orderNo" value="${orderPojo.orderNo}" class="inputText" type="hidden">
+			<input name="order.sourceId" id="orderNo" value="${orderPojo.sourceId}" class="inputText" type="hidden">
+			<input name="order.activityId" id="orderNo" value="${orderPojo.activityId}" class="inputText" type="hidden">
+			<input name="order.source" id="orderNo" value="${orderPojo.source}" class="inputText" type="hidden">
+			<input name="order.userId" id="orderNo" value="${orderPojo.userId}" class="inputText" type="hidden">
+			<table width="100%" border="1" class="Info_list_table">
+				<tr><td align="right" class="grey" width="15%"  colspan="4">修改状态:</td></tr>
 				<tr>
-				<td align="right" class="grey" width="15%"  colspan="4">修改状态:</td>
-				</tr>
-						<tr>
 					<td align="right" class="grey" width="15%">订单状态:</td>
-					   	
-   						<s:if test="#session.role.roleId==1||#session.role.roleId==5"> 
-   						<td><select name="order.orderStatus" class="floatLeft">
-								<c:forEach items="${orderStatus}" var="orderStatus">
-									<option value="${orderStatus.value}"
-										<c:if test="${orderPojo.orderStatus==orderStatus.value}">selected="selected" </c:if>>${orderStatus.name}</option>
-								</c:forEach>
-					   </select> </td>		
+				   	 	<s:if test="#session.role.roleId==1||#session.role.roleId==5"> 
+	  						<td>
+	  							<select name="order.orderStatus" class="floatLeft">
+									<c:forEach items="${orderStatus}" var="orderStatus">
+										<option value="${orderStatus.value}"
+											<c:if test="${orderPojo.orderStatus==orderStatus.value}">selected="selected" </c:if>>${orderStatus.name}</option>
+									</c:forEach>
+							   </select>
+							</td>		
 					   </s:if>
 					   <s:else>  
 						<td width="35%">
-						<c:forEach items="${orderStatus}" var="orderStatus">
-						<c:if test="${orderPojo.orderStatus==orderStatus.value}">
-							<label  name="order.orderStatus" class="floatLeft">${orderStatus.name}</label>
-							</c:if>
-						</c:forEach>
-						<span id="factPrice"></span>
+							<c:forEach items="${orderStatus}" var="orderStatus">
+							<c:if test="${orderPojo.orderStatus==orderStatus.value}"><label  name="order.orderStatus" class="floatLeft">${orderStatus.name}</label></c:if>
+							</c:forEach>
+							<span id="factPrice"></span>
 					    </td>
-						</s:else>
-						<td class="grey" width="15%">支付状态:</td>
-						
+					   </s:else>
+					<td class="grey" width="15%">支付状态:</td>
 						<s:if test="#session.role.roleId==1||#session.role.roleId==5">
-						<td> <select name="order.payStatus" class="floatLeft">
-								<c:forEach items="${payStatus}" var="payStatus">
-									<option value="${payStatus.value}"
-										<c:if test="${orderPojo.payStatus==payStatus.value}">selected="selected" </c:if>>${payStatus.name}</option>
-								</c:forEach>
-						</select></td>		
+							<td>
+								<select name="order.payStatus" class="floatLeft">
+									<c:forEach items="${payStatus}" var="payStatus">
+										<option value="${payStatus.value}"
+											<c:if test="${orderPojo.payStatus==payStatus.value}">selected="selected" </c:if>>${payStatus.name}</option>
+									</c:forEach>
+								</select>
+							</td>		
 						</s:if>
 						<s:else> 
 						<td width="35%">
@@ -281,23 +274,18 @@ function returnGoods(val)
 							<span id="factPrice"></span>
 						</td>
 						</s:else>
-						
-						</tr>
-						<tr>
-						<td align="right" class="grey" width="15%"  colspan="4"><input type="button" class="ok_btn" value="修改" id="sbutton" /></td>
-						</tr>
-				</table>
-				</form>
-			</div>
-
-			
-			<div style="margin : 15px 150px">
-				<table width="100%" border="1" class="Info_list_table">
-				<tr>
-				<td align="right" class="grey" width="15%"  colspan="4">支付信息:</td>
 				</tr>
-										<tr>
-								<c:choose>
+				<tr><td align="right" class="grey" width="15%"  colspan="4"><input type="button" class="ok_btn" value="修改" id="sbutton" /></td></tr>
+			</table>
+			</form>
+			</div>
+			<div>
+				<table width="100%" border="1" class="Info_list_table">
+					<tr>
+						<td align="right" class="grey" width="15%"  colspan="4">支付信息:</td>
+					</tr>
+					<tr>
+						<c:choose>
 							<c:when test="${orderPojo.payMethod == 1}">
 								<td align="right" class="grey" width="15%">支付宝单号:</td>
 								<td width="35%">${orderPojo.outTradeNo}</td>
@@ -323,106 +311,87 @@ function returnGoods(val)
 								<td width="35%">货到付款</td>
 							</c:otherwise>
 						</c:choose>
-							<td align="right" class="grey" width="15%">流水号:</td>
-								<td width="35%">${orderPojo.tradeNo}</td>
-						</tr>
+						<td align="right" class="grey" width="15%">流水号:</td>
+						<td width="35%">${orderPojo.tradeNo}</td>
+					</tr>
 				</table>
 			</div>
-					<div style="margin : 15px 150px">
-		<form action="updateOrder.do?os=${os}&guide=${guide}" method="post" id="from2">
-					<input name="pageNoVal" id="" value="${pageNoVal}" type="hidden">
-					<input name="formParam" id="" value="${formParam}"
-						class="inputText" type="hidden">
-					<input name="order.id" id="orderId" value="${orderPojo.id}"
-						class="inputText" type="hidden">
-					<input name="order.orderNo" id="orderNo" value="${orderPojo.orderNo}"
-						class="inputText" type="hidden">
-				<table width="100%" border="1" class="Info_list_table">
-				<tr>
-				<td align="right" class="grey" width="15%"  colspan="4">买家地址信息:</td>
-				</tr>
-						<tr>
-						<td align="right" class="grey" width="15%">收货人:</td>
-						<td width="35%"><input type="text" name="order.consignee"
-							value="${orderPojo.consignee}" class="floatLeft" id="ticketName"><span
-							id="consignee"></span></td>
-						<td align="right" class="grey" width="15%">收货地址:</td>
-						<td width="35%"><input type="text"  size="90"
-							name="order.consigneeAddress"
-							value="${orderPojo.consigneeAddress}" class="floatLeft"
-							id="ticketName"><span id="consigneeAddress"></span></td>
+			<div>
+				<form action="updateOrder.do?os=${os}&guide=${guide}" method="post" id="from2">
+			    	<input name="pageNoVal" id="" value="${pageNoVal}" type="hidden">
+					<input name="formParam" id="" value="${formParam}" class="inputText" type="hidden">
+					<input name="order.id" id="orderId" value="${orderPojo.id}" class="inputText" type="hidden">
+					<input name="order.orderNo" id="orderNo" value="${orderPojo.orderNo}" class="inputText" type="hidden">
+					<table width="100%" border="1" class="Info_list_table">
+						<tr><td align="right" class="grey" width="15%"  colspan="4">买家地址信息:</td></tr>
+							<tr>
+								<td align="right" class="grey" width="15%">收货人:</td>
+								<td width="35%"><input type="text" name="order.consignee"
+									value="${orderPojo.consignee}" class="floatLeft" id="ticketName"><span
+									id="consignee"></span></td>
+								<td align="right" class="grey" width="15%">收货地址:</td>
+								<td width="35%"><input type="text"  size="90"
+									name="order.consigneeAddress"
+									value="${orderPojo.consigneeAddress}" class="floatLeft"
+									id="ticketName"><span id="consigneeAddress"></span></td>
 							</tr>
+							<tr>
+								<td align="right" class="grey" width="15%">收货人电话:</td>
+								<td width="35%" class="grey"><input type="text" name="order.consigneePhone" value="${orderPojo.consigneePhone}" class="floatLeft" id="ticketName"><span id="consigneePhone"></span></td>
+								<td align="right" class="grey" width="15%"></td>
+								<td width="35%" class="grey"></td>
 							</tr>
-						<td align="right" class="grey" width="15%">收货人电话:</td>
-						<td width="35%" class="grey"><input type="text"
-							name="order.consigneePhone" value="${orderPojo.consigneePhone}"
-							class="floatLeft" id="ticketName"><span
-							id="consigneePhone"></span></td>
-							<td align="right" class="grey" width="15%"></td>
-							<td width="35%" class="grey"></td>
-						</tr>
-						<tr>
-						<td align="right" class="grey" width="15%"  colspan="4"><input type="button" class="ok_btn" value="修改" id="sbutton2" /></td>
-						</tr>
-				</table>
+							<tr><td align="right" class="grey" width="15%"  colspan="4"><input type="button" class="ok_btn" value="修改" id="sbutton2" /></td></tr>
+					</table>
 				</form>
 				<form action="updateOrder.do?os=${os}&guide=${guide}" method="post" id="from3">
 					<input name="pageNoVal" id="" value="${pageNoVal}" type="hidden">
-					<input name="formParam" id="" value="${formParam}"
-						class="inputText" type="hidden">
-					<input name="order.id" id="orderId" value="${orderPojo.id}"
-						class="inputText" type="hidden">
-					<input name="order.orderNo" id="orderNo" value="${orderPojo.orderNo}"
-						class="inputText" type="hidden">
-				<table width="100%" border="1" class="Info_list_table">
-				<tr>
-				<tr><td align="right" class="grey" width="15%"  colspan="4">客服留言:</td></tr>
-										<td align="right" class="grey" width="6%">客服留言:</td>
-						<td width="35%" class="grey"><textarea class="floatLeft" rows="5"
-								cols="50" name="order.remarks" id="content">${orderPojo.remarks}</textarea>
-							<span id="remarks"></span></td>
-						</tr>
-						
+					<input name="formParam" id="" value="${formParam}" class="inputText" type="hidden">
+					<input name="order.id" id="orderId" value="${orderPojo.id}" class="inputText" type="hidden">
+					<input name="order.orderNo" id="orderNo" value="${orderPojo.orderNo}" class="inputText" type="hidden">
+					<table width="100%" border="1" class="Info_list_table">
 						<tr>
-						<td align="right" class="grey" width="15%"  colspan="4"><input type="button" class="ok_btn" value="修改" id="sbutton3" /></td>
+							<tr><td align="right" class="grey" width="15%"  colspan="4">客服留言:</td></tr>
+							<td align="right" class="grey" width="6%">客服留言:</td>
+							<td width="35%" class="grey">
+								<textarea class="floatLeft" rows="5" cols="50" name="order.remarks" id="content">${orderPojo.remarks}</textarea>
+								<span id="remarks"></span>
+							</td>
 						</tr>
-				</table>
+						<tr><td align="right" class="grey" width="15%"  colspan="4"><input type="button" class="ok_btn" value="修改" id="sbutton3" /></td></tr>
+					</table>
 				</form>
 				<form action="updateOrder.do?os=${os}&guide=${guide}" method="post" id="from4">
 					<input name="pageNoVal" id="" value="${pageNoVal}" type="hidden">
-					<input name="formParam" id="" value="${formParam}"
-						class="inputText" type="hidden">
-					<input name="order.id" id="orderId" value="${orderPojo.id}"
-						class="inputText" type="hidden">
-					<input name="order.orderNo" id="orderNo" value="${orderPojo.orderNo}"
-						class="inputText" type="hidden">
-				<table width="100%" border="1" class="Info_list_table">
-				<tr>
-				<tr><td align="right" class="grey" width="15%"  colspan="4">备注:</td>
-										<tr>
-						<td align="right" class="grey" width="15%">用户:</td>
-						<td width="35%"  class="grey">${orderPojo.userName}</td>
-						<td align="right" class="grey" width="15%">创建时间:</td>
-						<td width="35%"  class="grey">${orderPojo.updateDateStr}</td>
-							</tr>
-				            </tr>
-							<td align="right" class="grey" width="6%">备注:</td>
-						<td width="35%" class="grey"><textarea class="floatLeft" rows="5"
-								cols="50" name="order.buyerMessage" id="content">${orderPojo.buyerMessage}</textarea>
-							<span id="remarks"></span></td>
-							<td align="right" class="grey" width="6%"></td>
-						<td width="35%" class="grey"></td>
-						</tr>
-						
+					<input name="formParam" id="" value="${formParam}" class="inputText" type="hidden">
+					<input name="order.id" id="orderId" value="${orderPojo.id}" class="inputText" type="hidden">
+					<input name="order.orderNo" id="orderNo" value="${orderPojo.orderNo}" class="inputText" type="hidden">
+					<table width="100%" border="1" class="Info_list_table">
+						<tr><td align="right" class="grey" width="15%"  colspan="4">备注:</td></tr>
 						<tr>
-						<td align="right" class="grey" width="15%"  colspan="4"><input type="button" class="ok_btn" value="修改" id="sbutton4" /></td>
+							<td align="right" class="grey" width="15%">用户:</td>
+							<td width="35%"  class="grey">${orderPojo.userName}</td>
+							<td align="right" class="grey" width="15%">创建时间:</td>
+							<td width="35%"  class="grey">${orderPojo.updateDateStr}</td>
 						</tr>
-				</table>
+						<tr>
+							<td align="right" class="grey" width="6%">备注:</td>
+							<td width="35%" class="grey">
+								<textarea class="floatLeft" rows="5" cols="50" name="order.buyerMessage" id="content">${orderPojo.buyerMessage}</textarea>
+								<span id="remarks"></span>
+							</td>
+							<td align="right" class="grey" width="6%"></td>
+							<td width="35%" class="grey"></td>
+						</tr>
+						<tr>
+							<td align="right" class="grey" width="15%"  colspan="4"><input type="button" class="ok_btn" value="修改" id="sbutton4" /></td>
+						</tr>
+					</table>
 				</form>
 				<table width="100%" border="1" class="Info_list_table">
 				<tr>
 				<td align="right" class="grey" width="15%"  colspan="4">退货/退款信息:</td>
-                        <tr>
+	                       <tr>
 						<td align="right" class="grey" width="15%">退款id:</td>
 						<td width="35%">${userOrderRefundPojo.id}</td>
 						<td align="right" class="grey" width="15%">退款金额:</td>
@@ -436,12 +405,12 @@ function returnGoods(val)
 						</tr>
 						<tr>
 						<td align="right" class="grey" width="15%">备注:</td>
-                        <td width="35%">${userOrderRefundPojo.refundReason}</td>		
-                        <td align="right" class="grey" width="15%">退款状态:</td>
+	                       <td width="35%">${userOrderRefundPojo.refundReason}</td>		
+	                       <td align="right" class="grey" width="15%">退款状态:</td>
 						<td width="35%">${userOrderRefundPojo.statusName}</td>	
 						</tr>
 				</table>
-	</div>
+		</div>
 		<div class="Btn_div">
 				<button type="input" class="back_btn" onclick="goOrderManange()">返回</button>
 		</div>
@@ -453,9 +422,7 @@ function returnGoods(val)
 		</script>
 </body>
 </html>
-
 <script>
-
 //alert(${orderPojo.isCancelOrder});
 var consignee =new tt.Field(" 收货人 ","cart.consignee").setMsgId("consignee");
 var consigneeAddress =new tt.Field(" 收货地址 ","cart.consigneeAddress").setMsgId("consigneeAddress");

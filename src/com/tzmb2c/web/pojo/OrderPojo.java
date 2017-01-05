@@ -218,8 +218,68 @@ public class OrderPojo extends SuperPojo {
    * 拼得客账号
    */
   private String pdkLoginname;
+  /**
+   * 自动收货时间
+   */
+  private Date autoRecTime;
+  /**
+   * 商家扣款
+   */
+  private Double sellerDeduct;
+  /**
+   * 平台留言
+   */
+  private String platformMsg;
+  /**
+   * 订单利润
+   */
+  private Double orderProfit;
+  /**
+   * 商家货款
+   */
+  private Double sellerGoodsPrice;
 
 
+
+  public Date getAutoRecTime() {
+    return autoRecTime;
+  }
+
+  public void setAutoRecTime(Date autoRecTime) {
+    this.autoRecTime = autoRecTime;
+  }
+
+  public Double getSellerDeduct() {
+    return sellerDeduct;
+  }
+
+  public void setSellerDeduct(Double sellerDeduct) {
+    this.sellerDeduct = sellerDeduct;
+  }
+
+  public String getPlatformMsg() {
+    return platformMsg;
+  }
+
+  public void setPlatformMsg(String platformMsg) {
+    this.platformMsg = platformMsg;
+  }
+
+  public Double getOrderProfit() {
+    return orderProfit;
+  }
+
+  public void setOrderProfit(Double orderProfit) {
+    this.orderProfit = orderProfit;
+  }
+
+  public Double getSellerGoodsPrice() {
+    return sellerGoodsPrice;
+  }
+
+  public void setSellerGoodsPrice(Double sellerGoodsPrice) {
+    this.sellerGoodsPrice = sellerGoodsPrice;
+  }
 
   public String getPdkLoginname() {
     return pdkLoginname;
