@@ -1703,6 +1703,7 @@ public class AppApiGrouponAction extends SuperAction {
    * @throw
    * @return String
    */
+  @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   public String applyRefund() throws SQLException {
     Map<String, Object> map = new HashMap<String, Object>();
     OrderRefundPojo orderRefundPojo = new OrderRefundPojo();
