@@ -3,7 +3,6 @@ package com.tzmb2c.web.action;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
-import java.math.BigDecimal;
 import java.net.URL;
 import java.net.URLConnection;
 import java.sql.SQLException;
@@ -47,6 +46,7 @@ import com.tzmb2c.web.pojo.BrandDicPojo;
 import com.tzmb2c.web.pojo.HelpPojo;
 import com.tzmb2c.web.pojo.HelpTypePojo;
 import com.tzmb2c.web.pojo.LoginRecPojo;
+import com.tzmb2c.web.pojo.OrderPojo;
 import com.tzmb2c.web.pojo.ProductFocusImagesPojo;
 import com.tzmb2c.web.pojo.ProductImagesPojo;
 import com.tzmb2c.web.pojo.ProductPojo;
@@ -62,6 +62,7 @@ import com.tzmb2c.web.service.HelpTypeService;
 import com.tzmb2c.web.service.LoginRecService;
 import com.tzmb2c.web.service.LoginService;
 import com.tzmb2c.web.service.OrderDetailService;
+import com.tzmb2c.web.service.OrderService;
 import com.tzmb2c.web.service.ProductFocusImagesService;
 import com.tzmb2c.web.service.ProductImagesService;
 import com.tzmb2c.web.service.ProductSellService;
@@ -108,6 +109,9 @@ public class SellerWebAction extends SuperAction {
   private SpecialShowService specialShowService;
   @Autowired
   private ProductSellService productSellService;
+  @Autowired
+  private OrderService orderService;
+
   private List<ProductImagesPojo> productImagesList;
   private List<ProductFocusImagesPojo> productFocusImagesList;
   private ProductImagesPojo productImagesPojo, productImagesPojo2, productImagesPojo3,
@@ -853,33 +857,65 @@ public class SellerWebAction extends SuperAction {
    * @throws SQLException
    */
   public String goSellerIndex() throws SQLException {
-    helpTypePojo = new HelpTypePojo();
-    // helpTypePojo.setId(26l);
-    helpTypePojo.setPname("商家帮助中心");
-    helpTypePojo.setName("商家须知");
-    helpTypePojo.setStatus(1);
-    helpTypePojo = helpTypeService.findHelpType(helpTypePojo);
-    if (helpTypePojo != null) {
-      HelpTypePojo ht = new HelpTypePojo();
-      ht.setPid(helpTypePojo.getId());
-      ht.setStatus(1);
-      helpTypePojos = helpTypeService.getHelpTypeByPidAndStatus(ht);
-      if (helpTypePojos.size() != 0) {
-        helpTypePojo.setHelpTypeChildPojoList(helpTypePojos);
-      }
-    }
+    // helpTypePojo = new HelpTypePojo();
+    // // helpTypePojo.setId(26l);
+    // helpTypePojo.setPname("商家帮助中心");
+    // helpTypePojo.setName("商家须知");
+    // helpTypePojo.setStatus(1);
+    // helpTypePojo = helpTypeService.findHelpType(helpTypePojo);
+    // if (helpTypePojo != null) {
+    // HelpTypePojo ht = new HelpTypePojo();
+    // ht.setPid(helpTypePojo.getId());
+    // ht.setStatus(1);
+    // helpTypePojos = helpTypeService.getHelpTypeByPidAndStatus(ht);
+    // if (helpTypePojos.size() != 0) {
+    // helpTypePojo.setHelpTypeChildPojoList(helpTypePojos);
+    // }
+    // }
+    //
+    // SysLoginPojo loginPojo = UserUtil.getWebUser();
+    // BigDecimal bd = new BigDecimal(sellerService.returnDeductScoreAllByUid(loginPojo.getId()));
+    // deductScoreAll = bd.setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
+    //
+    // setSpecialShowList(specialShowService.findSpecialShowByStatus(loginPojo.getId()));
+    // for (SpecialShowPojo specialShowPojo : specialShowList) {
+    // if (specialShowPojo.getDiscountContext() != null
+    // && !"".equals(specialShowPojo.getDiscountContext())) {
+    // specialShowPojo.setDiscountContext(sellerService.transJsonToDiscountStr(
+    // specialShowPojo.getDiscountType(), specialShowPojo.getDiscountContext()));
+    // } else {
+    // specialShowPojo.setDiscountContext("无");
+    // }
+    // }
 
     SysLoginPojo loginPojo = UserUtil.getWebUser();
-    BigDecimal bd = new BigDecimal(sellerService.returnDeductScoreAllByUid(loginPojo.getId()));
-    deductScoreAll = bd.setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
-    setSpecialShowList(specialShowService.findSpecialShowByStatus(loginPojo.getId()));
-    for (SpecialShowPojo specialShowPojo : specialShowList) {
-      if (specialShowPojo.getDiscountContext() != null
-          && !"".equals(specialShowPojo.getDiscountContext())) {
-        specialShowPojo.setDiscountContext(sellerService.transJsonToDiscountStr(
-            specialShowPojo.getDiscountType(), specialShowPojo.getDiscountContext()));
+    if (loginPojo == null) {
+      FileUtil.alertMessageBySkip("请先登录", "sellerLogin.do");
+      return null;
+    } else {
+      OrderPojo orderPojo = orderService.orderStatusNum(loginPojo.getId());
+      ActionContext result = ActionContext.getContext();
+      if (orderPojo != null) {
+        // 待发货数量
+        result.put("waitSendNum", orderPojo.getWaitSendNum() == null ? "0" : orderPojo
+            .getWaitSendNum().toString());
+        // 待收货数量
+        result.put("waitRecNum", orderPojo.getDshNum() == null ? "0" : orderPojo.getDshNum());
+        // 退款申请待处理
+        result.put("saleApplyNum", orderPojo.getSaleApplyNum() == null ? "0" : orderPojo
+            .getSaleSerNum().toString());
+        // 已退货待处理
+        result.put("saleOverNum", orderPojo.getSaleOverNum() == null ? "0" : orderPojo
+            .getSaleOverNum().toString());
       } else {
-        specialShowPojo.setDiscountContext("无");
+        // 待发货数量
+        result.put("waitSendNum", "0");
+        // 待收货数量
+        result.put("waitRecNum", "0");
+        // 退款申请待处理
+        result.put("saleApplyNum", "0");
+        // 已退货待处理
+        result.put("saleOverNum", "0");
       }
     }
     return SUCCESS;

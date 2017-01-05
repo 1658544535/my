@@ -206,7 +206,9 @@
 		(select count(a.id) from user_order a left join user_order_detail d on d.order_id = a.id where a.user_id=#{id} and a.order_status=2 and a.is_delete_order=0 and a.is_success = 1 and d.re_status not in (4,7)) as waitSendNum,
 		(select count(a.id) from user_order a left join user_order_detail d on d.order_id = a.id where a.user_id=#{id} and a.order_status=3 and a.is_delete_order=0 and d.re_status not in (4,7)) as dshNum,
 		(select count(a.id) from user_order a left join user_order_detail d on d.order_id = a.id where a.user_id=#{id} and a.order_status=4 and a.is_delete_order=0 and d.re_status not in (4,7)) as dplNum,
-		(select count(a.id) from user_order a left join user_order_detail d on d.order_id = a.id where a.user_id=#{id} and a.is_delete_order=0 and d.re_status &gt; 0 and d.re_status &lt; 4) as saleSerNum
+		(select count(a.id) from user_order a left join user_order_detail d on d.order_id = a.id where a.user_id=#{id} and a.is_delete_order=0 and d.re_status &gt; 0 and d.re_status &lt; 4) as saleSerNum,
+		(select count(a.id) from user_order a left join user_order_detail d on d.order_id = a.id where a.user_id=#{id} and a.is_delete_order=0 and d.re_status &gt; 0 and d.re_status &lt; 2) as saleApplyNum,
+		(select count(a.id) from user_order a left join user_order_detail d on d.order_id = a.id where a.user_id=#{id} and a.is_delete_order=0 and d.re_status &gt; 1 and d.re_status &lt; 4) as saleOverNum
 		<!-- from user_order t where 
 		t.user_id = #{id} 
 		limit 1 -->

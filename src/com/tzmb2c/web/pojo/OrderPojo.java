@@ -238,8 +238,24 @@ public class OrderPojo extends SuperPojo {
    * 商家货款
    */
   private Double sellerGoodsPrice;
+  private Integer saleApplyNum;// 退款申请待处理
+  private Integer saleOverNum;// 已退货待处理
 
+  public Integer getSaleApplyNum() {
+    return saleApplyNum;
+  }
 
+  public void setSaleApplyNum(Integer saleApplyNum) {
+    this.saleApplyNum = saleApplyNum;
+  }
+
+  public Integer getSaleOverNum() {
+    return saleOverNum;
+  }
+
+  public void setSaleOverNum(Integer saleOverNum) {
+    this.saleOverNum = saleOverNum;
+  }
 
   public Date getAutoRecTime() {
     return autoRecTime;
