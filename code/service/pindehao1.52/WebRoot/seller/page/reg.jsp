@@ -71,17 +71,17 @@
                         新用户注册，欢迎加入！
                     </div>
                     <!-- 帐号 -->
-                    <div class="ipt-group">
+                 <!--   <div class="ipt-group">
                         <label class="group-label J_groupLabel">
                             <span class="identi">
                                 <i class="iconfont">&#xf012d;</i>
                             </span>
                             <input type="text" class="ipt-input J_iptUsername" placeholder="您的帐号"  name="sysLoginPojo.loginname" value="" id="loginname">
                             <span id="loginnameMsg"></span>
-                            <!-- <div class="single-notice J_singleNotice" data-error=""><i class="iconfont">&#xf0142;</i>请输入正确的手机号</div>
-                            <div class="u-phonecode-getting-msg J_phonecodeGettingMsg">校验码已发送到尾号为 2955 的手机，请查收</div> -->
+                             <div class="single-notice J_singleNotice" data-error=""><i class="iconfont">&#xf0142;</i>请输入正确的手机号</div>
+                            <div class="u-phonecode-getting-msg J_phonecodeGettingMsg">校验码已发送到尾号为 2955 的手机，请查收</div> 
                         </label>
-                    </div></br>
+                    </div></br>-->
                     <div class="ipt-group">
                         <label class="group-label J_groupLabel">
                             <span class="identi">
@@ -156,6 +156,11 @@
                             <div class="single-notice J_singleNotice" data-error="">
                             </div>
                             <span id="repasswdMsg"></span>
+                        </label>
+                    </div></br>
+                    <div class="ipt-group">
+                        <label class="group-label J_groupLabel">
+                           <input  name='tids' type='checkbox' id='selectcb'/>我已阅读并同意<a href="" style="color:#2EB5F4;">《拼得好商家中心注册协议》</a>
                         </label>
                     </div></br>
                     <%-- <div class="ipt-tip">
@@ -259,20 +264,20 @@
 </html>
 <script>
 //logintt.Conf.reqStarCls = "";
-var loginname =new tt.Field("帐号","sysLoginPojo.loginname").setMsgId("loginnameMsg");
+//var loginname =new tt.Field("帐号","sysLoginPojo.loginname").setMsgId("loginnameMsg");
 var loginname2 =new tt.Field("手机号","sysLoginPojo.loginname2").setMsgId("loginname2Msg");
 //var check =new tt.Field("验证码","check").setMsgId("checkMsg");
 var phonecode =new tt.Field("短信检验码","phonecode").setMsgId("phonecodeMsg");
 var password =new tt.Field("密码","sysLoginPojo.password").setMsgId("passwordMsg");
 var repasswd =new tt.Field("确认密码","repasswd").setMsgId("repasswdMsg");
-tt.vf.req.add(loginname,loginname2,/* check, */phonecode,password,repasswd);
+tt.vf.req.add(loginname2,/* check, */phonecode,password,repasswd);
 //tt.vf.num.add(loginname2);
 tt.vf.num.add(phonecode);
 //new tt.LV().set(11, 11).add(loginname2);
 //new tt.LV().set(6,30).add(loginname);
 new tt.LV().set(6,16).add(password,repasswd);
-new tt.RV().set(new RegExp("^1(3[0-9]|4[57]|5[01256789]|7[68]|8[0-9])([0-9]{8})$"), "请输入正确手机号").add(loginname2);
-new tt.RV().set(new RegExp("^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,30}$"), "为(6-30个)字母加数字的组合").add(loginname);
+new tt.RV().set(new RegExp("^1(3[0-9]|4[57]|5[01256789]|7[68]|8[0-9])([0-9]{8})$"), "格式有误！").add(loginname2);
+//new tt.RV().set(new RegExp("^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,30}$"), "为(6-30个)字母加数字的组合").add(loginname);
 
 $(document).ready(function() {
 	$("#sbutton").click(function(){		
@@ -286,6 +291,11 @@ $(document).ready(function() {
 			var PATTERN_CHINAUNICOM =/^1(3[0-2]|5[56]|8[56]|4[5]|7[6])\d{8}$/;
 			var PATTERN_CHINATELECOM =/^1(3[3])|(8[019])\d{8}$/;
 			var verifyCode;
+			var checkbox=document.getElementById("selectcb"); 
+			if(checkbox.checked==false){
+			   $("#msg").html("你未同意注册协议！");
+			   return false;
+			}
 			if(PATTERN_CHINAMOBILE.test(loginname2)||PATTERN_CHINAUNICOM.test(loginname2)||PATTERN_CHINATELECOM.test(loginname2)){
 				verifyCode=document.getElementById("phonecode").value;
 				var reg = /^\d{6}$/;
@@ -386,7 +396,7 @@ function vcode_startRycleVbtn() {
 }
 
 function checkLoginname() {
-	var loginname = $("#loginname").val();
+	var loginname = $("#loginname2").val();
 		$.ajax({
 			type: "post",
 			url: "checkLoginname.do",
