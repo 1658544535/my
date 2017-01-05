@@ -29,17 +29,17 @@
 							<div class="bo-left">								
 								<!-- 商家信息 start-->
 								<div class="seller-info l-box">
-									<h1 class="title-1">
+									<!-- <h1 class="title-1">
 										欢迎您！
-									</h1>
+									</h1> -->
 									<div class="info-con clearfix">
 										<span class="score-con">
-											商家综合评分
+											待发货订单
 											<br/>
 											<b class="num">
-												0
+												${waitSendNum }
 											</b>
-											<p class="score-tips">
+											<%-- <p class="score-tips">
 												<em>
 													品牌综合评分
 													<strong>
@@ -58,29 +58,37 @@
 														0
 													</strong>
 												</em>
-											</p>
+											</p> --%>
 										</span>
 										<span>
-											退款率
+											已发货未签收订单
 											<br/>
 											<b class="num">
-												0%
+												${waitRecNum }
 											</b>
 										</span>
 										<span class="dele-right-boder">
-											扣分
+											退款申请待处理
 											<br/>
 											<!--<a href="#" target="_blank">-->
 												<b class="num">
-													${deductScoreAll }
+													<%-- ${deductScoreAll } --%>
+													${saleApplyNum }
 												</b>
 											<!-- </a> -->
-											<p class="score-detail">
+											<!-- <p class="score-detail">
 												<a href="goDeductionScoreWeb.do" target="_blank">
 													查看扣分明细
 												</a>
-											</p>
+											</p> -->
 											
+										</span>
+										<span>
+											已退货待处理
+											<br/>
+											<b class="num">
+												${saleOverNum }
+											</b>
 										</span>
 									</div>
 								</div>
@@ -213,7 +221,7 @@
 								</div>
 								-->
 								<!-- 特卖排期 start -->
-								<div class="l-box activity-info">
+								<%-- <div class="l-box activity-info">
 									<h3 class="title-2">
 										<b>
 											专场排期
@@ -254,11 +262,11 @@
                                             创建时间
                                         </th>
                                     </tr>
-                                </thead>
+                                </thead> --%>
                                 <!--<tbody id="body"></tbody>-->
                                                            
                           
-                               <c:forEach items="${specialShowList}" var="specialShowPojo">
+                               <%-- <c:forEach items="${specialShowList}" var="specialShowPojo">
                                 <tr>
                                 <td><label class="floatLeft" name="specialShowPojo.id">${specialShowPojo.id}<label></td>
                                 <td><label class="floatLeft" name="specialShowPojo.title">${specialShowPojo.title}<label></td>
@@ -267,13 +275,13 @@
                                 <td><label class="floatLeft" name="specialShowPojo.endTimeStr">${specialShowPojo.endTimeStr}<label></td>
                                 <td><label class="floatLeft" name="specialShowPojo.createDateStr">${specialShowPojo.createDateStr}<label></td>
                                 </tr>
-							   </c:forEach>
+							   </c:forEach> --%>
 							
                             
                                
-                               </table>
+                               <!-- </table>
                               </div>	
-								</div>
+								</div> -->
 								<!-- 特卖排期 end -->
 								<!-- 单品特卖排期 start -->
 								<%--
@@ -422,7 +430,7 @@
 								</div>
 								<!-- 通知 end -->
 								<!-- 快捷帮助 start -->
-								<div class="right-con">
+								<%-- <div class="right-con">
 								<div class="rule-con r-con">
 									<h2 class="title-3">
 										<b>
@@ -453,7 +461,7 @@
 										-->
 									</div>
 								</div>
-							</div>
+							</div> --%>
 						</div>
 					 </div>	
 					</div>
