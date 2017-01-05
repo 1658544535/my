@@ -57,8 +57,7 @@ function returnGoods(val)
 		<div>
 			<form action="updateOrder.do?os=${os}&guide=${guide}" method="post"  id="from5">
 				<input name="pageNoVal" id="" value="${pageNoVal}" type="hidden">
-				<table width="100%" border="0" cellpadding="0" cellspacing="0"
-					class="info_table">
+				<table width="100%" border="0" cellpadding="0" cellspacing="0" class="info_table">
 					<input name="formParam" id="" value="${formParam}" class="inputText" type="hidden">
 					<input name="order.id" id="orderId" value="${orderPojo.id}" class="inputText" type="hidden">
 					<input name="order.orderNo" id="orderNo" value="${orderPojo.orderNo}" class="inputText" type="hidden">
