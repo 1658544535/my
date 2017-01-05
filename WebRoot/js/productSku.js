@@ -55,6 +55,9 @@ $(".addSX .add").click(function(){
 $(".addSX-main .addSX-sure").click(function(){
 	//添加按钮
 	var val = $(this).prev().val();
+	if(val == null || val == 'undefined' || val == ''){
+		return;
+	}
     //var dicid = $('select[name="sxType"]').val();
 	var dicid = '1';
 	if(val != ""){
@@ -191,6 +194,9 @@ $(".addGS .add").click(function(){
 $(".addGS-main .addGS-sure").click(function(){
 	//添加按钮
 	var val = $(this).prev().val();
+	if(val == null || val == 'undefined' || val == ''){
+		return;
+	}
 	//var dicid = $('select[name="gsType"]').val();
 	var dicid = '2';
 	if(val != ""){
@@ -487,7 +493,7 @@ $(document).delegate('.stock_price_blur', 'change', function() {
     	        	} else if (result != '') {
     	            	stock_price_data[dataid]['skuImage'] = result;
     	            }
-    	        },
+    	        }
     	    });
         } else if (stock_price_attr == 'skuStatuss'){
             stock_price_data[dataid]['skuStatuss'] = stock_price_value;

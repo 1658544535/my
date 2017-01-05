@@ -37,7 +37,17 @@ public class ProductSkuLinkPojo extends SuperPojo {
   private String skuColor;// 颜色
   private String skuFormat;// 规格
   private long[] cids;
+  private Integer isDelete;// 是否删除
 
+
+
+  public Integer getIsDelete() {
+    return isDelete;
+  }
+
+  public void setIsDelete(Integer isDelete) {
+    this.isDelete = isDelete;
+  }
 
   public long[] getCids() {
     return cids;

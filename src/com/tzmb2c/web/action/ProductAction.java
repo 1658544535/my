@@ -1717,6 +1717,7 @@ public class ProductAction extends SuperAction {
     try {
       if (skuImage != null) {
         String file_name = StringUtil.getCurrentDateStr() + ".jpg";
+        Util.log(">>>>> skuImage:" + file_name);
         String uploadPath =
             ServletActionContext.getServletContext().getRealPath("/upfiles/productSkuLink")
                 + File.separator;
@@ -2377,14 +2378,18 @@ public class ProductAction extends SuperAction {
           value = delSkuList.getString(key);
           Object[] attrArray = getJsonToArray(value);
           for (int i = 0; i < attrArray.length; i++) {
-            skuAttributeService.deleSkuAttribute(Long.valueOf(StringUtil.checkVal(attrArray[i])));
+            if (Long.valueOf(StringUtil.checkVal(attrArray[i])) != null) {
+              skuAttributeService.deleSkuAttribute(Long.valueOf(StringUtil.checkVal(attrArray[i])));
+            }
           }
         } else {// 删除sku
           value = delSkuList.getString(key);
           Object[] attrArray = getJsonToArray(value);
           for (int i = 0; i < attrArray.length; i++) {
-            productSkuLinkService
-                .deleProductSkuLink(Long.valueOf(StringUtil.checkVal(attrArray[i])));
+            if (Long.valueOf(StringUtil.checkVal(attrArray[i])) != null) {
+              productSkuLinkService.deleProductSkuLink(Long.valueOf(StringUtil
+                  .checkVal(attrArray[i])));
+            }
           }
         }
       }
@@ -3847,6 +3852,7 @@ public class ProductAction extends SuperAction {
     List<Map<String, Object>> sxList = new ArrayList<Map<String, Object>>();
     params.put("productId", id);
     params.put("dictValue", sxType);
+    params.put("isDelete", 0);
     List<SkuAttributePojo> skuAttributeList = skuAttributeService.getSkuAttribute(params);
     for (SkuAttributePojo skuAttribute : skuAttributeList) {
       item = new HashMap<String, Object>();
@@ -3876,6 +3882,7 @@ public class ProductAction extends SuperAction {
     List<Map<String, Object>> gsList = new ArrayList<Map<String, Object>>();
     params.put("productId", id);
     params.put("dictValue", gsType);
+    params.put("isDelete", 0);
     List<SkuAttributePojo> skuAttributeList = skuAttributeService.getSkuAttribute(params);
     for (SkuAttributePojo skuAttribute : skuAttributeList) {
       item = new HashMap<String, Object>();

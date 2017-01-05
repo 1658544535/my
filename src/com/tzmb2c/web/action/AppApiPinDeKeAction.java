@@ -56,7 +56,6 @@ import com.tzmb2c.web.pojo.UserDealLogPojo;
 import com.tzmb2c.web.pojo.UserPindekeInfoPojo;
 import com.tzmb2c.web.pojo.UserRedeemCodePojo;
 import com.tzmb2c.web.pojo.UserWalletLogPojo;
-import com.tzmb2c.web.pojo.UserWalletPojo;
 import com.tzmb2c.web.pojo.WxpayOrderInfoPojo;
 import com.tzmb2c.web.service.ActivityProductCommentService;
 import com.tzmb2c.web.service.ActivityTimeService;
@@ -2347,7 +2346,7 @@ public class AppApiPinDeKeAction extends SuperAction {
                 stockFlag = false;
               }
             }
-            if (!stockFlag) {
+            if (stockFlag) {
               Map<String, Object> params1 = new HashMap<String, Object>();
               params1.put("userId", uid);
               params1.put("activityId", activityId);
@@ -2735,7 +2734,7 @@ public class AppApiPinDeKeAction extends SuperAction {
                 stockFlag = false;
               }
             }
-            if (!stockFlag) {
+            if (stockFlag) {
               Map<String, Object> params1 = new HashMap<String, Object>();
               params1.put("userId", uid);
               params1.put("activityId", activityId);
@@ -3648,18 +3647,20 @@ public class AppApiPinDeKeAction extends SuperAction {
                 }
               }
               // 活动购买限购
-              Map<String, Object> params1 = new HashMap<String, Object>();
-              params1.put("userId", uid);
-              params1.put("activityId", order.getActivityId());
-              params1.put("productId", Long.valueOf(order.getProductId()));
-              List<ProductRestrictionPojo> productRestrictionPojos =
-                  productRestrictionService.listPage(params1);
-              if (productRestrictionPojos != null && productRestrictionPojos.size() > 0) {
-                ProductRestrictionPojo productRestriction1 = productRestrictionPojos.get(0);
-                if (productRestriction1.getMaxNum() > 0
-                    && productRestriction1.getBuyNum() + order.getNum() > productRestriction1
-                        .getMaxNum()) {
-                  stockFlag = false;
+              if (stockFlag) {
+                Map<String, Object> params1 = new HashMap<String, Object>();
+                params1.put("userId", uid);
+                params1.put("activityId", order.getActivityId());
+                params1.put("productId", Long.valueOf(order.getProductId()));
+                List<ProductRestrictionPojo> productRestrictionPojos =
+                    productRestrictionService.listPage(params1);
+                if (productRestrictionPojos != null && productRestrictionPojos.size() > 0) {
+                  ProductRestrictionPojo productRestriction1 = productRestrictionPojos.get(0);
+                  if (productRestriction1.getMaxNum() > 0
+                      && productRestriction1.getBuyNum() + order.getNum() > productRestriction1
+                          .getMaxNum()) {
+                    stockFlag = false;
+                  }
                 }
               }
               if (!stockFlag) {
@@ -4047,10 +4048,10 @@ public class AppApiPinDeKeAction extends SuperAction {
       // map1.put("balance", "0");
       // }
 
-      UserWalletPojo userWallet = userWalletService.findUserWalletByUserId(uid);
-      if (userWallet != null) {
+      SysLoginPojo sysLoginPojo = sysLoginService.getfindByIdSysLogin(uid);
+      if (sysLoginPojo != null) {
         map1.put("balance",
-            userWallet.getBalance() == null ? "0" : df.format(userWallet.getBalance()));
+            sysLoginPojo.getBalance() == null ? "0" : df.format(sysLoginPojo.getBalance()));
       } else {
         System.out.println(">>>> 未找到" + uid + "钱包记录.");
         map1.put("balance", "0");

@@ -12,8 +12,17 @@ public class SkuAttributePojo extends SuperPojo {
   private Integer status;// 状态(取业务字典：0未审核1已审核)
   private Long productId;// 产品id
   private Integer dictValue;// 字典value
+  private Integer isDelete;// 是否删除
 
 
+
+  public Integer getIsDelete() {
+    return isDelete;
+  }
+
+  public void setIsDelete(Integer isDelete) {
+    this.isDelete = isDelete;
+  }
 
   public Integer getDictValue() {
     return dictValue;
