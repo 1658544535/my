@@ -53,6 +53,7 @@ function returnGoods(val)
 				href="#">详情</a>
 		</div>
 		<div class="h15"></div>
+		<!-- 订单信息 -->
 		<div>
 			<form action="updateOrder.do?os=${os}&guide=${guide}" method="post"  id="from5">
 				<input name="pageNoVal" id="" value="${pageNoVal}" type="hidden">
@@ -189,6 +190,7 @@ function returnGoods(val)
 				</table>
 			</form>
 		</div>
+		<!-- 订单商品信息-->
 		<c:if test="${orderDetails.size()!=0}">
 			<div>
 				<table width="100%" border="1" class="Info_list_table">
@@ -221,6 +223,7 @@ function returnGoods(val)
 				</table>
 			</div>
 		</c:if>
+		<!-- 订单状态-->
 		<div>
 			<form action="updateOrder.do?os=${os}&guide=${guide}" method="post" id="from1">
 			<input name="pageNoVal" id="" value="${pageNoVal}" type="hidden">
@@ -278,138 +281,139 @@ function returnGoods(val)
 				<tr><td align="right" class="grey" width="15%"  colspan="4"><input type="button" class="ok_btn" value="修改" id="sbutton" /></td></tr>
 			</table>
 			</form>
-			</div>
-			<div>
+		</div>
+		<!-- 订单支付信息-->
+		<div>
+			<table width="100%" border="1" class="Info_list_table">
+				<tr>
+					<td align="right" class="grey" width="15%"  colspan="4">支付信息:</td>
+				</tr>
+				<tr>
+					<c:choose>
+						<c:when test="${orderPojo.payMethod == 1}">
+							<td align="right" class="grey" width="15%">支付宝单号:</td>
+							<td width="35%">${orderPojo.outTradeNo}</td>
+						</c:when>
+						<c:when test="${orderPojo.payMethod == 2 || orderPojo.payMethod == 8}">
+							<td align="right" class="grey" width="15%">微信支付单号:</td>
+							<td width="35%">${orderPojo.outTradeNo}</td>
+						</c:when>
+						<c:when test="${orderPojo.payMethod == 4}">
+							<td align="right" class="grey" width="15%">支付方式:</td>
+							<td width="35%">钱包全额支付</td>
+						</c:when>
+						<c:when test="${orderPojo.payMethod == 5}">
+							<td align="right" class="grey" width="15%">银联支付单号:</td>
+							<td width="35%">${orderPojo.outTradeNo}</td>
+						</c:when>
+						<c:when test="${orderPojo.payMethod == 6}">
+							<td align="right" class="grey" width="15%">苹果支付单号:</td>
+							<td width="35%">${orderPojo.outTradeNo}</td>
+						</c:when>
+						<c:otherwise>
+							<td align="right" class="grey" width="15%">支付方式</td> 
+							<td width="35%">货到付款</td>
+						</c:otherwise>
+					</c:choose>
+					<td align="right" class="grey" width="15%">流水号:</td>
+					<td width="35%">${orderPojo.tradeNo}</td>
+				</tr>
+			</table>
+		</div>
+		<!-- 买家地址信息-->
+		<div>
+			<form action="updateOrder.do?os=${os}&guide=${guide}" method="post" id="from2">
+		    	<input name="pageNoVal" id="" value="${pageNoVal}" type="hidden">
+				<input name="formParam" id="" value="${formParam}" class="inputText" type="hidden">
+				<input name="order.id" id="orderId" value="${orderPojo.id}" class="inputText" type="hidden">
+				<input name="order.orderNo" id="orderNo" value="${orderPojo.orderNo}" class="inputText" type="hidden">
 				<table width="100%" border="1" class="Info_list_table">
-					<tr>
-						<td align="right" class="grey" width="15%"  colspan="4">支付信息:</td>
-					</tr>
-					<tr>
-						<c:choose>
-							<c:when test="${orderPojo.payMethod == 1}">
-								<td align="right" class="grey" width="15%">支付宝单号:</td>
-								<td width="35%">${orderPojo.outTradeNo}</td>
-							</c:when>
-							<c:when test="${orderPojo.payMethod == 2 || orderPojo.payMethod == 8}">
-								<td align="right" class="grey" width="15%">微信支付单号:</td>
-								<td width="35%">${orderPojo.outTradeNo}</td>
-							</c:when>
-							<c:when test="${orderPojo.payMethod == 4}">
-								<td align="right" class="grey" width="15%">支付方式:</td>
-								<td width="35%">钱包全额支付</td>
-							</c:when>
-							<c:when test="${orderPojo.payMethod == 5}">
-								<td align="right" class="grey" width="15%">银联支付单号:</td>
-								<td width="35%">${orderPojo.outTradeNo}</td>
-							</c:when>
-							<c:when test="${orderPojo.payMethod == 6}">
-								<td align="right" class="grey" width="15%">苹果支付单号:</td>
-								<td width="35%">${orderPojo.outTradeNo}</td>
-							</c:when>
-							<c:otherwise>
-								<td align="right" class="grey" width="15%">支付方式</td> 
-								<td width="35%">货到付款</td>
-							</c:otherwise>
-						</c:choose>
-						<td align="right" class="grey" width="15%">流水号:</td>
-						<td width="35%">${orderPojo.tradeNo}</td>
-					</tr>
-				</table>
-			</div>
-			<div>
-				<form action="updateOrder.do?os=${os}&guide=${guide}" method="post" id="from2">
-			    	<input name="pageNoVal" id="" value="${pageNoVal}" type="hidden">
-					<input name="formParam" id="" value="${formParam}" class="inputText" type="hidden">
-					<input name="order.id" id="orderId" value="${orderPojo.id}" class="inputText" type="hidden">
-					<input name="order.orderNo" id="orderNo" value="${orderPojo.orderNo}" class="inputText" type="hidden">
-					<table width="100%" border="1" class="Info_list_table">
-						<tr><td align="right" class="grey" width="15%"  colspan="4">买家地址信息:</td></tr>
-							<tr>
-								<td align="right" class="grey" width="15%">收货人:</td>
-								<td width="35%"><input type="text" name="order.consignee"
-									value="${orderPojo.consignee}" class="floatLeft" id="ticketName"><span
-									id="consignee"></span></td>
-								<td align="right" class="grey" width="15%">收货地址:</td>
-								<td width="35%"><input type="text"  size="90"
-									name="order.consigneeAddress"
-									value="${orderPojo.consigneeAddress}" class="floatLeft"
-									id="ticketName"><span id="consigneeAddress"></span></td>
-							</tr>
-							<tr>
-								<td align="right" class="grey" width="15%">收货人电话:</td>
-								<td width="35%" class="grey"><input type="text" name="order.consigneePhone" value="${orderPojo.consigneePhone}" class="floatLeft" id="ticketName"><span id="consigneePhone"></span></td>
-								<td align="right" class="grey" width="15%"></td>
-								<td width="35%" class="grey"></td>
-							</tr>
-							<tr><td align="right" class="grey" width="15%"  colspan="4"><input type="button" class="ok_btn" value="修改" id="sbutton2" /></td></tr>
-					</table>
-				</form>
-				<form action="updateOrder.do?os=${os}&guide=${guide}" method="post" id="from3">
-					<input name="pageNoVal" id="" value="${pageNoVal}" type="hidden">
-					<input name="formParam" id="" value="${formParam}" class="inputText" type="hidden">
-					<input name="order.id" id="orderId" value="${orderPojo.id}" class="inputText" type="hidden">
-					<input name="order.orderNo" id="orderNo" value="${orderPojo.orderNo}" class="inputText" type="hidden">
-					<table width="100%" border="1" class="Info_list_table">
+					<tr><td align="right" class="grey" width="15%"  colspan="4">买家地址信息:</td></tr>
 						<tr>
-							<tr><td align="right" class="grey" width="15%"  colspan="4">客服留言:</td></tr>
-							<td align="right" class="grey" width="6%">客服留言:</td>
-							<td width="35%" class="grey">
-								<textarea class="floatLeft" rows="5" cols="50" name="order.remarks" id="content">${orderPojo.remarks}</textarea>
-								<span id="remarks"></span>
-							</td>
-						</tr>
-						<tr><td align="right" class="grey" width="15%"  colspan="4"><input type="button" class="ok_btn" value="修改" id="sbutton3" /></td></tr>
-					</table>
-				</form>
-				<form action="updateOrder.do?os=${os}&guide=${guide}" method="post" id="from4">
-					<input name="pageNoVal" id="" value="${pageNoVal}" type="hidden">
-					<input name="formParam" id="" value="${formParam}" class="inputText" type="hidden">
-					<input name="order.id" id="orderId" value="${orderPojo.id}" class="inputText" type="hidden">
-					<input name="order.orderNo" id="orderNo" value="${orderPojo.orderNo}" class="inputText" type="hidden">
-					<table width="100%" border="1" class="Info_list_table">
-						<tr><td align="right" class="grey" width="15%"  colspan="4">备注:</td></tr>
-						<tr>
-							<td align="right" class="grey" width="15%">用户:</td>
-							<td width="35%"  class="grey">${orderPojo.userName}</td>
-							<td align="right" class="grey" width="15%">创建时间:</td>
-							<td width="35%"  class="grey">${orderPojo.updateDateStr}</td>
+							<td align="right" class="grey" width="15%">收货人:</td>
+							<td width="35%"><input type="text" name="order.consignee"
+								value="${orderPojo.consignee}" class="floatLeft" id="ticketName"><span
+								id="consignee"></span></td>
+							<td align="right" class="grey" width="15%">收货地址:</td>
+							<td width="35%"><input type="text"  size="90"
+								name="order.consigneeAddress"
+								value="${orderPojo.consigneeAddress}" class="floatLeft"
+								id="ticketName"><span id="consigneeAddress"></span></td>
 						</tr>
 						<tr>
-							<td align="right" class="grey" width="6%">备注:</td>
-							<td width="35%" class="grey">
-								<textarea class="floatLeft" rows="5" cols="50" name="order.buyerMessage" id="content">${orderPojo.buyerMessage}</textarea>
-								<span id="remarks"></span>
-							</td>
-							<td align="right" class="grey" width="6%"></td>
+							<td align="right" class="grey" width="15%">收货人电话:</td>
+							<td width="35%" class="grey"><input type="text" name="order.consigneePhone" value="${orderPojo.consigneePhone}" class="floatLeft" id="ticketName"><span id="consigneePhone"></span></td>
+							<td align="right" class="grey" width="15%"></td>
 							<td width="35%" class="grey"></td>
 						</tr>
-						<tr>
-							<td align="right" class="grey" width="15%"  colspan="4"><input type="button" class="ok_btn" value="修改" id="sbutton4" /></td>
-						</tr>
-					</table>
-				</form>
-				<table width="100%" border="1" class="Info_list_table">
-				<tr>
-				<td align="right" class="grey" width="15%"  colspan="4">退货/退款信息:</td>
-	                       <tr>
-						<td align="right" class="grey" width="15%">退款id:</td>
-						<td width="35%">${userOrderRefundPojo.id}</td>
-						<td align="right" class="grey" width="15%">退款金额:</td>
-						<td width="35%">${orderPojo.factPrice}</td>
-						</tr>
-						<tr>
-						<td align="right" class="grey" width="15%">申请时间:</td>
-						<td width="35%">${userOrderRefundPojo.creatDateString}</td>
-						<td align="right" class="grey" width="15%">申请人:</td>
-						<td width="35%">${userOrderRefundPojo.userName}</td>
-						</tr>
-						<tr>
-						<td align="right" class="grey" width="15%">备注:</td>
-	                       <td width="35%">${userOrderRefundPojo.refundReason}</td>		
-	                       <td align="right" class="grey" width="15%">退款状态:</td>
-						<td width="35%">${userOrderRefundPojo.statusName}</td>	
-						</tr>
+						<tr><td align="right" class="grey" width="15%"  colspan="4"><input type="button" class="ok_btn" value="修改" id="sbutton2" /></td></tr>
 				</table>
+			</form>
+			<form action="updateOrder.do?os=${os}&guide=${guide}" method="post" id="from3">
+				<input name="pageNoVal" id="" value="${pageNoVal}" type="hidden">
+				<input name="formParam" id="" value="${formParam}" class="inputText" type="hidden">
+				<input name="order.id" id="orderId" value="${orderPojo.id}" class="inputText" type="hidden">
+				<input name="order.orderNo" id="orderNo" value="${orderPojo.orderNo}" class="inputText" type="hidden">
+				<table width="100%" border="1" class="Info_list_table">
+					<tr>
+						<tr><td align="right" class="grey" width="15%"  colspan="4">客服留言:</td></tr>
+						<td align="right" class="grey" width="6%">客服留言:</td>
+						<td width="35%" class="grey">
+							<textarea class="floatLeft" rows="5" cols="50" name="order.remarks" id="content">${orderPojo.remarks}</textarea>
+							<span id="remarks"></span>
+						</td>
+					</tr>
+					<tr><td align="right" class="grey" width="15%"  colspan="4"><input type="button" class="ok_btn" value="修改" id="sbutton3" /></td></tr>
+				</table>
+			</form>
+			<form action="updateOrder.do?os=${os}&guide=${guide}" method="post" id="from4">
+				<input name="pageNoVal" id="" value="${pageNoVal}" type="hidden">
+				<input name="formParam" id="" value="${formParam}" class="inputText" type="hidden">
+				<input name="order.id" id="orderId" value="${orderPojo.id}" class="inputText" type="hidden">
+				<input name="order.orderNo" id="orderNo" value="${orderPojo.orderNo}" class="inputText" type="hidden">
+				<table width="100%" border="1" class="Info_list_table">
+					<tr><td align="right" class="grey" width="15%"  colspan="4">备注:</td></tr>
+					<tr>
+						<td align="right" class="grey" width="15%">用户:</td>
+						<td width="35%"  class="grey">${orderPojo.userName}</td>
+						<td align="right" class="grey" width="15%">创建时间:</td>
+						<td width="35%"  class="grey">${orderPojo.updateDateStr}</td>
+					</tr>
+					<tr>
+						<td align="right" class="grey" width="6%">备注:</td>
+						<td width="35%" class="grey">
+							<textarea class="floatLeft" rows="5" cols="50" name="order.buyerMessage" id="content">${orderPojo.buyerMessage}</textarea>
+							<span id="remarks"></span>
+						</td>
+						<td align="right" class="grey" width="6%"></td>
+						<td width="35%" class="grey"></td>
+					</tr>
+					<tr>
+						<td align="right" class="grey" width="15%"  colspan="4"><input type="button" class="ok_btn" value="修改" id="sbutton4" /></td>
+					</tr>
+				</table>
+			</form>
+			<table width="100%" border="1" class="Info_list_table">
+				<td align="right" class="grey" width="15%"  colspan="4">退货/退款信息:</td>
+                <tr>
+					<td align="right" class="grey" width="15%">退款id:</td>
+					<td width="35%">${userOrderRefundPojo.id}</td>
+					<td align="right" class="grey" width="15%">退款金额:</td>
+					<td width="35%">${orderPojo.factPrice}</td>
+				</tr>
+				<tr>
+					<td align="right" class="grey" width="15%">申请时间:</td>
+					<td width="35%">${userOrderRefundPojo.creatDateString}</td>
+					<td align="right" class="grey" width="15%">申请人:</td>
+					<td width="35%">${userOrderRefundPojo.userName}</td>
+				</tr>
+				<tr>
+				<td align="right" class="grey" width="15%">备注:</td>
+                      <td width="35%">${userOrderRefundPojo.refundReason}</td>		
+                      <td align="right" class="grey" width="15%">退款状态:</td>
+				<td width="35%">${userOrderRefundPojo.statusName}</td>	
+				</tr>
+			</table>
 		</div>
 		<div class="Btn_div">
 				<button type="input" class="back_btn" onclick="goOrderManange()">返回</button>
