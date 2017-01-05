@@ -74,10 +74,6 @@
             </div>
         </div>
 		</div>
-		<div class="m-feedback J_feedback">
-		</div>
-		<div class="m-fb-shadow J_fb-shadow">
-		</div>
 		<jsp:include page="../sellerFooter.jsp"></jsp:include>
 	</body>
 </html>

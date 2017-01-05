@@ -219,6 +219,7 @@ public class SellerRegWebAction extends SuperAction {
       sysLoginPojo.setSorting(0);
       sysLoginPojo.setPassword(MD5Util.MD5(sysLoginPojo.getPassword()));
       sysLoginPojo.setCreateDate(new Date());
+      sysLoginPojo.setLoginname(sysLoginPojo.getLoginname2());// 账号改为手机号码
       loginService.insertLoginPojo(sysLoginPojo);
       if (loginService.loginCheckWeb(sysLoginPojo)) {
         SysLoginPojo logiPojo = (SysLoginPojo) actionContext.getSession().get("wuser");
