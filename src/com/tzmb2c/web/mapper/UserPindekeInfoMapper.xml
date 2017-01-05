@@ -82,10 +82,11 @@
 			  and upi.create_date between #{pindekeDateStr} and #{pindekeDateEndStr}
 		  </if>
 		  <if test="nameAndPhone != null and nameAndPhone != '' ">
-		    and (upi.name like concat('%',#{nameAndPhone},'%') 
-			    or upi.phone like concat('%',#{nameAndPhone},'%')
-			    or sl.phone like concat('%',#{nameAndPhone},'%')
-			    )
+		    and (
+		    	 upi.name like concat('%',#{nameAndPhone},'%') 
+		         or upi.phone like concat('%',#{nameAndPhone},'%')
+		         or sl.loginname like concat('%',#{nameAndPhone},'%')
+		         )
 		  </if>
 		  <if test="rebatePrice != null ">
 			and upi.rebate_price = #{rebatePrice}
