@@ -347,7 +347,8 @@
 			and t.order_id = #{orderId}
 		</if>
 		<if test="contentGuide !=null">
-			and uo.order_status >= 4 and t.source in (1,2,3,4)
+			<!-- and uo.order_status >= 4 
+			and t.source in (1,2,3,4) -->
 		</if>
 		<if test="beganday !=null and beganday !=''">
 			and UNIX_TIMESTAMP(uo.create_date) >= UNIX_TIMESTAMP(CONCAT(#{beganday},':00'))
