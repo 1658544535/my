@@ -2850,7 +2850,9 @@ public class SellerWebAction extends SuperAction {
     if (logiPojo != null) {
       UserOrderRefundPojo userOrderRefundPojo = new UserOrderRefundPojo();
       userOrderRefundPojo.setOrderId(orderId);
-      userOrderRefundPojo.setStatus(uorStatus);
+      if (uorStatus != 0) {
+        userOrderRefundPojo.setStatus(uorStatus);
+      }
       userOrderRefundPojo.setServiceInvolved(serviceInvolved);
 
       userOrderRefundPojos =
