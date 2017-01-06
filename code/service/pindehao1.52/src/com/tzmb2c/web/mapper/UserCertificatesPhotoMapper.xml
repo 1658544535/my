@@ -2,11 +2,306 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tzmb2c.web.mapper.UserCertificatesPhotoMapper">
-	<insert id="insertUserCertificatesPhoto" parameterType="userCertificatesPhotoPojo">
-		insert into user_certificates_photo 
-		(suser_id,image1,image2,image3,image4,image5,image6,status,create_date,create_by,image1_begin_date,image1_end_date,image7) 
-		value 
-		(#{suserId},#{image1},#{image2},#{image3},#{image4},#{image5},#{image6},#{status},now(),#{createBy},#{image1BeginDate},#{image1EndDate},#{image7})
+	<insert id="insertUserCertificatesPhoto" useGeneratedKeys="true" keyProperty="id" parameterType="UserCertificatesPhotoPojo">
+		insert into user_certificates_photo
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="suserId != null">
+				suser_id,
+			</if>
+			<if test="image1 != null">
+				image1,
+			</if>
+			<if test="image2 != null">
+				image2,
+			</if>
+			<if test="image3 != null">
+				image3,
+			</if>
+			<if test="image4 != null">
+				image4,
+			</if>
+			<if test="image5 != null">
+				image5,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+			<if test="updateDate != null">
+				update_date,
+			</if>
+			<if test="updateBy != null">
+				update_by,
+			</if>
+			<if test="image1BeginDate != null">
+				image1_begin_date,
+			</if>
+			<if test="image1EndDate != null">
+				image1_end_date,
+			</if>
+			<if test="image7 != null">
+				image7,
+			</if>
+			<if test="image6 != null">
+				image6,
+			</if>
+			<if test="image1No != null">
+				image1_no,
+			</if>
+			<if test="image4No != null">
+				image4_no,
+			</if>
+			<if test="emergencyContactName != null">
+				emergency_contact_name,
+			</if>
+			<if test="emergencyContactPhone != null">
+				emergency_contact_phone,
+			</if>
+			<if test="bankName != null">
+				bank_name,
+			</if>
+			<if test="bankAddress != null">
+				bank_address,
+			</if>
+			<if test="bankInfo != null">
+				bank_info,
+			</if>
+			<if test="bankUsername != null">
+				bank_username,
+			</if>
+			<if test="bankNo != null">
+				bank_no,
+			</if>
+			<if test="image2No != null">
+				image2_no,
+			</if>
+			<if test="image3No != null">
+				image3_no,
+			</if>
+			<if test="image5No != null">
+				image5_no,
+			</if>
+			<if test="image2BeginDate != null">
+				image2_begin_date,
+			</if>
+			<if test="image2EndDate != null">
+				image2_end_date,
+			</if>
+			<if test="qcImage1 != null">
+				qc_image1,
+			</if>
+			<if test="qcImage2 != null">
+				qc_image2,
+			</if>
+			<if test="qcImage3 != null">
+				qc_image3,
+			</if>
+			<if test="qcImage4 != null">
+				qc_image4,
+			</if>
+			<if test="qcImage5 != null">
+				qc_image5,
+			</if>
+			<if test="qcImage6 != null">
+				qc_image6,
+			</if>
+			<if test="blImage1 != null">
+				bl_image1,
+			</if>
+			<if test="blImage2 != null">
+				bl_image2,
+			</if>
+			<if test="blImage3 != null">
+				bl_image3,
+			</if>
+			<if test="blImage4 != null">
+				bl_image4,
+			</if>
+			<if test="blImage5 != null">
+				bl_image5,
+			</if>
+			<if test="blImage6 != null">
+				bl_image6,
+			</if>
+			<if test="blImage7 != null">
+				bl_image7,
+			</if>
+			<if test="blImage8 != null">
+				bl_image8,
+			</if>
+			<if test="blImage9 != null">
+				bl_image9,
+			</if>
+			<if test="blImage10 != null">
+				bl_image10,
+			</if>
+			<if test="image4BeginDate != null">
+				image4_begin_date,
+			</if>
+			<if test="image4EndDate != null">
+				image4_end_date,
+			</if>
+			<if test="image8 != null">
+				image8,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="suserId != null">
+				#{suserId},
+			</if>
+			<if test="image1 != null">
+				#{image1},
+			</if>
+			<if test="image2 != null">
+				#{image2},
+			</if>
+			<if test="image3 != null">
+				#{image3},
+			</if>
+			<if test="image4 != null">
+				#{image4},
+			</if>
+			<if test="image5 != null">
+				#{image5},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+			<if test="createDate != null">
+				#{createDate},
+			</if>
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+			<if test="updateDate != null">
+				#{updateDate},
+			</if>
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+			<if test="image1BeginDate != null">
+				#{image1BeginDate},
+			</if>
+			<if test="image1EndDate != null">
+				#{image1EndDate},
+			</if>
+			<if test="image7 != null">
+				#{image7},
+			</if>
+			<if test="image6 != null">
+				#{image6},
+			</if>
+			<if test="image1No != null">
+				#{image1No},
+			</if>
+			<if test="image4No != null">
+				#{image4No},
+			</if>
+			<if test="emergencyContactName != null">
+				#{emergencyContactName},
+			</if>
+			<if test="emergencyContactPhone != null">
+				#{emergencyContactPhone},
+			</if>
+			<if test="bankName != null">
+				#{bankName},
+			</if>
+			<if test="bankAddress != null">
+				#{bankAddress},
+			</if>
+			<if test="bankInfo != null">
+				#{bankInfo},
+			</if>
+			<if test="bankUsername != null">
+				#{bankUsername},
+			</if>
+			<if test="bankNo != null">
+				#{bankNo},
+			</if>
+			<if test="image2No != null">
+				#{image2No},
+			</if>
+			<if test="image3No != null">
+				#{image3No},
+			</if>
+			<if test="image5No != null">
+				#{image5No},
+			</if>
+			<if test="image2BeginDate != null">
+				#{image2BeginDate},
+			</if>
+			<if test="image2EndDate != null">
+				#{image2EndDate},
+			</if>
+			<if test="qcImage1 != null">
+				#{qcImage1},
+			</if>
+			<if test="qcImage2 != null">
+				#{qcImage2},
+			</if>
+			<if test="qcImage3 != null">
+				#{qcImage3},
+			</if>
+			<if test="qcImage4 != null">
+				#{qcImage4},
+			</if>
+			<if test="qcImage5 != null">
+				#{qcImage5},
+			</if>
+			<if test="qcImage6 != null">
+				#{qcImage6},
+			</if>
+			<if test="blImage1 != null">
+				#{blImage1},
+			</if>
+			<if test="blImage2 != null">
+				#{blImage2},
+			</if>
+			<if test="blImage3 != null">
+				#{blImage3},
+			</if>
+			<if test="blImage4 != null">
+				#{blImage4},
+			</if>
+			<if test="blImage5 != null">
+				#{blImage5},
+			</if>
+			<if test="blImage6 != null">
+				#{blImage6},
+			</if>
+			<if test="blImage7 != null">
+				#{blImage7},
+			</if>
+			<if test="blImage8 != null">
+				#{blImage8},
+			</if>
+			<if test="blImage9 != null">
+				#{blImage9},
+			</if>
+			<if test="blImage10 != null">
+				#{blImage10},
+			</if>
+			<if test="image4BeginDate != null">
+				#{image4BeginDate},
+			</if>
+			<if test="image4EndDate != null">
+				#{image4EndDate},
+			</if>
+			<if test="image8 != null">
+				#{image8},
+			</if>
+		</trim>
 	</insert>
 	
 	<select id="findUserCertificatesPhotoByUid" resultType="userCertificatesPhotoPojo" parameterType="Long">
@@ -25,7 +320,40 @@
 		update_by as updateBy, 
 		image1_begin_date as image1BeginDate,
 		image1_end_date as image1EndDate,
-		image7
+		image7,
+		image1_no as image1No,
+		image4_no as image4No,
+		emergency_contact_name as emergencyContactName,
+		emergency_contact_phone as emergencyContactPhone,
+		bank_name as bankName,
+		bank_address as bankAddress,
+		bank_info as bankInfo,
+		bank_username as bankUsername,
+		bank_no as bankNo,
+		image2_no as image2No,
+		image3_no as image3No,
+		image5_no as image5No,
+		image2_begin_date as image2BeginDate,
+		image2_end_date as image2EndDate,
+		qc_image1 as qcImage1,
+		qc_image2 as qcImage2,
+		qc_image3 as qcImage3,
+		qc_image4 as qcImage4,
+		qc_image5 as qcImage5,
+		qc_image6 as qcImage6,
+		bl_image1 as blImage1,
+		bl_image2 as blImage2,
+		bl_image3 as blImage3,
+		bl_image4 as blImage4,
+		bl_image5 as blImage5,
+		bl_image6 as blImage6,
+		bl_image7 as blImage7,
+		bl_image8 as blImage8,
+		bl_image9 as blImage9,
+		bl_image10 as blImage10,
+		image4_begin_date as image4BeginDate,
+		image4_end_date as image4EndDate,
+		image8 as image8
 		from user_certificates_photo where suser_id = #{id}
 	</select>
 	
@@ -41,50 +369,156 @@
 		update user_certificates_photo set status = 0 where id = #{id}
 	</update>
 	
-	<update id="updateUserCertificatesPhoto" parameterType="userCertificatesPhotoPojo">
-		update user_certificates_photo set 
-		<if test="image1 != null and image1 != '' ">
-			image1 = #{image1},
-		</if>
-		<if test="image2 != null and image2 != '' ">
-			image2 = #{image2},
-		</if>
-		<if test="image3 != null and image3 != '' ">
-			image3 = #{image3},
-		</if>
-		<if test="image4 != null and image4 != '' ">
-			image4 = #{image4},
-		</if>
-		<if test="image5 != null and image5 != '' ">
-			image5 = #{image5},
-		</if>
-		<if test="image6 != null and image6 != '' ">
-			image6 = #{image6},
-		</if>
-		<if test="image1BeginDate != null and image1BeginDate != '' ">
-			image1_begin_date = #{image1BeginDate},
-		</if>
-		<if test="image1EndDate != null and image1EndDate != '' ">
-			image1_end_date = #{image1EndDate},
-		</if>
-		<if test="image7 != null and image7 != '' ">
-			image7 = #{image7},
-		</if>
-		<if test="status != null">
-			status = #{status},
-		</if>
-		<if test="suserId != null">
-			<!-- suser_id = #{suserId}, -->
-			update_by = #{suserId},
-		</if>
-		update_date = now()
-		where 1 = 1
-		<if test="id != null">
-			and id = #{id}
-		</if>
-		<if test="suserId != null">
-			and suser_id = #{suserId}
-		</if>
+	<update id="updateUserCertificatesPhoto" parameterType="UserCertificatesPhotoPojo">
+		update user_certificates_photo
+		<set>
+			<if test="suserId != null">
+			  suser_id = #{suserId},
+			</if>
+			<if test="image1 != null">
+			  image1 = #{image1},
+			</if>
+			<if test="image2 != null">
+			  image2 = #{image2},
+			</if>
+			<if test="image3 != null">
+			  image3 = #{image3},
+			</if>
+			<if test="image4 != null">
+			  image4 = #{image4},
+			</if>
+			<if test="image5 != null">
+			  image5 = #{image5},
+			</if>
+			<if test="status != null">
+			  status = #{status},
+			</if>
+			<if test="createDate != null">
+			  create_date = #{createDate},
+			</if>
+			<if test="createBy != null">
+			  create_by = #{createBy},
+			</if>
+			<if test="updateDate != null">
+			  update_date = #{updateDate},
+			</if>
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+			<if test="image1BeginDate != null">
+			  image1_begin_date = #{image1BeginDate},
+			</if>
+			<if test="image1EndDate != null">
+			  image1_end_date = #{image1EndDate},
+			</if>
+			<if test="image7 != null">
+			  image7 = #{image7},
+			</if>
+			<if test="image6 != null">
+			  image6 = #{image6},
+			</if>
+			<if test="image1No != null">
+			  image1_no = #{image1No},
+			</if>
+			<if test="image4No != null">
+			  image4_no = #{image4No},
+			</if>
+			<if test="emergencyContactName != null">
+			  emergency_contact_name = #{emergencyContactName},
+			</if>
+			<if test="emergencyContactPhone != null">
+			  emergency_contact_phone = #{emergencyContactPhone},
+			</if>
+			<if test="bankName != null">
+			  bank_name = #{bankName},
+			</if>
+			<if test="bankAddress != null">
+			  bank_address = #{bankAddress},
+			</if>
+			<if test="bankInfo != null">
+			  bank_info = #{bankInfo},
+			</if>
+			<if test="bankUsername != null">
+			  bank_username = #{bankUsername},
+			</if>
+			<if test="bankNo != null">
+			  bank_no = #{bankNo},
+			</if>
+			<if test="image2No != null">
+			  image2_no = #{image2No},
+			</if>
+			<if test="image3No != null">
+			  image3_no = #{image3No},
+			</if>
+			<if test="image5No != null">
+			  image5_no = #{image5No},
+			</if>
+			<if test="image2BeginDate != null">
+			  image2_begin_date = #{image2BeginDate},
+			</if>
+			<if test="image2EndDate != null">
+			  image2_end_date = #{image2EndDate},
+			</if>
+			<if test="qcImage1 != null">
+			  qc_image1 = #{qcImage1},
+			</if>
+			<if test="qcImage2 != null">
+			  qc_image2 = #{qcImage2},
+			</if>
+			<if test="qcImage3 != null">
+			  qc_image3 = #{qcImage3},
+			</if>
+			<if test="qcImage4 != null">
+			  qc_image4 = #{qcImage4},
+			</if>
+			<if test="qcImage5 != null">
+			  qc_image5 = #{qcImage5},
+			</if>
+			<if test="qcImage6 != null">
+			  qc_image6 = #{qcImage6},
+			</if>
+			<if test="blImage1 != null">
+			  bl_image1 = #{blImage1},
+			</if>
+			<if test="blImage2 != null">
+			  bl_image2 = #{blImage2},
+			</if>
+			<if test="blImage3 != null">
+			  bl_image3 = #{blImage3},
+			</if>
+			<if test="blImage4 != null">
+			  bl_image4 = #{blImage4},
+			</if>
+			<if test="blImage5 != null">
+			  bl_image5 = #{blImage5},
+			</if>
+			<if test="blImage6 != null">
+			  bl_image6 = #{blImage6},
+			</if>
+			<if test="blImage7 != null">
+			  bl_image7 = #{blImage7},
+			</if>
+			<if test="blImage8 != null">
+			  bl_image8 = #{blImage8},
+			</if>
+			<if test="blImage9 != null">
+			  bl_image9 = #{blImage9},
+			</if>
+			<if test="blImage10 != null">
+			  bl_image10 = #{blImage10},
+			</if>
+			<if test="image4BeginDate != null">
+			  image4_begin_date = #{image4BeginDate},
+			</if>
+			<if test="image4EndDate != null">
+			  image4_end_date = #{image4EndDate},
+			</if>
+			<if test="image8 != null">
+			  image8 = #{image8},
+			</if>
+		</set>
+		where
+			id = #{id}
 	</update>
 	
 	

@@ -715,3 +715,29 @@ alter table user_order add seller_deduct double(20,2) default '0.00' COMMENT '�
 alter table user_order add platform_msg varchar(500) default '' COMMENT '平台留言';
 alter table user_order add order_profit double(20,2) default '0.00' COMMENT '订单利润';
 alter table user_order add seller_goods_price double(20,2) default '0.00' COMMENT '商家货款';
+
+## 订单表增加 订单来源和平团是否成功状态
+ALTER TABLE user_certificates_photo ADD image4_begin_date datetime default NULL COMMENT '身份证有效开始时间';
+ALTER TABLE user_certificates_photo ADD image4_end_date datetime default NULL COMMENT '身份证有效结束时间';
+ALTER TABLE user_certificates_photo ADD image2_no varchar(30) default '' COMMENT '组织机构代码号';
+ALTER TABLE user_certificates_photo ADD image3_no varchar(30) default '' COMMENT '纳税人识别号';
+ALTER TABLE user_certificates_photo ADD image5_no varchar(30) default '' COMMENT '统一社会信用代码';
+ALTER TABLE user_certificates_photo ADD image2_begin_date datetime default NULL COMMENT '组织机构证有效开始时间';
+ALTER TABLE user_certificates_photo ADD image2_end_date datetime default NULL COMMENT '组织机构证有效结束时间';
+ALTER TABLE user_certificates_photo ADD qc_image1 varchar(100) default '' COMMENT '质检报告图片1';
+ALTER TABLE user_certificates_photo ADD qc_image2 varchar(100) default '' COMMENT '质检报告图片2';
+ALTER TABLE user_certificates_photo ADD qc_image3 varchar(100) default '' COMMENT '质检报告图片3';
+ALTER TABLE user_certificates_photo ADD qc_image4 varchar(100) default '' COMMENT '质检报告图片4';
+ALTER TABLE user_certificates_photo ADD qc_image5 varchar(100) default '' COMMENT '质检报告图片5';
+ALTER TABLE user_certificates_photo ADD qc_image6 varchar(100) default '' COMMENT '质检报告图片6';
+ALTER TABLE user_certificates_photo ADD bl_image1 varchar(100) default '' COMMENT '品牌授权证明图片1';
+ALTER TABLE user_certificates_photo ADD bl_image2 varchar(100) default '' COMMENT '品牌授权证明图片2';
+ALTER TABLE user_certificates_photo ADD bl_image3 varchar(100) default '' COMMENT '品牌授权证明图片3';
+ALTER TABLE user_certificates_photo ADD bl_image4 varchar(100) default '' COMMENT '品牌授权证明图片4';
+ALTER TABLE user_certificates_photo ADD bl_image5 varchar(100) default '' COMMENT '品牌授权证明图片5';
+ALTER TABLE user_certificates_photo ADD bl_image6 varchar(100) default '' COMMENT '品牌授权证明图片6';
+ALTER TABLE user_certificates_photo ADD bl_image7 varchar(100) default '' COMMENT '品牌授权证明图片7';
+ALTER TABLE user_certificates_photo ADD bl_image8 varchar(100) default '' COMMENT '品牌授权证明图片8';
+ALTER TABLE user_certificates_photo ADD bl_image9 varchar(100) default '' COMMENT '品牌授权证明图片9';
+ALTER TABLE user_certificates_photo ADD bl_image10 varchar(100) default '' COMMENT '品牌授权证明图片10';
+ALTER TABLE user_certificates_photo ADD image8 varchar(100) default '' COMMENT '开户许可证';

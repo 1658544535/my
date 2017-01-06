@@ -106,7 +106,8 @@ public class WebSessionInterceptor extends AbstractInterceptor {
         ac.put("isread", sysDictService.getSysDictListByType("isread"));
         // ac.put("mainCategory", sysDictService.getSysDictListByType("main_category"));
         ProductTypePojo productTypePojo = new ProductTypePojo();
-        productTypePojo.setId(0l);
+        // productTypePojo.setId(0l);
+        productTypePojo.setPid(-1l);
         productTypePojo.setStatus(1);
         productTypePojos = productTypeService.getProductTypeByPid(productTypePojo);
         for (int i = 0; i < productTypePojos.size(); i++) {
