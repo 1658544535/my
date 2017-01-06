@@ -79,7 +79,7 @@
                                                     售后状态
                                                 </label>
                                                 <select class="ui-select" name="userOrderRefundPojo.status" id="status">
-                                                    <option value="" selected="">
+                                                    <option value="0" selected="">
                                                         全部
                                                     </option>
                                                     <option value="1">
