@@ -201,7 +201,7 @@
 	function orderDetails(id,os){
 		$.ajax({
 			type: "post",
-			url: "orderDetailAllList.do?orderDetail.orderId="+id,
+			url: "orderDetailAllList.do?contentGuide=1&page.pageNo=1&page.pageSize=100&orderDetail.orderId="+id,
 			dataType: 'json',
 			async: false,
 			success: function (msg) {
