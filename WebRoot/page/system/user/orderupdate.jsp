@@ -160,7 +160,7 @@ function returnGoods(val)
 						<td align="right" class="grey" width="15%">订单利润:</td>
 						 <td><label class="floatLeft">${orderPojo.orderProfit}</label></td>
 						<td align="right" class="grey" width="15%">商家扣款:</td>
-						<td width="35%"><input value='${orderPojo.sellerDeduct}' name="orderPojo.sellerDeduct"/></td>	
+						<td width="35%"><input value='${orderPojo.sellerDeduct}' name="order.sellerDeduct"/></td>	
 					</tr>
 					<tr>
 						<td align="right" class="grey" width="15%">自动收货时间:</td>
@@ -184,7 +184,7 @@ function returnGoods(val)
 						</td>
 					</tr>
 					<tr>
-						<td align="right" class="grey" width="15%"  colspan="4"><input type="button" class="ok_btn" value="修改" id="sbutton3" /></td>
+						<td align="right" class="grey" width="15%"  colspan="4"><input type="button" class="ok_btn" value="修改" id="sbutton6" /></td>
 					</tr>
 				</table>
 			</form>
@@ -461,6 +461,11 @@ tt.vf.req.add(consignee,consigneeAddress,consigneePhone,orderNo,serialNumber,buy
 			}
 		});
 		$("#sbutton5").click(function(){		
+			if(tt.validate()){
+				document.getElementById("from5").submit();
+			}
+		});
+		$("#sbutton6").click(function(){		
 			if(tt.validate()){
 				document.getElementById("from5").submit();
 			}
