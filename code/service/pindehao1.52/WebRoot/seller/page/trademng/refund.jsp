@@ -251,7 +251,7 @@ function orderRefundDetails(id){
                     "<img src='<s:i18n name="sysconfig"><s:text name="seller_dns" /></s:i18n>/upfiles/product/"+o_msg[i].productImage+"'>"+
                 "</a>"+
                 "<span class='title c-666'>"+
-                    o_msg[i].productName+
+                    o_msg[i].productNum+
                 "</span>"+
                 "<span class='sku'>订单号："+
                     "<a target='_blank' class='c-999' href='getMyOrderDetailWeb.do?orderPojo.id="+o_msg[i].orderId+"'>"+
@@ -305,6 +305,8 @@ function installPage() {
 				    "<span>申请时间:"+this.creatDateString+"</span>"+
 				    "<span id='buyname'>买家姓名:"+this.loginName+"</span>"+
 				    "<span>手机号码:"+this.consigneePhone+"</span>"+
+				    "<span>退款编号:"+this.id+"</span>"+
+				    "<span>退货运单号:"+this.logistics+"</span>"+
 				    "</div>"+
 				    "<table class='pure-table'>"+
 		            "<tbody id='tbody'>" +tbody+ "</tbody>"+
