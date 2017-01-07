@@ -31,7 +31,7 @@
 					<a href="doSellerLogout.do" rel="nofollow">
 						退出
 					</a>
-					|
+					<%-- |
 					<a href="goMessagesCenterWeb.do">
 					<s:if test="#session.sellerMessageCount > 0">
 						<font id="messageCss" class="" style="color: #ff647c;">
@@ -41,7 +41,7 @@
 						<font id="messageCss">
 						消息<span id="messageCount"></span></font>
 					</s:else>
-					</a>
+					</a> --%>
 				</span>
 				<!-- |
 				<a href="#" target="_blank">
@@ -49,9 +49,9 @@
 				</a>
 				| -->
 				<%-- <s:if test="#session.informationIsCheck == 1"> --%>
-				<a class="bold" href="goHelpWeb.do">
+				<!-- <a class="bold" href="goHelpWeb.do">
 					帮助中心
-				</a>
+				</a> -->
 				<%-- </s:if> --%>
 			</div>
 		</div>
@@ -75,11 +75,11 @@
 						</i>
 					</a>
 					<ul class="ui-nav-submain">
-						<li class="ui-nav-subitem">
+						<!-- <li class="ui-nav-subitem">
 							<a href="getProfileWeb.do">
 								基本信息
 							</a>
-						</li>
+						</li> -->
 						<!--
 						<li class="ui-nav-subitem">
 							<a href="baseinfo/pay_account.html">
@@ -92,7 +92,7 @@
 							</a>
 						</li>
 						-->
-						<li class="ui-nav-subitem">
+						<!-- <li class="ui-nav-subitem">
 							<a href="goAddressWeb.do">
 								退货地址管理
 							</a>
@@ -101,7 +101,7 @@
 							<a href="goPasswdWeb.do">
 								修改密码
 							</a>
-						</li>
+						</li> -->
 						<li class="ui-nav-subitem">
 							<a href="goInformationPerfectWeb.do">
 								信息完善
@@ -127,11 +127,11 @@
 								添加商品
 							</a>
 						</li>
-						<li class="ui-nav-subitem">
+						<!-- <li class="ui-nav-subitem">
 							<a href="getBrandListWeb.do">
 								品牌列表
 							</a>
-						</li>
+						</li> -->
 						<li class="ui-nav-subitem">
 							<a href="getBrandAddWeb.do">
 								添加品牌
@@ -139,7 +139,7 @@
 						</li>
 					</ul>
 				</li>
-				<li class="ui-nav-item has-sub">
+				<!-- <li class="ui-nav-item has-sub">
 					<a href="getMartShowWeb.do">
 						品牌特卖
 						<i class="iconfont">
@@ -158,7 +158,7 @@
 							</a>
 						</li>
 					</ul>
-				</li>
+				</li> -->
 				<li class="ui-nav-item has-sub">
 					<a href="getMyOrderWeb.do">
 						交易管理
@@ -194,11 +194,11 @@
                                 </i>
                             </a>
                             <ul class="ui-nav-submain">
-                                <li class="ui-nav-subitem">
+                                <!-- <li class="ui-nav-subitem">
                                     <a href="goSettleWeb.do">
                                         结算
                                     </a>
-                                </li>
+                                </li> -->
                                 <li class="ui-nav-subitem">
                                     <a href="goWithdrawWeb.do">
                                         提现
