@@ -182,6 +182,7 @@ em {
 				</div> 
 				<form action="doInformationPerfectWeb.do" method="post" id="from1" enctype="multipart/form-data" class="ui-form">
 					<table width="100%" border="0" cellpadding="0" cellspacing="0" class="info_table">
+					<input type="hidden" name="userCertificatesPhotoPojo.id" id="userCertificatesPhotoPojo.id" value="${userCertificatesPhotoPojo.id}" class="inputText" />
 					<h2> 负责人基本信息</h2>
 					<hr></hr>
 					<div class="ui-form-item">
