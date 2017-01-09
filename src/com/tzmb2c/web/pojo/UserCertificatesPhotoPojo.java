@@ -1,7 +1,5 @@
 package com.tzmb2c.web.pojo;
 
-import java.util.Date;
-
 import maowu.framework.utils.pojo.SuperPojo;
 
 public class UserCertificatesPhotoPojo extends SuperPojo {
@@ -69,11 +67,12 @@ public class UserCertificatesPhotoPojo extends SuperPojo {
   /**
    * 组织机构证有效开始时间
    */
-  private Date image2BeginDate;
+  private String image2BeginDate;
   /**
    * 组织机构证有效结束时间
    */
-  private Date image2EndDate;
+  private String image2EndDate;
+
   /**
    * 质检报告图片1
    */
@@ -141,11 +140,11 @@ public class UserCertificatesPhotoPojo extends SuperPojo {
   /**
    * 身份证有效开始时间
    */
-  private Date image4BeginDate;
+  private String image4BeginDate;
   /**
    * 身份证有效结束时间
    */
-  private Date image4EndDate;
+  private String image4EndDate;
   /**
    * 开户许可证
    */
@@ -343,19 +342,19 @@ public class UserCertificatesPhotoPojo extends SuperPojo {
     this.image5No = image5No;
   }
 
-  public Date getImage2BeginDate() {
+  public String getImage2BeginDate() {
     return image2BeginDate;
   }
 
-  public void setImage2BeginDate(Date image2BeginDate) {
+  public void setImage2BeginDate(String image2BeginDate) {
     this.image2BeginDate = image2BeginDate;
   }
 
-  public Date getImage2EndDate() {
+  public String getImage2EndDate() {
     return image2EndDate;
   }
 
-  public void setImage2EndDate(Date image2EndDate) {
+  public void setImage2EndDate(String image2EndDate) {
     this.image2EndDate = image2EndDate;
   }
 
@@ -487,19 +486,19 @@ public class UserCertificatesPhotoPojo extends SuperPojo {
     this.blImage10 = blImage10;
   }
 
-  public Date getImage4BeginDate() {
+  public String getImage4BeginDate() {
     return image4BeginDate;
   }
 
-  public void setImage4BeginDate(Date image4BeginDate) {
+  public void setImage4BeginDate(String image4BeginDate) {
     this.image4BeginDate = image4BeginDate;
   }
 
-  public Date getImage4EndDate() {
+  public String getImage4EndDate() {
     return image4EndDate;
   }
 
-  public void setImage4EndDate(Date image4EndDate) {
+  public void setImage4EndDate(String image4EndDate) {
     this.image4EndDate = image4EndDate;
   }
 

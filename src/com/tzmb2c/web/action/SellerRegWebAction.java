@@ -20,7 +20,6 @@ import com.tzmb2c.web.pojo.LoginRecPojo;
 import com.tzmb2c.web.pojo.ManufacturerPojo;
 import com.tzmb2c.web.pojo.ProductTypePojo;
 import com.tzmb2c.web.pojo.ShopPojo;
-import com.tzmb2c.web.pojo.SysAreaPojo;
 import com.tzmb2c.web.pojo.SysLoginPojo;
 import com.tzmb2c.web.pojo.UserCertificatesPhotoPojo;
 import com.tzmb2c.web.pojo.UserInfoPojo;
@@ -68,15 +67,23 @@ public class SellerRegWebAction extends SuperAction {
   private String msg;
   private String verifyCode;
   private String externalCode;
-  private File upfile, upfile2, image1, image2, image3, image4, image5, image6, image7, qcImage1,
-      qcImage2, qcImage3, qcImage4, qcImage5, qcImage6, blImage1, blImage2, blImage3, blImage4,
-      blImage5, blImage6, blImage7, blImage8, blImage9, blImage10;
+  private File upfile, upfile2, image1, image2, image3, image4, image5, image6, image7, image8,
+      qcImage1, qcImage2, qcImage3, qcImage4, qcImage5, qcImage6, blImage1, blImage2, blImage3,
+      blImage4, blImage5, blImage6, blImage7, blImage8, blImage9, blImage10;
   private ManufacturerPojo manufacturer, manufacturerPojo;
   private ShopPojo shop;
   private ProductTypePojo productTypePojo;
   private List<ProductTypePojo> productTypePojos;
   private String phonecode;
   private UserCertificatesPhotoPojo userCertificatesPhotoPojo;
+
+  public File getImage8() {
+    return image8;
+  }
+
+  public void setImage8(File image8) {
+    this.image8 = image8;
+  }
 
   public File getQcImage1() {
     return qcImage1;
@@ -546,7 +553,6 @@ public class SellerRegWebAction extends SuperAction {
       shopService.insertShop(shop);
 
       // 添加证书照
-      userCertificatesPhotoPojo = new UserCertificatesPhotoPojo();
       if (image1 != null) {
         String file_name = StringUtil.getCurrentDateStr() + ".jpg";
         String uploadPath =
@@ -602,6 +608,14 @@ public class SellerRegWebAction extends SuperAction {
                 + File.separator;
         FileUtil.uploadFile(file_name, uploadPath, "upfiles/userCertificatesPhoto/", image7);
         userCertificatesPhotoPojo.setImage7(file_name);
+      }
+      if (image8 != null) {
+        String file_name = StringUtil.getCurrentDateStr() + ".jpg";
+        String uploadPath =
+            ServletActionContext.getServletContext().getRealPath("/upfiles/userCertificatesPhoto")
+                + File.separator;
+        FileUtil.uploadFile(file_name, uploadPath, "upfiles/userCertificatesPhoto/", image8);
+        userCertificatesPhotoPojo.setImage8(file_name);
       }
       if (qcImage1 != null) {
         String file_name = StringUtil.getCurrentDateStr() + ".jpg";
@@ -797,6 +811,7 @@ public class SellerRegWebAction extends SuperAction {
         FileUtil.alertMessageBySkip("请先登录！", "sellerLogin.do");
         return null;
       }
+      SysLoginPojo sysLogin = new SysLoginPojo();
       sysLogin.setName(manufacturer.getCompany());
       sysLogin.prePersist(loginPojo);
       // String externalCode = sysLoginService.genExternalSignCode(sysLogin.getLoginname());
@@ -815,19 +830,20 @@ public class SellerRegWebAction extends SuperAction {
       }
       manufacturer.setUserId(sysLogin.getId());
       // manufacturer.setCreateBy(sysLogin.getId());
-      SysAreaPojo sysArea = sysAreaService.getNameById(shop.getProvince());
-      String province = sysArea == null ? "" : sysArea.getName();
-      sysArea = sysAreaService.getNameById(shop.getCity());
-      String city = sysArea == null ? "" : sysArea.getName();
-      sysArea = sysAreaService.getNameById(shop.getArea());
-      String area = sysArea == null ? "" : sysArea.getName();
-      manufacturer.setAddress(province + city + area + shop.getAddress());
+      /*
+       * SysAreaPojo sysArea = sysAreaService.getNameById(shop.getProvince()); String province =
+       * sysArea == null ? "" : sysArea.getName(); sysArea =
+       * sysAreaService.getNameById(shop.getCity()); String city = sysArea == null ? "" :
+       * sysArea.getName(); sysArea = sysAreaService.getNameById(shop.getArea()); String area =
+       * sysArea == null ? "" : sysArea.getName(); manufacturer.setAddress(province + city + area +
+       * shop.getAddress());
+       */
       manufacturer.setStatus(0);
 
       // manufacturer.setChannel(0);
       // manufacturerService.insertManufacturer(manufacturer);
       manufacturerService.updateManufacturer(manufacturer);
-
+      ShopPojo shop = new ShopPojo();
       if (upfile != null) {
         String file_name = StringUtil.getCurrentDateStr() + "1.jpg";
         String uploadPath =
@@ -919,6 +935,142 @@ public class SellerRegWebAction extends SuperAction {
                 + File.separator;
         FileUtil.uploadFile(file_name, uploadPath, "upfiles/userCertificatesPhoto/", image7);
         userCertificatesPhotoPojo.setImage7(file_name);
+      }
+      if (image8 != null) {
+        String file_name = StringUtil.getCurrentDateStr() + ".jpg";
+        String uploadPath =
+            ServletActionContext.getServletContext().getRealPath("/upfiles/userCertificatesPhoto")
+                + File.separator;
+        FileUtil.uploadFile(file_name, uploadPath, "upfiles/userCertificatesPhoto/", image8);
+        userCertificatesPhotoPojo.setImage8(file_name);
+      }
+      if (qcImage1 != null) {
+        String file_name = StringUtil.getCurrentDateStr() + ".jpg";
+        String uploadPath =
+            ServletActionContext.getServletContext().getRealPath("/upfiles/userCertificatesPhoto")
+                + File.separator;
+        FileUtil.uploadFile(file_name, uploadPath, "upfiles/userCertificatesPhoto/", qcImage1);
+        userCertificatesPhotoPojo.setQcImage1(file_name);
+      }
+      if (qcImage2 != null) {
+        String file_name = StringUtil.getCurrentDateStr() + ".jpg";
+        String uploadPath =
+            ServletActionContext.getServletContext().getRealPath("/upfiles/userCertificatesPhoto")
+                + File.separator;
+        FileUtil.uploadFile(file_name, uploadPath, "upfiles/userCertificatesPhoto/", qcImage2);
+        userCertificatesPhotoPojo.setQcImage2(file_name);
+      }
+      if (qcImage3 != null) {
+        String file_name = StringUtil.getCurrentDateStr() + ".jpg";
+        String uploadPath =
+            ServletActionContext.getServletContext().getRealPath("/upfiles/userCertificatesPhoto")
+                + File.separator;
+        FileUtil.uploadFile(file_name, uploadPath, "upfiles/userCertificatesPhoto/", qcImage3);
+        userCertificatesPhotoPojo.setQcImage3(file_name);
+      }
+      if (qcImage4 != null) {
+        String file_name = StringUtil.getCurrentDateStr() + ".jpg";
+        String uploadPath =
+            ServletActionContext.getServletContext().getRealPath("/upfiles/userCertificatesPhoto")
+                + File.separator;
+        FileUtil.uploadFile(file_name, uploadPath, "upfiles/userCertificatesPhoto/", qcImage4);
+        userCertificatesPhotoPojo.setQcImage4(file_name);
+      }
+      if (qcImage5 != null) {
+        String file_name = StringUtil.getCurrentDateStr() + ".jpg";
+        String uploadPath =
+            ServletActionContext.getServletContext().getRealPath("/upfiles/userCertificatesPhoto")
+                + File.separator;
+        FileUtil.uploadFile(file_name, uploadPath, "upfiles/userCertificatesPhoto/", qcImage5);
+        userCertificatesPhotoPojo.setQcImage5(file_name);
+      }
+      if (qcImage6 != null) {
+        String file_name = StringUtil.getCurrentDateStr() + ".jpg";
+        String uploadPath =
+            ServletActionContext.getServletContext().getRealPath("/upfiles/userCertificatesPhoto")
+                + File.separator;
+        FileUtil.uploadFile(file_name, uploadPath, "upfiles/userCertificatesPhoto/", qcImage6);
+        userCertificatesPhotoPojo.setQcImage6(file_name);
+      }
+      if (blImage1 != null) {
+        String file_name = StringUtil.getCurrentDateStr() + ".jpg";
+        String uploadPath =
+            ServletActionContext.getServletContext().getRealPath("/upfiles/userCertificatesPhoto")
+                + File.separator;
+        FileUtil.uploadFile(file_name, uploadPath, "upfiles/userCertificatesPhoto/", blImage1);
+        userCertificatesPhotoPojo.setBlImage1(file_name);
+      }
+      if (blImage2 != null) {
+        String file_name = StringUtil.getCurrentDateStr() + ".jpg";
+        String uploadPath =
+            ServletActionContext.getServletContext().getRealPath("/upfiles/userCertificatesPhoto")
+                + File.separator;
+        FileUtil.uploadFile(file_name, uploadPath, "upfiles/userCertificatesPhoto/", blImage2);
+        userCertificatesPhotoPojo.setBlImage2(file_name);
+      }
+      if (blImage3 != null) {
+        String file_name = StringUtil.getCurrentDateStr() + ".jpg";
+        String uploadPath =
+            ServletActionContext.getServletContext().getRealPath("/upfiles/userCertificatesPhoto")
+                + File.separator;
+        FileUtil.uploadFile(file_name, uploadPath, "upfiles/userCertificatesPhoto/", blImage3);
+        userCertificatesPhotoPojo.setBlImage3(file_name);
+      }
+      if (blImage4 != null) {
+        String file_name = StringUtil.getCurrentDateStr() + ".jpg";
+        String uploadPath =
+            ServletActionContext.getServletContext().getRealPath("/upfiles/userCertificatesPhoto")
+                + File.separator;
+        FileUtil.uploadFile(file_name, uploadPath, "upfiles/userCertificatesPhoto/", blImage4);
+        userCertificatesPhotoPojo.setBlImage4(file_name);
+      }
+      if (blImage5 != null) {
+        String file_name = StringUtil.getCurrentDateStr() + ".jpg";
+        String uploadPath =
+            ServletActionContext.getServletContext().getRealPath("/upfiles/userCertificatesPhoto")
+                + File.separator;
+        FileUtil.uploadFile(file_name, uploadPath, "upfiles/userCertificatesPhoto/", blImage5);
+        userCertificatesPhotoPojo.setBlImage5(file_name);
+      }
+      if (blImage6 != null) {
+        String file_name = StringUtil.getCurrentDateStr() + ".jpg";
+        String uploadPath =
+            ServletActionContext.getServletContext().getRealPath("/upfiles/userCertificatesPhoto")
+                + File.separator;
+        FileUtil.uploadFile(file_name, uploadPath, "upfiles/userCertificatesPhoto/", blImage6);
+        userCertificatesPhotoPojo.setBlImage6(file_name);
+      }
+      if (blImage7 != null) {
+        String file_name = StringUtil.getCurrentDateStr() + ".jpg";
+        String uploadPath =
+            ServletActionContext.getServletContext().getRealPath("/upfiles/userCertificatesPhoto")
+                + File.separator;
+        FileUtil.uploadFile(file_name, uploadPath, "upfiles/userCertificatesPhoto/", blImage7);
+        userCertificatesPhotoPojo.setBlImage7(file_name);
+      }
+      if (blImage8 != null) {
+        String file_name = StringUtil.getCurrentDateStr() + ".jpg";
+        String uploadPath =
+            ServletActionContext.getServletContext().getRealPath("/upfiles/userCertificatesPhoto")
+                + File.separator;
+        FileUtil.uploadFile(file_name, uploadPath, "upfiles/userCertificatesPhoto/", blImage8);
+        userCertificatesPhotoPojo.setBlImage8(file_name);
+      }
+      if (blImage9 != null) {
+        String file_name = StringUtil.getCurrentDateStr() + ".jpg";
+        String uploadPath =
+            ServletActionContext.getServletContext().getRealPath("/upfiles/userCertificatesPhoto")
+                + File.separator;
+        FileUtil.uploadFile(file_name, uploadPath, "upfiles/userCertificatesPhoto/", blImage9);
+        userCertificatesPhotoPojo.setBlImage9(file_name);
+      }
+      if (blImage10 != null) {
+        String file_name = StringUtil.getCurrentDateStr() + ".jpg";
+        String uploadPath =
+            ServletActionContext.getServletContext().getRealPath("/upfiles/userCertificatesPhoto")
+                + File.separator;
+        FileUtil.uploadFile(file_name, uploadPath, "upfiles/userCertificatesPhoto/", blImage10);
+        userCertificatesPhotoPojo.setBlImage10(file_name);
       }
       if (userCertificatesPhotoPojo != null) {
         // UserCertificatesPhotoPojo isexist =
