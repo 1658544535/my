@@ -223,7 +223,7 @@ em {
 					<hr></hr>
 					<div class="ui-form-item">
 							<label for="" class="ui-label"> 公司法人：</label>
-							<input type="text" name="manufacturer.legalPerson"  value="${manufacturer.legalPerson}" class="ui-input" id="ticketName">
+							<input type="text" name="manufacturer.legalPerson"  value="${manufacturerPojo.legalPerson}" class="ui-input" id="ticketName">
 							<div id="legalPerson_mgId"></div>
 					  </div>
 					<div class="ui-form-item">
@@ -233,10 +233,10 @@ em {
 					  </div> 
 					<div class="ui-form-item">
 							<label for="" class="ui-label"> 身份证有效期：</label>
-							从<input id="s" name="userCertificatesPhotoPojo.image4BeginDate" value="" class="Wdate" type="text" 
+							从<input id="s" name="userCertificatesPhotoPojo.image4BeginDate" value="${userCertificatesPhotoPojo.image4BeginDate}" class="Wdate" type="text" 
 							onFocus="var e=$dp.$('e');WdatePicker({onpicked:function(){e.focus();},isShowToday:false,dateFmt:'yyyy-MM-dd',
 								maxDate:'#F{$dp.$D(\'e\')}'})"/><br />
-								至<input id="e" name="userCertificatesPhotoPojo.image4EndDate" value="" class="Wdate" type="text" 
+								至<input id="e" name="userCertificatesPhotoPojo.image4EndDate" value="${userCertificatesPhotoPojo.image4EndDate}" class="Wdate" type="text" 
 							onFocus="WdatePicker({isShowToday:false,dateFmt:'yyyy-MM-dd',
 								minDate:'#F{$dp.$D(\'s\')}'})"/>
 							<div id="image4Date_mgId"></div>
@@ -268,20 +268,20 @@ em {
 					 </div>		
 					<div class="ui-form-item">
 							<label for="" class="ui-label"> 营业执照有效期：</label>
-							从<input id="s" name="userCertificatesPhotoPojo.image1BeginDate" value="" class="Wdate" type="text" 
+							从<input id="s" name="userCertificatesPhotoPojo.image1BeginDate" value="${userCertificatesPhotoPojo.image1BeginDate}" class="Wdate" type="text" 
 							onFocus="var e=$dp.$('e');WdatePicker({onpicked:function(){e.focus();},isShowToday:false,dateFmt:'yyyy-MM-dd',
 								maxDate:'#F{$dp.$D(\'e\')}'})"/><br />
-								至<input id="e" name="userCertificatesPhotoPojo.image1EndDate" value="" class="Wdate" type="text" 
+								至<input id="e" name="userCertificatesPhotoPojo.image1EndDate" value="${userCertificatesPhotoPojo.image1EndDate}" class="Wdate" type="text" 
 							onFocus="WdatePicker({isShowToday:false,dateFmt:'yyyy-MM-dd',
 								minDate:'#F{$dp.$D(\'s\')}'})"/>
 							<div id="image1Date_mgId"></div>
 					  </div>
 				   <div class="ui-form-item">
 							<label for="" class="ui-label"> 组织机构证有效期：</label>
-							从<input id="s" name="userCertificatesPhotoPojo.image2BeginDate" value="" class="Wdate" type="text" 
+							从<input id="s" name="userCertificatesPhotoPojo.image2BeginDate" value="${userCertificatesPhotoPojo.image2BeginDate}" class="Wdate" type="text" 
 							onFocus="var e=$dp.$('e');WdatePicker({onpicked:function(){e.focus();},isShowToday:false,dateFmt:'yyyy-MM-dd',
 								maxDate:'#F{$dp.$D(\'e\')}'})"/><br />
-								至<input id="e" name="userCertificatesPhotoPojo.image2EndDate" value="" class="Wdate" type="text" 
+								至<input id="e" name="userCertificatesPhotoPojo.image2EndDate" value="${userCertificatesPhotoPojo.image2EndDate}" class="Wdate" type="text" 
 							onFocus="WdatePicker({isShowToday:false,dateFmt:'yyyy-MM-dd',
 								minDate:'#F{$dp.$D(\'s\')}'})"/>
 							<div id="image2Date_mgId"></div>
@@ -295,7 +295,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="image1">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="image1" id="imageBox1">
 							</div>
 							<em class="red" id="color1"><div id="image1_mgId">*</div></em>
 						</div>
@@ -308,7 +308,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="image2">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="image2" id="imageBox2">
 							</div>
 							<em class="red" id="color2"><div id="image2_mgId">*</div></em>
 						</div>
@@ -321,7 +321,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="image3">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="image3" id="imageBox3">
 							</div>
 							<em class="red" id="color3"><div id="image3_mgId">*</div></em>
 						</div>
@@ -334,7 +334,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="image4">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="image4" id="imageBox4">
 							</div>
 							<em class="red" id="color4"><div id="image4_mgId">*</div></em>
 						</div>
@@ -347,7 +347,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="image5">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="image5" id="imageBox5">
 							</div>
 							<em class="red" id="color5"><div id="image5_mgId">*</div></em>
 						</div>
@@ -388,7 +388,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="qc_image1" id="qcImageBox1">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="qcImage1" id="qcImageBox1">
 							</div>
 						</div>
 						<div class="ui-form-item TaxRegistrationCertificate ">
@@ -400,7 +400,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="qc_image2" id="qcImageBox2">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="qcImage2" id="qcImageBox2">
 							</div>
 						</div><div class="ui-form-item TaxRegistrationCertificate ">
 							<label for="" class="ui-label"> 图片3：</label>
@@ -411,7 +411,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="qc_image3" id="qcImageBox3">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="qcImage3" id="qcImageBox3">
 							</div>
 						</div><div class="ui-form-item TaxRegistrationCertificate ">
 							<label for="" class="ui-label"> 图片4：</label>
@@ -422,7 +422,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="qc_image4" id="qcImageBox4">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="qcImage4" id="qcImageBox4">
 							</div>
 						</div><div class="ui-form-item TaxRegistrationCertificate ">
 							<label for="" class="ui-label"> 图片5：</label>
@@ -433,7 +433,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="qc_image5" id="qcImageBox5">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="qcImage5" id="qcImageBox5">
 							</div>
 						</div><div class="ui-form-item TaxRegistrationCertificate ">
 							<label for="" class="ui-label"> 图片6：</label>
@@ -444,7 +444,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="qc_image6" id="qcImageBox6">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="qcImage6" id="qcImageBox6">
 							</div>
 						</div>
 					<h2> 品牌授权证明（可填、可多选）</h2>
@@ -458,7 +458,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="bl_image1" id="blImageBox1">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="blImage1" id="blImageBox1">
 							</div>
 						</div>
 						</div><div class="ui-form-item TaxRegistrationCertificate ">
@@ -470,7 +470,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="bl_image2" id="blImageBox2">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="blImage2" id="blImageBox2">
 							</div>
 						</div>
 						</div><div class="ui-form-item TaxRegistrationCertificate ">
@@ -482,7 +482,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="bl_image3" id="blImageBox3">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="blImage3" id="blImageBox3">
 							</div>
 						</div>
 						</div><div class="ui-form-item TaxRegistrationCertificate ">
@@ -494,7 +494,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="bl_image4" id="blImageBox4">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="blImage4" id="blImageBox4">
 							</div>
 						</div>
 						</div><div class="ui-form-item TaxRegistrationCertificate ">
@@ -506,7 +506,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="bl_image5" id="blImageBox5">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="blImage5" id="blImageBox5">
 							</div>
 						</div>
 						</div><div class="ui-form-item TaxRegistrationCertificate ">
@@ -518,7 +518,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="bl_image6" id="blImageBox6">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="blImage6" id="blImageBox6">
 							</div>
 						</div>
 						</div><div class="ui-form-item TaxRegistrationCertificate ">
@@ -530,7 +530,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="bl_image7" id="blImageBox7">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="blImage7" id="blImageBox7">
 							</div>
 						</div>
 						</div><div class="ui-form-item TaxRegistrationCertificate ">
@@ -542,7 +542,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="bl_image8" id="blImageBox8">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="blImage8" id="blImageBox8">
 							</div>
 						</div>
 						</div><div class="ui-form-item TaxRegistrationCertificate ">
@@ -554,7 +554,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="bl_image9" id="blImageBox9">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="blImage9" id="blImageBox9">
 							</div>
 						</div>
 						</div><div class="ui-form-item TaxRegistrationCertificate ">
@@ -566,7 +566,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="bl_image10" id="blImageBox10">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="blImage10" id="blImageBox10">
 							</div>
 						</div>
 			<!--	<div class="ui-form-item ui-form-item-error">
@@ -945,7 +945,119 @@ $(document).ready(function() {
 		_this.siblings(".uploadPreview_img").show();
 		_this.siblings(".uploadPreview_note").hide();
 	}
+	if("${userCertificatesPhotoPojo.qcImage1 }" != ""){
+		var url = path+"${userCertificatesPhotoPojo.qcImage1}";
+		var _this = $("#qcImageBox1");
+		_this.siblings(".uploadPreview_img").find("img").attr("src", url);
+		_this.siblings(".uploadPreview_img").show();
+		_this.siblings(".uploadPreview_note").hide();
+	}
+	if("${userCertificatesPhotoPojo.qcImage2 }" != ""){
+		var url = path+"${userCertificatesPhotoPojo.qcImage2}";
+		var _this = $("#qcImageBox2");
+		_this.siblings(".uploadPreview_img").find("img").attr("src", url);
+		_this.siblings(".uploadPreview_img").show();
+		_this.siblings(".uploadPreview_note").hide();
+	}
+	if("${userCertificatesPhotoPojo.qcImage3 }" != ""){
+		var url = path+"${userCertificatesPhotoPojo.qcImage3}";
+		var _this = $("#qcImageBox3");
+		_this.siblings(".uploadPreview_img").find("img").attr("src", url);
+		_this.siblings(".uploadPreview_img").show();
+		_this.siblings(".uploadPreview_note").hide();
+	}
+	if("${userCertificatesPhotoPojo.qcImage4 }" != ""){
+		var url = path+"${userCertificatesPhotoPojo.qcImage4}";
+		var _this = $("#qcImageBox4");
+		_this.siblings(".uploadPreview_img").find("img").attr("src", url);
+		_this.siblings(".uploadPreview_img").show();
+		_this.siblings(".uploadPreview_note").hide();
+	}
+	if("${userCertificatesPhotoPojo.qcImage5 }" != ""){
+		var url = path+"${userCertificatesPhotoPojo.qcImage5}";
+		var _this = $("#qcImageBox5");
+		_this.siblings(".uploadPreview_img").find("img").attr("src", url);
+		_this.siblings(".uploadPreview_img").show();
+		_this.siblings(".uploadPreview_note").hide();
+	}
+	if("${userCertificatesPhotoPojo.qcImage6 }" !=""){
+		var url = path+"${userCertificatesPhotoPojo.qcImage6}";
+		var _this = $("#qcImageBox6");
+		_this.siblings(".uploadPreview_img").find("img").attr("src", url);
+		_this.siblings(".uploadPreview_img").show();
+		_this.siblings(".uploadPreview_note").hide();
+	}
 	
+	if("${userCertificatesPhotoPojo.blImage1 }" != ""){
+		var url = path+"${userCertificatesPhotoPojo.blImage1}";
+		var _this = $("#blImageBox1");
+		_this.siblings(".uploadPreview_img").find("img").attr("src", url);
+		_this.siblings(".uploadPreview_img").show();
+		_this.siblings(".uploadPreview_note").hide();
+	}
+	if("${userCertificatesPhotoPojo.blImage2 }" != ""){
+		var url = path+"${userCertificatesPhotoPojo.blImage2}";
+		var _this = $("#blImageBox2");
+		_this.siblings(".uploadPreview_img").find("img").attr("src", url);
+		_this.siblings(".uploadPreview_img").show();
+		_this.siblings(".uploadPreview_note").hide();
+	}
+	if("${userCertificatesPhotoPojo.blImage3 }" != ""){
+		var url = path+"${userCertificatesPhotoPojo.blImage3}";
+		var _this = $("#blImageBox3");
+		_this.siblings(".uploadPreview_img").find("img").attr("src", url);
+		_this.siblings(".uploadPreview_img").show();
+		_this.siblings(".uploadPreview_note").hide();
+	}
+	if("${userCertificatesPhotoPojo.blImage4 }" != ""){
+		var url = path+"${userCertificatesPhotoPojo.blImage4}";
+		var _this = $("#blImageBox4");
+		_this.siblings(".uploadPreview_img").find("img").attr("src", url);
+		_this.siblings(".uploadPreview_img").show();
+		_this.siblings(".uploadPreview_note").hide();
+	}
+	if("${userCertificatesPhotoPojo.blImage5 }" != ""){
+		var url = path+"${userCertificatesPhotoPojo.blImage5}";
+		var _this = $("#blImageBox5");
+		_this.siblings(".uploadPreview_img").find("img").attr("src", url);
+		_this.siblings(".uploadPreview_img").show();
+		_this.siblings(".uploadPreview_note").hide();
+	}
+	if("${userCertificatesPhotoPojo.blImage6 }" != ""){
+		var url = path+"${userCertificatesPhotoPojo.blImage6}";
+		var _this = $("#blImageBox6");
+		_this.siblings(".uploadPreview_img").find("img").attr("src", url);
+		_this.siblings(".uploadPreview_img").show();
+		_this.siblings(".uploadPreview_note").hide();
+	}
+	if("${userCertificatesPhotoPojo.blImage7 }" != ""){
+		var url = path+"${userCertificatesPhotoPojo.blImage7}";
+		var _this = $("#blImageBox7");
+		_this.siblings(".uploadPreview_img").find("img").attr("src", url);
+		_this.siblings(".uploadPreview_img").show();
+		_this.siblings(".uploadPreview_note").hide();
+	}
+	if("${userCertificatesPhotoPojo.blImage8 }" != ""){
+		var url = path+"${userCertificatesPhotoPojo.blImage8}";
+		var _this = $("#blImageBox8");
+		_this.siblings(".uploadPreview_img").find("img").attr("src", url);
+		_this.siblings(".uploadPreview_img").show();
+		_this.siblings(".uploadPreview_note").hide();
+	}
+	if("${userCertificatesPhotoPojo.blImage9 }" != ""){
+		var url = path+"${userCertificatesPhotoPojo.blImage9}";
+		var _this = $("#blImageBox9");
+		_this.siblings(".uploadPreview_img").find("img").attr("src", url);
+		_this.siblings(".uploadPreview_img").show();
+		_this.siblings(".uploadPreview_note").hide();
+	}
+	if("${userCertificatesPhotoPojo.blImage10 }" != ""){
+		var url = path+"${userCertificatesPhotoPojo.blImage10}";
+		var _this = $("#blImageBox10");
+		_this.siblings(".uploadPreview_img").find("img").attr("src", url);
+		_this.siblings(".uploadPreview_img").show();
+		_this.siblings(".uploadPreview_note").hide();
+	}
 	$("#sbutton").click(function(){
 		<%-- var v,v1,v2,v3,v4,v5,v6;
 		

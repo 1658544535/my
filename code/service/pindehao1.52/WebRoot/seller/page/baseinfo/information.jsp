@@ -361,7 +361,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="qc_image1" id="qcImageBox1">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="qcImage1" id="qcImageBox1">
 							</div>
 						</div>
 						<div class="ui-form-item TaxRegistrationCertificate ">
@@ -373,7 +373,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="qc_image2" id="qcImageBox2">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="qcImage2" id="qcImageBox2">
 							</div>
 						</div><div class="ui-form-item TaxRegistrationCertificate ">
 							<label for="" class="ui-label"> 图片3：</label>
@@ -384,7 +384,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="qc_image3" id="qcImageBox3">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="qcImage3" id="qcImageBox3">
 							</div>
 						</div><div class="ui-form-item TaxRegistrationCertificate ">
 							<label for="" class="ui-label"> 图片4：</label>
@@ -395,7 +395,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="qc_image4" id="qcImageBox4">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="qcImage4" id="qcImageBox4">
 							</div>
 						</div><div class="ui-form-item TaxRegistrationCertificate ">
 							<label for="" class="ui-label"> 图片5：</label>
@@ -406,7 +406,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="qc_image5" id="qcImageBox5">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="qcImage5" id="qcImageBox5">
 							</div>
 						</div><div class="ui-form-item TaxRegistrationCertificate ">
 							<label for="" class="ui-label"> 图片6：</label>
@@ -417,7 +417,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="qc_image6" id="qcImageBox6">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="qcImage6" id="qcImageBox6">
 							</div>
 						</div>
 					<h2> 品牌授权证明（可填、可多选）</h2>
@@ -431,7 +431,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="bl_image1" id="blImageBox1">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="blImage1" id="blImageBox1">
 							</div>
 						</div>
 						</div><div class="ui-form-item TaxRegistrationCertificate ">
@@ -443,7 +443,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="bl_image2" id="blImageBox2">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="blImage2" id="blImageBox2">
 							</div>
 						</div>
 						</div><div class="ui-form-item TaxRegistrationCertificate ">
@@ -455,7 +455,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="bl_image3" id="blImageBox3">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="blImage3" id="blImageBox3">
 							</div>
 						</div>
 						</div><div class="ui-form-item TaxRegistrationCertificate ">
@@ -467,7 +467,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="bl_image4" id="blImageBox4">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="blImage4" id="blImageBox4">
 							</div>
 						</div>
 						</div><div class="ui-form-item TaxRegistrationCertificate ">
@@ -479,7 +479,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="bl_image5" id="blImageBox5">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="blImage5" id="blImageBox5">
 							</div>
 						</div>
 						</div><div class="ui-form-item TaxRegistrationCertificate ">
@@ -491,7 +491,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="bl_image6" id="blImageBox6">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="blImage6" id="blImageBox6">
 							</div>
 						</div>
 						</div><div class="ui-form-item TaxRegistrationCertificate ">
@@ -503,7 +503,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="bl_image7" id="blImageBox7">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="blImage7" id="blImageBox7">
 							</div>
 						</div>
 						</div><div class="ui-form-item TaxRegistrationCertificate ">
@@ -515,7 +515,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="bl_image8" id="blImageBox8">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="blImage8" id="blImageBox8">
 							</div>
 						</div>
 						</div><div class="ui-form-item TaxRegistrationCertificate ">
@@ -527,7 +527,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="bl_image9" id="blImageBox9">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="blImage9" id="blImageBox9">
 							</div>
 						</div>
 						</div><div class="ui-form-item TaxRegistrationCertificate ">
@@ -539,7 +539,7 @@ em {
 								<div class="uploadPreview_img" style="display: none;">
 									<img style="width: 180px; height: 180px;">
 								</div>
-								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="bl_image10" id="blImageBox10">
+								<input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="blImage10" id="blImageBox10">
 							</div>
 						</div>
 			<!--	<div class="ui-form-item ui-form-item-error">
