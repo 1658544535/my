@@ -717,13 +717,13 @@ alter table user_order add order_profit double(20,2) default '0.00' COMMENT '订
 alter table user_order add seller_goods_price double(20,2) default '0.00' COMMENT '商家货款';
 
 ## 订单表增加 订单来源和平团是否成功状态
-ALTER TABLE user_certificates_photo ADD image4_begin_date datetime default NULL COMMENT '身份证有效开始时间';
-ALTER TABLE user_certificates_photo ADD image4_end_date datetime default NULL COMMENT '身份证有效结束时间';
+ALTER TABLE user_certificates_photo ADD image4_begin_date date default NULL COMMENT '身份证有效开始时间';
+ALTER TABLE user_certificates_photo ADD image4_end_date date default NULL COMMENT '身份证有效结束时间';
 ALTER TABLE user_certificates_photo ADD image2_no varchar(30) default '' COMMENT '组织机构代码号';
 ALTER TABLE user_certificates_photo ADD image3_no varchar(30) default '' COMMENT '纳税人识别号';
 ALTER TABLE user_certificates_photo ADD image5_no varchar(30) default '' COMMENT '统一社会信用代码';
-ALTER TABLE user_certificates_photo ADD image2_begin_date datetime default NULL COMMENT '组织机构证有效开始时间';
-ALTER TABLE user_certificates_photo ADD image2_end_date datetime default NULL COMMENT '组织机构证有效结束时间';
+ALTER TABLE user_certificates_photo ADD image2_begin_date date default NULL COMMENT '组织机构证有效开始时间';
+ALTER TABLE user_certificates_photo ADD image2_end_date date default NULL COMMENT '组织机构证有效结束时间';
 ALTER TABLE user_certificates_photo ADD qc_image1 varchar(100) default '' COMMENT '质检报告图片1';
 ALTER TABLE user_certificates_photo ADD qc_image2 varchar(100) default '' COMMENT '质检报告图片2';
 ALTER TABLE user_certificates_photo ADD qc_image3 varchar(100) default '' COMMENT '质检报告图片3';
