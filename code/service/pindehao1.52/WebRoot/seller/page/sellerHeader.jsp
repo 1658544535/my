@@ -104,7 +104,7 @@
 						</li> -->
 						<li class="ui-nav-subitem">
 							<a href="goInformationPerfectWeb.do">
-								信息完善
+								商家信息
 							</a>
 						</li>
 					</ul>
