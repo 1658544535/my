@@ -31,10 +31,10 @@
         <td align="right" class="grey" width="15%" style='word-wrap: break-word;'>公司名称:</td>	
         <td colspan="3">${manufacturerPojo.company }</td>
       </tr>
-      <tr>
+   <!--   <tr>
         <td align="right" class="grey" width="15%" style='word-wrap: break-word;'>经营范围:</td>	
         <td colspan="3">${manufacturerPojo.scopeBusiness }</td>
-      </tr>
+      </tr>-->
       <tr>
         <td align="right" class="grey" width="15%" style='word-wrap: break-word;'>公司法人:</td>	
         <td colspan="3">${manufacturerPojo.legalPerson }</td>
@@ -46,7 +46,7 @@
 	        <img src='<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/upfiles/userCertificatesPhoto/${userCertificatesPhotoPojo.image5 }' height='100px'/>
         </td>
       </tr>
-      <tr>
+   <!--   <tr>
         <td align="right" class="grey" width="15%" style='word-wrap: break-word;'>旗下品牌:</td>	
         <td colspan="3">${manufacturerPojo.brand }</td>
       </tr>
@@ -61,7 +61,7 @@
       <tr>
         <td align="right" class="grey" width="15%" style='word-wrap: break-word;'>公司传真:</td>	
         <td colspan="3">${manufacturerPojo.fax }</td>
-      </tr>
+      </tr>-->
   	</table>
   	<hr />
   	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="info_table" name="Info_list_table">
@@ -69,10 +69,10 @@
         <td align="right" class="grey" width="15%" style='word-wrap: break-word;'>业务联系人姓名:</td>	
         <td colspan="3">${manufacturerPojo.contact }</td>
       </tr>
-      <tr>
+     <!-- <tr>
         <td align="right" class="grey" width="15%" style='word-wrap: break-word;'>业务联系人QQ&nbsp;:</td>	
         <td colspan="3">${manufacturerPojo.QQ }</td>
-      </tr>
+      </tr>-->
       <tr>
         <td align="right" class="grey" width="15%" style='word-wrap: break-word;'>业务联系人电话:</td>	
         <td colspan="3">${manufacturerPojo.phone }</td>
@@ -85,11 +85,27 @@
   	<hr />
   	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="info_table" name="Info_list_table">
       <tr>
+        <td align="right" class="grey" width="15%" style='word-wrap: break-word;'>身份证有效期:</td>	
+        <td colspan="3">从&nbsp;
+	        <font color="red">${userCertificatesPhotoPojo.image4BeginDate }</font>
+	        &nbsp;至&nbsp;
+	        <font color="red">${userCertificatesPhotoPojo.image4EndDate }</font>
+        </td>
+      </tr>
+      <tr>
         <td align="right" class="grey" width="15%" style='word-wrap: break-word;'>营业执照有效期:</td>	
         <td colspan="3">从&nbsp;
 	        <font color="red">${userCertificatesPhotoPojo.image1BeginDate }</font>
 	        &nbsp;至&nbsp;
 	        <font color="red">${userCertificatesPhotoPojo.image1EndDate }</font>
+        </td>
+      </tr>
+      <tr>
+        <td align="right" class="grey" width="15%" style='word-wrap: break-word;'>组织机构有效期:</td>	
+        <td colspan="3">从&nbsp;
+	        <font color="red">${userCertificatesPhotoPojo.image2BeginDate }</font>
+	        &nbsp;至&nbsp;
+	        <font color="red">${userCertificatesPhotoPojo.image2EndDate }</font>
         </td>
       </tr>
       <tr>
@@ -104,13 +120,49 @@
         <td align="right" class="grey" width="15%" style='word-wrap: break-word;'>税务登记证:</td>	
         <td colspan="3"><img src='<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/upfiles/userCertificatesPhoto/${userCertificatesPhotoPojo.image3 }' height='100px'/></td>
       </tr>
-      <tr>
+    <!--  <tr>
         <td align="right" class="grey" width="15%" style='word-wrap: break-word;'>合同证:</td>	
         <td colspan="3"><img src='<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/upfiles/userCertificatesPhoto/${userCertificatesPhotoPojo.image6 }' height='100px'/></td>
       </tr>
       <tr>
         <td align="right" class="grey" width="15%" style='word-wrap: break-word;'>其他资质照（可不填）:</td>	
         <td colspan="3"><img src='<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/upfiles/userCertificatesPhoto/${userCertificatesPhotoPojo.image7 }' height='100px'/></td>
+      </tr>-->
+      <tr>
+        <td align="right" class="grey" width="15%" style='word-wrap: break-word;'>开户许可证:</td>	
+        <td colspan="3"><img src='<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/upfiles/userCertificatesPhoto/${userCertificatesPhotoPojo.image8 }' height='100px'/></td>
+      </tr>
+  	</table>
+  	<hr />
+  	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="info_table" name="Info_list_table">
+      <tr>
+        <td align="right" class="grey" width="15%" style='word-wrap: break-word;'>质检图片:</td>	
+        <td colspan="3">
+        <img src='<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/upfiles/userCertificatesPhoto/${userCertificatesPhotoPojo.qcImage1 }' height='100px'/>
+        <img src='<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/upfiles/userCertificatesPhoto/${userCertificatesPhotoPojo.qcImage2 }' height='100px'/>
+        <img src='<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/upfiles/userCertificatesPhoto/${userCertificatesPhotoPojo.qcImage3 }' height='100px'/>
+        <img src='<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/upfiles/userCertificatesPhoto/${userCertificatesPhotoPojo.qcImage4 }' height='100px'/>
+        <img src='<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/upfiles/userCertificatesPhoto/${userCertificatesPhotoPojo.qcImage5 }' height='100px'/>
+        <img src='<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/upfiles/userCertificatesPhoto/${userCertificatesPhotoPojo.qcImage6 }' height='100px'/>
+        </td>
+      </tr>
+  	</table>
+  <hr />
+  	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="info_table" name="Info_list_table">
+     <tr>
+        <td align="right" class="grey" width="15%" style='word-wrap: break-word;'>品牌授权证明图片:</td>	
+        <td colspan="3">
+        <img src='<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/upfiles/userCertificatesPhoto/${userCertificatesPhotoPojo.blImage1 }' height='100px'/>
+        <img src='<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/upfiles/userCertificatesPhoto/${userCertificatesPhotoPojo.blImage2 }' height='100px'/>
+        <img src='<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/upfiles/userCertificatesPhoto/${userCertificatesPhotoPojo.blImage3 }' height='100px'/>
+        <img src='<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/upfiles/userCertificatesPhoto/${userCertificatesPhotoPojo.blImage4 }' height='100px'/>
+        <img src='<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/upfiles/userCertificatesPhoto/${userCertificatesPhotoPojo.blImage5 }' height='100px'/>
+        <img src='<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/upfiles/userCertificatesPhoto/${userCertificatesPhotoPojo.blImage6 }' height='100px'/>
+        <img src='<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/upfiles/userCertificatesPhoto/${userCertificatesPhotoPojo.blImage7 }' height='100px'/>
+        <img src='<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/upfiles/userCertificatesPhoto/${userCertificatesPhotoPojo.blImage8 }' height='100px'/>
+        <img src='<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/upfiles/userCertificatesPhoto/${userCertificatesPhotoPojo.blImage9 }' height='100px'/>
+        <img src='<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/upfiles/userCertificatesPhoto/${userCertificatesPhotoPojo.blImage10 }' height='100px'/>
+        </td>
       </tr>
   	</table>
     </form>
