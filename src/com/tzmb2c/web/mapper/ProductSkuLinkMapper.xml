@@ -128,8 +128,76 @@
 		</if>
 	</select>
 	
+	<select id="findProductSkuLinkSeller" parameterType="productSkuLinkPojo" resultType="productSkuLinkPojo">
+		select t.id as id,t.product_id as productId,t.stock as stock,t.sku_color as skuColor,t.sku_format as skuFormat,t.sorting as sorting,t.status as status,
+		(select name from sys_dict where value=t.status and type = 'status') as statusName,t.create_by as createBy,t.create_date as createDate,t.update_by as updateBy,
+		t.update_date as updateDate,t.remarks as remarks,t.version as version,p.product_name as productName,
+		t.stock_num as stockNum,t.type,t.price,t.activity_id as activityId,t.business_code as businessCode,t.is_delete as isDelete
+		from product_sku_link_seller t left join product_seller p on t.product_id=p.id 
+		<!--
+		left join sku_attribute_seller a on t.sku_color_id =a.id
+		left join sku_attribute_seller s on t.sku_format_id =s.id
+		-->
+		where 1=1 
+		<if test="id != null and id != ''">
+			and t.id=#{id}
+		</if>	
+		<if test="productId != null and productId != ''">
+			and t.product_id=#{productId} 
+		</if>
+		<if test="type != null">
+			and t.type=#{type} 
+		</if>
+		<if test="isDelete != null">
+			and t.is_delete=#{isDelete} 
+		</if>
+	</select>
+	
 	<update id="productSkuLinkUpdate" parameterType="productSkuLinkPojo">
 		update product_sku_link t set
+		<if test="productId != null and productId != ''">
+		t.product_id=#{productId},
+		</if>
+		<if test="skuColor != null and skuColor != ''">
+		t.sku_color=#{skuColor},
+		</if>
+		<if test="skuFormat != null and skuFormat != ''">
+		t.sku_format=#{skuFormat},
+		</if>
+		<if test="stock != null ">
+		t.stock=#{stock},
+		</if>
+		<if test="stockNum != null ">
+		t.stock_num = #{stockNum},
+		</if>
+		<if test="sorting != null and sorting != ''">
+		t.sorting=#{sorting},
+		</if>
+		<if test="status != null ">
+		t.status=#{status},
+		</if>
+		<if test="updateBy != null and updateBy != ''">
+		t.update_by=#{updateBy},
+		</if>
+		<if test="remarks != null and remarks != ''">
+		t.remarks=#{remarks},
+		</if>
+		<if test="price != null and price != ''">
+		t.price=#{price},
+		</if>
+		<if test="businessCode != null and businessCode != ''">
+		t.business_code=#{businessCode},
+		</if>
+		<if test="isDelete != null and isDelete != ''">
+		t.is_delete=#{isDelete},
+		</if>
+		t.update_date=now()
+		where
+		t.id = #{id}
+	</update>
+	
+	<update id="productSkuLinkUpdateSeller" parameterType="productSkuLinkPojo">
+		update product_sku_link_seller t set
 		<if test="productId != null and productId != ''">
 		t.product_id=#{productId},
 		</if>
@@ -357,6 +425,137 @@
 		</trim>
 	</insert>
 	
+	<insert id="addSkuLinkByProductIdSeller" useGeneratedKeys="true" keyProperty="id" parameterType="ProductSkuLinkPojo">
+		insert into product_sku_link_seller
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				Id,
+			</if>
+			<if test="productId != null">
+				product_id,
+			</if>
+			<if test="skuColor != null">
+				sku_color,
+			</if>
+			<if test="skuFormat != null">
+				sku_format,
+			</if>
+			<if test="skuColorId != null">
+				sku_color_id,
+			</if>
+			<if test="skuFormatId != null">
+				sku_format_id,
+			</if>
+			<if test="image != null">
+				image,
+			</if>
+			<if test="stockNum != null">
+				stock_num,
+			</if>
+			<if test="stock != null">
+				stock,
+			</if>
+			<if test="sorting != null">
+				sorting,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="price != null">
+				price,
+			</if>
+			<if test="activityId != null">
+				activity_id,
+			</if>
+			<if test="businessCode != null">
+				business_code,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+				create_date,
+			<if test="updateBy != null">
+				update_by,
+			</if>
+				update_date,
+			<if test="remarks != null">
+				remarks,
+			</if>
+			<if test="version != null">
+				version,
+			</if>
+			<if test="isDelete != null">
+				is_delete,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="productId != null">
+				#{productId},
+			</if>
+			<if test="skuColor != null">
+				#{skuColor},
+			</if>
+			<if test="skuFormat != null">
+				#{skuFormat},
+			</if>
+			<if test="skuColorId != null">
+				#{skuColorId},
+			</if>
+			<if test="skuFormatId != null">
+				#{skuFormatId},
+			</if>
+			<if test="image != null">
+				#{image},
+			</if>
+			<if test="stockNum != null">
+				#{stockNum},
+			</if>
+			<if test="stock != null">
+				#{stock},
+			</if>
+			<if test="sorting != null">
+				#{sorting},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+			<if test="type != null">
+				#{type},
+			</if>
+			<if test="price != null">
+				#{price},
+			</if>
+			<if test="activityId != null">
+				#{activityId},
+			</if>
+			<if test="businessCode != null">
+				#{businessCode},
+			</if>
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+				now(),
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+				now(),
+			<if test="remarks != null">
+				#{remarks},
+			</if>
+			<if test="version != null">
+				#{version},
+			</if>
+			<if test="isDelete != null">
+				#{isDelete},
+			</if>
+		</trim>
+	</insert>	
 	
 	<update id="deleProductSkuLink" parameterType="Long">
 		update product_sku_link set is_delete = 1 where id=#{id}

@@ -14,6 +14,9 @@ public interface ProductFocusImagesMapper {
   public void insertProductFocusImages(ProductFocusImagesPojo productFocusImagesPojo)
       throws SQLException;
 
+  public void insertProductFocusImagesSeller(ProductFocusImagesPojo productFocusImagesPojo)
+      throws SQLException;
+
   public void updateProductFocusImages(ProductFocusImagesPojo productFocusImagesPojo)
       throws SQLException;
 

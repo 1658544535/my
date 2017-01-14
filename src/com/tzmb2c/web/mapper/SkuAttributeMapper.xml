@@ -35,6 +35,14 @@
             select LAST_INSERT_ID()
         </selectKey>
     </insert>	
+    
+    <insert id="insertSkuAttributeSeller" parameterType="skuAttributePojo" useGeneratedKeys="true" keyProperty="id">
+       insert into sku_attribute_seller (attribute,value,image,sorting,status,create_by,create_date,update_by,update_date,remarks,version,product_id,dict_value,is_delete)
+       values(#{attribute},#{value},#{image},#{sorting},#{status},#{createBy},now(),#{updateBy},now(),#{remarks},#{version},#{productId},#{dictValue},0) 
+        <selectKey keyProperty="id" resultType="Long">
+            select LAST_INSERT_ID()
+        </selectKey>
+    </insert>	
 	
     <update id="deleSkuAttribute" parameterType="Long">
 	    update sku_attribute set is_delete = 1 where id=#{id}
@@ -90,6 +98,35 @@
 		t.is_delete as isDelete,
 		(select name from sys_dict where value=t.status and type = 'sys_dict_status') statusName
 		from sku_attribute t where
+		t.product_id = #{productId} 
+		<if test="value != null and value != ''">
+		and t.value = #{value}
+		</if>
+		<if test="attribute != null and attribute != ''">
+		and t.attribute = #{attribute}
+		</if>
+		<if test="dictValue != null and dictValue != ''">
+		and t.dict_value = #{dictValue}
+		</if>
+		<if test="isDelete != null">
+		and t.is_delete = #{isDelete}
+		</if>
+		order by t.sorting
+	</select>		
+	
+	<select id="getSkuAttributeSeller" parameterType="java.util.Map" resultType="skuAttributePojo">
+		select 
+		t.id as id, 
+		t.attribute as attribute, 
+		t.value as value,
+		t.image as image, 
+		t.sorting as sorting,
+		t.remarks as remarks,
+		t.status as status,
+		t.product_id as productId,
+		t.is_delete as isDelete,
+		(select name from sys_dict where value=t.status and type = 'sys_dict_status') statusName
+		from sku_attribute_seller t where
 		t.product_id = #{productId} 
 		<if test="value != null and value != ''">
 		and t.value = #{value}

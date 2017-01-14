@@ -60,6 +60,11 @@
 		values(#{productId},#{userId},#{images},#{sorting},#{status},#{createBy},sysdate(),#{updateBy},sysdate(),#{remarks},#{version},#{alts})
 	</insert>
 	
+	<insert id="addProductImagesSeller" parameterType="productImagesPojo">
+		insert into product_images_seller(product_id,user_id,images,sorting,status,create_by,create_date,update_by,update_date,remarks,version,alts)
+		values(#{productId},#{userId},#{images},#{sorting},#{status},#{createBy},sysdate(),#{updateBy},sysdate(),#{remarks},#{version},#{alts})
+	</insert>
+	
 	<update id="productImagesUpdate" parameterType="productImagesPojo">
 		update product_images t 
 		<set>
