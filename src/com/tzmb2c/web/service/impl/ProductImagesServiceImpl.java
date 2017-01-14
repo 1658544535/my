@@ -118,4 +118,9 @@ public class ProductImagesServiceImpl implements ProductImagesService {
   public List<ProductImagesPojo> productForId(Long id) {
     return productImagesDao.productForId(id);
   }
+
+  @Override
+  public void addProductImagesSeller(ProductImagesPojo productImages) {
+    productImagesDao.addProductImagesSeller(productImages);
+  }
 }

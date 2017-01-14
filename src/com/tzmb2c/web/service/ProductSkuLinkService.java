@@ -25,6 +25,8 @@ public interface ProductSkuLinkService {
 
   public Long addSkuLinkByProductId(ProductSkuLinkPojo productSkuLink) throws SQLException;
 
+  public Long addSkuLinkByProductIdSeller(ProductSkuLinkPojo productSkuLink) throws SQLException;
+
   public void productSkuLinkUpdate(ProductSkuLinkPojo productSkuLink) throws SQLException;
 
   public void deleProductSkuLink(Long id) throws SQLException;
@@ -72,4 +74,10 @@ public interface ProductSkuLinkService {
    * @throws SQLException
    */
   public int getSkuStock(Map<String, Object> map) throws SQLException;
+
+  public ProductSkuLinkPojo findProductSkuLinkSeller(ProductSkuLinkPojo productSkuLink);
+
+  public void productSkuLinkUpdateSeller(ProductSkuLinkPojo productSkuLink) throws SQLException;
+
+
 }

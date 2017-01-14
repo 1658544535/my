@@ -18,6 +18,8 @@ public interface ProductService {
 
   public List<ProductPojo> getProductAll(ProductPojo product, Pager page) throws SQLException;
 
+  public List<ProductPojo> getProductAllSeller(ProductPojo product, Pager page) throws SQLException;
+
   public List<ProductExcelPojo> getProductAll2(ProductExcelPojo product, Pager page)
       throws SQLException;
 
@@ -29,11 +31,17 @@ public interface ProductService {
 
   public ProductPojo findProduct(ProductPojo product);
 
+  public ProductPojo findProductSeller(ProductPojo product);
+
   public Long addProduct(ProductPojo product);
+
+  public Long addProductSeller(ProductPojo product);
 
   void productUpdateIng(ProductPojo product);
 
   public void productUpdate(ProductPojo product);
+
+  public void productUpdateSeller(ProductPojo product);
 
   public ProductPojo findProductContent(Long id) throws SQLException;
 

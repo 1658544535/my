@@ -91,7 +91,7 @@ public class ProductServiceImpl implements ProductService {
         && !product.getActivityStatus().equals("")) {
       map.put("activityStatus", product.getActivityStatus());
     }
-    
+
     if (product != null && product.getProductName() != null && !product.getProductName().equals("")) {
       map.put("productName", product.getProductName());
     }
@@ -139,7 +139,7 @@ public class ProductServiceImpl implements ProductService {
         map.put("paixu5", product.getProductNameEn());
       } else if (product.getTongji() != null && product.getTongji() == 1) {
         map.put("paixu4", 111);
-      } else if (product.getOrderBy() != null && !product.getOrderBy().equals("") ) {
+      } else if (product.getOrderBy() != null && !product.getOrderBy().equals("")) {
         map.put("orderBy", product.getOrderBy());
       } else {
         map.put("paixu3", 111);// 为空的时候，按id排序
@@ -1031,5 +1031,123 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public ProductPojo getById(Long id) throws SQLException {
     return productDao.getById(id);
+  }
+
+  @Override
+  public List<ProductPojo> getProductAllSeller(ProductPojo product, Pager page) throws SQLException {
+
+    Map<String, Object> map = new HashMap<String, Object>();
+    if (product != null && product.getActivityType() != null
+        && !product.getActivityType().equals("")) {
+      map.put("activityType", product.getActivityType());
+    }
+    if (product != null && product.getProductNameOrId() != null
+        && !product.getProductNameOrId().equals("")) {
+      map.put("productNameOrId", product.getProductNameOrId());
+    }
+    if (product != null && product.getActivityStatus() != null
+        && !product.getActivityStatus().equals("")) {
+      map.put("activityStatus", product.getActivityStatus());
+    }
+
+    if (product != null && product.getProductName() != null && !product.getProductName().equals("")) {
+      map.put("productName", product.getProductName());
+    }
+    if (product != null && product.getProductStatus() != null
+        && !product.getProductStatus().equals("")) {
+      map.put("productStatus", product.getProductStatus());
+    }
+    // else{
+    // map.put("productStatus", 1);
+    // }
+    if (product != null && product.getProductTypeId() != null
+        && !product.getProductTypeId().equals("")) {
+      map.put("productTypeId", product.getProductTypeId());
+    }
+    if (product != null && product.getProductTypeIds() != null
+        && !product.getProductTypeIds().equals("")) {
+      map.put("productTypeIds", product.getProductTypeIds());
+    }
+    if (product != null && product.getProductType1() != null
+        && !product.getProductType1().equals("")) {
+      map.put("productType1", product.getProductType1());
+    }
+    if (product != null && product.getStatus() != null && !product.getStatus().equals("")) {
+      map.put("status", product.getStatus());
+    }
+    if (product != null && product.getUserId() != null && !product.getUserId().equals("")) {
+      map.put("userId", product.getUserId());
+    }
+    if (product != null) {
+      if (product.getProductNameEn() != null && product.getProductNameEn().equals("0")) {
+        map.put("paixu0", product.getProductNameEn());
+      } else if (product.getProductNameEn() != null && product.getProductNameEn().equals("1")) {
+        map.put("paixu1", product.getProductNameEn());
+      } else if (product.getProductNameEn() != null && product.getProductNameEn().equals("11")) {
+        map.put("paixu11", product.getProductNameEn());
+      } else if (product.getProductNameEn() != null && product.getProductNameEn().equals("2")) {
+        map.put("paixu2", product.getProductNameEn());
+      } else if (product.getProductNameEn() != null && product.getProductNameEn().equals("22")) {
+        map.put("paixu22", product.getProductNameEn());
+      } else if (product.getProductNameEn() != null && product.getProductNameEn().equals("4")) {
+        map.put("paixu4", product.getProductNameEn());
+      } else if (product.getProductNameEn() != null && product.getProductNameEn().equals("44")) {
+        map.put("paixu44", product.getProductNameEn());
+      } else if (product.getProductNameEn() != null && product.getProductNameEn().equals("5")) {
+        map.put("paixu5", product.getProductNameEn());
+      } else if (product.getTongji() != null && product.getTongji() == 1) {
+        map.put("paixu4", 111);
+      } else if (product.getOrderBy() != null && !product.getOrderBy().equals("")) {
+        map.put("orderBy", product.getOrderBy());
+      } else {
+        map.put("paixu3", 111);// 为空的时候，按id排序
+      }
+      if (product.getTime() != null) {
+        map.put("time", product.getTime());
+      }
+      map.put("uID", product.getUserId());
+      map.put("id", product.getId());
+      map.put("productNo", product.getProductNo());
+      map.put("productNum", product.getProductNum());
+      map.put("remarks", product.getRemarks());
+      map.put("isIntroduce", product.getIsIntroduce());
+      map.put("isNew", product.getIsNew());
+      map.put("userId", product.getUserId());
+      map.put("brand", product.getBrand());
+      map.put("texture", product.getTexture());
+      map.put("age", product.getAge());
+      map.put("BeginPrice", product.getBeginPrice());
+      map.put("EndPrice", product.getEndPrice());
+      map.put("tongji", product.getTongji());
+      map.put("name", product.getName());
+      map.put("shopName", product.getShopName());
+      map.put("activityType", product.getActivityType());
+      map.put("timeIdIsN", product.getTimeIdIsN());
+      map.put("userBrandId", product.getUserBrandId());
+      map.put("keywords", product.getKeywords());
+      map.put("drawkeywords", product.getDrawkeywords());
+    }
+    if (page != null) {
+      map.put("pageSize", page.getPageSize());
+      map.put("pageNo", (page.getPageNo() - 1) * page.getPageSize());
+    }
+    return productDao.getProductAllSeller(map);
+
+  }
+
+  @Override
+  public Long addProductSeller(ProductPojo product) {
+    return productDao.addProductSeller(product);
+  }
+
+  @Override
+  public void productUpdateSeller(ProductPojo product) {
+    productDao.productUpdateSeller(product);
+  }
+
+  @Override
+  public ProductPojo findProductSeller(ProductPojo product) {
+    ProductPojo pojo = productDao.findProductSeller(product);
+    return pojo;
   }
 }

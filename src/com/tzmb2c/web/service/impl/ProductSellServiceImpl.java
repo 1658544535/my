@@ -77,4 +77,13 @@ public class ProductSellServiceImpl implements ProductSellService {
     int rows = productSelldao.updateDaySell(productSell);
     return rows;
   }
+
+  @Override
+  public int addSeller(ProductSellPojo productSell) throws SQLException {
+    if (null == productSell) {
+      return 0;
+    }
+    int rows = productSelldao.addSeller(productSell);
+    return rows;
+  }
 }
