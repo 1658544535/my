@@ -64,6 +64,12 @@
 		values(#{productId},#{userId},#{images},#{sorting},#{status},#{createBy},now(),#{updateBy},now(),#{remarks},#{version},#{alts})
 	</insert>
 	
+	<insert id="insertProductFocusImagesSeller" parameterType="productFocusImagesPojo">
+		insert into
+		product_focus_images_seller(product_id,user_id,images,sorting,status,create_by,create_date,update_by,update_date,remarks,version,alts)
+		values(#{productId},#{userId},#{images},#{sorting},#{status},#{createBy},now(),#{updateBy},now(),#{remarks},#{version},#{alts})
+	</insert>
+	
 	<delete id="delProductFocusImages" parameterType="Long">
 		delete from product_focus_images where id = #{id}
 	</delete>

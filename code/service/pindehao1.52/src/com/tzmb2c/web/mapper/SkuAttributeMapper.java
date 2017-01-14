@@ -13,6 +13,8 @@ public interface SkuAttributeMapper {
 
   public Long insertSkuAttribute(SkuAttributePojo skuAttributePojo) throws Exception;
 
+  public Long insertSkuAttributeSeller(SkuAttributePojo skuAttributePojo) throws Exception;
+
   public void deleSkuAttribute(Long id) throws SQLException;
 
   public SkuAttributePojo getSkuAttributeById(Long id) throws Exception;
@@ -20,6 +22,8 @@ public interface SkuAttributeMapper {
   public void skuAttributeUpdateById(SkuAttributePojo skuAttributePojo) throws Exception;
 
   public List<SkuAttributePojo> getSkuAttribute(Map<String, Object> map) throws Exception;
+
+  public List<SkuAttributePojo> getSkuAttributeSeller(Map<String, Object> map) throws Exception;
 
 
 }

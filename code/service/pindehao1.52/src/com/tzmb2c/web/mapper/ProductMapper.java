@@ -16,6 +16,8 @@ public interface ProductMapper {
 
   List<ProductPojo> getProductAll(Map<String, Object> map);
 
+  List<ProductPojo> getProductAllSeller(Map<String, Object> map);
+
   List<ProductExcelPojo> getProductAll2(Map<String, Object> map);
 
   List<ProductPojo> getAgencyProductAll(Map<String, Object> map);
@@ -25,6 +27,8 @@ public interface ProductMapper {
   List<ProductPojo> getProductAllIds(Map<String, Object> map);
 
   ProductPojo findProduct(ProductPojo product);
+
+  ProductPojo findProductSeller(ProductPojo product);
 
   public ProductPojo findProductContent(Long id) throws SQLException;
 
@@ -38,7 +42,11 @@ public interface ProductMapper {
 
   public Long addProduct(ProductPojo product);
 
+  public Long addProductSeller(ProductPojo product);
+
   public void productUpdate(ProductPojo product);
+
+  public void productUpdateSeller(ProductPojo product);
 
   public void updateProductBaseNumber() throws SQLException;
 

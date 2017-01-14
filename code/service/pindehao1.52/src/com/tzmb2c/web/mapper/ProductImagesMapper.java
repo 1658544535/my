@@ -19,6 +19,8 @@ public interface ProductImagesMapper {
 
   public void addProductImages(ProductImagesPojo productImages);
 
+  public void addProductImagesSeller(ProductImagesPojo productImages);
+
   public void productImagesUpdate(ProductImagesPojo productImages);
 
   public void deleProductImages(Long id) throws SQLException;

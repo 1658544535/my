@@ -19,6 +19,8 @@ public interface ProductSellMapper {
 
   int insert(ProductSellPojo productSell) throws SQLException;
 
+  int insertSeller(ProductSellPojo productSell) throws SQLException;
+
   int update(ProductSellPojo productSell) throws SQLException;
 
   int deleteById(Long id) throws SQLException;
