@@ -19,6 +19,8 @@ public interface ProductImagesService {
   public ProductImagesPojo findProductImages(ProductImagesPojo productImages);
 
   public void addProductImages(ProductImagesPojo productImages);
+  
+  public void addProductImagesSeller(ProductImagesPojo productImages);
 
   public void productImagesUpdate(ProductImagesPojo productImages);
 

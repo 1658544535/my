@@ -152,4 +152,11 @@ public class ProductFocusImagesServiceImpl implements ProductFocusImagesService 
   public List<ProductFocusImagesPojo> getProductFocusImagesByPid(Long id) {
     return productFocusImagesDao.getProductFocusImagesByPid(id);
   }
+
+
+  @Override
+  public void insertProductFocusImagesSeller(ProductFocusImagesPojo productFocusImagesPojo)
+      throws SQLException {
+    productFocusImagesDao.insertProductFocusImagesSeller(productFocusImagesPojo);
+  }
 }

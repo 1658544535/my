@@ -46,4 +46,14 @@ public class SkuAttributeServiceImpl implements SkuAttributeService {
   public List<SkuAttributePojo> getSkuAttribute(Map<String, Object> map) throws Exception {
     return skuAttributeDao.getSkuAttribute(map);
   }
+
+  @Override
+  public Long insertSkuAttributeSeller(SkuAttributePojo skuAttributePojo) throws Exception {
+    return skuAttributeDao.insertSkuAttributeSeller(skuAttributePojo);
+  }
+
+  @Override
+  public List<SkuAttributePojo> getSkuAttributeSeller(Map<String, Object> map) throws Exception {
+    return skuAttributeDao.getSkuAttributeSeller(map);
+  }
 }

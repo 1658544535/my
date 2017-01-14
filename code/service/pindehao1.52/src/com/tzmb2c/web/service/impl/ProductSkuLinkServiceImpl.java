@@ -211,4 +211,19 @@ public class ProductSkuLinkServiceImpl implements ProductSkuLinkService {
     return productSkuLinkDao.getSkuStock(map);
   }
 
+  @Override
+  public Long addSkuLinkByProductIdSeller(ProductSkuLinkPojo productSkuLink) throws SQLException {
+    return productSkuLinkDao.addSkuLinkByProductIdSeller(productSkuLink);
+  }
+
+  @Override
+  public ProductSkuLinkPojo findProductSkuLinkSeller(ProductSkuLinkPojo productSkuLink) {
+    return productSkuLinkDao.findProductSkuLinkSeller(productSkuLink);
+  }
+
+  @Override
+  public void productSkuLinkUpdateSeller(ProductSkuLinkPojo productSkuLink) throws SQLException {
+    productSkuLinkDao.productSkuLinkUpdateSeller(productSkuLink);
+  }
+
 }

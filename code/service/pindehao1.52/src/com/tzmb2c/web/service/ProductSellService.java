@@ -18,6 +18,8 @@ public interface ProductSellService {
 
   public int add(ProductSellPojo productSell) throws SQLException;
 
+  public int addSeller(ProductSellPojo productSell) throws SQLException;
+
   public int update(ProductSellPojo productSell) throws SQLException;
 
   public int delete(Long id) throws SQLException;
