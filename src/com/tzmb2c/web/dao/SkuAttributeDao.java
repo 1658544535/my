@@ -14,12 +14,15 @@ public interface SkuAttributeDao {
 
   public Long insertSkuAttribute(SkuAttributePojo skuAttributePojo) throws Exception;
 
+  public Long insertSkuAttributeSeller(SkuAttributePojo skuAttributePojo) throws Exception;
+
   public void deleSkuAttribute(Long id) throws SQLException;
 
   public void skuAttributeUpdateById(SkuAttributePojo skuAttributePojo) throws Exception;
 
   List<SkuAttributePojo> getSkuAttribute(Map<String, Object> map) throws Exception;
 
+  List<SkuAttributePojo> getSkuAttributeSeller(Map<String, Object> map) throws Exception;
 
 
 }

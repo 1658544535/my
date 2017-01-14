@@ -350,4 +350,24 @@ public class ProductDaoImpl implements ProductDao {
   public ProductPojo getById(Long id) throws SQLException {
     return productMapper.getById(id);
   }
+
+  @Override
+  public List<ProductPojo> getProductAllSeller(Map<String, Object> map) {
+    return productMapper.getProductAllSeller(map);
+  }
+
+  @Override
+  public Long addProductSeller(ProductPojo product) {
+    return productMapper.addProductSeller(product);
+  }
+
+  @Override
+  public void productUpdateSeller(ProductPojo product) {
+    productMapper.productUpdateSeller(product);
+  }
+
+  @Override
+  public ProductPojo findProductSeller(ProductPojo product) {
+    return productMapper.findProductSeller(product);
+  }
 }
