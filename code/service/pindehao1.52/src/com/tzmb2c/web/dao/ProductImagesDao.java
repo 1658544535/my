@@ -19,6 +19,8 @@ public interface ProductImagesDao {
 
   void addProductImages(ProductImagesPojo productImages);
 
+  void addProductImagesSeller(ProductImagesPojo productImages);
+
   void productImagesUpdate(ProductImagesPojo productImages);
 
   public void deleProductImages(Long id) throws SQLException;

@@ -82,4 +82,16 @@ public class ProductFocusImagesDaoImpl implements ProductFocusImagesDao {
   public List<ProductFocusImagesPojo> getProductFocusImagesByPid(Long id) {
     return productFocusImagesMapper.getProductFocusImagesByPid(id);
   }
+
+  @Override
+  public void insertProductFocusImagesSeller(ProductFocusImagesPojo productFocusImagesPojo)
+      throws SQLException {
+    try {
+      productFocusImagesMapper.insertProductFocusImagesSeller(productFocusImagesPojo);
+    } catch (Exception e) {
+      e.printStackTrace();
+
+    }
+
+  }
 }

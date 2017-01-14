@@ -16,6 +16,8 @@ public interface ProductDao {
 
   List<ProductPojo> getProductAll(Map<String, Object> map);
 
+  List<ProductPojo> getProductAllSeller(Map<String, Object> map);
+
   List<ProductExcelPojo> getProductAll2(Map<String, Object> map);
 
   List<ProductPojo> getAgencyProductAll(Map<String, Object> map);
@@ -25,6 +27,8 @@ public interface ProductDao {
   List<ProductPojo> getProductAllIds(Map<String, Object> map);
 
   ProductPojo findProduct(ProductPojo product);
+
+  ProductPojo findProductSeller(ProductPojo product);
 
   public ProductPojo findProductContent(Long id) throws SQLException;
 
@@ -38,9 +42,13 @@ public interface ProductDao {
 
   Long addProduct(ProductPojo product);
 
+  Long addProductSeller(ProductPojo product);
+
   void productUpdateIng(ProductPojo product);
 
   void productUpdate(ProductPojo product);
+
+  void productUpdateSeller(ProductPojo product);
 
   void checkProduct(Long id) throws SQLException;
 

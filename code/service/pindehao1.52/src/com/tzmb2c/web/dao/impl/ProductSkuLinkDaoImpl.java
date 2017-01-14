@@ -122,5 +122,20 @@ public class ProductSkuLinkDaoImpl implements ProductSkuLinkDao {
     return productSkuLinkMapper.getSkuStock(map);
   }
 
+  @Override
+  public Long addSkuLinkByProductIdSeller(ProductSkuLinkPojo productSkuLink) throws SQLException {
+    return productSkuLinkMapper.addSkuLinkByProductIdSeller(productSkuLink);
+  }
+
+  @Override
+  public ProductSkuLinkPojo findProductSkuLinkSeller(ProductSkuLinkPojo productSkuLink) {
+    return productSkuLinkMapper.findProductSkuLinkSeller(productSkuLink);
+  }
+
+  @Override
+  public void productSkuLinkUpdateSeller(ProductSkuLinkPojo productSkuLink) throws SQLException {
+    productSkuLinkMapper.productSkuLinkUpdateSeller(productSkuLink);
+  }
+
 
 }

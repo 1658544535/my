@@ -6,13 +6,11 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,18 +25,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.EncodeHintType;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.common.BitMatrix;
 import com.opensymphony.xwork2.ActionContext;
 import com.tzmb2c.business.service.SellerService;
 import com.tzmb2c.common.Pager;
 import com.tzmb2c.utils.CompressPicture;
 import com.tzmb2c.utils.FileUtil;
 import com.tzmb2c.utils.MD5Util;
-import com.tzmb2c.utils.MatrixToImageWriter;
 import com.tzmb2c.utils.RandomUtils;
 import com.tzmb2c.utils.StringUtil;
 import com.tzmb2c.utils.UserUtil;
@@ -995,7 +990,7 @@ public class SellerWebAction extends SuperAction {
       productPojo = new ProductPojo();
     }
     productPojo.setUserId(uID);
-    productList = productService.getProductAll(productPojo, null);
+    productList = productService.getProductAllSeller(productPojo, null);
     page.setRowCount(productList.size());
     return SUCCESS;
   }
@@ -1012,7 +1007,7 @@ public class SellerWebAction extends SuperAction {
       Long uID = sysLogin.getId();
       page.setPageSize(10);
       productPojo.setUserId(uID);
-      productList = productService.getProductAll(productPojo, page);
+      productList = productService.getProductAllSeller(productPojo, page);
     }
     JSONArray json = JSONArray.fromObject(productList);
     page.setResult(json.toString());
@@ -1091,6 +1086,7 @@ public class SellerWebAction extends SuperAction {
    * @return
    * @throws Throwable
    */
+  @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   public String productAddWeb() throws Throwable {
     try {
       SysLoginPojo sysLogin = UserUtil.getWebUser();
@@ -1126,25 +1122,26 @@ public class SellerWebAction extends SuperAction {
       productPojo.setRecommend(0);
       StringBuffer sbf = new StringBuffer(RandomUtils.runVerifyCode(6));
       // sbf.append(new Date().getTime());
+      // >>>qrcode<<<
       // 生成二维码
-      String content = "F***";
-      String path =
-          ServletActionContext.getServletContext().getRealPath("/upfiles/qrcode") + File.separator;
-      File creapath = new File(path);
-      if (!creapath.isDirectory()) {
-        creapath.mkdirs();
-      }
-      MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-      Hashtable hints = new Hashtable();
-      hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
-      BitMatrix bitMatrix =
-          multiFormatWriter.encode(content, BarcodeFormat.QR_CODE, 400, 400, hints);
-      SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-      String img = df.format(new Date());
-      File file1 = new File(path, img + ".jpg");
-      MatrixToImageWriter.writeToFile(bitMatrix, "jpg", file1);
+      // String content = "F***";
+      // String path =
+      // ServletActionContext.getServletContext().getRealPath("/upfiles/qrcode") + File.separator;
+      // File creapath = new File(path);
+      // if (!creapath.isDirectory()) {
+      // creapath.mkdirs();
+      // }
+      // MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+      // Hashtable hints = new Hashtable();
+      // hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+      // BitMatrix bitMatrix =
+      // multiFormatWriter.encode(content, BarcodeFormat.QR_CODE, 400, 400, hints);
+      // SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+      // String img = df.format(new Date());
+      // File file1 = new File(path, img + ".jpg");
+      // MatrixToImageWriter.writeToFile(bitMatrix, "jpg", file1);
+      // productPojo.setQrcode(img + ".jpg");
       productPojo.setStatus(0);
-      productPojo.setQrcode(img + ".jpg");
       productPojo.setProductNo(sbf.toString());
       productPojo.setLadderPrice("[]");
       /*
@@ -1166,7 +1163,9 @@ public class SellerWebAction extends SuperAction {
        */
       String typeIds = ":" + String.valueOf(productPojo.getProductTypeIds()) + ":";
       productPojo.setProductTypeIds(typeIds);
-      productService.addProduct(productPojo);// 商品插入
+      productPojo.setBaseNumber(0);
+      productService.addProductSeller(productPojo);// 商品插入
+      // >>>product_sell<<<
       ProductSellPojo productSellPojo = new ProductSellPojo();
       productSellPojo.setProductId(productPojo.getId());
       productSellPojo.setProductName(productPojo.getProductName());
@@ -1180,7 +1179,7 @@ public class SellerWebAction extends SuperAction {
       productSellPojo.setProductType1(productPojo.getProductType1());
       productSellPojo.setProductTypeIds(productPojo.getProductTypeIds());
       productSellPojo.setStatus(productPojo.getStatus());
-      productSellService.add(productSellPojo);
+      productSellService.addSeller(productSellPojo);
       if (upfile != null) {
         // 商品图片1张
         String file_name = StringUtil.getCurrentDateStr() + ".jpg";
@@ -1196,7 +1195,7 @@ public class SellerWebAction extends SuperAction {
         productImagesPojo.setUpdateBy(uid);
         productImagesPojo.setStatus(1);
         productImagesPojo.setSorting(1);
-        productImagesService.addProductImages(productImagesPojo);
+        productImagesService.addProductImagesSeller(productImagesPojo);
       } else {
         productPojo.setImage("");
       }
@@ -1224,7 +1223,7 @@ public class SellerWebAction extends SuperAction {
           productFocusImages.setUserId(uid);
           productFocusImages.setCreateBy(uid);
           productFocusImages.setUpdateBy(uid);
-          productFocusImagesService.insertProductFocusImages(productFocusImages);
+          productFocusImagesService.insertProductFocusImagesSeller(productFocusImages);
         }
       }
       // ProductPojo product = new ProductPojo();
@@ -1283,7 +1282,8 @@ public class SellerWebAction extends SuperAction {
             map2.put("value", formats[i]);
             map2.put("productId", productPojo.getId());
             map2.put("attribute", "规格");
-            List<SkuAttributePojo> SkuAttributePojos2 = skuAttributeService.getSkuAttribute(map2);
+            List<SkuAttributePojo> SkuAttributePojos2 =
+                skuAttributeService.getSkuAttributeSeller(map2);
             if (SkuAttributePojos2.size() != 0) {
               productSkuLinkPojo.setSkuFormatId(SkuAttributePojos2.get(0).getId());
             } else {
@@ -1293,7 +1293,7 @@ public class SellerWebAction extends SuperAction {
               skuAttributePojo2.setStatus(1);
               skuAttributePojo2.setCreateDate(new Date());
               skuAttributePojo2.setUpdateDate(new Date());
-              skuAttributeService.insertSkuAttribute(skuAttributePojo2);// 插入sku属性表
+              skuAttributeService.insertSkuAttributeSeller(skuAttributePojo2);// 插入sku属性表
               productSkuLinkPojo.setSkuFormatId(skuAttributePojo2.getId());
             }
           } else {
@@ -1325,7 +1325,8 @@ public class SellerWebAction extends SuperAction {
             map.put("value", colors[i]);
             map.put("productId", productPojo.getId());
             map.put("attribute", "颜色");
-            List<SkuAttributePojo> SkuAttributePojos = skuAttributeService.getSkuAttribute(map);
+            List<SkuAttributePojo> SkuAttributePojos =
+                skuAttributeService.getSkuAttributeSeller(map);
             if (SkuAttributePojos.size() != 0) {
               productSkuLinkPojo.setSkuColorId(SkuAttributePojos.get(0).getId());
             } else {
@@ -1335,7 +1336,7 @@ public class SellerWebAction extends SuperAction {
               skuAttributePojo.setStatus(1);
               skuAttributePojo.setCreateDate(new Date());
               skuAttributePojo.setUpdateDate(new Date());
-              skuAttributeService.insertSkuAttribute(skuAttributePojo);// 插入sku属性表
+              skuAttributeService.insertSkuAttributeSeller(skuAttributePojo);// 插入sku属性表
               productSkuLinkPojo.setSkuColorId(skuAttributePojo.getId());
             }
             productSkuLinkPojo.setProductId(productPojo.getId());
@@ -1343,14 +1344,14 @@ public class SellerWebAction extends SuperAction {
             productSkuLinkPojo.setType(0);
             productSkuLinkPojo.setActivityId(0L);
             ProductSkuLinkPojo productSkuLink =
-                productSkuLinkService.findProductSkuLink(productSkuLinkPojo);
+                productSkuLinkService.findProductSkuLinkSeller(productSkuLinkPojo);
             if (productSkuLink != null) {
               productSkuLinkPojo.setId(productSkuLink.getId());
-              productSkuLinkService.productSkuLinkUpdate(productSkuLinkPojo);// 修改产品sku表
+              productSkuLinkService.productSkuLinkUpdateSeller(productSkuLinkPojo);// 修改产品sku表
               // message = "新增商品成功！";
               result = "1" + productPojo.getId();
             } else {
-              productSkuLinkService.addSkuLinkByProductId(productSkuLinkPojo);// 插入产品sku表
+              productSkuLinkService.addSkuLinkByProductIdSeller(productSkuLinkPojo);// 插入产品sku表
               // message = "新增商品成功！";
               result = "1" + productPojo.getId();
             }
@@ -1438,7 +1439,7 @@ public class SellerWebAction extends SuperAction {
    */
   public String goFindProduct() throws Exception {
     if (productPojo != null) {
-      productPojo = productService.findProduct(productPojo);
+      productPojo = productService.findProductSeller(productPojo);
       if (productPojo != null) {
         Map<String, Object> map = new HashMap<String, Object>();
         // getProductType(0l);
@@ -3022,7 +3023,7 @@ public class SellerWebAction extends SuperAction {
     }
     try {
       productPojo.setVersion(1);
-      productService.productUpdate(productPojo);
+      productService.productUpdateSeller(productPojo);
       FileUtil.alertMessageBySkip("编辑成功", "productManageSellerWeb.do");
     } catch (Exception e) {
       FileUtil.alertMessageBySkip("编辑失败", "goProductAddSellerWeb.do");

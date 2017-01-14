@@ -12,6 +12,9 @@ public interface ProductFocusImagesDao {
 
   void insertProductFocusImages(ProductFocusImagesPojo productFocusImagesPojo) throws SQLException;
 
+  void insertProductFocusImagesSeller(ProductFocusImagesPojo productFocusImagesPojo)
+      throws SQLException;
+
   void updateProductFocusImages(ProductFocusImagesPojo productFocusImagesPojo) throws SQLException;
 
   ProductFocusImagesPojo getfindByIdProductFocusImages(Long id) throws SQLException;

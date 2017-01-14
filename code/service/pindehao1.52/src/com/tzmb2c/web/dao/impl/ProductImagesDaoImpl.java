@@ -62,4 +62,9 @@ public class ProductImagesDaoImpl implements ProductImagesDao {
   public List<ProductImagesPojo> productForId(Long id) {
     return productImagesMapper.productForId(id);
   }
+
+  @Override
+  public void addProductImagesSeller(ProductImagesPojo productImages) {
+    productImagesMapper.addProductImagesSeller(productImages);
+  }
 }
