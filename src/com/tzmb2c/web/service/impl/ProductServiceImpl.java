@@ -1037,6 +1037,15 @@ public class ProductServiceImpl implements ProductService {
   public List<ProductPojo> getProductAllSeller(ProductPojo product, Pager page) throws SQLException {
 
     Map<String, Object> map = new HashMap<String, Object>();
+    if (product != null && product.getBeginTimeStr() != null
+        && !"".equals(product.getBeginTimeStr()) && product.getBeginTimeStr().length() == 10
+        && product.getEndTimeStr() != null && !"".equals(product.getEndTimeStr())
+        && product.getEndTimeStr().length() == 10) {
+      // map.put("beginTimeStr", product.getBeginTimeStr() + " 00:00:00");
+      // map.put("endTimeStr", product.getEndTimeStr() + " 23:59:59");
+      map.put("beginTimeStr", product.getBeginTimeStr());
+      map.put("endTimeStr", product.getEndTimeStr());
+    }
     if (product != null && product.getActivityType() != null
         && !product.getActivityType().equals("")) {
       map.put("activityType", product.getActivityType());
@@ -1149,5 +1158,16 @@ public class ProductServiceImpl implements ProductService {
   public ProductPojo findProductSeller(ProductPojo product) {
     ProductPojo pojo = productDao.findProductSeller(product);
     return pojo;
+  }
+
+  @Override
+  public void checkProductSeller(Long id) throws SQLException {
+    productDao.checkProductSeller(id);
+  }
+
+  @Override
+  public void uncheckProductSeller(Long id) throws SQLException {
+    productDao.uncheckProductSeller(id);
+
   }
 }

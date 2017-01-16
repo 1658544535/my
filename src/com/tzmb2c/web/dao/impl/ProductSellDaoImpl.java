@@ -86,4 +86,13 @@ public class ProductSellDaoImpl implements ProductSellDao {
     int rows = productSellMapper.insertSeller(productSell);
     return rows;
   }
+
+  @Override
+  public int updateSeller(ProductSellPojo productSell) throws SQLException {
+    if (null == productSell) {
+      return 0;
+    }
+    int rows = productSellMapper.updateSeller(productSell);
+    return rows;
+  }
 }

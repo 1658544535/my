@@ -86,4 +86,13 @@ public class ProductSellServiceImpl implements ProductSellService {
     int rows = productSelldao.addSeller(productSell);
     return rows;
   }
+
+  @Override
+  public int updateSeller(ProductSellPojo productSell) throws SQLException {
+    if (null == productSell) {
+      return 0;
+    }
+    int rows = productSelldao.updateSeller(productSell);
+    return rows;
+  }
 }

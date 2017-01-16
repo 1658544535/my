@@ -59,6 +59,8 @@ public interface ProductService {
 
   public void checkProduct(Long id) throws SQLException;
 
+  public void checkProductSeller(Long id) throws SQLException;
+
   List<ProductPojo> productForUserNew(Long id);
 
   List<ProductPojo> productForUserYes(Long id);
@@ -92,6 +94,8 @@ public interface ProductService {
   void updateHits(Long id);
 
   void uncheckProduct(Long id) throws SQLException;
+
+  void uncheckProductSeller(Long id) throws SQLException;
 
   List<ProductPojo> getProductAllByName(ProductPojo product, Pager page) throws SQLException;
 

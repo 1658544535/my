@@ -135,8 +135,25 @@ public class ProductPojo extends SuperPojo {
   private Integer limitNum; // 商品数量
   private Integer surplusNum; // 剩余数量
   private Integer surplusNumMinus; // 减剩余数量
+  private String beginTimeStr;
+  private String endTimeStr;
 
 
+  public String getBeginTimeStr() {
+    return beginTimeStr;
+  }
+
+  public void setBeginTimeStr(String beginTimeStr) {
+    this.beginTimeStr = beginTimeStr;
+  }
+
+  public String getEndTimeStr() {
+    return endTimeStr;
+  }
+
+  public void setEndTimeStr(String endTimeStr) {
+    this.endTimeStr = endTimeStr;
+  }
 
   public Integer getSurplusNumMinus() {
     return surplusNumMinus;

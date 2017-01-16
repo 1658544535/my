@@ -22,6 +22,8 @@ public interface ProductSellDao {
 
   public int update(ProductSellPojo productSell) throws SQLException;
 
+  public int updateSeller(ProductSellPojo productSell) throws SQLException;
+
   public int delete(Long id) throws SQLException;
 
   public ProductSellPojo getById(Long id) throws SQLException;
