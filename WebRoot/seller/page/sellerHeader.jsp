@@ -119,12 +119,12 @@
 					<ul class="ui-nav-submain">
 						<li class="ui-nav-subitem">
 							<a href="productManageSellerWeb.do">
-								商品库
+								商品列表
 							</a>
 						</li>
 						<li class="ui-nav-subitem">
 							<a href="goProductAddSellerWeb.do">
-								添加商品
+								创建商品
 							</a>
 						</li>
 						<!-- <li class="ui-nav-subitem">
@@ -132,11 +132,11 @@
 								品牌列表
 							</a>
 						</li> -->
-						<li class="ui-nav-subitem">
+						<!-- <li class="ui-nav-subitem">
 							<a href="getBrandAddWeb.do">
 								添加品牌
 							</a>
-						</li>
+						</li> -->
 					</ul>
 				</li>
 				<!-- <li class="ui-nav-item has-sub">
