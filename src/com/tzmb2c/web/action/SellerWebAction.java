@@ -1573,11 +1573,11 @@ public class SellerWebAction extends SuperAction {
    */
   public String checkProduct() throws SQLException {
     try {
-      productService.checkProduct(productPojo.getId());
+      productService.checkProductSeller(productPojo.getId());
       ProductSellPojo productSell = new ProductSellPojo();
       productSell.setProductId(productPojo.getId());
       productSell.setStatus(1);
-      productSellService.update(productSell);
+      productSellService.updateSeller(productSell);
       result = "1";
     } catch (Exception e) {
       result = "0";
@@ -1590,11 +1590,11 @@ public class SellerWebAction extends SuperAction {
    */
   public String uncheckProduct() throws SQLException {
     try {
-      productService.uncheckProduct(productPojo.getId());
+      productService.uncheckProductSeller(productPojo.getId());
       ProductSellPojo productSell = new ProductSellPojo();
       productSell.setProductId(productPojo.getId());
       productSell.setStatus(0);
-      productSellService.update(productSell);
+      productSellService.updateSeller(productSell);
       result = "1";
     } catch (Exception e) {
       result = "0";
