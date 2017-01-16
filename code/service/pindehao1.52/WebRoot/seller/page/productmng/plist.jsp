@@ -15,6 +15,7 @@
 		<script type="text/javascript" src="<s:i18n name="sysconfig"><s:text name="seller_dns" /></s:i18n>/js/pagination/jquery.pagination.js"></script>
 		<script type="text/javascript" src="<s:i18n name="sysconfig"><s:text name="seller_dns" /></s:i18n>/js/sys_util_web.js"></script>
 		<link rel="stylesheet" href="<s:i18n name="sysconfig"><s:text name="seller_dns" /></s:i18n>/seller/css/pageSellerItemPlist-73ca4d5fc7m.css" type="text/css" media="all" />
+		<script type="text/javascript" src="<s:i18n name="sysconfig"><s:text name="seller_dns" /></s:i18n>/js/My97DatePicker/WdatePicker.js"></script>
 		<script type="text/javascript">
 			var pageSize = 10;
 			$(function(){
@@ -152,7 +153,7 @@
 				<div class="pure-u-1 main">
 					<div class="sp-body">
 						<h1 class="seller-title">
-							商品库
+							商品列表
 						</h1>
 						<div class="ui-table-container p20">
 							<div class="ui-tab m-s-info" style="position: relative">
@@ -161,14 +162,14 @@
 									<table class="m-s-table" cellpadding="0" cellspacing="0">
 										<tbody>
 											<tr>
-												<!-- <td class="m-s-td1 m-s-td" style="padding-right:10px">
+												<td class="m-s-td1 m-s-td" style="padding-right:10px">
 													<label>商品ID：</label>
 													<input class="ui-input w-mart-input J_enterForSearch" type="text" name="productPojo.id" id="productId" value=''/>
-												</td> -->
-												<td class="m-s-td1 m-s-td" style="padding-right:10px">
+												</td>
+												<!-- <td class="m-s-td1 m-s-td" style="padding-right:10px">
 													<label>商品序号：</label>
 													<input class="ui-input w-mart-input J_enterForSearch" type="text"  name="productPojo.productNo" id="productNo" value=''/>
-												</td>
+												</td> -->
 												<td class="m-s-td1 m-s-td" style="padding-right:10px">
 													<label>商品货号：</label>
 													<input class="ui-input w-mart-input J_enterForSearch" type="text"  name="productPojo.productNum" id="productNum" value=''/>
@@ -178,6 +179,22 @@
 													<input class="ui-input w-mart-input J_enterForSearch" type="text" name="productPojo.productName" id="productName" value=''/>
 												</td>
 												<td class="m-s-td1 m-s-td" style="padding-right:10px">
+													<label>添加时间：</label>
+													<input class="ui-input w-mart-input J_enterForSearch Wdate" type="text" name="productPojo.beginTimeStr" id="s" value='' onFocus="WdatePicker({isShowToday:false,dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'e\')}'})"/>
+												</td>
+												<td class="m-s-td1 m-s-td" style="padding-right:10px">
+													<label>-</label>
+													<input class="ui-input w-mart-input J_enterForSearch Wdate" type="text" name="productPojo.endTimeStr" id="e" value='' onFocus="WdatePicker({isShowToday:false,dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'s\')}'})"/>
+												</td>
+												<td class="m-s-td1 m-s-td" style="padding-right:10px">
+													<label>商品状态：</label>
+													<select name="productPojo.status" id="" class="w-mart-select ui-select-theme">
+														<option value="">----全部----</option>
+														<option value="0">下架</option>
+														<option value="1">销售中</option>
+													</select>
+												</td>
+												<%-- <td class="m-s-td1 m-s-td" style="padding-right:10px">
 													<label>品牌：</label>
 													<select name="productPojo.userBrandId" id="" class="w-mart-select ui-select-theme">
 														<option value="">----全部----</option>
@@ -187,8 +204,8 @@
 															</option>
 														</s:iterator>
 													</select>
-												</td>
-												<td class="m-s-td1 m-s-td" style="padding-right:10px">
+												</td> --%>
+												<%-- <td class="m-s-td1 m-s-td" style="padding-right:10px">
 													<label> 一级类目：</label>
                                                      <select name="productPojo.productType1" id="productType1" class="w-mart-select ui-select-theme" onChange="changeProType()">
                                                       <option value="">----全部----</option>
@@ -206,7 +223,7 @@
 													<label>三级类目：</label>
 													<select name="productPojo.productTypeId" id="productTypeId" class="w-mart-select ui-select-theme" >
                                                     <option value="">----全部----</option>${typeIdStr}</select>
-												</td>
+												</td> --%>
 												<td class="m-s-td1 m-s-td" style="padding-right:10px">
 													<div class="search-btn" style="width:100px">
 														<br/>
@@ -222,7 +239,7 @@
 								</form>
 							</div>
 							<div class="ui-fn clearfix">
-								<a class="ui-button ui-button-lgreen fl" href="goProductAddSellerWeb.do"><i class="iconfont">&#xf0175;</i>添加商品</a>
+								<a class="ui-button ui-button-lgreen fl" href="goProductAddSellerWeb.do"><i class="iconfont">&#xf0175;</i>创建商品</a>
 								<!--<a class="ui-button ui-button-morange fl" onclick="deleteAll()"><i class="iconfont">&#xf0176;</i>批量删除</a>&nbsp;&nbsp;
 								<a class="J_pauseSaleAll ui-button ui-btn-theme ui-btn-h26" onclick="checkAll()">批量恢复售卖</a>&nbsp;&nbsp;
 								<a class="J_pauseSaleAll ui-button ui-btn-theme ui-btn-h26" onclick="uncheckAll()">批量暂停售卖</a>&nbsp;&nbsp;  -->
@@ -234,17 +251,18 @@
 										<tr>
 											<th>
 											<input type="checkbox" class="J_checkedAll" id="selectcb" name="selectcb" onclick="allcb()" ></th>
-											<!-- <th>商品ID</th> -->
-											<th>商品序号</th>
-											<th>图片</th>
-											<th>名称</th>
-											<th>品牌</th>
+											<th>商品ID</th>
 											<th>货号</th>
-											<th>三级类目</th>
-											<th>原价</th>
-											<th>特卖价格</th>
-											<th>录入时间</th>
-											<th>状态</th>
+											<!-- <th>商品序号</th> -->
+											<th>图片</th>
+											<th>商品名称</th>
+											<th>添加时间</th>
+											<!-- <th>品牌</th> -->
+											<!-- <th>三级类目</th> -->
+											<th>供货价(包邮)</th>
+											<th>库存</th>
+											<!-- <th>特卖价格</th> -->
+											<th>商品状态</th>
 											<th>操作</th>
 										</tr>
 									</thead>
@@ -282,26 +300,39 @@
 	*分页展现页面函数
 	**/
 	function installPage() {
+		var statusName = "下架",uncheckBtn = "";
+		if(this.status == 1){
+			statusName = "销售中";
+			uncheckBtn = " | <a target='_blank' onclick='uncheck(\"uncheckProductSeller.do?productPojo.id="+this.id +"\")'>下架</a><br>";
+			
+		}
+		
 		$("#body").append(
 		"<tr>"+
 		"<td><input name='tids' type='checkbox' value="+this.id+"></td>"+
-		<!-- "<td>"+this.id+"</td>"+ -->
-		"<td width='30px'>"+this.productNo+"</td>"+
-		"<td><img src='<s:i18n name="sysconfig"><s:text name="seller_dns" /></s:i18n>/upfiles/product/"+this.image+"' alt='' width='98' height='98' /></td>"+
-		"<td width='80px'><a target='_blank' href='goPreviewWeb.do?productPojo.id="+ this.id + "'><font color='#4c4c4c'>"+this.productName+"<br/></a>"+
-		"</font></td>"+
-		"<td>"+this.brandNames+"</td>"+
+		"<td>"+this.id+"</td>"+
 		"<td>"+this.productNum+"</td>"+
-		"<td>"+this.productTypeName+"</td>"+
-		"<td>"+this.sellingPrice+"</td>"+
-		"<td>"+this.distributionPrice+"</td>"+
+		//"<td width='30px'>"+this.productNo+"</td>"+
+		"<td><img src='<s:i18n name="sysconfig"><s:text name="seller_dns" /></s:i18n>/upfiles/product/"+this.image+"' alt='' width='98' height='98' /></td>"+
+		"<td width='80px'>"+
+		//"<a target='_blank' href='goPreviewWeb.do?productPojo.id="+ this.id + "'>"+
+		"<font color='#4c4c4c'>"+this.productName+"<br/>"+
+		//"</a>"+
+		"</font>"+
+		"</td>"+
 		"<td>"+this.creatDateString+"</td>"+
-		"<td>"+this.statusName+"</td>"+
-		"<td width='80px'><a target='_blank' href='goFindProductSellerWeb.do?productPojo.id="+ this.id + "'>编辑</a><br>"+
+		//"<td>"+this.brandNames+"</td>"+
+		//"<td>"+this.productTypeName+"</td>"+
+		"<td>"+this.sellingPrice+"</td>"+
+		"<td>"+this.limitNum+"</td>"+
+		//"<td>"+this.distributionPrice+"</td>"+
+		"<td>"+statusName+"</td>"+
+		"<td width='80px'><a target='_blank' href='goFindProductSellerWeb.do?productPojo.id="+ this.id + "'>编辑</a>"+
+		uncheckBtn+
 		//"<a href='javascript:;' onclick=del('"+ this.id + "')>删除</a><br>"+
 		//"<a target='_blank' href='productFocusImagesSellerWeb.do?productFocusImages.productId="+this.id+"' class='edit_btn' )>焦点图片</a><br>"+
-		"<a target='_blank' href='productImagesManageSellerWeb.do?productImagesPojo.productId="+this.id+"' class='edit_btn' )>商品图片</a><br>"+
-		"<a target='_blank' href='goPreviewWeb.do?productPojo.id="+this.id+"' class='edit_btn' )>商品预览</a>"+
+		//"<a target='_blank' href='productImagesManageSellerWeb.do?productImagesPojo.productId="+this.id+"' class='edit_btn' )>商品图片</a><br>"+
+		//"<a target='_blank' href='goPreviewWeb.do?productPojo.id="+this.id+"' class='edit_btn' )>商品预览</a>"+
 		//	        "<a href='javascript:;' class='edit_btn' onclick=check('"+this.id+"')>恢复售卖</a><br>"+
 		//	        "<a href='javascript:;' class='edit_btn' onclick=uncheck('"+this.id+"')>暂停售卖</a>"+
 		"</td></tr>");
@@ -347,4 +378,25 @@ function changeProType(){
 	});
 	
 }
+	
+	function uncheck(url){
+		if(confirm("确认要下架吗？")){
+			MAOWU.ajax.get(url, null, uncheckRefreshPage);
+		}else{
+			return ;
+		}
+	}
+	
+	function uncheckRefreshPage(result){
+		var rand = Math.random() * ( 100000 + 1);
+		if(result == "1"){
+			alert("下架成功");
+			query();
+		} else if(result == "2"){
+			alert("下架失败");
+			query();
+		} else{
+			alert("下架失败");
+		}
+	}
 </script>
