@@ -23,6 +23,8 @@ public interface ProductSellMapper {
 
   int update(ProductSellPojo productSell) throws SQLException;
 
+  int updateSeller(ProductSellPojo productSell) throws SQLException;
+
   int deleteById(Long id) throws SQLException;
 
   int updateDaySell(ProductSellPojo productSell) throws SQLException;

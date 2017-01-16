@@ -370,4 +370,16 @@ public class ProductDaoImpl implements ProductDao {
   public ProductPojo findProductSeller(ProductPojo product) {
     return productMapper.findProductSeller(product);
   }
+
+  @Override
+  public void checkProductSeller(Long id) throws SQLException {
+
+    productMapper.checkProductSeller(id);
+  }
+
+  @Override
+  public void uncheckProductSeller(Long id) throws SQLException {
+    productMapper.uncheckProductSeller(id);
+
+  }
 }

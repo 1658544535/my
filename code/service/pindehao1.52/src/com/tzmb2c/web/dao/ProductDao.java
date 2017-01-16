@@ -52,6 +52,8 @@ public interface ProductDao {
 
   void checkProduct(Long id) throws SQLException;
 
+  void checkProductSeller(Long id) throws SQLException;
+
   public void deleProduct(Long id) throws SQLException;
 
   List<ProductPojo> productForUser(Map<String, Object> map);
@@ -83,6 +85,8 @@ public interface ProductDao {
   void updateHits(Long id);
 
   void uncheckProduct(Long id) throws SQLException;
+
+  void uncheckProductSeller(Long id) throws SQLException;
 
   List<ProductPojo> getProductAllByName(Map<String, Object> map);
 

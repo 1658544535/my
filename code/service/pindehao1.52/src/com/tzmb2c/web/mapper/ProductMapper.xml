@@ -880,6 +880,10 @@
 		</if> 
 		left join groupon_activity gac on gac.product_id=t.id and gac.is_default=1 and gac.type=1
 		where 1=1
+		<if test="beginTimeStr != null and beginTimeStr != '' and endTimeStr != null and endTimeStr != '' ">
+			<!-- and t.create_date between #{beginTimeStr} and #{endTimeStr} -->
+			and date_format(t.create_date,'%Y-%m-%d %T') between #{beginTimeStr} and #{endTimeStr}
+		</if>
 		<if test="timeIdIsN != null and timeIdIsN != '' ">
 			and ss.status = 4
 			and g.status = 1
@@ -2187,8 +2191,16 @@
 		update product set status = 1 where id = #{id}
 	</update>
 	
+	<update id="checkProductSeller" parameterType="Long">
+		update product_seller set status = 1 where id = #{id}
+	</update>
+	
 	<update id="uncheckProduct" parameterType="Long">
 		update product set status = 0 where id = #{id}
+	</update>
+	
+	<update id="uncheckProductSeller" parameterType="Long">
+		update product_seller set status = 0 where id = #{id}
 	</update>
 	
 	<select id="productForUser" parameterType="java.util.Map" resultType="productPojo">

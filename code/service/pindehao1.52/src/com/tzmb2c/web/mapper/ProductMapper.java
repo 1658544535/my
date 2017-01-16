@@ -56,7 +56,11 @@ public interface ProductMapper {
 
   void checkProduct(Long id) throws SQLException;
 
+  void checkProductSeller(Long id) throws SQLException;
+
   void uncheckProduct(Long id) throws SQLException;
+
+  void uncheckProductSeller(Long id) throws SQLException;
 
   List<ProductPojo> productForUser(Map<String, Object> map);
 

@@ -157,6 +157,52 @@
 		where product_id = #{productId}
 	</update>
 	
+	<update id="updateSeller" parameterType="ProductSellPojo">
+		update product_sell_seller
+		<set>
+			<if test="productId != null">
+			  product_id = #{productId},
+			</if>
+			<if test="productName != null">
+			  product_name = #{productName},
+			</if>
+			<if test="productImage != null">
+			  product_image = #{productImage},
+			</if>
+			<if test="price != null">
+			  price = #{price},
+			</if>
+			<if test="sellNumber != null">
+			  sell_number = #{sellNumber},
+			</if>
+			<if test="daySell != null">
+			  day_sell = #{daySell},
+			</if>
+			<if test="createDate != null">
+			  create_date = #{createDate},
+			</if>
+			<if test="createBy != null">
+			  create_by = #{createBy},
+			</if>
+			<if test="updateDate != null">
+			  update_date = #{updateDate},
+			</if>
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+			<if test="productType1 != null">
+			   product_type1=#{productType1},
+			</if>
+			<if test="productTypeIds != null">
+			   product_type_ids=#{productTypeIds},
+			</if>
+			<if test="status != null">
+			   status=#{status},
+			</if>
+		</set>
+		where product_id = #{productId}
+	</update>
+	
 	<delete id="deleteById" parameterType="Long">
 		delete from product_sell 
 		where
