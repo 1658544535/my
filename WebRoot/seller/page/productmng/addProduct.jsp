@@ -63,7 +63,7 @@ $(document).delegate(".uploadPreview_imgfile","change",function(){
 	<div class="wrap">
 		<div class="container" style="width:100%">
 			<ul class="nav nav-tabs row" role="tablist">
-			    <li role="presentation" class="col-sm-6 text-center active" id="infoLi"><a href="#info" aria-controls="info" role="tab" data-toggle="tab">1.添加商品</a></li>
+			    <li role="presentation" class="col-sm-6 text-center active" id="infoLi"><a href="#info" aria-controls="info" role="tab" data-toggle="tab">1.新增商品</a></li>
 			    <li role="presentation" class="col-sm-6 text-center " id="albumLi"><a href="#album" aria-controls="album" role="tab" data-toggle="tab">2.编辑产品详情</a></li>
 			</ul>
 			<div class="tab-content">
@@ -74,7 +74,7 @@ $(document).delegate(".uploadPreview_imgfile","change",function(){
                 <div class="pure-g admin-wrapper" style="">
                     <div class="pure-u-1 main" style="">
                         <h1 class="seller-title">
-                            添加商品
+                            新增商品
                         </h1>
                         <div class="sp-body view-ProductDetailView" style="">
                             <h1 class="product-add-title">
