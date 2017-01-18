@@ -189,7 +189,7 @@
 												<td class="m-s-td1 m-s-td" style="padding-right:10px">
 													<label>商品状态：</label>
 													<select name="productPojo.status" id="" class="w-mart-select ui-select-theme">
-														<option value="">----全部----</option>
+														<option value="">-请选择-</option>
 														<option value="0">下架</option>
 														<option value="1">销售中</option>
 													</select>
@@ -229,7 +229,7 @@
 														<br/>
 														<a href="#" id="query_btn" class="ui-button ui-btn-theme w-mart-button ui-button-mwhite" style="width: 80px;">
                                                              <i class="iconfont">&#xf012c;</i>
-                                                           		  搜索
+                                                           		  查询
                                                         </a>
 													</div>
 												</td>
