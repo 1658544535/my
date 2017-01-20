@@ -79,6 +79,9 @@ public class ProductSkuLinkServiceImpl implements ProductSkuLinkService {
       if (productSkuLink.getStock() > 0) {
         map.put("stockStatus", 1);
       }
+      if (productSkuLink.getIsDelete() != null) {
+        map.put("isDelete", 0);
+      }
     }
 
     if (page != null) {

@@ -7850,6 +7850,7 @@ public class AppApiGrouponAction extends SuperAction {
       // sku类型，0-普通;1-活动
       productSkuLinkPojo.setType(0);
       productSkuLinkPojo.setActivityId(0l);
+      productSkuLinkPojo.setIsDelete(0);
       List<ProductSkuLinkPojo> list =
           productSkuLinkService.getProductSkuLinkAll(productSkuLinkPojo, null);
       Map<String, Object> format = null;
