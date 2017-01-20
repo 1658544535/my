@@ -89,12 +89,17 @@ $(document).delegate(".uploadPreview_imgfile","change",function(){
                                 </h4>
                                 <div class="product-add-main">
                                         <fieldset>
+                                        	<div class="ui-form-item">
+                                                <div class="product-age-notice">
+													商品基本信息
+												</div>
+                                            </div>
                                             <div class="ui-form-item">
                                                 <label for="" class="ui-label">
                                                     <span class="ui-form-required">
                                                         *
                                                     </span>
-                                                    商品类目:
+                                                    商品分类:
                                                 </label>
                                                 <p class="ui-form-text">
                                                      <select name="productPojo.productType1" id="" class="ui-input" style="width:140px;"  onChange="changeProType()">
@@ -112,7 +117,7 @@ $(document).delegate(".uploadPreview_imgfile","change",function(){
                                                 </p>
                                                 <p><span id="productType1_mgId"></span><span id="productTypeIds_mgId"></span><span id="productTypeId_mgId"></span></p>
                                             </div>
-                                            <div class="ui-form-item hide">
+                                            <%-- <div class="ui-form-item hide">
                                                 <label for="" class="ui-label">
                                                     <span class="ui-form-required">
                                                         *
@@ -121,6 +126,16 @@ $(document).delegate(".uploadPreview_imgfile","change",function(){
                                                 </label>
                                                 <p class="ui-form-text" name="referenceTitle">
                                                 </p>
+                                            </div> --%>
+                                            <div class="ui-form-item">
+                                                <div class="product-age-notice">
+													商品规格
+												</div>
+                                            </div>
+                                            <div class="ui-form-item">
+                                                <div class="product-age-notice">
+													商品详情信息
+												</div>
                                             </div>
                                             <div class="ui-form-item">
                                                 <label for="" class="ui-label">
@@ -130,12 +145,22 @@ $(document).delegate(".uploadPreview_imgfile","change",function(){
                                                     商品标题:
                                                 </label>
                                                 <input class="ui-input big" type="text" name="productPojo.productName" id="productName" value=''/>
-                                                <div class="product-age-notice">
+                                                <!-- <div class="product-age-notice">
 													品牌+特点+名称+规格(为保证用户体验，请保持标题简洁明了，堆砌关键字将被降权)
-                                                </div>
+                                                </div> -->
                                                 <span id="productName_mgId"></span>
                                             </div>
-                                            <div class="ui-form-item">
+                                            <div class="ui-form-item view-InputItem" prop-id="2" prop-name="货号">
+                                                <label for="" class="ui-label">
+                                                    <span class="ui-form-required">
+                                                        *
+                                                    </span>
+                                                    商品货号:
+                                                </label>
+                                                <input class="ui-input" type="text" name="productPojo.productNum" id="productNum" value=''/></br>
+                                                <span id="productNum_mgId"></span>
+                                            </div>
+                                            <%-- <div class="ui-form-item">
                                                 <label for="" class="ui-label">
                                                     <span class="ui-form-required">
                                                         *
@@ -143,28 +168,19 @@ $(document).delegate(".uploadPreview_imgfile","change",function(){
                                                     商品卖点:
                                                 </label>
                                                 <input class="ui-input big"  type="text"  name="productPojo.productSketch"  id="productSketch"  value=''/>
-                                                 <span class="ui-form-other">
+                                                 <span class="ui-form-other"> --%>
 <!--                                                     <a href="javascript:;" class="view-WhereToShow">
                                                         显示在哪？
                                                     </a> -->
-                                                    <span class="hint">
+                                                    <%-- <span class="hint">
                                                     </span>
                                                 </span> 
                                                 <span id="productSketch_mgId"></span>
                                             </div>
                                         </fieldset>
-                                        <fieldset class="view-KeyPropDetail">
-                                            <div class="ui-form-item view-InputItem" prop-id="2" prop-name="货号">
-                                                <label for="" class="ui-label">
-                                                    <span class="ui-form-required">
-                                                        *
-                                                    </span>
-                                                    货号:
-                                                </label>
-                                                <input class="ui-input" type="text" name="productPojo.productNum" id="productNum" value=''/></br>
-                                                <span id="productNum_mgId"></span>
-                                            </div>
-                                            <div class="ui-form-item view-InputItem" prop-id="1" prop-name="品牌">
+                                        <fieldset class="view-KeyPropDetail"> --%>
+                                            
+                                            <%-- <div class="ui-form-item view-InputItem" prop-id="1" prop-name="品牌">
                                                 <label for="" class="ui-label">
                                                  <span class="ui-form-required">
                                                    *
@@ -181,17 +197,27 @@ $(document).delegate(".uploadPreview_imgfile","change",function(){
                                                     <span id="userBrandId_mgId"></span>
 													商品发布后品牌不可修改，请正确选择
                                                 </div>
-                                            </div>
+                                            </div> --%>
                                         </fieldset>
                                         <fieldset class="view-OtherPropDetail">
+                                        	<div class="ui-form-item view-InputItem" prop-id="76" prop-name="原价">
+                                                <label for="" class="ui-label">
+                                                    <span class="ui-form-required">
+                                                        *
+                                                    </span>
+                                                    供货价(包邮):
+                                                </label>
+                                                <input class="ui-input" type="text" name="productPojo.proxyPrice" id="proxyPrice"/></br>
+                                                <span id="proxyPrice_mgId"></span>
+                                            </div>
                                             <div class="ui-form-item view-InputItem" prop-id="76" prop-name="原价">
                                                 <label for="" class="ui-label">
                                                     <span class="ui-form-required">
                                                         *
                                                     </span>
-                                                    原价:
+                                                    建议零售价:
                                                 </label>
-                                                <input class="ui-input" type="text" name="productPojo.sellingPrice" id="sellingPrice" onblur="showDiscount();"/></br>
+                                                <input class="ui-input" type="text" name="productPojo.sellingPrice" id="sellingPrice"/></br>
                                                 <span id="sellingPrice_mgId"></span>
                                             </div>
                                             <div class="ui-form-item view-InputItem" prop-id="75" prop-name="实价">
@@ -199,12 +225,12 @@ $(document).delegate(".uploadPreview_imgfile","change",function(){
                                                     <span class="ui-form-required">
                                                         *
                                                     </span>
-                                                    特卖价格:
+                                                    市场价:
                                                 </label>
-                                                <input class="ui-input" type="text" name="productPojo.distributionPrice" id="distributionPrice" onblur="showDiscount();"/></br>
+                                                <input class="ui-input" type="text" name="productPojo.distributionPrice" id="distributionPrice"/></br>
                                                 <span	id="distributionPrice_mgId"></span>
                                             </div>
-                                            <div class="ui-form-item view-InputItem" prop-id="75" prop-name="折扣">
+                                            <%-- <div class="ui-form-item view-InputItem" prop-id="75" prop-name="折扣">
                                                 <label for="" class="ui-label">
                                                     <span class="ui-form-required">
                                                         
@@ -252,7 +278,7 @@ $(document).delegate(".uploadPreview_imgfile","change",function(){
                                                 </label>
                                                 <input class="ui-input"  type="text"  name="productPojo.location"  id="location"  value=''/></br>
                                                 <span id="location_mgId"></span>
-                                            </div>
+                                            </div> --%>
                                             <input class="ui-input big" type="hidden" name="productPojo.postageType" id="postageType"  value="1" />  
                                             <input class="ui-input big" type="hidden" name="productPojo.texture" id="texture"  value="0" />        
                                             <input class="ui-input big" type="hidden" name="productPojo.pack" id="pack"  value="0" />        
@@ -631,14 +657,15 @@ var productTypeIds =new tt.Field(" 商品二级类目","productPojo.productTypeI
 var productTypeId =new tt.Field(" 商品三级类目","productPojo.productTypeId").setMsgId("productTypeId_mgId");
 var productName =new tt.Field(" 商品标题","productPojo.productName").setMsgId("productName_mgId");
 var productNum =new tt.Field(" 商品货号","productPojo.productNum").setMsgId("productNum_mgId");
-var location_mgId =new tt.Field(" 产地","productPojo.location").setMsgId("location_mgId");
-var productSketch =new tt.Field("商品卖点","productPojo.productSketch").setMsgId("productSketch_mgId");
-var distributionPrice =new tt.Field(" 特卖价格","productPojo.distributionPrice").setMsgId("distributionPrice_mgId");
-var sellingPrice =new tt.Field(" 原价","productPojo.sellingPrice").setMsgId("sellingPrice_mgId");
-var weight =new tt.Field("重量","productPojo.weight").setMsgId("weight_mgId");
-var userBrandId =new tt.Field("品牌","productPojo.userBrandId").setMsgId("userBrandId_mgId");
+//var location_mgId =new tt.Field(" 产地","productPojo.location").setMsgId("location_mgId");
+//var productSketch =new tt.Field("商品卖点","productPojo.productSketch").setMsgId("productSketch_mgId");
+var distributionPrice =new tt.Field(" 市场价","productPojo.distributionPrice").setMsgId("distributionPrice_mgId");
+var sellingPrice =new tt.Field(" 建议零售价","productPojo.sellingPrice").setMsgId("sellingPrice_mgId");
+var proxyPrice =new tt.Field(" 供货价(包邮)","productPojo.proxyPrice").setMsgId("proxyPrice_mgId");
+//var weight =new tt.Field("重量","productPojo.weight").setMsgId("weight_mgId");
+//var userBrandId =new tt.Field("品牌","productPojo.userBrandId").setMsgId("userBrandId_mgId");
 tt.Conf.reqStarCls = ""; 
-tt.vf.req.add(productType1,productTypeIds,productTypeId,productName,productNum,location_mgId,productSketch,distributionPrice,sellingPrice,weight,userBrandId);
+tt.vf.req.add(productType1,productTypeIds,productTypeId,productName,productNum/* ,location_mgId,productSketch */,distributionPrice,sellingPrice,proxyPrice/* ,weight,userBrandId */);
 new tt.LV().set(0, 150).add(productSketch);
 tt.vf.num.add(weight);
 new tt.NRV().set(0, '++').add(weight);

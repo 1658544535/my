@@ -1164,7 +1164,7 @@ public class SellerWebAction extends SuperAction {
       String typeIds = ":" + String.valueOf(productPojo.getProductTypeIds()) + ":";
       productPojo.setProductTypeIds(typeIds);
       productPojo.setBaseNumber(0);
-      productPojo.setVersion(1);
+      // productPojo.setVersion(1);
       productService.addProductSeller(productPojo);// 商品插入
       // >>>product_sell<<<
       ProductSellPojo productSellPojo = new ProductSellPojo();
@@ -3023,7 +3023,7 @@ public class SellerWebAction extends SuperAction {
       return null;
     }
     try {
-      productPojo.setVersion(1);
+      // productPojo.setVersion(1);
       productService.productUpdateSeller(productPojo);
       FileUtil.alertMessageBySkip("编辑成功", "productManageSellerWeb.do");
     } catch (Exception e) {
