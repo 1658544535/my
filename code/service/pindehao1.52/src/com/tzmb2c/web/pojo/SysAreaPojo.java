@@ -26,6 +26,17 @@ public class SysAreaPojo extends SuperPojo {
   private Double addPostage2;// 续重（3公斤外）
   private Double fare;// 运费
   private Double fare2;// 运费
+  private Integer isOften;// 是否常用地区
+
+
+
+  public Integer getIsOften() {
+    return isOften;
+  }
+
+  public void setIsOften(Integer isOften) {
+    this.isOften = isOften;
+  }
 
   public Long getId() {
     return id;

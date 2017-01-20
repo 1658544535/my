@@ -198,6 +198,16 @@ public class OrderServiceImpl implements OrderService {
   }
 
   @Override
+  public List<OrderPojo> getPindekeRanking(Map<String, Object> map) {
+    return orderDao.getPindekeRanking(map);
+  }
+
+  @Override
+  public List<OrderPojo> getPindekeMonthSale(Map<String, Object> map) {
+    return orderDao.getPindekeMonthSale(map);
+  }
+  
+  @Override
   public void orderDeleteId(String[] tids) {
     for (String tid : tids) {
       try {
@@ -640,6 +650,11 @@ public class OrderServiceImpl implements OrderService {
   @Override
   public List<OrderPojo> exportOrderExcel(Map<String, Object> map) throws SQLException {
     return orderDao.exportOrderExcel(map);
+  }
+
+  @Override
+  public List<OrderPojo> onlyOrderTabList(Map<String, Object> params) throws SQLException {
+    return orderDao.onlyOrderTabList(params);
   }
 
 }

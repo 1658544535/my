@@ -19,6 +19,7 @@
 		t.postage2 as postage2,
 		t.add_postage as addPostage,
 		t.add_postage2 as addPostage2,
+		t.is_often as isOften,
 		(select name from sys_dict where value=t.status and type = 'sys_dict_status') statusName
 		from sys_area t where 1=1
 		<if test="name!=null and name!=''">
@@ -45,6 +46,7 @@
 		t.postage2 as postage2,
 		t.add_postage as addPostage,
 		t.add_postage2 as addPostage2,
+		t.is_often as isOften,
 		(select name from sys_dict where value=t.status and type = 'sys_dict_status') statusName
 		from sys_area t where 1=1
 		and t.id = #{id}

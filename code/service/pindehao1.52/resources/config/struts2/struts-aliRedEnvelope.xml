@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="aliRedEnvelope" extends="default">
+		<!-- 进入列表页面 -->
+		<action name="goAliRedEnvelope" class="com.tzmb2c.web.action.AliRedEnvelopeAction" method="goAliRedEnvelope">
+			<result name="success">/page/system/aliRedEnvelope/aliRedEnvelopeList.jsp</result>
+		</action>
+		<!-- 新增 -->
+		<action name="goAddAliRedEnvelope" class="com.tzmb2c.web.action.AliRedEnvelopeAction" method="goAddAliRedEnvelope">
+		    <result name="success">/page/system/aliRedEnvelope/addAliRedEnvelope.jsp</result>
+		</action>
+		<!-- 新增提交 -->
+		<action name="addAliRedEnvelope" class="com.tzmb2c.web.action.AliRedEnvelopeAction" method="add">
+		</action>		
+		<!-- 编辑页面 -->
+		<action name="goEditAliRedEnvelope" class="com.tzmb2c.web.action.AliRedEnvelopeAction" method="goEditAliRedEnvelope">
+			<result name="success">/page/system/aliRedEnvelope/updateAliRedEnvelope.jsp</result>
+		</action>
+		<!-- 编辑提交 -->
+		<action name="updateAliRedEnvelope" class="com.tzmb2c.web.action.AliRedEnvelopeAction" method="update">
+		</action>
+	</package>
+	<package name="aliRedEnvelope-json" extends="json-default">
+		<!-- 内容 -->
+		<action name="aliRedEnvelopeList" class="com.tzmb2c.web.action.AliRedEnvelopeAction" method="aliRedEnvelopeList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="aliRedEnvelopeCnt" class="com.tzmb2c.web.action.AliRedEnvelopeAction" method="aliRedEnvelopeRowCnt">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+		<!-- 根据ID删除 -->
+		<action name="delAliRedEnvelope" class="com.tzmb2c.web.action.AliRedEnvelopeAction" method="delete">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+		<!-- 删除选中 -->
+		<action name="delAliRedEnvelopeAll" class="com.tzmb2c.web.action.AliRedEnvelopeAction" method="deleteAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 通过审核 -->
+		<action name="checkAliRedEnvelope" class="com.tzmb2c.web.action.AliRedEnvelopeAction" method="check">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 取消审核 -->
+		<action name="uncheckAliRedEnvelope" class="com.tzmb2c.web.action.AliRedEnvelopeAction" method="uncheck">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中通过审核 -->
+		<action name="checkAliRedEnvelopeAll" class="com.tzmb2c.web.action.AliRedEnvelopeAction" method="checkAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中取消审核 -->
+		<action name="uncheckAliRedEnvelopeAll" class="com.tzmb2c.web.action.AliRedEnvelopeAction" method="uncheckAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+	</package>
+</struts>

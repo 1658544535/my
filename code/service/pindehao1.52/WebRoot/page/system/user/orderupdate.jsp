@@ -4,16 +4,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
-<script type="text/javascript" src="<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/js/My97DatePicker/WdatePicker.js"></script>
-<script type="text/javascript" src="<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/js/jquery/jquery-1.10.1.js"></script>
-<script type="text/javascript" src="<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/js/jquery-ui-1.10.3/ui/jquery-ui.js"></script>
-<script type="text/javascript" src="<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/js/base/operation/shop/shop.js"></script>
-<link type="text/css" rel="stylesheet" href="<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/js/testJSP/js/validate/css/validate.css" />
-<script src="<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/js/testJSP/js/validate/talent-validate-all.js" language="javascript"></script>
-<script type="text/javascript" src="<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/js/base/operation/shop/shop.js"></script>
-<link type="text/css" rel="stylesheet" href="<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/js/testJSP/js/validate/css/validate.css" />
 <jsp:include page="../../common/top.jsp"></jsp:include>
 <jsp:include page="../../common/common_head.jsp"></jsp:include>
+<script type="text/javascript" src="<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/js/base/operation/shop/shop.js"></script>
 <script type="text/javascript" src="<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/js/system/help/helpCommon.js"></script>
 <script type="text/javascript">
 function manySend(href){
@@ -133,6 +127,7 @@ function returnGoods(val)
 							<option value="jd"<c:if test="${orderPojo.logisticsName=='京东快递'}">selected="true"</c:if>>京东快递</option>
 							<option value="annengwuliu"<c:if test="${orderPojo.logisticsName=='安能物流'}">selected="true"</c:if>>安能物流</option>
 							<option value="nanjingshengbang"<c:if test="${orderPojo.logisticsName=='晟邦物流'}">selected="true"</c:if>>晟邦物流</option>
+							<option value="wanxiangwuliu"<c:if test="${orderPojo.logisticsName=='万象-自营'}">selected="true"</c:if>>万象-自营</option>
 						</select>
 						</td>
 						<td align="right" class="grey" width="15%">发货时间:</td>
@@ -163,8 +158,9 @@ function returnGoods(val)
 						<td width="35%"><input value='${orderPojo.sellerDeduct}' name="order.sellerDeduct"/></td>	
 					</tr>
 					<tr>
-						<td align="right" class="grey" width="15%">自动收货时间:</td>
-						 <td><label class="floatLeft">${orderPojo.autoRecTime}</label></td>
+						<td align="right" class="grey" width="15%">自动确认收货时间:</td>
+						<td width="35%"><input type="text" name="order.autoRecTime" id="order.autoRecTime" value="${orderPojo.autoRecTimeStr}" 
+						readonly="readonly" class="Wdate" type="text" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss', isShowToday: false, isShowClear: true }); "/></td>
 						<td align="right" class="grey" width="15%">商家货款:</td>
 						<td width="35%">${orderPojo.sellerGoodsPrice}</td>	
 					</tr>
@@ -354,15 +350,20 @@ function returnGoods(val)
 				<input name="order.id" id="orderId" value="${orderPojo.id}" class="inputText" type="hidden">
 				<input name="order.orderNo" id="orderNo" value="${orderPojo.orderNo}" class="inputText" type="hidden">
 				<table width="100%" border="1" class="Info_list_table">
-					<tr>
-						<tr><td align="right" class="grey" width="15%"  colspan="4">客服留言:</td></tr>
-						<td align="right" class="grey" width="6%">客服留言:</td>
-						<td width="35%" class="grey">
-							<textarea class="floatLeft" rows="5" cols="50" name="order.remarks" id="content">${orderPojo.remarks}</textarea>
-							<span id="remarks"></span>
-						</td>
+					<tr><td align="right" class="grey" width="15%"  colspan="4">客服留言:</td></tr>
+					<tr><td align="right" class="grey" width="6%">客服留言:</td>
+						<td width="35%" class="grey"><textarea class="floatLeft" rows="5"
+								cols="50" name="order.remarks" id="content">${orderPojo.remarks}</textarea>
+							<span id="remarks"></span></td>
+										<td align="right" class="grey" width="6%">客户订单留言:</td>
+						<td width="35%" class="grey"><textarea class="floatLeft" rows="5"
+								cols="50" name="order.csRemarks" id="content">${orderPojo.csRemarks}</textarea>
+							<span id="remarks"></span></td>
 					</tr>
-					<tr><td align="right" class="grey" width="15%"  colspan="4"><input type="button" class="ok_btn" value="修改" id="sbutton3" /></td></tr>
+						
+					<tr>
+						<td align="right" class="grey" width="15%"  colspan="4"><input type="button" class="ok_btn" value="修改" id="sbutton3" /></td>
+					</tr>
 				</table>
 			</form>
 			<form action="updateOrder.do?os=${os}&guide=${guide}" method="post" id="from4">

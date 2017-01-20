@@ -244,7 +244,15 @@ public class OrderAction extends SuperAction {
   private String loginname;
   private Integer pageNoVal;
   private String formParam;
+  private Integer b;
 
+  public Integer getB() {
+    return b;
+  }
+
+  public void setB(Integer b) {
+    this.b = b;
+  }
 
   public String getFormParam() {
     return formParam;
@@ -847,9 +855,9 @@ public class OrderAction extends SuperAction {
         map.put("notuserIds", testUsers);
       }
     }
-    if (os != null && !os.equals("") && !os.equals("6") && !os.equals("7")) {
+    if (os != null && !os.equals("") && !os.equals("6") && !os.equals("7") && !os.equals("8")) {
       map.put("orderStatus", Integer.parseInt(os));
-    } else if (os != null && os.equals("6") || os.equals("7")) {
+    } else if (os != null && os.equals("6") || os.equals("7") || os.equals("8")) {
       map.put("os", Integer.parseInt(os));
     }
     if (page != null) {
@@ -920,9 +928,9 @@ public class OrderAction extends SuperAction {
     if (order != null) {
       map.put("channel", order.getChannel());
     }
-    if (os != null & !os.equals("") & !os.equals("6") & !os.equals("7")) {
+    if (os != null && !os.equals("") && !os.equals("6") && !os.equals("7") && !os.equals("8")) {
       map.put("orderStatus", Integer.parseInt(os));
-    } else if (os.equals("6") || os.equals("7")) {
+    } else if (os != null && os.equals("6") || os.equals("7") || os.equals("8")) {
       map.put("os", Integer.parseInt(os));
     }
     // 过滤记事本中的userId
@@ -1107,6 +1115,14 @@ public class OrderAction extends SuperAction {
         FileUtil.alertMessageBySkip("查询不到该订单！", "order.do?os=" + os + "&pageNoVal=" + pageNoVal
             + "&" + formParam);
         return null;
+      }
+      // 自动确认订单时间为15天后
+      if (order.getOrderStatus() != null && order.getOrderStatus() == 3) {
+        order.setAutoRecTime(GrouponService.getTimeAddDay(new Date(), 15));
+      }
+      // 如果状态改为代发货则插入付款时间
+      if (order.getOrderStatus() == 2) {
+        order.setPaymentDate(new Date());
       }
       int i = orderService.updateOrder(order);
       if (i > 0) {
@@ -2353,6 +2369,7 @@ public class OrderAction extends SuperAction {
       sheet.addCell(new Label(28, 0, "售后状态"));
       sheet.addCell(new Label(29, 0, "商品货号"));
       sheet.addCell(new Label(30, 0, "拼得客账号"));
+      sheet.addCell(new Label(31, 0, "是否团长"));
 
       Integer payMethod = 0;
       Integer orderStatus = 0;
@@ -2487,6 +2504,12 @@ public class OrderAction extends SuperAction {
         }
         sheet.addCell(new Label(29, i, orderPojo.getProductNum()));
         sheet.addCell(new Label(30, i, orderPojo.getPdkLoginname()));
+        if (orderPojo.getIsHead() != null && orderPojo.getIsHead() == 1) {
+          sheet.addCell(new Label(31, i, "是"));
+        } else {
+          sheet.addCell(new Label(31, i, "否"));
+        }
+
         i++;
       }
       wwb.write();
@@ -3117,7 +3140,7 @@ public class OrderAction extends SuperAction {
               List<OrderPojo> orders = orderService.getOrderByoutTradeNo(outTradeNo);
               if (orders != null && orders.size() > 0) {
                 orderPojo = orders.get(0);
-                // 支付成功参团/开团处理
+                Util.log(orderPojo.getTradeNo() + ">>>>支付成功参团/开团处理");
                 grouponService.groupOrderHandle(orderPojo.getActivityId(), orderPojo.getSourceId(),
                     orderPojo.getUserId(), orderPojo.getSource(), orderPojo.getId());
 
@@ -4608,5 +4631,199 @@ public class OrderAction extends SuperAction {
     }
 
     return SUCCESS;
+  }
+
+  public String goQueryOrder() throws Exception {
+    if (page == null) {
+      page = new Pager();
+    }
+    if (b != null) {
+      page.setRowCount(0);
+    } else {
+      ActionContext ac = ActionContext.getContext();
+      ac.put("orderStatus", sysDictService.getSysDictListByType("order_status"));
+      ac.put("payStatus", sysDictService.getSysDictListByType("pay_status"));
+      ac.put("refundStatus", sysDictService.getSysDictListByType("refund_status"));
+      ac.put("consigneeType", sysDictService.getSysDictListByType("consignee_type"));
+      ac.put("payMethod", sysDictService.getSysDictListByType("pay_method_type"));
+      ac.put("pageNoVal", pageNoVal);
+      Map<String, Object> map = new HashMap<String, Object>();
+      if (order != null) {
+        map.put("orderNo", order.getOrderNo());
+        map.put("orderStatus", order.getOrderStatus());
+        map.put("consignee", order.getConsignee());
+        map.put("consigneePhone", order.getConsigneePhone());
+        map.put("consigneeAddress", order.getConsigneeAddress());
+        map.put("payStatus", order.getPayStatus());
+        map.put("overdue", order.getOverdue());
+        map.put("createDate", order.getCreateDateString());
+        map.put("beganday", order.getBeganday());
+        map.put("endday", order.getEndday());
+        map.put("beganday1", order.getBeganday1());
+        map.put("endday1", order.getEndday1());
+        map.put("sendDate", order.getSendTimes());
+        map.put("tids", order.getTids());
+        map.put("userId", order.getUserId());
+        map.put("userName", order.getUserName());
+        map.put("pushName", order.getPushName());
+        map.put("refundStatus", order.getRefundStatus());
+        map.put("consigneeType", order.getConsigneeType());
+        map.put("payMethod", order.getPayMethod());
+        map.put("logisticsNo", order.getLogisticsNo());
+        map.put("logisticsName", order.getLogisticsName());
+        map.put("shopName", order.getShopName());
+        map.put("productId", order.getProductId());
+        map.put("beganSendDate", order.getBeganSendDate());
+        map.put("endSendDate", order.getEndSendDate());
+        map.put("source", order.getSource());
+        map.put("loginname", order.getLoginname());
+        map.put("attendId", order.getAttendId());
+        // map.put("isRefund", order.getIsRefund());
+        map.put("refundStatus", order.getRefundStatus());
+        map.put("groupBeginDateStr", order.getGroupBeginDateStr());
+        map.put("groupEndDateStr", order.getGroupEndDateStr());
+        map.put("notShip", order.getNotShip());
+        map.put("pdkLoginname", order.getPdkLoginname());
+      }
+      /*
+       * if (agency!= null) { map.put("agencyId",agency.getAgencyId()); }
+       */
+      if (order != null) {
+        map.put("channel", order.getChannel());
+      }
+      // 过滤记事本中的userId
+      /*
+       * String filePath=""; String fileName="userId.txt"; List<Integer> a=new ArrayList<>();
+       * filePath=ServletActionContext.getServletContext().getRealPath("/temp"
+       * )+File.separator+fileName; File file = new File(filePath); if(file.isFile() &&
+       * file.exists()){ //判断文件是否存在 InputStreamReader read = new InputStreamReader( new
+       * FileInputStream(file),"utf-8");//编码格式 BufferedReader bufferedReader = new
+       * BufferedReader(read); String lineTxt = null; while((lineTxt = bufferedReader.readLine()) !=
+       * null){ a.add(Integer.parseInt(lineTxt)); } read.close(); }
+       */
+      testUsers = SellerService.getTestUsers();
+      if (testUsers != null && testUsers.size() > 0) {
+        if (testcount != null && !testcount.equals("")) {
+          map.put("userIds", testUsers);
+        } else {
+          map.put("notuserIds", testUsers);
+        }
+      }
+      if (page != null) {
+        map.put("pageSize", page.getPageSize());
+        map.put("pageNo", (page.getPageNo() - 1) * page.getPageSize());
+      }
+      // page.setRowCount(orderService.orderAllCount(order, os));
+      if (a == null) {
+        if (orderType == 1) {
+          map.put("orderType", 1);
+        } else {
+          map.put("orderTypes", 1);
+        }
+      } else {
+        map.put("a", 1);
+      }
+      page.setRowCount(orderService.orderAllCount2(map));
+    }
+    return SUCCESS;
+  }
+
+  public String getQueryOrderList() throws Exception {
+    if (b != null) {
+      page.setRowCount(1);
+    } else {
+      Map<String, Object> map = new HashMap<String, Object>();
+      if (order != null) {
+        map.put("orderNo", order.getOrderNo());
+        map.put("orderStatus", order.getOrderStatus());
+        map.put("consignee", order.getConsignee());
+        map.put("consigneePhone", order.getConsigneePhone());
+        map.put("consigneeAddress", order.getConsigneeAddress());
+        map.put("payStatus", order.getPayStatus());
+        map.put("overdue", order.getOverdue());
+        map.put("createDate", order.getCreateDateString());
+        map.put("beganday", order.getBeganday());
+        map.put("endday", order.getEndday());
+        map.put("sendDate", order.getSendTimes());
+        map.put("beganday1", order.getBeganday1());
+        map.put("endday1", order.getEndday1());
+        map.put("tids", order.getTids());
+        map.put("userId", order.getUserId());
+        map.put("userName", order.getUserName());
+        map.put("remarks", order.getRemarks());
+        map.put("pushName", order.getPushName());
+        map.put("consigneeType", order.getConsigneeType());
+        map.put("refundStatus", order.getRefundStatus());
+        map.put("payMethod", order.getPayMethod());
+        map.put("logisticsNo", order.getLogisticsNo());
+        map.put("logisticsName", order.getLogisticsName());
+        map.put("shopName", order.getShopName());
+        map.put("productId", order.getProductId());
+        map.put("beganSendDate", order.getBeganSendDate());
+        map.put("endSendDate", order.getEndSendDate());
+        map.put("source", order.getSource());
+        map.put("loginname", order.getLoginname());
+        map.put("attendId", order.getAttendId());
+        // map.put("isRefund", order.getIsRefund());
+        map.put("refundStatus", order.getRefundStatus());
+        map.put("groupBeginDateStr", order.getGroupBeginDateStr());
+        map.put("groupEndDateStr", order.getGroupEndDateStr());
+        map.put("notShip", order.getNotShip());
+        map.put("pdkLoginname", order.getPdkLoginname());
+      }
+      /*
+       * if (agency!= null) { map.put("agencyId",agency.getAgencyId()); }
+       */
+      if (order != null) {
+        map.put("channel", order.getChannel());
+      }
+      testUsers = SellerService.getTestUsers();
+      if (testUsers != null && testUsers.size() > 0) {
+        if (testcount != null && !testcount.equals("")) {
+          map.put("userIds", testUsers);
+        } else {
+          map.put("notuserIds", testUsers);
+        }
+      }
+      if (page != null) {
+        map.put("pageSize", page.getPageSize());
+        map.put("pageNo", (page.getPageNo() - 1) * page.getPageSize());
+      }
+      if (a == null) {
+        if (orderType == 1) {
+          map.put("orderType", 1);
+        } else {
+          map.put("orderTypes", 1);
+        }
+      } else {
+        map.put("a", 1);
+      }
+      List<OrderPojo> orders = orderService.orderAllList2(map);
+
+      JSONArray json = JSONArray.fromObject(orders);
+      page.setResult(json.toString());
+      page.setRowCount(orders == null ? 0 : orders.size());
+    }
+    return SUCCESS;
+  }
+
+  /***
+   * 后台修改订单处理状态
+   * 
+   * // * @return
+   * 
+   * @throws Exception
+   */
+  public String updateOrderhandleStatus() throws Exception {
+    SysLoginPojo loginPojo = UserUtil.getUser();
+    order.setUpdateBy(loginPojo.getId());
+    if (order.getIsHandle() == 0) {
+      order.setIsHandle(1);
+    } else {
+      order.setIsHandle(0);
+    }
+    orderService.updateOrder(order);
+    FileUtil.alertMessageBySkip("修改成功！", "order.do?os=" + os);
+    return null;
   }
 }

@@ -114,6 +114,10 @@ public interface OrderService {
 
   List<OrderPojo> orderAllList2(Map<String, Object> map);
 
+  List<OrderPojo> getPindekeRanking(Map<String, Object> map);
+  
+  List<OrderPojo> getPindekeMonthSale(Map<String, Object> map);
+  
   public List<OrderPojo> orderAllListExcel(Map<String, Object> map);
 
   int orderAllCount2(Map<String, Object> map);
@@ -168,4 +172,13 @@ public interface OrderService {
   public String totalSale(Map<String, Object> params) throws SQLException;
 
   public List<OrderPojo> exportOrderExcel(Map<String, Object> map) throws SQLException;
+
+  /**
+   * 只查订单表
+   * 
+   * @param params
+   * @return
+   * @throws SQLException
+   */
+  public List<OrderPojo> onlyOrderTabList(Map<String, Object> params) throws SQLException;
 }

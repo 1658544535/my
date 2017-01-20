@@ -34,6 +34,9 @@
 	<select id="countBy" parameterType="java.util.Map" resultType="int">
 		select count(*)
 		from groupon_activity_record gar
+		<if test="home != null ">
+			left join user_order uo on uo.user_id = gar.user_id and uo.source_id = gar.id 
+		</if>
 		where 1=1
 		  <if test="id != null ">
 			and gar.id = #{id}
@@ -82,6 +85,9 @@
 		  </if>
 		  <if test="beginTimeStr != null and beginTimeStr != '' and endTimeStr != null and endTimeStr != '' ">
 			 and gar.create_date between #{beginTimeStr} and #{endTimeStr}
+		  </if>
+		  <if test="home != null ">
+			 and uo.consignee != '许测试'
 		  </if>
 	</select>
 	

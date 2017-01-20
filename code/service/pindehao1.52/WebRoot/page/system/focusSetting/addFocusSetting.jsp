@@ -46,9 +46,13 @@
 									<option value="4">专题</option>
 									<option value="5">专题分类</option>
 									<option value="6">77专区</option>
+									<option value="7">链接</option>
 						 </select>
 						 <div id="paramId" style="display:inline">
 						<input type="text" name="focusSettingPojo.paramId" id="focusSettingPojo.paramId" value=""/>
+						</div>
+						<div id="paramUrl" style="display:inline">
+						<input type="text" name="focusSettingPojo.url" id="focusSettingPojo.url" value=""/>
 						</div>
 					</td>
 					<td><span id="paramType_mgId"></span><span id="paramId_mgId"></span></td>
@@ -78,6 +82,7 @@
 	
 	$(document).ready(function() {
 	$("#paramId").hide();
+	$("#paramUrl").hide();
 		$("#sbutton").click(function(){	
 			if(tt.validate()){
 				document.getElementById("from1").submit();					
@@ -85,12 +90,17 @@
 		});
 	});	
 	
-	function setParamId(obj){  
-    var val = obj.value;
-        if(val=='' || val==0){
-	    $("#paramId").hide();
+	function setParamId(obj){
+	    var val = obj.value;
+	    if(val == '' || val == 0){
+	    	$("#paramId").hide();
+	    	$("#paramUrl").hide();
+	    }else if(val==7){
+	    	$("#paramId").hide();
+	    	$("#paramUrl").show();
 	    }else{
-	    $("#paramId").show();
+	    	$("#paramUrl").hide();
+	    	$("#paramId").show();
 	    }
     }  
 

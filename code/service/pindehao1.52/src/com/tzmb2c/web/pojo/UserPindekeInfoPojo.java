@@ -132,8 +132,27 @@ public class UserPindekeInfoPojo extends SuperPojo {
    * 添加返佣总金额
    */
   private Double rebatePriceAdd;
+  private String invitationCode;
+  private String inviterName;
+  private String pindekeNumber;// 拼得客编号
+  private Integer grouponNum;
+  private Integer grouponSuccessNum;
 
+  public String getInviterName() {
+    return inviterName;
+  }
 
+  public void setInviterName(String inviterName) {
+    this.inviterName = inviterName;
+  }
+
+  public String getInvitationCode() {
+    return invitationCode;
+  }
+
+  public void setInvitationCode(String invitationCode) {
+    this.invitationCode = invitationCode;
+  }
 
   public Double getRebatePriceAdd() {
     return rebatePriceAdd;
@@ -232,139 +251,139 @@ public class UserPindekeInfoPojo extends SuperPojo {
   }
 
   public void setId(Long value) {
-    this.id = value;
+    id = value;
   }
 
   public Long getId() {
-    return this.id;
+    return id;
   }
 
   public void setUserId(Long value) {
-    this.userId = value;
+    userId = value;
   }
 
   public Long getUserId() {
-    return this.userId;
+    return userId;
   }
 
   public void setName(String value) {
-    this.name = value;
+    name = value;
   }
 
   public String getName() {
-    return this.name;
+    return name;
   }
 
   public void setPhone(String value) {
-    this.phone = value;
+    phone = value;
   }
 
   public String getPhone() {
-    return this.phone;
+    return phone;
   }
 
   public void setCardNo(String value) {
-    this.cardNo = value;
+    cardNo = value;
   }
 
   public String getCardNo() {
-    return this.cardNo;
+    return cardNo;
   }
 
   public void setExtendChannel(String value) {
-    this.extendChannel = value;
+    extendChannel = value;
   }
 
   public String getExtendChannel() {
-    return this.extendChannel;
+    return extendChannel;
   }
 
   public void setExtendImg1(String value) {
-    this.extendImg1 = value;
+    extendImg1 = value;
   }
 
   public String getExtendImg1() {
-    return this.extendImg1;
+    return extendImg1;
   }
 
   public void setExtendImg2(String value) {
-    this.extendImg2 = value;
+    extendImg2 = value;
   }
 
   public String getExtendImg2() {
-    return this.extendImg2;
+    return extendImg2;
   }
 
   public void setExtendImg3(String value) {
-    this.extendImg3 = value;
+    extendImg3 = value;
   }
 
   public String getExtendImg3() {
-    return this.extendImg3;
+    return extendImg3;
   }
 
   public void setExtendImg4(String value) {
-    this.extendImg4 = value;
+    extendImg4 = value;
   }
 
   public String getExtendImg4() {
-    return this.extendImg4;
+    return extendImg4;
   }
 
   public void setExtendImg5(String value) {
-    this.extendImg5 = value;
+    extendImg5 = value;
   }
 
   public String getExtendImg5() {
-    return this.extendImg5;
+    return extendImg5;
   }
 
   public void setReturnMsg(String value) {
-    this.returnMsg = value;
+    returnMsg = value;
   }
 
   public String getReturnMsg() {
-    return this.returnMsg;
+    return returnMsg;
   }
 
   public void setRebatePrice(Double value) {
-    this.rebatePrice = value;
+    rebatePrice = value;
   }
 
   public Double getRebatePrice() {
-    return this.rebatePrice;
+    return rebatePrice;
   }
 
   public void setWithdrawPrice(Double value) {
-    this.withdrawPrice = value;
+    withdrawPrice = value;
   }
 
   public Double getWithdrawPrice() {
-    return this.withdrawPrice;
+    return withdrawPrice;
   }
 
   public void setSurpluPrice(Double value) {
-    this.surpluPrice = value;
+    surpluPrice = value;
   }
 
   public Double getSurpluPrice() {
-    return this.surpluPrice;
+    return surpluPrice;
   }
 
   public void setIsDelete(Integer value) {
-    this.isDelete = value;
+    isDelete = value;
   }
 
   public Integer getIsDelete() {
-    return this.isDelete;
+    return isDelete;
   }
 
   public void setStatus(Integer value) {
-    this.status = value;
+    status = value;
   }
 
   public Integer getStatus() {
-    return this.status;
+    return status;
   }
 
   @Override
@@ -375,7 +394,7 @@ public class UserPindekeInfoPojo extends SuperPojo {
   @Override
   public void setCreateDate(Date createDate) {
     this.createDate = createDate;
-    this.creatDateString = StringUtil.dateToString(this.createDate);
+    creatDateString = StringUtil.dateToString(this.createDate);
   }
 
   @Override
@@ -386,7 +405,7 @@ public class UserPindekeInfoPojo extends SuperPojo {
   @Override
   public void setUpdateDate(Date updateDate) {
     this.updateDate = updateDate;
-    this.setUpdateDateString(StringUtil.dateString(this.updateDate));
+    setUpdateDateString(StringUtil.dateString(this.updateDate));
   }
 
   public String getCreatDateString() {
@@ -419,5 +438,29 @@ public class UserPindekeInfoPojo extends SuperPojo {
 
   public void setUpdateByName(String updateByName) {
     this.updateByName = updateByName;
+  }
+
+  public String getPindekeNumber() {
+    return pindekeNumber;
+  }
+
+  public void setPindekeNumber(String pindekeNumber) {
+    this.pindekeNumber = pindekeNumber;
+  }
+
+  public Integer getGrouponNum() {
+    return grouponNum;
+  }
+
+  public void setGrouponNum(Integer grouponNum) {
+    this.grouponNum = grouponNum;
+  }
+
+  public Integer getGrouponSuccessNum() {
+    return grouponSuccessNum;
+  }
+
+  public void setGrouponSuccessNum(Integer grouponSuccessNum) {
+    this.grouponSuccessNum = grouponSuccessNum;
   }
 }

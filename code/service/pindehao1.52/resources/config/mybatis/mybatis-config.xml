@@ -191,5 +191,7 @@
         <typeAlias alias="userCouponFlagPojo" type="com.tzmb2c.web.pojo.UserCouponFlagPojo" />
 		<typeAlias alias="productRestrictionPojo" type="com.tzmb2c.web.pojo.ProductRestrictionPojo" />
 		<typeAlias alias="userRedeemCodePojo" type="com.tzmb2c.web.pojo.UserRedeemCodePojo" />
+		<typeAlias alias="aliRedEnvelopePojo" type="com.tzmb2c.web.pojo.AliRedEnvelopePojo" />
+		<typeAlias alias="pindekeMonthSalePojo" type="com.tzmb2c.web.pojo.PindekeMonthSalePojo" />
 	</typeAliases>
 </configuration>

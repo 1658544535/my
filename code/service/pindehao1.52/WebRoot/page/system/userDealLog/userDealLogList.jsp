@@ -131,7 +131,7 @@
 		
 		$("#body").append(
 				"<tr><td><input name='tids' type='checkbox' value="+this.id +" /></td>"+
-				"<td>"+ this.name + "</td>"+
+				"<td>"+this.pindekeNumber+"<p>"+ this.name + "</p></td>"+
 				"<td>"+ transType + "</td>"+
 				"<td>"+ this.typeNo + "</td>"+
 				"<td>"+ this.dealAmount + "</td>"+

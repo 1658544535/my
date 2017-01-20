@@ -214,7 +214,7 @@ function allcb(){
 									</c:forEach>
 							</select>
 						</td>	
-						<c:if test="${os == '' || os == 3 }">
+						<c:if test="${os == '' || os == 3 || os == 8}">
 					    <td align="right">售后状态：</td>
 						<%-- <td><select name="order.isRefund" id="" class="floatLeft">
 									<option value="">----请选择----</option>
@@ -264,7 +264,7 @@ function allcb(){
 									<option value="8" <c:if test="${order.source == 8 }">selected=selected</c:if>>拼得客</option>
 							</select>
 					    </td>   
-	                    <s:if test="#request.os==3||#request.os==''">
+	                    <s:if test="#request.os==3||#request.os==''||#request.os==8">
 						<td align="right">发货超过15天：</td>
 						<td>
 								<select name="order.overdue" id="idAuto6" class="floatLeft"">
@@ -297,7 +297,7 @@ function allcb(){
 						</c:if>
 					</tr>
 					<tr>
-						<s:if test="#request.os==3||#request.os==''">
+						<s:if test="#request.os==3||#request.os=='' ||#request.os==8">
 						<td align="right">发货日期：</td>
 						<td><input value="${order.beganSendDate }" name="order.beganSendDate" readonly="readonly" class="Wdate" type="text" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss', isShowToday: false, isShowClear: true })" id="create-time-start-selector"/></td>
 						<td><input value="${order.endSendDate }" name="order.endSendDate" readonly="readonly" class="Wdate" type="text" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss', isShowToday: false, isShowClear: true })" id="create-time-end-selector"/></td>
@@ -386,7 +386,7 @@ function allcb(){
 						<!-- <th>操作者</th>-->
 						<!-- <th>批发商</th> -->
 						<th>客服留言</th>
-						<th width=80px>操作</th>
+						<th width=130px>操作</th>
 					</tr>
 					<tbody id="body"></tbody>
 				</table>
@@ -420,6 +420,14 @@ function query() {
     var nowTime=now.getTime();
 	//分页展现页面函数 
 	function installPage() {
+	if(this.isHandle==0){
+	 handleString = "<a class='edit_btn' href='updateOrderhandleStatus.do?order.id="+this.id +"&os=<s:property value='os'/>&order.isHandle="+this.isHandle+"' onclick='javascript:return window.confirm(\"确定移入待处理？\");'>移入待处理</a>";
+	}else if(this.isHandle==1 && "<s:property value='os'/>"=="8"){
+	 handleString = "<a class='edit_btn' href='updateOrderhandleStatus.do?order.id="+this.id +"&os=<s:property value='os'/>&order.isHandle="+this.isHandle+"' onclick='javascript:return window.confirm(\"确定处理完成？\");'>处理完成</a>";
+	}else{
+	 handleString = "<a class='edit_btn' onclick=goOrderDetail("+this.id+","+this.userId+",'<s:property value='os'/>')>查看处理进度</a>";
+	}
+	
 	if(this.groupDateStr!=""){
 	var groupDate=new Date(this.groupDateStr)
 	//成团时间加上24小时
@@ -586,7 +594,7 @@ function query() {
 		        "</td><td><textarea rows=5 id='code"+this.id+"'>"+this.remarks+"</textarea></td>"+
 		        "<s:if test="#session.role.roleId!=7"><td width=80px><!--<a  class='del_btn' onclick=del('"+this.id+"')>删除</a>-->"+
 		        "<a class='edit_btn' onclick=goOrderDetail("+this.id+","+this.userId+",'<s:property value='os'/>')>详情</a>"+
-		        
+		        handleString+
 		        // 该推送方法已失效
 		        // "<a class='edit_btn' onclick=pushOrder('"+this.id+"')>推送</a>"+
 		        //<s:if test="#request.os==2 or #request.os==''">

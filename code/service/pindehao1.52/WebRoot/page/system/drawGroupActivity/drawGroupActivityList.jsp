@@ -168,7 +168,7 @@ if(tt.validate()){
 				"<td>"+ this.beginTimeStr + "<br />至<br />"+this.endTimeStr+"</td>"+
 				"<td>"+ this.createDateStr + "</td>"+
 				"<td>"+ this.num+"</td>"+
-				"<td>"+ this.numNow1+"</td>"+
+				"<td>"+ this.numNow+"</td>"+
 				"<td>"+ statusStr +"</td>"+
 				"<td><a class='edit_btn' href='goUpdateDrawGroupActivity.do?grouponActivityPojo.id="+this.id +"'>编辑</a><a class='edit_btn' href='goDrawGroupGroRec.do?drawGrouponRecordPojo.id="+this.id+"'>查看</a>"+
 				"<a class='del_btn'  onclick=del1(\"delDrawGroupActivityById.do?id="+this.id+"\")>删除</a>"+

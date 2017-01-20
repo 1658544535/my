@@ -85,5 +85,12 @@
 				<param name="root">result</param>
 			</result>
 		</action>			
+		<!-- 编辑拼得客编号 -->
+		<action name="updatePindekeNumber" class="com.tzmb2c.web.action.UserPindekeInfoAction"
+			method="updatePindekeNumber">
+			<result type="json">
+	       		 <param name="root">result</param>
+			</result>
+		</action>	
 	</package>
 </struts>

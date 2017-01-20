@@ -91,11 +91,22 @@
 	<bean id="DaySellClean" class="com.tzmb2c.utils.DaySellClean"></bean>
 	<!-- 自动拼团 --> 
 	<bean id="autoGrouponTask" class="com.tzmb2c.utils.AutoGrouponTask"></bean>
+	<!--拼得客排行榜定时任务  --> 
+	<bean id="pindekeRankingTask" class="com.tzmb2c.utils.pindekeRankingTask"></bean>
+	<!--拼得客注册30天销售额定时任务--> 
+	<bean id="pindekeMonthSaleTask" class="com.tzmb2c.utils.pindekeMonthSaleTask"></bean>
+	<!-- 自动确认收货 --> 
+	<bean id="autoRecTask" class="com.tzmb2c.utils.autoRecTask"></bean>
+	
 	<task:scheduled-tasks>
-	        <task:scheduled ref="GrouponTask" method="overdueGrouponJob" cron="0/1 * * * * ?"/>
-	        <task:scheduled ref="WXRefundQueryTask" method="query" cron="0 0 0/1 * * ?"/>
-	        <task:scheduled ref="UserDealLog" method="addUserDealLogTask" cron="0 0 0,12 * * ?"/>
-	        <!-- <task:scheduled ref="DaySellClean" method="daySellClean" cron="0 0 0 * * ?"/>
-	        <task:scheduled ref="autoGrouponTask" method="autoGroupon" cron="*/10 * * * * ?"/> -->
+		<task:scheduled ref="GrouponTask" method="overdueGrouponJob" cron="0/1 * * * * ?"/>
+		<!-- <task:scheduled ref="WXRefundQueryTask" method="query" cron="0 0 0/1 * * ?"/>
+		<task:scheduled ref="UserDealLog" method="addUserDealLogTask" cron="0 0 0,12 * * ?"/>
+		<task:scheduled ref="DaySellClean" method="daySellClean" cron="0 0 0 * * ?"/>
+		<task:scheduled ref="autoGrouponTask" method="autoGroupon" cron="*/10 * * * * ?"/> -->
+		<task:scheduled ref="autoRecTask" method="autoRecJob" cron="0/20 * * * * ?"/>
+		<task:scheduled ref="pindekeRankingTask" method="pindekeRanking" cron="0 0 2 * * ?"/>
+		<task:scheduled ref="pindekeMonthSaleTask" method="pindekeMonthSale" cron="0 0 3 * * ?"/>
 	</task:scheduled-tasks>
+	
 </beans>

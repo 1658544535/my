@@ -1210,12 +1210,25 @@
 		<action name="userGroupTaskApi" class="com.tzmb2c.web.action.AppApiPinDeKeAction" method="userGroupTaskApi">
 			<result>/api/apiWeb.jsp</result>
 		</action>
+		
+		<!-- 领取红包口令图片-->
+		<action name="receiveRedApi" class="com.tzmb2c.web.action.AppApiPinDeKeAction" method="receiveRedApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
 		<!-- 充值券兑换 -->
 		<action name="userCodeRedeemApi" class="com.tzmb2c.web.action.AppApiPinDeKeAction" method="userCodeRedeemApi">
 			<result>/api/apiWeb.jsp</result>
 		</action>
 		<!-- 用户钱包余额 -->
 		<action name="userWelletBalance" class="com.tzmb2c.web.action.AppApiPinDeKeAction" method="userWelletBalance">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 注册拼得客并绑定 -->
+		<action name="registerPdkByInvitCode" class="com.tzmb2c.web.action.AppApiPinDeKeAction" method="registerPdkByInvitCode">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 拼得客销售额排行榜 -->
+		<action name="pdkSellRankingList" class="com.tzmb2c.web.action.AppApiPinDeKeAction" method="pdkSellRankingList">
 			<result>/api/apiWeb.jsp</result>
 		</action>
 	</package>
@@ -1230,6 +1243,14 @@
 		</action>
 		<!-- 0.1抽奖极验开关 -->
 		<action name="openDrawValid" class="com.tzmb2c.web.action.AppApiAction" method="setDrawValid">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- 口令红包表生成-->
+		<action name="aliRedEnvelopeApi" class="com.tzmb2c.web.action.AppApiGrouponAction" method="aliRedEnvelopeApi">
+			<result>/api/apiWeb.jsp</result>
+		</action>
+		<!-- app接口异常处理 -->
+		<action name="appApiError" class="com.tzmb2c.web.action.AppApiWalletAction" method="appApiError">
 			<result>/api/apiWeb.jsp</result>
 		</action>
 	</package>

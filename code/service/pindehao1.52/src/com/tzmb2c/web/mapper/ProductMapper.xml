@@ -67,7 +67,8 @@
 		format_value as formatValue,
 		norm_type as normType,
 		limit_num as limitNum,
-		surplus_num as surplusNum
+		surplus_num as surplusNum,
+		faraway as faraway
 	</sql>
 	<!-- <cache/>  -->
 	<!--前台调用，默认审核状态为1-->
@@ -568,12 +569,15 @@
 		(select ifnull(sum(stock),0) from product_sku_link where product_id=t.id) as stock,
 		ifnull(gac.price,0) as price,
 		ifnull(gac.num,0) as num,
+		<!--
 		<if test="activityType != null">
 			(select count(*) from groupon_user_record gur where gur.activity_id = gac.id and gur.activity_type=#{activityType}) as countNum,
 			
 		</if> 
 		(SELECT COUNT(*) FROM groupon_user_record gur 
 			LEFT JOIN groupon_activity_record gar ON gur.attend_id = gar.id WHERE gar.activity_id=gac.id) as numNow1,
+		-->
+		(select count(*) from groupon_user_record gur where gur.activity_id = gac.id and gur.activity_type=gac.type) numNow1,
 		gac.type as type,
 		gac.status as status2,
 		gac.id as grouponId,
@@ -1436,6 +1440,8 @@
 		t.product_type1 as productType1,
 		(select name from product_type where id=t.product_type1 and status =1) as productType1Name,
 		(select price from groupon_activity where product_id=t.id and type=1 and is_delete=0 and is_default=1 limit 1) as price,
+		(select limit_num from groupon_activity where product_id=t.id and type=1 and is_delete=0 and is_default=1 limit 1) as gaLimitNum,
+		(select surplus_num from groupon_activity where product_id=t.id and type=1 and is_delete=0 and is_default=1 limit 1) as gaSurplusNum,
 		t.product_commt as productCommt,
 		t.video_url as videoUrl,
 		t.tvideo_url as tvideoUrl, 
@@ -1447,7 +1453,8 @@
 		t.color_value as colorValue,
 		t.norm_type as normType,
 		t.limit_num as limitNum,
-		t.surplus_num as surplusNum
+		t.surplus_num as surplusNum,
+		t.faraway as faraway
 		from product t 
 		left join sys_login u on t.user_id = u.id
 		left join product_type pt on t.product_type_id = pt.id 
@@ -1659,7 +1666,8 @@
 			color_value,
 			norm_type,
 			limit_num,
-			surplus_num
+			surplus_num,
+			faraway
 		)
 		values(
 			#{unit},
@@ -1716,7 +1724,8 @@
 			#{colorValue},
 			#{normType},
 			#{limitNum},
-			#{surplusNum}
+			#{surplusNum},
+			#{faraway}
 		)
 	</insert>
 	
@@ -1895,55 +1904,55 @@
 			t.base_number=#{baseNumber},
 		</if>
 		<if test="image !=null and image !=''">
-		   t.image=#{image},
+		   	t.image=#{image},
 		</if>
 		<if test="imageSmall !=null and imageSmall !=''">
-		   t.image_small=#{imageSmall},
+		   	t.image_small=#{imageSmall},
 		</if>
 		<if test="imageMain !=null and imageMain !=''">
-		   t.image_main=#{imageMain},
+		   	t.image_main=#{imageMain},
 		</if>
 		<if test="isIntroduce !=null ">
-		  t.is_introduce=#{isIntroduce},
+		  	t.is_introduce=#{isIntroduce},
 		</if>
 		<if test="brand !=null and brand !=''">
-		  t.brand=#{brand},
+		  	t.brand=#{brand},
 		</if>
 		<if test="texture !=null and texture !=''">
-		 t.texture=#{texture},
+		 	t.texture=#{texture},
 		</if>
 		<if test="age !=null and age !=''">
-		 t.age=#{age},
+		 	t.age=#{age},
 		</if>
 		<if test="productFunction !=null and productFunction !=''">
-		 t.product_function=#{productFunction},
+		 	t.product_function=#{productFunction},
 		</if>
         <if test="isPower !=null ">
-		t.is_power=#{isPower},
+			t.is_power=#{isPower},
 		</if>
 		<if test="pack !=null and pack !=''">
-		 t.pack=#{pack},
+		 	t.pack=#{pack},
 		</if>
 		<if test="isHotsale !=null ">
-		 t.is_hotsale=#{isHotsale},
+		 	t.is_hotsale=#{isHotsale},
 		</if>
 		<if test="location !=null and location !=''">
-		 t.location=#{location},
+		 	t.location=#{location},
 		</if>
 		<if test="isNew !=null ">
-		 t.is_new=#{isNew},
+		 	t.is_new=#{isNew},
 		</if>
 		<if test="sorting !=null ">
-		 t.sorting=#{sorting},
+		 	t.sorting=#{sorting},
 		</if>
 		<if test="status !=null ">
-		 t.status=#{status},
+		 	t.status=#{status},
 		</if>
 		<if test="postageType !=null and postageType !=''">
-		 t.postage_type=#{postageType},
+		 	t.postage_type=#{postageType},
 		</if>
 		<if test="tag !=null and tag !=''">
-		 t.tag=#{tag},
+		 	t.tag=#{tag},
 		</if>
 		<if test="ageDesc !=null ">
 			t.age_desc=#{ageDesc},
@@ -2001,6 +2010,9 @@
 		</if>
 		<if test="surplusNumMinus != null">
 			t.surplus_num = t.surplus_num - #{surplusNumMinus},
+		</if>
+		<if test="faraway != null">
+			t.faraway = #{faraway},
 		</if>
 		<if test="version == null">
 			t.version = 0

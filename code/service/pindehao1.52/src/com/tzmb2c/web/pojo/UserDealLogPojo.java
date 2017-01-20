@@ -82,7 +82,7 @@ public class UserDealLogPojo extends SuperPojo {
   private Double surplusPrice;
   private Date falseDate;
   private String falseDateStr;
-
+  private String pindekeNumber;// 拼得客编号
 
 
   public String getFalseDateStr() {
@@ -154,115 +154,115 @@ public class UserDealLogPojo extends SuperPojo {
   }
 
   public void setId(Long value) {
-    this.id = value;
+    id = value;
   }
 
   public Long getId() {
-    return this.id;
+    return id;
   }
 
   public void setUserId(Long value) {
-    this.userId = value;
+    userId = value;
   }
 
   public Long getUserId() {
-    return this.userId;
+    return userId;
   }
 
   public void setDealDate(Date value) {
-    this.dealDate = value;
+    dealDate = value;
   }
 
   public Date getDealDate() {
-    return this.dealDate;
+    return dealDate;
   }
 
   public void setDealAmount(Double value) {
-    this.dealAmount = value;
+    dealAmount = value;
   }
 
   public Double getDealAmount() {
-    return this.dealAmount;
+    return dealAmount;
   }
 
   public void setDealType(Integer value) {
-    this.dealType = value;
+    dealType = value;
   }
 
   public Integer getDealType() {
-    return this.dealType;
+    return dealType;
   }
 
   public void setStatus(Integer value) {
-    this.status = value;
+    status = value;
   }
 
   public Integer getStatus() {
-    return this.status;
+    return status;
   }
 
   public void setGroupId(Long value) {
-    this.groupId = value;
+    groupId = value;
   }
 
   public Long getGroupId() {
-    return this.groupId;
+    return groupId;
   }
 
   public void setName(String value) {
-    this.name = value;
+    name = value;
   }
 
   public String getName() {
-    return this.name;
+    return name;
   }
 
   public void setType(String value) {
-    this.type = value;
+    type = value;
   }
 
   public String getType() {
-    return this.type;
+    return type;
   }
 
   public void setTypeNo(String value) {
-    this.typeNo = value;
+    typeNo = value;
   }
 
   public String getTypeNo() {
-    return this.typeNo;
+    return typeNo;
   }
 
   public void setOrderNo(String value) {
-    this.orderNo = value;
+    orderNo = value;
   }
 
   public String getOrderNo() {
-    return this.orderNo;
+    return orderNo;
   }
 
   public void setReturnMsg(String value) {
-    this.returnMsg = value;
+    returnMsg = value;
   }
 
   public String getReturnMsg() {
-    return this.returnMsg;
+    return returnMsg;
   }
 
   public void setOverTime(Date value) {
-    this.overTime = value;
+    overTime = value;
   }
 
   public Date getOverTime() {
-    return this.overTime;
+    return overTime;
   }
 
   public void setRemark(Integer value) {
-    this.remark = value;
+    remark = value;
   }
 
   public Integer getRemark() {
-    return this.remark;
+    return remark;
   }
 
   public String getDealDateEndStr() {
@@ -271,5 +271,13 @@ public class UserDealLogPojo extends SuperPojo {
 
   public void setDealDateEndStr(String dealDateEndStr) {
     this.dealDateEndStr = dealDateEndStr;
+  }
+
+  public String getPindekeNumber() {
+    return pindekeNumber;
+  }
+
+  public void setPindekeNumber(String pindekeNumber) {
+    this.pindekeNumber = pindekeNumber;
   }
 }
