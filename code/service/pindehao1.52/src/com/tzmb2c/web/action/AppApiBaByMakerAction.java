@@ -4938,7 +4938,7 @@ public class AppApiBaByMakerAction extends SuperAction {
               result.put("title", "我买了" + StringUtil.checkVal(grouponActivityPojo.getPrice())
                   + "元的" + StringUtil.checkVal(productPojo.getProductName()) + "");
               result.put("url", ConstParam.WX_URL2 + "/groupon_join.php?aid=" + id + "&pdkUid="
-                  + pdkUid);
+                  + grouponActivityRecordPojo.getPdkUid());
               result.put(
                   "image",
                   ConstParam.URL + "/upfiles/product/"

@@ -741,3 +741,8 @@ ALTER TABLE user_certificates_photo ADD bl_image8 varchar(100) default '' COMMEN
 ALTER TABLE user_certificates_photo ADD bl_image9 varchar(100) default '' COMMENT '品牌授权证明图片9';
 ALTER TABLE user_certificates_photo ADD bl_image10 varchar(100) default '' COMMENT '品牌授权证明图片10';
 ALTER TABLE user_certificates_photo ADD image8 varchar(100) default '' COMMENT '开户许可证';
+
+##增加-sku_link
+alter table product_sku_link add is_delete int(2) default '0' COMMENT '是否删除(1是0否)';
+##增加-sku_att
+ALTER TABLE sku_attribute ADD is_delete INT(2) DEFAULT '0' COMMENT '是否删除(1是0否)';
