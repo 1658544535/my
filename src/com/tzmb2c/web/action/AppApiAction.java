@@ -9101,24 +9101,49 @@ public class AppApiAction extends SuperAction {
           map1.put("city", d.getCity());
           map1.put("area", d.getArea());
           // 偏远地区标志
-          String province = "";
-          if (d != null && d.getProvinceName() != null && !"".equals(d.getProvinceName())) {
-            province = d.getProvinceName();
-            if (province.indexOf("新疆") != -1 || province.indexOf("西藏") != -1
-                || province.indexOf("内蒙古") != -1 || province.indexOf("青海") != -1
-                || province.indexOf("甘肃") != -1 || province.indexOf("宁夏") != -1) {
-              map1.put("isRemote", 1);
-            } else {
-              map1.put("isRemote", 0);
+          map1.put("isRemote", "0");
+          if (pid != null && pid > 0) {
+            ProductPojo product = productService.getById(pid);
+            if (product != null && product.getFaraway() != null
+                && StringUtils.isNotEmpty(product.getFaraway()) && d.getProvinceId() != null
+                && d.getProvinceId() > 0) {
+              List<Long> farawayList = new ArrayList<>();
+              String[] farawayArr = product.getFaraway().split(",");
+              if (farawayArr != null && farawayArr.length > 0) {
+                for (String f : farawayArr) {
+                  farawayList.add(Long.valueOf(f));
+                }
+              }
+              if (farawayList != null && farawayList.size() > 0) {
+                if (farawayList.contains(d.getProvinceId())) {
+                  map1.put("isRemote", 1);
+                } else {
+                  map1.put("isRemote", 0);
+                }
+              }
             }
           } else {
-            map1.put("isRemote", "");
+            String province = "";
+            if (d != null && d.getProvinceName() != null && !"".equals(d.getProvinceName())) {
+              province = d.getProvinceName();
+              if (province.indexOf("新疆") != -1 || province.indexOf("西藏") != -1
+                  || province.indexOf("内蒙古") != -1 || province.indexOf("青海") != -1
+                  || province.indexOf("甘肃") != -1 || province.indexOf("宁夏") != -1) {
+                map1.put("isRemote", 1);
+              } else {
+                map1.put("isRemote", 0);
+              }
+            }
           }
 
           list.add(map1);
         }
       } else {
-        msg = "亲，您还没有添加地址哦！思密达(づ￣ 3￣)づ";
+        if (pageNo > 1) {
+          msg = "查询不到地址!";
+        } else {
+          msg = "亲,您还没有添加地址哦!";
+        }
       }
       b = true;
     }
@@ -11397,18 +11422,39 @@ public class AppApiAction extends SuperAction {
           map1.put("isDefault", p.getIsDefault());
           map1.put("province", p.getProvince());
           // 偏远地区标志
-          String province = "";
-          if (p != null && p.getProvinceName() != null && !"".equals(p.getProvinceName())) {
-            province = p.getProvinceName();
-            if (province.indexOf("新疆") != -1 || province.indexOf("西藏") != -1
-                || province.indexOf("内蒙古") != -1 || province.indexOf("青海") != -1
-                || province.indexOf("甘肃") != -1 || province.indexOf("宁夏") != -1) {
-              map1.put("isRemote", 1);
-            } else {
-              map1.put("isRemote", 0);
+          map1.put("isRemote", "0");
+          if (pid != null && pid > 0) {
+            ProductPojo product = productService.getById(pid);
+            if (product != null && product.getFaraway() != null
+                && StringUtils.isNotEmpty(product.getFaraway()) && p.getProvinceId() != null
+                && p.getProvinceId() > 0) {
+              List<Long> farawayList = new ArrayList<>();
+              String[] farawayArr = product.getFaraway().split(",");
+              if (farawayArr != null && farawayArr.length > 0) {
+                for (String f : farawayArr) {
+                  farawayList.add(Long.valueOf(f));
+                }
+              }
+              if (farawayList != null && farawayList.size() > 0) {
+                if (farawayList.contains(p.getProvinceId())) {
+                  map1.put("isRemote", 1);
+                } else {
+                  map1.put("isRemote", 0);
+                }
+              }
             }
           } else {
-            map1.put("isRemote", "");
+            String province = "";
+            if (p != null && p.getProvinceName() != null && !"".equals(p.getProvinceName())) {
+              province = p.getProvinceName();
+              if (province.indexOf("新疆") != -1 || province.indexOf("西藏") != -1
+                  || province.indexOf("内蒙古") != -1 || province.indexOf("青海") != -1
+                  || province.indexOf("甘肃") != -1 || province.indexOf("宁夏") != -1) {
+                map1.put("isRemote", 1);
+              } else {
+                map1.put("isRemote", 0);
+              }
+            }
           }
           // listarray.add(map1);
           b = true;

@@ -19,6 +19,61 @@
 <link rel="stylesheet" href="/seller/css/default.css" type="text/css" media="all" />
 <link rel="stylesheet" href="<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/css/bootstrap.min.css" type="text/css" media="all" />
 <link rel="stylesheet" href="<s:i18n name="sysconfig"><s:text name="houtai_dns" /></s:i18n>/css/productSku.css" type="text/css" media="all" />
+<style type="text/css">
+	.area{
+		float: left;
+		margin-left: 15px;
+		margin-top: 10px;
+		line-height: 26px;
+        height: 26px;
+	}
+	.area a{
+		line-height: 26px;
+        height: 26px;
+	    padding: 0 10px;
+	    border: 1px solid #e6e6e6;
+	    color: #666;
+	    display: inline-block;
+	    text-align: center;
+	    text-decoration: none;
+	    vertical-align: middle;
+	    cursor: pointer;
+	    font-family: verdana,Hiragino Sans GB;
+	    border-radius: 2px;
+	}
+	.on{
+		border:1px solid #FF5454;
+	}
+	.areaCtrl div{
+		float: left;
+		margin-left: 15px;
+		margin-top: 10px;
+		line-height: 26px;
+        height: 26px;
+	}
+	.areaCtrl div a{
+		font-weight : bold;
+		line-height: 26px;
+        height: 26px;
+	    padding: 0 10px;
+	    border: 1px solid #e6e6e6;
+	    color: #666;
+	    display: inline-block;
+	    text-align: center;
+	    text-decoration: none;
+	    vertical-align: middle;
+	    cursor: pointer;
+	    font-family: verdana,Hiragino Sans GB;
+	    border-radius: 2px;
+	}
+	.areaCount{
+		color:red;
+	}
+	.areaInfo{
+		margin-left: 15px;
+		font-size: 14px;
+	}
+</style>
 <script type="text/javascript">
 document.onkeydown = function () {
     if (window.event && window.event.keyCode == 13) {
@@ -258,6 +313,28 @@ document.onkeydown = function () {
 						id="sellingPrice_mgId"></span></td>
 				</tr>
 				<tr>
+					<td align="right" width="20%" class="grey">配送地址(包邮):</td>
+					<td>
+						<c:forEach items="${sysAreaPojos}" var="areaList">
+							<c:choose>
+							   <c:when test="${areaList.isOften=='1'}">  
+								<div class="area on" dataId="${areaList.id}" isOften="${areaList.isOften}"><a>${areaList.name}</a></div>
+							   </c:when>
+							   <c:otherwise> 
+							    <div class="area up" dataId="${areaList.id}" isOften="${areaList.isOften}"><a>${areaList.name}</a></div>
+							   </c:otherwise>
+							</c:choose>
+						</c:forEach>
+						<div class="clear"></div><br>
+						<div class="areaInfo">已选择<span class="areaCount">25</span>个配送地址</div>
+						<div class="areaCtrl">
+							<div onclick="areaSelAll()"><a>全选</a></div>
+							<div onclick="areaSelBack()"><a>反选</a></div>
+							<div onclick="areaIsOften()"><a>常用地址</a></div>
+						</div>
+					</td>
+				</tr>
+				<tr>
 					<td align="right" width="20%" class="grey">独立购价格:</td>
 					<td><input class="floatLeft" type="text"
 						name="productPojo.distributionPrice" id="distributionPrice" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onafterpaste="this.value=this.value.replace(/[^\d.]/g,'')" maxlength="10"> <span
@@ -330,7 +407,7 @@ document.onkeydown = function () {
 				</tr>
 			</table>
 		</div>
-
+		<input id="faraway" name="productPojo.faraway" type="hidden"/>
 		<div class="Btn_div float_btn" >
 			<input name="" type="button" value="返回" class="back_btn"
 				onclick="window.history.back()" /><input id="submitId"
@@ -359,7 +436,16 @@ var maxNum =new tt.Field(" 限购","productPojo.maxNum").setMsgId("maxNum_mgId")
 	new tt.NRV().set(0, '++').add(maxNum);
 	$(document).ready(function() {
 		selectTypeChange();
+		//计算偏远地区选择个数
+		areaCount();
 		$("#submitId").click(function(){
+			//偏远地区
+			var faraway = "";
+			$(".up").each(function(){
+				faraway += $(this).attr('dataId')+",";
+			});
+			faraway = faraway.substring(0,faraway.length-1)
+		    $("#faraway").val(faraway);
 			if($("#norm").val() == 2 && $(".sxSelect").val() == $(".gsSelect").val()){
 				alert("sku两个规格不能一样!");
 				return;
@@ -575,6 +661,58 @@ var maxNum =new tt.Field(" 限购","productPojo.maxNum").setMsgId("maxNum_mgId")
 		$("#stock").html(stocks);
 	}
 	
+	//偏远地区监听
+	 $(document).delegate(".area", "click", function(){
+       	if($(this).hasClass('on')){
+       		$(this).removeClass('on');
+       		$(this).addClass('up');
+       		areaCount();
+       	} else {
+       		$(this).removeClass('up');
+       		$(this).addClass('on');
+       		areaCount();
+       	}
+     });
+	//计算选择地址个数
+	function areaCount(){
+		$(".areaCount").text($(".on").size());
+	}
+	//全选
+	function areaSelAll(){
+		$('.area').removeClass('up');
+		$('.area').addClass('on');
+		areaCount();
+	}
+	
+	//反选
+	function areaSelBack(){
+		$(".area").each(function () {  
+			if($(this).hasClass('on')){
+	       		$(this).removeClass('on');
+	       		$(this).addClass('up');
+	       		areaCount();
+	       	} else {
+	       		$(this).removeClass('up');
+	       		$(this).addClass('on');
+	       		areaCount();
+	       	}
+        });
+	}
+	
+	//常用地址
+	function areaIsOften(){
+		$(".area").each(function () {  
+			if($(this).attr('isOften') == 0){
+	       		$(this).removeClass('on');
+	       		$(this).addClass('up');
+	       		areaCount();
+	       	} else {
+	       		$(this).removeClass('up');
+	       		$(this).addClass('on');
+	       		areaCount();
+	       	}
+        });
+	}
 </script>
 
 </html>

@@ -54,6 +54,10 @@ public interface OrderMapper {
 
   public List<OrderPojo> orderAllList2(Map<String, Object> map);
 
+  public List<OrderPojo> getPindekeRanking(Map<String, Object> map);
+
+  public List<OrderPojo> getPindekeMonthSale(Map<String, Object> map);
+  
   public List<OrderPojo> orderAllListExcel(Map<String, Object> map);
 
   public List<OrderPojo> exportOrderExcel(Map<String, Object> map) throws SQLException;
@@ -147,6 +151,8 @@ public interface OrderMapper {
   public int groupRefundCountBy(Map<String, Object> params);
 
   public List<OrderPojo> groupRefundListPage(Map<String, Object> params);
+
+  public List<OrderPojo> onlyOrderTabList(Map<String, Object> params) throws SQLException;
 
   /**
    * 订单退款更新.

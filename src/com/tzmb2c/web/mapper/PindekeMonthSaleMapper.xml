@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.PindekeMonthSaleMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id as id,
+		user_id as userId,
+		type as type,
+		section_time as sectionTime,
+		total as total,
+		is_settle as isSettle,
+		settle_amt as settleAmt,
+		ranking as ranking,
+		inviter_id as inviterId,
+		create_by as createBy,
+		create_date as createDate,
+		update_by as updateBy,
+		update_date as updateDate
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="PindekeMonthSalePojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			pindeke_month_sale
+		where
+			id = #{id}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from pindeke_month_sale
+		where 1=1
+		  <if test="id != null ">
+			and id = #{id}
+		  </if>
+		  <if test="userId != null ">
+			and user_id = #{userId}
+		  </if>
+		  <if test="type != null ">
+			and type = #{type}
+		  </if>
+		  <if test="sectionTime != null and sectionTime != '' ">
+			and section_time = #{sectionTime}
+		  </if>
+		  <if test="total != null ">
+			and total = #{total}
+		  </if>
+		  <if test="isSettle != null ">
+			and is_settle = #{isSettle}
+		  </if>
+		  <if test="settleAmt != null ">
+			and settle_amt = #{settleAmt}
+		  </if>
+		  <if test="ranking != null ">
+			and ranking = #{ranking}
+		  </if>
+		  <if test="inviterId != null ">
+			and inviter_id = #{inviterId}
+		  </if>
+		  <if test="createBy != null ">
+			and create_by = #{createBy}
+		  </if>
+		  <if test="createDate != null ">
+			and create_date = #{createDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and update_by = #{updateBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and update_date = #{updateDate}
+		  </if>
+	</select>
+	
+	<select id="countBy2" parameterType="java.util.Map" resultType="int">
+		select
+			count(*)
+		from pindeke_month_sale pms
+			left join user_pindeke_info upi on upi.user_id = pms.user_id
+		where 1=1
+			<if test="beginTimeStr != null and beginTimeStr != '' and endTimeStr != null and endTimeStr != '' ">
+			  and upi.create_date between #{beginTimeStr} and #{endTimeStr}
+			</if>
+			<if test="nameOrPhone != null and nameOrPhone != '' ">
+			  and (upi.name like CONCAT('%',#{nameOrPhone},'%') 
+			  or upi.phone like CONCAT('%',#{nameOrPhone},'%'))
+			</if>
+			<if test="id != null ">
+			  and pms.id = #{id}
+			</if>
+			<if test="userId != null ">
+			  and pms.user_id = #{userId}
+			</if>
+			<if test="type != null ">
+			  and pms.type = #{type}
+			</if>
+			<if test="sectionTime != null and sectionTime != '' ">
+			  and pms.section_time = #{sectionTime}
+			</if>
+			<if test="total != null ">
+			  and pms.total = #{total}
+			</if>
+			<if test="totalMax != null ">
+			  ${totalMax}
+			</if>
+			<if test="isSettle != null ">
+			  and pms.is_settle = #{isSettle}
+			</if>
+			<if test="settleAmt != null ">
+			  and pms.settle_amt = #{settleAmt}
+			</if>
+			<if test="ranking != null ">
+			  and pms.ranking = #{ranking}
+			</if>
+			<if test="inviterId != null ">
+			  and pms.inviter_id = #{inviterId}
+			</if>
+			<if test="createBy != null ">
+			  and pms.create_by = #{createBy}
+			</if>
+			<if test="createDate != null ">
+			  and pms.create_date = #{createDate}
+			</if>
+			<if test="createDateStr != null ">
+			  and pms.create_date &gt;= #{createDateStr}
+			</if>
+			<if test="updateBy != null ">
+			  and pms.update_by = #{updateBy}
+			</if>
+			<if test="updateDate != null ">
+			  and pms.update_date = #{updateDate}
+			</if>
+	</select>
+	
+	<select id="listPage2" parameterType="java.util.Map" resultType="PindekeMonthSalePojo">
+		select
+			pms.id as id,
+			pms.user_id as userId,
+			pms.type as type,
+			pms.section_time as sectionTime,
+			pms.total as total,
+			pms.is_settle as isSettle,
+			pms.settle_amt as settleAmt,
+			pms.ranking as ranking,
+			pms.inviter_id as inviterId,
+			pms.create_by as createBy,
+			pms.create_date as createDate,
+			pms.update_by as updateBy,
+			pms.update_date as updateDate,
+			upi.name as name,
+			upi.phone as phone,
+			upi.create_date as applyDate,
+			upi.pindeke_number as pindekeNumber,
+			(select name from sys_login where id = pms.inviter_id) as inviterName
+		from pindeke_month_sale pms
+			left join user_pindeke_info upi on upi.user_id = pms.user_id
+		where 1=1
+			<if test="beginTimeStr != null and beginTimeStr != '' and endTimeStr != null and endTimeStr != '' ">
+			  and upi.create_date between #{beginTimeStr} and #{endTimeStr}
+			</if>
+			<if test="nameOrPhone != null and nameOrPhone != '' ">
+			  and upi.name like CONCAT('%',#{nameOrPhone},'%') 
+			  or upi.phone like CONCAT('%',#{nameOrPhone},'%')
+			</if>
+			<if test="id != null ">
+			  and pms.id = #{id}
+			</if>
+			<if test="userId != null ">
+			  and pms.user_id = #{userId}
+			</if>
+			<if test="type != null ">
+			  and pms.type = #{type}
+			</if>
+			<if test="sectionTime != null and sectionTime != '' ">
+			  and pms.section_time = #{sectionTime}
+			</if>
+			<if test="total != null ">
+			  and pms.total = #{total}
+			</if>
+			<if test="totalMax != null ">
+			  ${totalMax}
+			</if>
+			<if test="isSettle != null ">
+			  and pms.is_settle = #{isSettle}
+			</if>
+			<if test="settleAmt != null ">
+			  and pms.settle_amt = #{settleAmt}
+			</if>
+			<if test="ranking != null ">
+			  and pms.ranking = #{ranking}
+			</if>
+			<if test="inviterId != null ">
+			  and pms.inviter_id = #{inviterId}
+			</if>
+			<if test="createBy != null ">
+			  and pms.create_by = #{createBy}
+			</if>
+			<if test="createDate != null ">
+			  and pms.create_date = #{createDate}
+			</if>
+			<if test="createDateStr != null ">
+			  and pms.create_date &gt;= #{createDateStr}
+			</if>
+			<if test="updateBy != null ">
+			  and pms.update_by = #{updateBy}
+			</if>
+			<if test="updateDate != null ">
+			  and pms.update_date = #{updateDate}
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="PindekeMonthSalePojo">
+		select
+			pms.id as id,
+			pms.user_id as userId,
+			pms.type as type,
+			pms.section_time as sectionTime,
+			pms.total as total,
+			pms.is_settle as isSettle,
+			pms.settle_amt as settleAmt,
+			pms.ranking as ranking,
+			pms.inviter_id as inviterId,
+			pms.create_by as createBy,
+			pms.create_date as createDate,
+			pms.update_by as updateBy,
+			pms.update_date as updateDate,
+			sl.name as userName,
+			sl.image as userLogo
+		from pindeke_month_sale pms
+			left join sys_login sl on pms.user_id = sl.id
+		where 1=1
+			<if test="id != null ">
+			  and pms.id = #{id}
+			</if>
+			<if test="userId != null ">
+			  and pms.user_id = #{userId}
+			</if>
+			<if test="type != null ">
+			  and pms.type = #{type}
+			</if>
+			<if test="sectionTime != null and sectionTime != '' ">
+			  and pms.section_time = #{sectionTime}
+			</if>
+			<if test="total != null ">
+			  and pms.total = #{total}
+			</if>
+			<if test="totalMax != null ">
+			  ${totalMax}
+			</if>
+			<if test="isSettle != null ">
+			  and pms.is_settle = #{isSettle}
+			</if>
+			<if test="settleAmt != null ">
+			  and pms.settle_amt = #{settleAmt}
+			</if>
+			<if test="ranking != null ">
+			  and pms.ranking = #{ranking}
+			</if>
+			<if test="inviterId != null ">
+			  and pms.inviter_id = #{inviterId}
+			</if>
+			<if test="createBy != null ">
+			  and pms.create_by = #{createBy}
+			</if>
+			<if test="createDate != null ">
+			  and pms.create_date = #{createDate}
+			</if>
+			<if test="updateBy != null ">
+			  and pms.update_by = #{updateBy}
+			</if>
+			<if test="updateDate != null ">
+			  and pms.update_date = #{updateDate}
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="PindekeMonthSalePojo">
+		update pindeke_month_sale
+		<set>
+			<if test="userId != null">
+			  user_id = #{userId},
+			</if>
+			<if test="type != null">
+			  type = #{type},
+			</if>
+			<if test="sectionTime != null">
+			  section_time = #{sectionTime},
+			</if>
+			<if test="total != null">
+			  total = #{total},
+			</if>
+			<if test="isSettle != null">
+			  is_settle = #{isSettle},
+			</if>
+			<if test="settleAmt != null">
+			  settle_amt = #{settleAmt},
+			</if>
+			<if test="ranking != null">
+			  ranking = #{ranking},
+			</if>
+			<if test="inviterId != null">
+			  inviter_id = #{inviterId},
+			</if>
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+			  update_date = now(),
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from pindeke_month_sale 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="PindekeMonthSalePojo">
+		insert into pindeke_month_sale
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="sectionTime != null">
+				section_time,
+			</if>
+			<if test="total != null">
+				total,
+			</if>
+			<if test="isSettle != null">
+				is_settle,
+			</if>
+			<if test="settleAmt != null">
+				settle_amt,
+			</if>
+			<if test="ranking != null">
+				ranking,
+			</if>
+			<if test="inviterId != null">
+				inviter_id,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+				create_date,
+			<if test="updateBy != null">
+				update_by,
+			</if>
+				update_date,
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="userId != null">
+				#{userId},
+			</if>
+			<if test="type != null">
+				#{type},
+			</if>
+			<if test="sectionTime != null">
+				#{sectionTime},
+			</if>
+			<if test="total != null">
+				#{total},
+			</if>
+			<if test="isSettle != null">
+				#{isSettle},
+			</if>
+			<if test="settleAmt != null">
+				#{settleAmt},
+			</if>
+			<if test="ranking != null">
+				#{ranking},
+			</if>
+			<if test="inviterId != null">
+				#{inviterId},
+			</if>
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+				now(),
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+				now(),
+		</trim>
+	</insert>
+	
+</mapper>

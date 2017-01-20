@@ -46,6 +46,7 @@ import com.tzmb2c.utils.MD5Util;
 import com.tzmb2c.utils.RandomUtils;
 import com.tzmb2c.utils.StringUtil;
 import com.tzmb2c.web.pojo.ActivityProductCommentPojo;
+import com.tzmb2c.web.pojo.AliRedEnvelopePojo;
 import com.tzmb2c.web.pojo.AlipayOrderInfoPojo;
 import com.tzmb2c.web.pojo.BaiduLoginPojo;
 import com.tzmb2c.web.pojo.CartPojo;
@@ -100,6 +101,7 @@ import com.tzmb2c.web.pojo.ZoneGoodsPojo;
 import com.tzmb2c.web.pojo.ZonesPojo;
 import com.tzmb2c.web.service.ActivityProductCommentService;
 import com.tzmb2c.web.service.ActivityTimeService;
+import com.tzmb2c.web.service.AliRedEnvelopeService;
 import com.tzmb2c.web.service.AlipayOrderInfoService;
 import com.tzmb2c.web.service.BaiduLoginService;
 import com.tzmb2c.web.service.CouponService;
@@ -273,7 +275,9 @@ public class AppApiGrouponAction extends SuperAction {
   private SysDictService sysDictService;
   @Autowired
   private UserWalletLogService userWalletLogService;
-
+  @Autowired
+  private AliRedEnvelopeService aliRedEnvelopeService;
+  private String upfileFileName;
   // ---- 变量定义 ---- //
   private Long sid;
   private Integer refundType;
@@ -625,11 +629,20 @@ public class AppApiGrouponAction extends SuperAction {
   private Integer os;
   private Double ver;
   private File logo;
+  private String invCode;
 
   // ---- getter and setter ---- //
 
   public String getIp() {
     return ip;
+  }
+
+  public String getInvCode() {
+    return invCode;
+  }
+
+  public void setInvCode(String invCode) {
+    this.invCode = invCode;
   }
 
   public File getLogo() {
@@ -2620,6 +2633,7 @@ public class AppApiGrouponAction extends SuperAction {
         params.clear();
         params.put("attendId", grouponActivityRecordPojo.getId());
         // params.put("activityType", 1);
+        params.put("orderBy", "gur.create_date asc,gur.id asc");
         grouponUserRecordList = grouponUserRecordService.listPage(params);
         if (grouponUserRecordList != null && grouponUserRecordList.size() > 0) {
           for (GrouponUserRecordPojo g : grouponUserRecordList) {
@@ -2726,6 +2740,31 @@ public class AppApiGrouponAction extends SuperAction {
         }
         result.put("productSketch", grouponActivityRecordPojo.getProductSketch() == null ? ""
             : grouponActivityRecordPojo.getProductSketch());
+        // 拼团人数满支付成功>>订单支付成功拼团失败但是没有参团记录
+        try {
+          params.clear();
+          params.put("userId", userId);
+          params.put("sourceId", recordId);
+          params.put("payStatus", 1);
+          params.put("isSuccess", 2);
+          params.put("onlyOrder", 1);
+          List<OrderPojo> orderList2 = orderService.listPage(params);
+          if (orderList2 != null && orderList2.size() > 0) {
+            OrderPojo orderPojo = orderList2.get(0);
+            if (orderPojo != null) {
+              params.clear();
+              params.put("userId", userId);
+              params.put("attendId", recordId);
+              int i = grouponUserRecordService.countBy(params);
+              if (grouponActivityRecordPojo.getStatus() != null
+                  && grouponActivityRecordPojo.getStatus() == 1 && i < 1) {
+                result.put("status", "5");
+              }
+            }
+          }
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
         b = true;
       } else {
         msg = "查询不到数据!";
@@ -2980,7 +3019,7 @@ public class AppApiGrouponAction extends SuperAction {
           params.put("userId", userId);
           params.put("isHead", "0");
           int gurCount = grouponUserRecordService.countBy(params);
-          if (grouponActivityPojo.getType() == 7 || grouponActivityPojo.getType() == 6) {
+          if (grouponActivityPojo.getType() == 6) {
             if (garCount > 0 || gurCount > 0) {
               result.put("isOpen", "1");
               result.put("isGroup", "1");
@@ -3185,10 +3224,15 @@ public class AppApiGrouponAction extends SuperAction {
           item.put("productId", "");
         }
         item.put("banner", url + StringUtil.checkVal(focus.getBanner()));
+        item.put("title", StringUtil.checkVal(focus.getTitle()));
         // 参数类型(0-无;1-商品;2-普通拼团;3-猜价格;)
         item.put("type", StringUtil.checkVal(focus.getParamType()));
         // 对应参数类型的ID
-        item.put("typeId", StringUtil.checkVal(focus.getParamId()));
+        if (focus.getParamType() != null && focus.getParamType() == 7) {
+          item.put("typeId", StringUtil.checkVal(focus.getUrl()));
+        } else {
+          item.put("typeId", StringUtil.checkVal(focus.getParamId()));
+        }
         bannerList.add(item);
       }
     } else {
@@ -5464,6 +5508,38 @@ public class AppApiGrouponAction extends SuperAction {
         if (activityId == null) {
           activityId = 0L;
         }
+        // 判断是否是0.1红包商品开团8760 8858
+        if (source == 5
+            && (activityId == 8760 || activityId == 8858 || activityId == 9437 || activityId == 9543)
+            && (attendId == null || attendId == 0)) {
+          Boolean flag = true;
+          if (invCode == null || "".equals(invCode)) {
+            flag = false;
+            msg = "暂时不支持购买!";
+          } else {
+            AliRedEnvelopePojo aliRedEnvelope = aliRedEnvelopeService.getByInviteCode(invCode);
+            if (aliRedEnvelope == null) {
+              msg = "不存在该邀请码!";
+              flag = false;
+            } else if (aliRedEnvelope != null && aliRedEnvelope.getIsUsed() == 1) {
+              msg = "该邀请码已被使用!";
+              flag = false;
+            }
+          }
+          if (!flag) {
+            map.put("result", result);
+            map.put("success", false);
+            map.put("error_msg", msg);
+            JSONObject json = JSONObject.fromObject(map);
+            ServletActionContext.getResponse().setContentType("text/html; charset=utf-8");
+            try {
+              ServletActionContext.getResponse().getWriter().write(json.toString());
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+            return null;
+          }
+        }
         if (source != 4 && source != 7) {
           // 检查团是否过期/人数是否已满
           activityFlag =
@@ -5554,7 +5630,7 @@ public class AppApiGrouponAction extends SuperAction {
         }
 
         // 免费抽判断是否参加过
-        if (source == 7 || source == 6) {
+        if (source == 6) {
           // 是否参团
           int gurCount = 0;
           params.clear();
@@ -5582,7 +5658,7 @@ public class AppApiGrouponAction extends SuperAction {
         }
 
         // 抽奖判断是否拼过团
-        if (source == 5 && activityId > 0) {
+        if (activityId > 0 && (source == 7 || source == 5)) {
           if (attendId != null && attendId > 0) {
             params.put("userId", uid);
             params.put("activityId", activityId);
@@ -5762,13 +5838,79 @@ public class AppApiGrouponAction extends SuperAction {
       if (activityId == null) {
         activityId = 0l;
       }
+      // 偏远地区判断
+      try {
+        Boolean dFlag = false;
+        if (productPojo != null && address != null && productPojo.getFaraway() != null
+            && StringUtils.isNotEmpty(productPojo.getFaraway()) && address.getProvinceId() != null
+            && address.getProvinceId() > 0) {
+          List<Long> farawayList = new ArrayList<>();
+          String[] farawayArr = productPojo.getFaraway().split(",");
+          if (farawayArr != null && farawayArr.length > 0) {
+            for (String f : farawayArr) {
+              farawayList.add(Long.valueOf(f));
+            }
+          }
+          if (farawayList != null && farawayList.size() > 0) {
+            if (farawayList.contains(address.getProvinceId())) {
+              dFlag = true;
+            }
+          }
+        }
+        if (dFlag) {
+          map.put("result", result);
+          map.put("error_msg", "您的地址不在配送范围内!");
+          map.put("success", b);
+          JSONObject json1 = JSONObject.fromObject(map);
+          ServletActionContext.getResponse().setContentType("text/html; charset=utf-8");
+          try {
+            ServletActionContext.getResponse().getWriter().write(json1.toString());
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+          return null;
+        }
+      } catch (Exception e2) {
+        e2.printStackTrace();
+      }
+      // 判断是否是0.1红包商品开团
+      AliRedEnvelopePojo aliRedEnvelope = null;
+      if (source == 5
+          && (activityId == 8760 || activityId == 8858 || activityId == 9437 || activityId == 9543)
+          && (attendId == null || attendId == 0)) {
+        Boolean flag = true;
+        if (invCode == null || "".equals(invCode)) {
+          flag = false;
+          msg = "暂时不支持购买!";
+        } else {
+          aliRedEnvelope = aliRedEnvelopeService.getByInviteCode(invCode);
+          if (aliRedEnvelope == null) {
+            msg = "不存在该邀请码!";
+            flag = false;
+          } else if (aliRedEnvelope != null && aliRedEnvelope.getIsUsed() == 1) {
+            msg = "该邀请码已被使用!";
+            flag = false;
+          }
+        }
+        if (!flag) {
+          map.put("result", result);
+          map.put("success", false);
+          map.put("error_msg", msg);
+          JSONObject json = JSONObject.fromObject(map);
+          ServletActionContext.getResponse().setContentType("text/html; charset=utf-8");
+          try {
+            ServletActionContext.getResponse().getWriter().write(json.toString());
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+          return null;
+        }
+      }
       // 分割消息
       String[] msgs = null;
       if (buyer_message != null) {
         msgs = buyer_message.split(",");
       }
-
-
       DecimalFormat df = new DecimalFormat("#.##");
       // 订单描述--支付宝
       String body = productPojo.getProductName();
@@ -5833,7 +5975,7 @@ public class AppApiGrouponAction extends SuperAction {
       }
 
       // 免费抽判断是否参加过
-      if (source == 7 || source == 6) {
+      if (source == 6) {
         // 是否参团
         int gurCount = 0;
         params.clear();
@@ -5924,7 +6066,7 @@ public class AppApiGrouponAction extends SuperAction {
         return null;
       }
       // 抽奖判断是否拼过团
-      if (source == 5 && activityId > 0) {
+      if (activityId > 0 && (source == 7 || source == 5)) {
         if (attendId != null && attendId > 0) {
           params.clear();
           params.put("userId", uid);
@@ -7440,7 +7582,7 @@ public class AppApiGrouponAction extends SuperAction {
           && !baidu_uid.equals(loginck.getBaidu_uid())) {
         SysLoginPojo login = new SysLoginPojo();
         login.setBaidu_uid(baidu_uid);
-        login.setLoginname(phone);
+        login.setLoginname(loginck.getLoginname());
         loginService.updateBaiduUid(login);
       }
 
@@ -7453,7 +7595,7 @@ public class AppApiGrouponAction extends SuperAction {
         map2.put("uid", uid);
         map2.put("name", name);
         // map2.put("phone", WalletService.enCodeString(phone, 4, 6));
-        map2.put("phone", phone);
+        map2.put("phone", StringUtil.checkVal(loginck.getLoginname()));
 
         // map2.put("type", loginck.getType());
         // map2.put("token", loginck.getToken() == null ? "" : loginck.getToken());
@@ -7994,17 +8136,12 @@ public class AppApiGrouponAction extends SuperAction {
         if (check < 5) {
           SysLoginPojo user = sysLoginService.findSysLoginById(userId);
           if (user != null) {
-            if (user.getInviterId() == null || user.getInviterId() == 0) {
-              // 激活团免券
-              int flag = grouponService.activeFreeCoupon(userId, invitor.getId());
-              if (flag == 1) {
-                b = true;
-                msg = "激活成功！";
-              } else if (flag == 2) {
-                msg = "您已激活过了！";
-              }
-            } else if (user.getInviterId() != null && user.getInviterId() > 0) {
-              // 已被邀请
+            // 激活团免券
+            int flag = grouponService.activeFreeCoupon(userId, invitor.getId());
+            if (flag == 1) {
+              b = true;
+              msg = "激活成功！";
+            } else if (flag == 2) {
               msg = "您已激活过了！";
             }
           }
@@ -8701,7 +8838,6 @@ public class AppApiGrouponAction extends SuperAction {
    * @return 订单支付
    * @throws Exception
    */
-  @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   public String payOrder() throws Exception {
     String error_msg = "";
     boolean b = false;
@@ -8756,7 +8892,44 @@ public class AppApiGrouponAction extends SuperAction {
       // 待支付状态
       order = orderService.findOrderByOrderNo(orderNo);
       if (order != null && 1 == order.getOrderStatus()) {
-        // 判断是否参加过该团
+        // 判断是否是0.1红包商品
+        try {
+          if ("5".equals(StringUtil.checkVal(order.getSource()))
+              && order.getActivityId() != null
+              && (order.getActivityId() == 8760 || order.getActivityId() == 8858
+                  || order.getActivityId() == 9437 || order.getActivityId() == 9543)
+              && (attendId == null || attendId == 0)) {
+            Boolean flag = true;
+            if (order.getInviteCode() == null || "".equals(order.getInviteCode())) {
+              error_msg = "您不能参加该活动!";
+              flag = false;
+            } else {
+              AliRedEnvelopePojo aliRedEnvelope =
+                  aliRedEnvelopeService.getByInviteCode(order.getInviteCode());
+              if (aliRedEnvelope == null || aliRedEnvelope.getOrderId() == null
+                  || aliRedEnvelope.getOrderId().longValue() != order.getId().longValue()) {
+                error_msg = "邀请码已被使用!";
+                flag = false;
+              }
+            }
+            if (!flag) {
+              map.put("result", result);
+              map.put("error_msg", error_msg);
+              map.put("success", b);
+              JSONObject json1 = JSONObject.fromObject(map);
+              ServletActionContext.getResponse().setContentType("text/html; charset=utf-8");
+              try {
+                ServletActionContext.getResponse().getWriter().write(json1.toString());
+              } catch (IOException e) {
+                e.printStackTrace();
+              }
+              return null;
+            }
+          }
+        } catch (Exception e2) {
+          e2.printStackTrace();
+        }
+        // 判断是否参过团
         if (order.getSourceId() != null && order.getSourceId() > 0) {
           Map<String, Object> p = new HashMap<String, Object>();
           p.put("attendId", order.getSourceId());
@@ -8837,7 +9010,8 @@ public class AppApiGrouponAction extends SuperAction {
               params.put("activityId", order.getActivityId());
               garCount = grouponActivityRecordService.countBy(params);
               Util.log("0.1抽奖判断是开团还是参团");
-              if ("5".equals(StringUtil.checkVal(order.getSource()))) {
+              if ("5".equals(StringUtil.checkVal(order.getSource()))
+                  || "7".equals(StringUtil.checkVal(order.getSource()))) {
                 Util.log("根据sourceId判断是开团还是参团");
                 if (order.getSourceId() != null && order.getSourceId() > 0) {
                   Util.log("参团");
@@ -8870,8 +9044,7 @@ public class AppApiGrouponAction extends SuperAction {
                     return null;
                   }
                 }
-              } else if ("7".equals(StringUtil.checkVal(order.getSource()))
-                  || "6".equals(StringUtil.checkVal(order.getSource()))) {
+              } else if ("6".equals(StringUtil.checkVal(order.getSource()))) {
                 Util.log("限时秒杀和免费抽奖判断是否参过或拼过团");
                 if (gurCount > 0 || garCount > 0) {
                   Util.log("拼过团或参过团");
@@ -9106,9 +9279,8 @@ public class AppApiGrouponAction extends SuperAction {
     Map<String, Object> map = new HashMap<String, Object>();
     new HashMap<String, Object>();
     String result = "0";
-    if (cardNo == null || StringUtils.isBlank(cardNo)) {
-      msg = "身份证号不能为空!";
-    } else if (extChannel == null || StringUtils.isBlank(extChannel)) {
+    // if (cardNo == null || StringUtils.isBlank(cardNo)) { msg = "身份证号不能为空!"; } else
+    if (extChannel == null || StringUtils.isBlank(extChannel)) {
       msg = "推广渠道不能为空!";
     } else if (name == null || StringUtils.isBlank(name)) {
       msg = "真实姓名不能为空!";
@@ -9158,20 +9330,30 @@ public class AppApiGrouponAction extends SuperAction {
         } else {
           userPindekeInfoPojo.setExtendImg5("");
         }
-        if (size == 0) {
-          msg = "至少上传一张推广图片!";
-          result = "0";
-        } else {
-          userPindekeInfoPojo.setName(name);
-          userPindekeInfoPojo.setCardNo(cardNo);
-          userPindekeInfoPojo.setExtendChannel(extChannel);
-          userPindekeInfoPojo.setPhone(phone);
-          userPindekeInfoPojo.setUserId(userId);
-          userPindekeInfoPojo.setCreateBy(userId);
-          userPindekeInfoPojo.setCreateDate(new Date());
-          userPindekeInfoPojo.setUpdateBy(userId);
-          userPindekeInfoPojo.setUpdateDate(new Date());
+        // if (size == 0) {
+        // msg = "至少上传一张推广图片!";
+        // result = "0";
+        // } else {
+        userPindekeInfoPojo.setName(name);
+        userPindekeInfoPojo.setCardNo(cardNo);
+        userPindekeInfoPojo.setExtendChannel(extChannel);
+        userPindekeInfoPojo.setPhone(phone);
+        userPindekeInfoPojo.setUserId(userId);
+        userPindekeInfoPojo.setCreateBy(userId);
+        userPindekeInfoPojo.setCreateDate(new Date());
+        userPindekeInfoPojo.setUpdateBy(userId);
+        userPindekeInfoPojo.setUpdateDate(new Date());
+
+        if ((loginPojo.getInviterId() == null || loginPojo.getInviterId() == 0)
+            && StringUtils.isNotBlank(code) && code.length() == 6) {
+          SysLoginPojo sysLogin = new SysLoginPojo();
+          sysLogin.setInvitationCode(code);
+          sysLogin = sysLoginService.getUserIdByInvitationCode(sysLogin);
+          if (sysLogin != null && sysLogin.getStatus() == 1 && sysLogin.getIsPindeke() == 1) {
+            userPindekeInfoPojo.setInvitationCode(code);
+          }
         }
+        // }
         // 判断是否存在申请记录
         userPindekeInfo = userPindekeInfoService.findByUserId(userId);
         if (userPindekeInfo == null) {
@@ -9190,6 +9372,7 @@ public class AppApiGrouponAction extends SuperAction {
             result = "0";
           } else {
             userPindekeInfoPojo.setId(userPindekeInfo.getId());
+            userPindekeInfoPojo.setIsDelete(0);
             int i = userPindekeInfoService.update(userPindekeInfoPojo);
             if (i > 0) {
               result = "1";
@@ -9229,9 +9412,8 @@ public class AppApiGrouponAction extends SuperAction {
     Map<String, Object> map = new HashMap<String, Object>();
     new HashMap<String, Object>();
     String result = "0";
-    if (cardNo == null || StringUtils.isBlank(cardNo)) {
-      msg = "身份证号不能为空!";
-    } else if (extChannel == null || StringUtils.isBlank(extChannel)) {
+    // if (cardNo == null || StringUtils.isBlank(cardNo)) { msg = "身份证号不能为空!"; } else
+    if (extChannel == null || StringUtils.isBlank(extChannel)) {
       msg = "推广渠道不能为空!";
     } else if (id == null || id == 0) {
       msg = "拼得客id不能为空!";
@@ -9281,26 +9463,38 @@ public class AppApiGrouponAction extends SuperAction {
           } else {
             userPindekeInfo.setExtendImg5("");
           }
-          if (size == 0) {
-            msg = "至少上传一张推广图片!";
-            result = "0";
-          } else {
-            userPindekeInfo.setName(name);
-            userPindekeInfo.setStatus(0);
-            userPindekeInfo.setCardNo(cardNo);
-            userPindekeInfo.setExtendChannel(extChannel);
-            userPindekeInfo.setPhone(phone);
-            userPindekeInfo.setUserId(userId);
-            int i = userPindekeInfoService.update(userPindekeInfo);
-            if (i > 0) {
-              result = "1";
-              msg = "修改成功!";
-              success = true;
+          // if (size == 0) {
+          // msg = "至少上传一张推广图片!";
+          // result = "0";
+          // } else {
+          // 修改拼得客绑定的推荐者id
+          if (code != null && !"".equals(code) && code.length() == 6) {
+            SysLoginPojo sysLogin = new SysLoginPojo();
+            sysLogin.setInvitationCode(code);
+            SysLoginPojo sysLoginCode = sysLoginService.getUserIdByInvitationCode(sysLogin);
+            if (sysLoginCode != null && sysLoginCode.getStatus() == 1
+                && sysLoginCode.getIsPindeke() == 1) {
+              userPindekeInfo.setInvitationCode(code);
             } else {
-              result = "0";
-              msg = "修改失败,请重新修改!";
+              Util.log("根据推荐码" + code + "查询不到拼得客!");
             }
           }
+          userPindekeInfo.setName(name);
+          userPindekeInfo.setStatus(0);
+          userPindekeInfo.setCardNo(cardNo);
+          userPindekeInfo.setExtendChannel(extChannel);
+          userPindekeInfo.setPhone(phone);
+          userPindekeInfo.setUserId(userId);
+          int i = userPindekeInfoService.update(userPindekeInfo);
+          if (i > 0) {
+            result = "1";
+            msg = "修改成功!";
+            success = true;
+          } else {
+            result = "0";
+            msg = "修改失败,请重新修改!";
+          }
+          // }
         } else {
           result = "0";
           msg = "您已经成为拼得客,不用重新申请!";
@@ -11131,7 +11325,7 @@ public class AppApiGrouponAction extends SuperAction {
           } else {
             params.put("status", 5);
           }
-          params.put("source", activityType);
+          params.put("activityType", activityType);
           params.put("orderBy", "gur.attend_id desc,gur.is_head desc");
           params.put("isHead", 1);
           // prize=1&& status=3 已开奖并中奖
@@ -11158,10 +11352,7 @@ public class AppApiGrouponAction extends SuperAction {
               item.put("userlogo",
                   StringUtils.isBlank(userRecord.getUserLogo()) ? "" : ConstParam.URL
                       + "/upfiles/userlogo" + File.separator + userRecord.getUserLogo());
-              item.put(
-                  "orderNo",
-                  userRecord.getOrderNo() == null ? "" : WalletService.enCodeString(
-                      userRecord.getOrderNo(), 7, 10));
+              item.put("orderNo", "");
               prizelist.add(item);
 
               params.put("isHead", 0);
@@ -11189,10 +11380,7 @@ public class AppApiGrouponAction extends SuperAction {
                   item.put("userlogo",
                       StringUtils.isBlank(userRecord2.getUserLogo()) ? "" : ConstParam.URL
                           + "/upfiles/userlogo" + File.separator + userRecord2.getUserLogo());
-                  item.put(
-                      "orderNo",
-                      userRecord2.getOrderNo() == null ? "" : WalletService.enCodeString(
-                          userRecord2.getOrderNo(), 7, 10));
+                  item.put("orderNo", "");
                   prizelist.add(item);
                 }
               }
@@ -11239,7 +11427,7 @@ public class AppApiGrouponAction extends SuperAction {
           } else {
             params.put("status", 5);
           }
-          params.put("source", activityType);
+          params.put("activityType", activityType);
           params.put("pageNo", (pageNo - 1) * pageSize);
           params.put("pageSize", pageSize);
           params.put("orderBy", "gur.attend_id desc,gur.is_head desc");
@@ -11268,10 +11456,7 @@ public class AppApiGrouponAction extends SuperAction {
               item.put("userlogo",
                   StringUtils.isBlank(userRecord.getUserLogo()) ? "" : ConstParam.URL
                       + "/upfiles/userlogo" + File.separator + userRecord.getUserLogo());
-              item.put(
-                  "orderNo",
-                  userRecord.getOrderNo() == null ? "" : WalletService.enCodeString(
-                      userRecord.getOrderNo(), 7, 10));
+              item.put("orderNo", "");
               prizelist.add(item);
               params.clear();
               params.put("isHead", 0);
@@ -11299,10 +11484,7 @@ public class AppApiGrouponAction extends SuperAction {
                   item.put("userlogo",
                       StringUtils.isBlank(userRecord2.getUserLogo()) ? "" : ConstParam.URL
                           + "/upfiles/userlogo" + File.separator + userRecord2.getUserLogo());
-                  item.put(
-                      "orderNo",
-                      userRecord2.getOrderNo() == null ? "" : WalletService.enCodeString(
-                          userRecord2.getOrderNo(), 7, 10));
+                  item.put("orderNo", "");
                   prizelist.add(item);
                 }
               }
@@ -11876,14 +12058,50 @@ public class AppApiGrouponAction extends SuperAction {
     Map<String, Object> goodsItem = new HashMap<String, Object>();
     List<Map<String, Object>> secKillList = new ArrayList<Map<String, Object>>();
     // 首页拼团介绍商品
-    params.put("id", 1511);
+    params.put("id", 9543);
     params.put("status", 1);
     params.put("isDelete", 0);
     List<GrouponActivityPojo> grouponActivityList = grouponActivityService.listPage(params);
     if (grouponActivityList != null && grouponActivityList.size() > 0) {
       GrouponActivityPojo grouponActivityPojo = grouponActivityList.get(0);
-      goodsItem.put("actType", "1");
-      goodsItem.put("activityId", "1511");
+      goodsItem.put("actType", StringUtil.checkVal(grouponActivityPojo.getType()));
+      goodsItem.put("activityId", StringUtil.checkVal(grouponActivityPojo.getId()));
+      goodsItem.put("productId", StringUtil.checkVal(grouponActivityPojo.getProductId()));
+      goodsItem.put("productName", StringUtil.checkVal(grouponActivityPojo.getProductName()));
+      goodsItem.put("productImage",
+          grouponActivityPojo.getImageMain() == null ? "" : ConstParam.URL + "/upfiles/product"
+              + File.separator + grouponActivityPojo.getImageMain());
+      goodsItem.put("productPrice", StringUtil.checkVal(grouponActivityPojo.getPrice()));
+      goodsItem.put("limitNum", StringUtil.checkVal(grouponActivityPojo.getLimitNum()));
+      goodsItem.put("proSellrNum", StringUtil.checkVal(grouponActivityPojo.getSellNumber()));
+      goodsItem.put("alonePrice", StringUtil.checkVal(grouponActivityPojo.getDistributionPrice()));
+      goodsItem.put("groupNum", StringUtil.checkVal(grouponActivityPojo.getNum()));
+      if (grouponActivityPojo.getSurplusNum() != null && grouponActivityPojo.getSurplusNum() > 0) {
+        goodsItem.put("isSellOut", "0");
+      } else {
+        goodsItem.put("isSellOut", "1");
+      }
+      if (grouponActivityPojo.getLimitNum() == null || grouponActivityPojo.getLimitNum() <= 0) {
+        goodsItem.put("salePerce", "100.0");
+      } else {
+        Integer saleNum = 0;
+        saleNum = grouponActivityPojo.getLimitNum() - grouponActivityPojo.getSurplusNum();
+        String salePerce =
+            StringUtil.calcPerceStr(saleNum, grouponActivityPojo.getLimitNum()).replace("%", "");
+        goodsItem.put("salePerce", salePerce);
+      }
+      secKillList.add(goodsItem);
+    }
+    params.clear();
+    params.put("id", 8945);
+    params.put("status", 1);
+    params.put("isDelete", 0);
+    grouponActivityList = grouponActivityService.listPage(params);
+    if (grouponActivityList != null && grouponActivityList.size() > 0) {
+      GrouponActivityPojo grouponActivityPojo = grouponActivityList.get(0);
+      goodsItem = new HashMap<String, Object>();
+      goodsItem.put("actType", StringUtil.checkVal(grouponActivityPojo.getType()));
+      goodsItem.put("activityId", StringUtil.checkVal(grouponActivityPojo.getId()));
       goodsItem.put("productId", StringUtil.checkVal(grouponActivityPojo.getProductId()));
       goodsItem.put("productName", StringUtil.checkVal(grouponActivityPojo.getProductName()));
       goodsItem.put("productImage",
@@ -12494,6 +12712,97 @@ public class AppApiGrouponAction extends SuperAction {
       e.printStackTrace();
     }
     return null;
+  }
+
+  /**
+   * 
+   * 口令红包表生成
+   * 
+   * @return String
+   * @throws SQLException
+   */
+  public String aliRedEnvelopeApi() throws SQLException {
+    String msg = "";
+    boolean b = false;
+    Map<String, Object> map = new HashMap<String, Object>();
+    List<String> a = new ArrayList<>();
+    String uploadPath =
+        ServletActionContext.getServletContext().getRealPath("/upfiles/aliRed") + File.separator;
+    System.out.println("路径>>>>" + uploadPath);
+    File file = new File(uploadPath);
+    if (file == null || !file.exists() || !file.isDirectory()) {
+      map.put("error_msg", "文件路径错误!");
+      map.put("success", b);
+      JSONObject json = JSONObject.fromObject(map);
+      ServletActionContext.getResponse().setContentType("text/html; charset=utf-8");
+      try {
+        ServletActionContext.getResponse().getWriter().write(json.toString());
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      return null;
+    }
+    File[] files = file.listFiles();
+    Util.log("文件length>>>>>" + files.length);
+    if (files != null && files.length > 0) {
+      String image = "";
+      // 取偶数张图片
+      int filecnt = files.length & ~1;
+      Util.log("实际使用文件数>>>>>" + filecnt);
+      // 循环红包口令图片重命名上传并添加进数组
+      for (int i = 0; i < filecnt; i++) {
+        try {
+          image =
+              FileUtil.uploadFile1(files[i], 0, files[i].getName(), "upfiles/aliRedEnvelope",
+                  false, 300, 300, true, true, "");
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+        if (StringUtils.isNotBlank(image)) {
+          a.add(image);
+        }
+      }
+      AliRedEnvelopePojo aliRedEnvelopePojo = null;
+      // 最小偶数
+      int count = a.size() & ~1;
+      // 红包口令图片以及邀请码循环插入红包表
+      for (int q = 0; q < count;) {
+        aliRedEnvelopePojo = new AliRedEnvelopePojo();
+        aliRedEnvelopePojo.setPasswdImg1(a.get(q++));
+        aliRedEnvelopePojo.setPasswdImg2(a.get(q++));
+        aliRedEnvelopePojo.setInviteCode(walletService.genInviteCode());
+        aliRedEnvelopePojo.setCreateDate(new Date());
+        aliRedEnvelopePojo.setUpdateDate(new Date());
+        aliRedEnvelopeService.add(aliRedEnvelopePojo);
+      }
+      b = true;
+      // 生成成功，删除原文件
+      for (int i = 0; i < count; i++) {
+        files[i].delete();
+      }
+    } else {
+      msg = "文件为空哦！";
+    }
+    // map.put("result", result);
+    map.put("error_msg", msg);
+    map.put("success", b);
+    JSONObject json = JSONObject.fromObject(map);
+    ServletActionContext.getResponse().setContentType("text/html; charset=utf-8");
+    try {
+      ServletActionContext.getResponse().getWriter().write(json.toString());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
+
+  public String getUpfileFileName() {
+    return upfileFileName;
+  }
+
+  public void setUpfileFileName(String upfileFileName) {
+    this.upfileFileName = upfileFileName;
   }
 
 }

@@ -433,6 +433,7 @@ public class StringUtil {
       if ("get".equals(method)) {
         url = url + "?" + param;
       }
+      System.out.println(">>>>>通知链接" + url);
 
       // String url = url.substring(0, url.indexOf("?"))
       URL urlObject = new URL(url);

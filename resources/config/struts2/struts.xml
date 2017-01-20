@@ -325,7 +325,10 @@
     <include file="/config/struts2/struts-versionControl.xml" /> 
 	<!-- 领取优惠券记录表 -->
     <include file="/config/struts2/struts-userCouponFlag.xml" /> 
-
+    <!-- 支付宝红包口令表 -->
+    <include file="/config/struts2/struts-aliRedEnvelope.xml" /> 
+    <!-- 拼得客当月销售额记录表 -->
+    <include file="/config/struts2/struts-pindekeMonthSale.xml" /> 
     <!-- ****** API xml ****** -->
     <!-- api入口 -->
 	<include file="/config/struts2/struts-api.xml" />

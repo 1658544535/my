@@ -125,7 +125,7 @@ if(tt.validate()){
 				"<td>"+ this.productName + "</td>"+
 				"<td>"+ this.beginTimeStr + "至"+this.endTimeStr+"</td>"+
 				"<td>"+ this.num + "/"+this.price+"</td>"+
-				"<td>"+ this.numNow1+"<br><a href='goFreeGroupGroRec.do?grouponUserRecordPojo.id="+this.id+"'>查看</a></td>"+
+				"<td>"+ this.numNow+"<br><a href='goFreeGroupGroRec.do?grouponUserRecordPojo.id="+this.id+"'>查看</a></td>"+
 				"<td>"+ activityStatusStr +"</td>"+
 				"<td>"+ statusStr +"</td>"+
 				"<td><a class='edit_btn' href='goUpdateFreeGroupActivity.do?grouponActivityPojo.id="+this.id +"'>编辑</a>"+

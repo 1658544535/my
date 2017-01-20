@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="pindekeMonthSale" extends="default">
+		<!-- 进入列表页面 -->
+		<action name="goPindekeMonthSale" class="com.tzmb2c.web.action.PindekeMonthSaleAction" method="goPindekeMonthSale">
+			<result name="success">/page/system/pindekeMonthSale/pindekeMonthSaleList.jsp</result>
+		</action>
+		<!-- 进入列表页面 -->
+		<action name="goPindekeMonthSaleInviter" class="com.tzmb2c.web.action.PindekeMonthSaleAction" method="goPindekeMonthSaleInviter">
+			<result name="success">/page/system/pindekeMonthSale/pindekeMonthSaleListInviter.jsp</result>
+		</action>
+		<!-- 新增 -->
+		<action name="goAddPindekeMonthSale" class="com.tzmb2c.web.action.PindekeMonthSaleAction" method="goAddPindekeMonthSale">
+		    <result name="success">/page/system/pindekeMonthSale/addPindekeMonthSale.jsp</result>
+		</action>
+		<!-- 新增提交 -->
+		<action name="addPindekeMonthSale" class="com.tzmb2c.web.action.PindekeMonthSaleAction" method="add">
+		</action>		
+		<!-- 编辑页面 -->
+		<action name="goEditPindekeMonthSale" class="com.tzmb2c.web.action.PindekeMonthSaleAction" method="goEditPindekeMonthSale">
+			<result name="success">/page/system/pindekeMonthSale/updatePindekeMonthSale.jsp</result>
+		</action>
+		<!-- 编辑提交 -->
+		<action name="updatePindekeMonthSale" class="com.tzmb2c.web.action.PindekeMonthSaleAction" method="update">
+		</action>
+		<!-- 更新排行榜（測試用） -->
+		<action name="pindekeRankingTask" class="com.tzmb2c.web.action.PindekeMonthSaleAction" method="pindekeRanking">
+		</action>
+		<!-- 更新注册30天内销售额（測試用） -->
+		<action name="pindekeMonthSaleTask" class="com.tzmb2c.web.action.PindekeMonthSaleAction" method="pindekeMonthSale">
+		</action>
+	</package>
+	<package name="pindekeMonthSale-json" extends="json-default">
+		<!-- 内容 -->
+		<action name="pindekeMonthSaleList" class="com.tzmb2c.web.action.PindekeMonthSaleAction" method="pindekeMonthSaleList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="pindekeMonthSaleCnt" class="com.tzmb2c.web.action.PindekeMonthSaleAction" method="pindekeMonthSaleRowCnt">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+		<!-- 内容 -->
+		<action name="pindekeMonthSaleListInviter" class="com.tzmb2c.web.action.PindekeMonthSaleAction" method="pindekeMonthSaleListInviter">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="pindekeMonthSaleCntInviter" class="com.tzmb2c.web.action.PindekeMonthSaleAction" method="pindekeMonthSaleRowCntInviter">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+		<!-- 根据ID删除 -->
+		<action name="delPindekeMonthSale" class="com.tzmb2c.web.action.PindekeMonthSaleAction" method="delete">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+		<!-- 删除选中 -->
+		<action name="delPindekeMonthSaleAll" class="com.tzmb2c.web.action.PindekeMonthSaleAction" method="deleteAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 通过审核 -->
+		<action name="checkPindekeMonthSale" class="com.tzmb2c.web.action.PindekeMonthSaleAction" method="check">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 取消审核 -->
+		<action name="uncheckPindekeMonthSale" class="com.tzmb2c.web.action.PindekeMonthSaleAction" method="uncheck">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中通过审核 -->
+		<action name="checkPindekeMonthSaleAll" class="com.tzmb2c.web.action.PindekeMonthSaleAction" method="checkAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中取消审核 -->
+		<action name="uncheckPindekeMonthSaleAll" class="com.tzmb2c.web.action.PindekeMonthSaleAction" method="uncheckAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+		<!-- 返佣 -->
+		<action name="settlePindekeMonthSale" class="com.tzmb2c.web.action.PindekeMonthSaleAction" method="settlePindekeMonthSale">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 返佣 -->
+		<action name="settlePindekeMonthSaleAll" class="com.tzmb2c.web.action.PindekeMonthSaleAction" method="settlePindekeMonthSaleAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>	
+	</package>
+</struts>

@@ -137,6 +137,9 @@ public class ProductPojo extends SuperPojo {
   private Integer surplusNumMinus; // 减剩余数量
   private String beginTimeStr;
   private String endTimeStr;
+  private String faraway;// 偏远地区
+  private Integer gaLimitNum; // 活动剩余数量
+  private Integer gaSurplusNum; // 活动减剩余数量
 
 
   public String getBeginTimeStr() {
@@ -153,6 +156,30 @@ public class ProductPojo extends SuperPojo {
 
   public void setEndTimeStr(String endTimeStr) {
     this.endTimeStr = endTimeStr;
+  }
+
+  public Integer getGaLimitNum() {
+    return gaLimitNum;
+  }
+
+  public void setGaLimitNum(Integer gaLimitNum) {
+    this.gaLimitNum = gaLimitNum;
+  }
+
+  public Integer getGaSurplusNum() {
+    return gaSurplusNum;
+  }
+
+  public void setGaSurplusNum(Integer gaSurplusNum) {
+    this.gaSurplusNum = gaSurplusNum;
+  }
+
+  public String getFaraway() {
+    return faraway;
+  }
+
+  public void setFaraway(String faraway) {
+    this.faraway = faraway;
   }
 
   public Integer getSurplusNumMinus() {

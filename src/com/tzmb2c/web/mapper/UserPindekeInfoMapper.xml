@@ -25,7 +25,9 @@
 		create_date as createDate,
 		update_by as updateBy,
 		update_date as updateDate,
-		freezing_price as freezingPrice
+		freezing_price as freezingPrice,
+		invitation_code as invitationCode,
+		pindeke_number as pindekeNumber
 	</sql>
 	
 	<select id="getById" parameterType="Long" resultType="UserPindekeInfoPojo">
@@ -141,7 +143,13 @@
 			upi.update_by as updateBy,
 			upi.update_date as updateDate,
 			upi.freezing_price as freezingPrice,
-			sl.loginname as loginname
+			upi.invitation_code as invitationCode,
+			upi.pindeke_number as pindekeNumber,
+			sl.loginname as loginname,
+			(select count(*) from groupon_activity_record where pdk_uid = upi.user_id)as grouponNum,
+			(select count(*) from groupon_activity_record where pdk_uid = upi.user_id and status=1)as grouponSuccessNum,
+			(select name from sys_login where invitation_code = upi.invitation_code) as inviterName
+			<!-- (select name from sys_login where id = sl.inviter_id) as inviterName -->
 		from user_pindeke_info upi
 		left join sys_login sl on sl.id=upi.user_id
 		where 1=1 and is_delete=0
@@ -307,7 +315,11 @@
 			<if test="updateBy != null">
 			  update_by = #{updateBy},
 			</if>
-			  update_date = now()
+			  update_date = now(),
+			<if test="invitationCode != null">
+			  invitation_code = #{invitationCode},
+			</if>
+			  pindeke_number = #{pindekeNumber},
 		</set>
 		where
 			id = #{id}
@@ -319,6 +331,9 @@
 		<set>
 			<if test="invitationCode != null">
 			  invitation_code = #{invitationCode},
+			</if>
+			<if test="inviterId != null">
+			  inviter_id = #{inviterId},
 			</if>
 			<if test="isPindeke != null">
 			  is_pindeke = #{isPindeke}
@@ -411,6 +426,12 @@
 			<if test="updateDate != null">
 				update_date,
 			</if>
+			<if test="invitationCode != null">
+			    invitation_code,
+			</if>
+			<if test="pindekeNumber != null">
+			    pindeke_number,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -475,6 +496,12 @@
 			</if>
 			<if test="updateDate != null">
 				#{updateDate},
+			</if>
+			<if test="invitationCode != null">
+			    #{invitationCode},
+			</if>
+			<if test="pindekeNumber != null">
+			    #{pindekeNumber},
 			</if>
 		</trim>
 	</insert>

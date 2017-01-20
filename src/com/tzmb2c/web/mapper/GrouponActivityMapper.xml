@@ -219,9 +219,11 @@
 			where gur.activity_id = ga.id 
 			and gur.activity_type = ga.type
 			) as numNow,
+			<!--
 			(SELECT COUNT(*) FROM groupon_user_record gur 
 			LEFT JOIN groupon_activity_record gar ON gur.attend_id = gar.id
 			WHERE gar.activity_id=ga.id) as numNow1,
+			-->
 			p.product_sketch as productSketch,
 			p.status as productStatus
 		    from groupon_activity ga

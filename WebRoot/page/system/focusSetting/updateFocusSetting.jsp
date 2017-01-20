@@ -54,9 +54,13 @@
 									<option value="4" <s:if test="focusSettingPojo.paramType==4">selected="selected"</s:if>>专题</option>
 									<option value="5" <s:if test="focusSettingPojo.paramType==5">selected="selected"</s:if>>专题分类</option>
 									<option value="6" <s:if test="focusSettingPojo.paramType==6">selected="selected"</s:if>>77专区</option>
+									<option value="7" <s:if test="focusSettingPojo.paramType==7">selected="selected"</s:if>>链接</option>
 						 </select>
 						 <div id="paramId" style="display:inline">
 						<input type="text" name="focusSettingPojo.paramId" id="focusSettingPojo.paramId" value="${focusSettingPojo.paramId}"/>
+						</div>
+						<div id="paramUrl" style="display:inline">
+						<input type="text" name="focusSettingPojo.url" id="focusSettingPojo.url" value="${focusSettingPojo.url}"/>
 						</div>
 					</td>
 					<td><span id="paramType_mgId"></span><span id="paramId_mgId"></span></td>
@@ -87,17 +91,27 @@
 				document.getElementById("from1").submit();					
 			}
 		});
-		if(${focusSettingPojo.paramType}==0){
-		 $("#paramId").hide();
+		if("${focusSettingPojo.paramType}"=="0"){
+		 	$("#paramUrl").hide();
+		 	$("#paramId").hide();
+		} else if("${focusSettingPojo.paramType}"=="7"){
+			$("#paramId").hide();
+		} else {
+			$("#paramUrl").hide();
 		}
 	});	
 	
-	function setParamId(obj){  
-    var val = obj.value;
-	    if(val=='' || val==0){
-	    $("#paramId").hide();
+	function setParamId(obj){
+	    var val = obj.value;
+	    if(val == '' || val == 0){
+	    	$("#paramId").hide();
+	    	$("#paramUrl").hide();
+	    }else if(val==7){
+	    	$("#paramId").hide();
+	    	$("#paramUrl").show();
 	    }else{
-	    $("#paramId").show();
+	    	$("#paramUrl").hide();
+	    	$("#paramId").show();
 	    }
-    }  
+    }   
 </script>

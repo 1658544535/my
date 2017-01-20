@@ -29,6 +29,17 @@ public class DeliveryAddressPojo extends SuperPojo {
   private String statusName;// 状态字符
   private String realarea;
   private String isDefaultName;
+  private Long provinceId;// 省份id
+
+
+
+  public Long getProvinceId() {
+    return provinceId;
+  }
+
+  public void setProvinceId(Long provinceId) {
+    this.provinceId = provinceId;
+  }
 
   public String getIsDefaultName() {
     return isDefaultName;

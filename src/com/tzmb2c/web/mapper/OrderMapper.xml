@@ -62,6 +62,7 @@
 	
 	<select id="getfindByIdOrder" parameterType="Long" resultType="orderPojo" >
 		select t.id as id,
+		t.cs_remarks as csRemarks,
 		t.confirmDate as confirmDate,
 		t.source as source,
 		t.sendDate as sendDate,
@@ -103,6 +104,7 @@
 		t.pay_status as payStatus,
 		t.pay_method as payMethod,
 		t.order_no as orderNo,
+		t.invite_code as inviteCode,
 		CONCAT(s.name,':',a.logistics_no) as serialNumber,
 		s.name as name,
 		a.logistics_no as logisticsNo,
@@ -130,6 +132,7 @@
 		t.is_rebate as isRebate,
 		t.rebate_price as rebatePrice,
 		t.rebate_time as rebateTime,
+		t.invite_code as inviteCode,
 		t.auto_rec_time as autoRecTime,
 		t.seller_deduct as sellerDeduct,
 		t.platform_msg as platformMsg,
@@ -275,7 +278,8 @@
 		update user_order set
 		order_status =3,
 		update_date=now(),
-        sendDate=now()
+        sendDate=now(),
+        auto_rec_time = DATE_SUB(NOW(),INTERVAL -15 DAY)
 		where id = #{id}
 	</update>
 	
@@ -315,6 +319,10 @@
 		set
 		uo.update_by = #{updateBy},
 		uo.update_date = now(),
+		<if test="isHandle!= null">
+		uo.is_handle = #{isHandle},
+		</if>
+		uo.cs_remarks = #{csRemarks},
 		<!--
 		<if test="orderStatus==2">
 		uo.create_date = now(),
@@ -389,7 +397,10 @@
 		<if test="pdkUid != null and pdkUid != ''">
 			uo.pdk_uid =#{pdkUid},
 		</if>
-		<if test="autoRecTime != null">
+		<if test="inviteCode != null and inviteCode != ''">
+		uo.invite_code =#{inviteCode},
+		</if>
+		<if test="autoRecTime != null and autoRecTime != ''">
 			uo.auto_rec_time = #{autoRecTime},
 		</if>
 		<if test="sellerDeduct != null">
@@ -692,6 +703,9 @@
 			and t.is_success =2
 			and t.order_status=2
 		</if>
+		<if test="os != null and os==8">
+			and t.is_handle =1
+		</if>
 		<if test="userName !=null and userName !=''">
 			and a.name like concat("%",#{userName},"%")
 		</if>
@@ -716,10 +730,16 @@
 			and t.pay_status = #{payStatus}
 		</if>
 		<if test="pdkLoginname != null and pdkLoginname != ''">
-			and t.pdk_uid = (select sl.id from sys_login sl where sl.loginname=#{pdkLoginname} )
+			and t.pdk_uid = (select sl.id from sys_login sl where sl.loginname=#{pdkLoginname} limit 1)
+		</if>
+		<if test="inviteCode != null and inviteCode != ''">
+			and t.invite_code = #{inviteCode}
 		</if>
 		<if test="overdue==1 and orderStatus==3">
 			and s.create_date&lt;date_sub(now(),interval 15 day)
+		</if>
+		<if test="overdue==1">
+		    and (select count(*) from user_order_refund where order_id = t.id and status in (1,2,3,4,7)) &lt;=0
 		</if>
 		<if test="createDate !=null and createDate !=''">
 			and str_to_date(t.create_date,'%Y-%m-%d')=#{createDate}
@@ -810,6 +830,7 @@
 	<select id="orderAllList2" resultType="orderPojo"
 		parameterType="java.util.Map">
 		select t.id as id,
+		t.is_handle as isHandle,
 		t.paymentDate as paymentDate, 
 		t.group_date as groupDate,
 		t.is_success as isSuccess,
@@ -889,6 +910,7 @@
 		(select is_head from groupon_user_record where attend_id=t.source_id and user_id=t.user_id limit 1) as isHead,
 		t.source_id as attendId,
 		t.is_refund as isRefund,
+		t.invite_code as inviteCode
 		t.auto_rec_time as autoRecTime,
 		t.seller_deduct as sellerDeduct,
 		t.platform_msg as platformMsg,
@@ -920,6 +942,9 @@
 		</if>
 		<if test="attendId != null ">
 			and t.source_id = #{attendId}
+		</if>
+		<if test="loginname != null and loginname != '' ">
+			and a.loginname = #{loginname}
 		</if>
 		<if test="source != null">
 			and t.source = #{source}
@@ -958,6 +983,9 @@
 		<if test="os==7">
 			and t.is_success =2
 			and t.order_status=2
+		</if>
+		<if test="os != null and os==8">
+			and t.is_handle =1
 		</if>
 		<!-- <if test="shopName!=null and shopName!=''">
 			and us.name like concat("%",#{shopName},"%")
@@ -1011,6 +1039,9 @@
 		<if test="sendDate !=null and sendDate !=''">
 			and str_to_date(t.sendDate,'%Y-%m-%d')=#{sendDate}
 		</if>
+		<if test="userName !=null and userName !=''">
+			and a.name like concat("%",#{userName},"%")
+		</if>
 		<if test="consigneeType!=null and consigneeType!=''">
 			and t.consignee_type = #{consigneeType}
 		</if>
@@ -1019,6 +1050,13 @@
 		</if>
 		<if test="channel!=null  ">
 			and t.channel = #{channel}
+		</if>
+		<if test="logisticsName!=null and logisticsName!=''">
+			and (s.logistics_name like concat("%",(SELECT name_en FROM sys_dict WHERE NAME LIKE concat("%",#{logisticsName},"%") AND TYPE = 'logistics_type'),"%")
+			 or s.logistics_name like concat("%",#{logisticsName},"%"))
+		</if>
+		<if test="logisticsNo!=null and logisticsNo!=''">
+			and s.logistics_no = #{logisticsNo}
 		</if>
 		<if test="tids !=null and tids !=''">
 			and t.id in 
@@ -1044,6 +1082,12 @@
 		<if test="suserId != null and suserId != ''">
 			and t.suser_id = #{suserId}
 		</if>
+		<if test="overdue==1 and orderStatus==3">
+			and s.create_date&lt;date_sub(now(),interval 15 day)
+		</if>
+		<if test="overdue==1">
+		    and (select count(*) from user_order_refund where order_id = t.id and status in (1,2,3,4,7)) &lt;=0
+		</if>
 		<if test="orderType != null ">
 			and t.order_type = #{orderType}
 		</if>
@@ -1053,6 +1097,8 @@
 		<if test="pdkLoginname != null and pdkLoginname != ''">
 			and t.pdk_uid = (select sl.id from sys_login sl where sl.loginname=#{pdkLoginname} )
 		</if>
+		<if test="inviteCode != null and inviteCode != ''">
+			and t.invite_code = #{inviteCode}
 		<if test="autoRecTime != null">
 		    and t.auto_rec_time = #{autoRecTime}
 		</if>
@@ -1279,6 +1325,9 @@
 		<if test="overdue==1 and orderStatus==3">
 			and s.create_date&lt;date_sub(now(),interval 15 day)
 		</if>
+		<if test="overdue==1">
+		    and (select count(*) from user_order_refund where order_id = t.id and status in (1,2,3,4,7)) &lt;=0
+		</if>
 		<if test="orderType != null ">
 			and t.order_type = #{orderType}
 		</if>
@@ -1334,7 +1383,8 @@
 		    uod.re_status as reStatus,
 		    uo.is_refund as isRefund,
 		    uo.buyer_message as buyerMessage,
-		    p.product_num as productNum
+		    p.product_num as productNum,
+		    (case when uo.user_id = gur.user_id then 1 else 0 end) as isHead
 		from user_order uo
 		left join coupon_order co       on uo.id = co.order_id and co.status =1
 		left join user_order_detail uod on uo.id = uod.order_id
@@ -1457,6 +1507,9 @@
 			<if test="overdue == 1 and orderStatus == 3">
 				and s.create_date &lt; date_sub(now(),interval 15 day)
 			</if>
+			<if test="overdue==1">
+		        and (select count(*) from user_order_refund where order_id = t.id and status in (1,2,3,4,7)) &lt;=0
+		    </if>
 			<if test="orderType != null ">
 				and uo.order_type = #{orderType}
 			</if>
@@ -1486,6 +1539,9 @@
 			</if>
 			<if test="pdkLoginname != null and pdkLoginname != ''">
 				and uo.pdk_uid = (select sl.id from sys_login sl where sl.loginname=#{pdkLoginname} )
+			</if>
+			<if test="inviteCode != null ">
+				and uo.invite_code = #{inviteCode}
 			</if>
 			
 		order by uo.id desc
@@ -1715,6 +1771,9 @@
 		<if test="remarks!=null and remarks !=''">
 		remarks=#{remarks},
 		</if>
+		<if test="autoRecTime != null and autoRecTime !=''">
+		auto_rec_time=#{autoRecTime},
+		</if>
 		update_date=sysdate()
 		where id = #{id}
 	</update>
@@ -1776,6 +1835,7 @@
 		t.activity_id as activityId,
 		t.source as source,
 		t.source_id as sourceId,
+		t.invite_code as inviteCode,
 		uod.product_id as productId,
 		uod.num as num,
 		p.max_num as maxNum
@@ -2265,6 +2325,7 @@
 	<select id="listPage" parameterType="java.util.Map" resultType="orderPojo">
 		select
 			t.id as id,
+			t.cs_remarks as csRemarks,
 			t.user_id as userId,
 			t.suser_id as suserId,
 			t.all_price as allPrice,
@@ -2313,32 +2374,37 @@
 			t.rebate_price as rebatePrice,
 			t.rebate_time as rebateTime,
 			t.auto_rec_time as autoRecTime,
+			t.invite_code as inviteCode,
 			t.seller_deduct as sellerDeduct,
 			t.platform_msg as platformMsg,
 			t.order_profit as orderProfit,
 			t.seller_goods_price as sellerGoodsPrice,
-			c.used_price as usedPrice,
-			d.id as orderDid,
-			d.product_id as productId,
-			d.product_name as productName,
-			d.product_image as productImage,
-			d.sku_link_id as skuLinkId,
-			d.num as num,
-		    d.re_status as refundStatus,
-		    p.product_name as productName,
-		    p.image as productImage,
-		    ga.num as gaNum,
-		    gur.attend_id as attendId,
-		    gur.prize as prize,
-		    gur.status as gurStatus,
+			<if test="onlyOrder == null ">
+				ifnull(c.used_price,0) as usedPrice,
+				d.id as orderDid,
+				d.product_id as productId,
+				d.product_name as productName,
+				d.product_image as productImage,
+				d.sku_link_id as skuLinkId,
+				d.num as num,
+			    d.re_status as refundStatus,
+			    p.product_name as productName,
+			    p.image as productImage,
+			    ga.num as gaNum,
+			    gur.attend_id as attendId,
+			    gur.prize as prize,
+			    gur.status as gurStatus,
+		    </if>
 		    (select sl.loginname from sys_login sl where sl.id = t.user_id) as loginname
 		from user_order t
-		left join user_order_detail d on d.order_id = t.id
-		left join coupon_order c on c.order_id = t.id and c.status = 1
-		left join groupon_activity ga on ga.id = t.activity_id
-		left join groupon_user_record gur on gur.activity_id = t.activity_id and gur.user_id = t.user_id and t.source_id = gur.attend_id
-		left join groupon_activity_record gar on gar.id = gur.attend_id
-		left join product p on p.id = d.product_id
+		<if test="onlyOrder == null ">
+			left join user_order_detail d on d.order_id = t.id
+			left join coupon_order c on c.order_id = t.id and c.status = 1
+			left join groupon_activity ga on ga.id = t.activity_id
+			left join groupon_user_record gur on gur.activity_id = t.activity_id and gur.user_id = t.user_id and t.source_id = gur.attend_id
+			left join groupon_activity_record gar on gar.id = gur.attend_id
+			left join product p on p.id = d.product_id
+		</if>
 		where 1=1
 			<if test="orderType != null ">
 				and t.order_type = #{orderType}
@@ -2484,20 +2550,25 @@
 			<if test="sellerGoodsPrice != null">
 			  and t.seller_goods_price = #{sellerGoodsPrice}
 			</if>
-			<if test="isFreeDraw != null ">
-			  and ga.num > (select count(*) from groupon_user_record where attend_id=t.source_id) 
-			</if>
-			<if test="refund != null and refund == 0 ">
-			  and d.re_status not in (4,7)
-			</if>
-			<if test="refund != null and refund == 1">
-			  and d.re_status > 0
+			<if test="onlyOrder == null ">
+				<if test="isFreeDraw != null ">
+				  and ga.num > (select count(*) from groupon_user_record where attend_id=t.source_id) 
+				</if>
+				<if test="refund != null and refund == 0 ">
+				  and d.re_status not in (4,7)
+				</if>
+				<if test="refund != null and refund == 1">
+				  and d.re_status > 0
+				</if>
 			</if>
 			<if test="userIds != null">
 				and t.user_id not in
 			   <foreach item="item" index="index" collection="userIds" open="(" separator="," close=")">  
 				 #{item}
 			   </foreach>
+			</if>
+			<if test="inviteCode != null ">
+			  and t.invite_code != #{inviteCode}
 			</if>
 		<if test="orderBy != null and orderBy !=''">
 			order by ${orderBy}
@@ -2635,6 +2706,9 @@
 			</if>
 			<if test="sourceId != null ">
 			  and t.source_id = #{sourceId}
+			</if>
+			<if test="inviteCode != null ">
+			  and t.invite_code = #{inviteCode}
 			</if>
 			<if test="autoRecTime != null">
 			  and t.auto_rec_time = #{autoRecTime}
@@ -2820,6 +2894,9 @@
 			<if test="pdkUid != null and pdkUid != ''">
 				pdk_uid,
 			</if>
+			<if test="inviteCode != null">
+				invite_code,
+			</if>
 			<if test="autoRecTime != null">
 			    auto_rec_time,
 			</if>
@@ -2995,6 +3072,9 @@
 			</if>
 			<if test="pdkUid != null and pdkUid != ''">
 				#{pdkUid},
+			</if>
+			<if test="inviteCode != null">
+				#{inviteCode},
 			</if>
 			<if test="autoRecTime != null">
 			    #{autoRecTime},
@@ -3470,6 +3550,7 @@
 		<if test="isOne != null">
 			and source = 5
 		</if>
+		and consignee != '许测试'
 	</select>
 	<!-- 查询当天已付款已成团订单销售金额 -->
 	<select id="totalSale" resultType="String">
@@ -3484,6 +3565,323 @@
 		</if>
 		<if test="isOne != null">
 			and a.source = 5
+		</if>
+		and a.consignee != '许测试'
+	</select>
+	<!-- 用于拼得客月销售额-->
+	<select id="getPindekeRanking" resultType="orderPojo"
+		parameterType="java.util.Map">
+		select 
+		a.id as pdkUid,
+		sum(case when c.status = 1 then t.fact_price - c.used_price else t.fact_price end) as factPriceAll
+		from user_order as t 
+		left join sys_login  a on t.pdk_uid = a.id	
+		left join coupon_order c on c.order_id = t.id and c.status = 1
+		where  t.is_delete_order=0
+		    and t.pay_status=1
+		    and t.is_success=1
+		    and t.source=8
+			and a.status = 1
+			and a.is_pindeke = 1
+			and UNIX_TIMESTAMP(t.paymentDate) >= UNIX_TIMESTAMP(CONCAT(#{paymentDateStart},' 00:00:00'))
+		    group by t.pdk_uid
+			order by factPriceAll desc,pdkUid asc
+	</select>
+	
+		<!-- 用于拼得客销售额排名-->
+	<select id="getPindekeMonthSale" resultType="orderPojo"
+		parameterType="java.util.Map">
+		select 
+		a.id as pdkUid,
+		sum(case when c.status = 1 then t.fact_price - c.used_price else t.fact_price end) as factPriceAll
+		from user_order as t 
+		left join sys_login  a on t.pdk_uid = a.id	
+		left join coupon_order c on c.order_id = t.id and c.status = 1
+		where  t.is_delete_order=0
+		    and t.pay_status=1
+		    and t.is_success=1
+		    and t.source=8  
+			and a.status = 1
+			and a.is_pindeke = 1
+			and a.inviter_id > 0
+			and a.create_date = date_add(CURDATE(), INTERVAL -31 DAY)
+			and t.paymentDate &lt; CURDATE()
+		    group by t.pdk_uid
+		order by pdkUid asc;
+
+	</select>
+	
+	<!-- 定时任务查询订单,只查订单表,请不要改^_^-->
+	<select id="onlyOrderTabList" resultType="orderPojo">
+		select
+			id as id,
+			user_id as userId,
+			suser_id as suserId,
+			all_price as allPrice,
+			fact_price as factPrice,
+			out_trade_no as outTradeNo,
+			espress_price as espressPrice,
+			consignee as consignee,
+			consignee_address as consigneeAddress,
+			consignee_phone as consigneePhone,
+			consignee_type as consigneeType,
+			buyer_message as buyerMessage,
+			order_status as orderStatus,
+			is_delete_order as isDeleteOrder,
+			is_cancel_order as isCancelOrder,
+			pay_status as payStatus,
+			order_no as orderNo,
+			serial_number as serialNumber,
+			create_by as createBy,
+			create_date as createDate,
+			update_by as updateBy,
+			update_date as updateDate,
+			remarks as remarks,
+			version as version,
+			channel as channel,
+			user_address_id as userAddressId,
+			sendDate as sendDate,
+			province as province,
+			city as city,
+			area as area,
+			agency_user_id as agencyUserId,
+			pay_method as payMethod,
+			first_flag as firstFlag,
+			activity_name as activityName,
+			activity_id as activityId,
+			discount_type as discountType,
+			discount_context as discountContext,
+			discount_price as discountPrice,
+			is_settle as isSettle,
+			settle_date as settleDate,
+			settle_amount as settleAmount,
+			settle_id as settleId,
+			wallet_price as walletPrice,
+			order_type as orderType,
+			seller_message as sellerMessage,
+			paymentDate as paymentDate,
+			confirmDate as confirmDate,
+			source as source,
+			is_success as isSuccess,
+			source_id as sourceId,
+			group_num as groupNum,
+			group_date as groupDate,
+			is_refund as isRefund,
+			out_refund_no as outRefundNo,
+			refund_date as refundDate,
+			ip as ip,
+			rebate_price as rebatePrice,
+			is_rebate as isRebate,
+			rebate_time as rebateTime,
+			pdk_uid as pdkUid,
+			auto_rec_time as autoRecTime,
+			invite_code as inviteCode,
+			is_handle as isHandle,
+			cs_remarks as csRemarks
+		from user_order
+		where 1=1
+			<if test="id != null ">
+			  and id = #{id}
+			</if>
+			<if test="userId != null ">
+			  and user_id = #{userId}
+			</if>
+			<if test="suserId != null ">
+			  and suser_id = #{suserId}
+			</if>
+			<if test="allPrice != null ">
+			  and all_price = #{allPrice}
+			</if>
+			<if test="factPrice != null ">
+			  and fact_price = #{factPrice}
+			</if>
+			<if test="outTradeNo != null and outTradeNo != '' ">
+			  and out_trade_no = #{outTradeNo}
+			</if>
+			<if test="espressPrice != null ">
+			  and espress_price = #{espressPrice}
+			</if>
+			<if test="consignee != null and consignee != '' ">
+			  and consignee = #{consignee}
+			</if>
+			<if test="consigneeAddress != null and consigneeAddress != '' ">
+			  and consignee_address = #{consigneeAddress}
+			</if>
+			<if test="consigneePhone != null and consigneePhone != '' ">
+			  and consignee_phone = #{consigneePhone}
+			</if>
+			<if test="consigneeType != null ">
+			  and consignee_type = #{consigneeType}
+			</if>
+			<if test="buyerMessage != null and buyerMessage != '' ">
+			  and buyer_message = #{buyerMessage}
+			</if>
+			<if test="orderStatus != null ">
+			  and order_status = #{orderStatus}
+			</if>
+			<if test="isDeleteOrder != null ">
+			  and is_delete_order = #{isDeleteOrder}
+			</if>
+			<if test="isCancelOrder != null ">
+			  and is_cancel_order = #{isCancelOrder}
+			</if>
+			<if test="payStatus != null ">
+			  and pay_status = #{payStatus}
+			</if>
+			<if test="orderNo != null and orderNo != '' ">
+			  and order_no = #{orderNo}
+			</if>
+			<if test="serialNumber != null and serialNumber != '' ">
+			  and serial_number = #{serialNumber}
+			</if>
+			<if test="createBy != null ">
+			  and create_by = #{createBy}
+			</if>
+			<if test="createDate != null ">
+			  and create_date = #{createDate}
+			</if>
+			<if test="updateBy != null ">
+			  and update_by = #{updateBy}
+			</if>
+			<if test="updateDate != null ">
+			  and update_date = #{updateDate}
+			</if>
+			<if test="remarks != null and remarks != '' ">
+			  and remarks = #{remarks}
+			</if>
+			<if test="version != null ">
+			  and version = #{version}
+			</if>
+			<if test="channel != null ">
+			  and channel = #{channel}
+			</if>
+			<if test="userAddressId != null ">
+			  and user_address_id = #{userAddressId}
+			</if>
+			<if test="sendDate != null ">
+			  and sendDate = #{sendDate}
+			</if>
+			<if test="province != null ">
+			  and province = #{province}
+			</if>
+			<if test="city != null ">
+			  and city = #{city}
+			</if>
+			<if test="area != null ">
+			  and area = #{area}
+			</if>
+			<if test="agencyUserId != null ">
+			  and agency_user_id = #{agencyUserId}
+			</if>
+			<if test="payMethod != null ">
+			  and pay_method = #{payMethod}
+			</if>
+			<if test="firstFlag != null ">
+			  and first_flag = #{firstFlag}
+			</if>
+			<if test="activityName != null and activityName != '' ">
+			  and activity_name = #{activityName}
+			</if>
+			<if test="activityId != null ">
+			  and activity_id = #{activityId}
+			</if>
+			<if test="discountType != null ">
+			  and discount_type = #{discountType}
+			</if>
+			<if test="discountContext != null ">
+			  and discount_context = #{discountContext}
+			</if>
+			<if test="discountPrice != null ">
+			  and discount_price = #{discountPrice}
+			</if>
+			<if test="isSettle != null ">
+			  and is_settle = #{isSettle}
+			</if>
+			<if test="settleDate != null ">
+			  and settle_date = #{settleDate}
+			</if>
+			<if test="settleAmount != null ">
+			  and settle_amount = #{settleAmount}
+			</if>
+			<if test="settleId != null ">
+			  and settle_id = #{settleId}
+			</if>
+			<if test="walletPrice != null ">
+			  and wallet_price = #{walletPrice}
+			</if>
+			<if test="orderType != null ">
+			  and order_type = #{orderType}
+			</if>
+			<if test="sellerMessage != null and sellerMessage != '' ">
+			  and seller_message = #{sellerMessage}
+			</if>
+			<if test="paymentDate != null ">
+			  and paymentDate = #{paymentDate}
+			</if>
+			<if test="confirmDate != null ">
+			  and confirmDate = #{confirmDate}
+			</if>
+			<if test="source != null ">
+			  and source = #{source}
+			</if>
+			<if test="isSuccess != null ">
+			  and is_success = #{isSuccess}
+			</if>
+			<if test="sourceId != null ">
+			  and source_id = #{sourceId}
+			</if>
+			<if test="groupNum != null ">
+			  and group_num = #{groupNum}
+			</if>
+			<if test="groupDate != null ">
+			  and group_date = #{groupDate}
+			</if>
+			<if test="isRefund != null ">
+			  and is_refund = #{isRefund}
+			</if>
+			<if test="outRefundNo != null and outRefundNo != '' ">
+			  and out_refund_no = #{outRefundNo}
+			</if>
+			<if test="refundDate != null ">
+			  and refund_date = #{refundDate}
+			</if>
+			<if test="ip != null and ip != '' ">
+			  and ip = #{ip}
+			</if>
+			<if test="rebatePrice != null ">
+			  and rebate_price = #{rebatePrice}
+			</if>
+			<if test="isRebate != null ">
+			  and is_rebate = #{isRebate}
+			</if>
+			<if test="rebateTime != null ">
+			  and rebate_time = #{rebateTime}
+			</if>
+			<if test="pdkUid != null ">
+			  and pdk_uid = #{pdkUid}
+			</if>
+			<if test="autoRecTime != null ">
+			  and auto_rec_time = #{autoRecTime}
+			</if>
+			<if test="inviteCode != null and inviteCode != '' ">
+			  and invite_code = #{inviteCode}
+			</if>
+			<if test="isHandle != null ">
+			  and is_handle = #{isHandle}
+			</if>
+			<if test="csRemarks != null and csRemarks != '' ">
+			  and cs_remarks = #{csRemarks}
+			</if>
+			<if test="isAutoRec != null and isAutoRec != '' ">
+			  	<if test="nowDate != null and nowDate != '' ">
+			  		and auto_rec_time &lt;= #{nowDate} 
+				</if>
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
 		</if>
 	</select>
 </mapper>

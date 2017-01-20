@@ -71,6 +71,15 @@
 		<!-- 微信退款 -->
 		<action name="wxPayRefundRequest" class="com.tzmb2c.web.action.OrderAction" method="wxPayRefundRequest">
 		</action>
+		
+		<!--查询订单页-->
+		<action name="goQueryOrder" class="com.tzmb2c.web.action.OrderAction" method="goQueryOrder">
+			<result>/page/system/user/queryOrder.jsp</result>
+		</action>
+		
+		<!-- 修改处理订单状态 -->
+		<action name="updateOrderhandleStatus" class="com.tzmb2c.web.action.OrderAction" method="updateOrderhandleStatus">
+		</action>
 	</package>
 	<package name="order-refund" extends="struts-default">
 		<!-- 支付宝退款异步通知 -->
@@ -119,7 +128,16 @@
 				<param name="root">page.result</param>.
 			</result>
 		</action>
-		
+		<action name="getQueryOrder" class="com.tzmb2c.web.action.OrderAction" method="goQueryOrder">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>
+				<action name="getQueryOrderList" class="com.tzmb2c.web.action.OrderAction" method="getQueryOrderList">
+			<result type="json">
+				<param name="root">page.result</param>.
+			</result>
+		</action>
 		<action name="getOrderCountSettleMF" class="com.tzmb2c.web.action.OrderAction" method="getOrderCountSettleMF">
 			<result type="json">
 				<param name="root">page.rowCount</param>

@@ -1,5 +1,7 @@
 package com.tzmb2c.utils;
 
+import io.rong.util.CodeUtil;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -466,25 +468,39 @@ public class FileUtil extends ActionSupport {
    * @return boolean
    */
   public static void copyFile(String oldPath, String newPath) {
+    InputStream inStream = null;
+    FileOutputStream fs = null;
     try {
       int byteread = 0;
       File oldfile = new File(oldPath);
       if (oldfile.exists()) { // 文件存在时
-        InputStream inStream = new FileInputStream(oldPath); // 读入原文件
-        FileOutputStream fs = new FileOutputStream(newPath);
+        inStream = new FileInputStream(oldPath); // 读入原文件
+        fs = new FileOutputStream(newPath);
         byte[] buffer = new byte[1444];
         while ((byteread = inStream.read(buffer)) != -1) {
           // System.out.println(bytesum);
           fs.write(buffer, 0, byteread);
         }
         fs.flush();
-        fs.close();
-        inStream.close();
       }
     } catch (Exception e) {
       System.out.println("复制单个文件操作出错");
       e.printStackTrace();
-
+    } finally {
+      if (fs != null) {
+        try {
+          fs.close();
+        } catch (Exception e2) {
+          e2.printStackTrace();
+        }
+      }
+      if (inStream != null) {
+        try {
+          inStream.close();
+        } catch (Exception e2) {
+          e2.printStackTrace();
+        }
+      }
     }
 
   }
@@ -497,7 +513,8 @@ public class FileUtil extends ActionSupport {
    * @return boolean
    */
   public static void copyFolder(String oldPath, String newPath) {
-
+    FileInputStream input = null;
+    FileOutputStream output = null;
     try {
       new File(newPath).mkdirs(); // 如果文件夹不存在 则建立新文件夹
       File a = new File(oldPath);
@@ -511,16 +528,14 @@ public class FileUtil extends ActionSupport {
         }
 
         if (temp.isFile()) {
-          FileInputStream input = new FileInputStream(temp);
-          FileOutputStream output = new FileOutputStream(newPath + "/" + temp.getName().toString());
+          input = new FileInputStream(temp);
+          output = new FileOutputStream(newPath + "/" + temp.getName().toString());
           byte[] b = new byte[1024 * 5];
           int len;
           while ((len = input.read(b)) != -1) {
             output.write(b, 0, len);
           }
           output.flush();
-          output.close();
-          input.close();
         }
         if (temp.isDirectory()) {// 如果是子文件夹
           copyFolder(oldPath + "/" + file[i], newPath + "/" + file[i]);
@@ -529,7 +544,21 @@ public class FileUtil extends ActionSupport {
     } catch (Exception e) {
       System.out.println("复制整个文件夹内容操作出错");
       e.printStackTrace();
-
+    } finally {
+      if (output != null) {
+        try {
+          output.close();
+        } catch (Exception e2) {
+          e2.printStackTrace();
+        }
+      }
+      if (input != null) {
+        try {
+          input.close();
+        } catch (Exception e2) {
+          e2.printStackTrace();
+        }
+      }
     }
 
   }
@@ -596,17 +625,28 @@ public class FileUtil extends ActionSupport {
     // 写入OSS开关 1开0关
     String ossSign = PropertiesHelper.getValue("oss_sign");
     if (StringUtils.isNotBlank(ossSign) && upfile != null) {
-      FileInputStream fin = new FileInputStream(upfile);
-      if ("1".equals(ossSign)) {
-        // OSS API
-        OssUtil.ordinaryUpload(ConstParam.OSS_BUKET, relativePath + fName, fin);
-      } else {
-        // 写入本地文件
-        File dirfile = new File(realPath);
-        if (!dirfile.exists() || null != dirfile) {
-          dirfile.mkdirs();
+      FileInputStream fin = null;
+      try {
+        fin = new FileInputStream(upfile);
+        if ("1".equals(ossSign)) {
+          // OSS API
+          OssUtil.ordinaryUpload(ConstParam.OSS_BUKET, relativePath + fName, fin);
+        } else {
+          // 写入本地文件
+          File dirfile = new File(realPath);
+          if (!dirfile.exists() || null != dirfile) {
+            dirfile.mkdirs();
+          }
+          FileUtil.copyFile(fin, realPath + fName);
         }
-        FileUtil.copyFile(fin, realPath + fName);
+      } finally {
+        if (fin != null) {
+          try {
+            fin.close();
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+        }
       }
     }
   }
@@ -692,6 +732,109 @@ public class FileUtil extends ActionSupport {
 
     // } else {
     file_name = StringUtil.getCurrentDateStr() + fileLast;
+    // file_name =
+    // StringUtil.getCurrentDateStr() + file_name.substring(file_name.lastIndexOf("."));
+    // }
+
+    if (isCompress == true) {
+      if (retain == true) {
+        String uploadPath =
+            ServletActionContext.getServletContext().getRealPath(storePath) + File.separator;
+        FileUtil.uploadFile(file_name, uploadPath, storePath + "/", file);
+      }
+
+      storePath += "/small/";
+
+      CompressPicture cp = new CompressPicture();
+      String compressPath =
+          ServletActionContext.getServletContext().getRealPath(storePath) + File.separator;
+      cp.compressPic(file, compressPath, storePath, file_name, width, height, proportion);
+    } else {
+      String uploadPath =
+          ServletActionContext.getServletContext().getRealPath(storePath) + File.separator;
+      FileUtil.uploadFile(file_name, uploadPath, storePath + "/", file);
+    }
+
+    return file_name;
+  }
+
+
+  /**
+   * 
+   * 文件上传
+   * 
+   * @param file 上传的文件
+   * @param size 限制上传的文件的大小（最大限制，例如：100；默认0，无限制；单位KB）
+   * @param orgfileName 文件的原名称（例如：xxx.jpg）
+   * @param storePath 要上传的路径（例如：/upfiles/product）
+   * @param isCompress 是否添加压缩（true/false，true时width、height、proportion、retain有效)
+   * @param width isCompress=true时自定义宽度（例如：300）
+   * @param height isCompress=true时自定义高度（例如：300）
+   * @param proportion isCompress=true时判断是否是等比缩放（true/false）
+   * @param retain isCompress=true时判断是否保留原图（true/false）
+   * @param allowTypes 允许上传的文件的类型（文件后缀名，例如：.jpg/.png/.xxx；默认null或者""，无限制）
+   * @return
+   * @throws Exception
+   * @throw
+   * @return String
+   */
+  public static String uploadFile1(File file, int size, String orgfileName, String storePath,
+      boolean isCompress, int width, int height, boolean proportion, boolean retain,
+      String allowTypes) throws Exception {
+
+    long filesize = file.length();
+    if (size != 0 && filesize / 1024 > size) {
+      FileUtil.alertMessage("上传失败，上传的文件大小超过限制！~");
+      return null;
+    }
+
+    String file_name = orgfileName;
+    // HttpServletRequest request = ServletActionContext.getRequest();
+    // file_name = (String) request.getAttribute("fileFileName");
+
+    String fileLast = FileType.getSuffixByFilename(file_name);
+    if (allowTypes != null && !"".equals(allowTypes)) {
+      // String allowTypeArray[] = allowTypes.split("/");
+      // int temp = 0;
+      // if (allowTypeArray.length > 0) {
+      // for (String s : allowTypeArray) {
+      // if (!fileLast.equals(s)) {
+      // temp++;
+      // }
+      // }
+      // }
+      // if (temp == allowTypeArray.length) {
+      if (!allowTypes.contains(fileLast)) {
+        FileUtil.alertMessage("上传失败，上传的文件格式不正确！~");
+        return null;
+      }
+      // } else {
+      // FileUtil.alertMessage("上传失败，未定义上传的文件的类型！~");
+      // return null;
+    }
+
+    // if (allowTypes != null && !"".equals(allowTypes)) {
+    // file_name = StringUtil.getCurrentDateStr() + allowTypes;
+
+    // } else {
+    InputStream input = null;
+    byte[] byt = null;
+    try {
+      input = new FileInputStream(file);
+      byt = new byte[input.available()];
+      file_name = CodeUtil.hexSHA1(CodeUtil.byteToHexString(byt)) + fileLast;
+    } finally {
+      if (input != null) {
+        try {
+          input.close();
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+    }
+    // input = new FileInputStream(file);
+    // byte[] byt = new byte[input.available()];
+    // file_name = CodeUtil.hexSHA1(CodeUtil.byteToHexString(byt)) + fileLast;
     // file_name =
     // StringUtil.getCurrentDateStr() + file_name.substring(file_name.lastIndexOf("."));
     // }

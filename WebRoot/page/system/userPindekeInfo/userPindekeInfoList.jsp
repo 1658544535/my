@@ -73,7 +73,7 @@ function frozenRefreshPage(result){
 </head>
 <body>
 	<div class="sub_wrap">
-		<div class="s_nav"><a href="#">拼得客-用户信息表管理</a> &gt; <a href="#">拼得客-用户信息表管理</a></div>
+		<div class="s_nav"><a href="#">用户信息表管理</a> &gt; <a href="#">拼得客用户信息列表</a></div>
 		<div class="Search_control">
 			<p>按条件查找</p>
 			<a class="collapse_btn" id="searchBar" onclick="showandhide()"></a>
@@ -126,12 +126,17 @@ function frozenRefreshPage(result){
 					<tr>
 						<th><input type="checkbox" id="selectcb" name="selectcb" onclick="allcb()" ></th>
 						<th>真实姓名</th>
+						<th>拼得客编号</th>
 						<th>用户账号</th>
 						<th>手机号码</th>
 						<th>申请人身份证号码</th>
+						<th>邀请者</th>
 						<th>申请时间</th>
 						<th>审核状态</th>
 						<th>审核原因</th>
+						<th>开团数</th>
+						<th>成团数</th>
+						<th>冻结金额</th>
 						<th>返佣金额</th>
 						<th>提现金额</th>
 						<th>剩余金额</th>
@@ -189,17 +194,27 @@ function frozenRefreshPage(result){
 		$("#body").append(
 				"<tr><td><input name='tids' type='checkbox' value="+this.id +" /></td>"+
 				"<td>"+ this.name + "</td>"+
+				"<td><input type='text' name='pindekeNumber' value='"+ this.pindekeNumber + "' onblur='update(this.value, "+ this.id +");''></td>"+
 				"<td>"+ this.loginname + "</td>"+
 				"<td>"+ this.phone + "</td>"+
 				"<td>"+ this.cardNo + "</td>"+
+				"<td>"+ this.inviterName + "</td>"+
 				"<td>"+ this.creatDateString + "</td>"+
 				"<td>"+ statusStr + "</td>"+
 				"<td>"+ this.returnMsg + "</td>"+
+				"<td>"+ this.grouponNum + "</td>"+
+				"<td>"+ this.grouponSuccessNum + "</td>"+
+				"<td>"+ this.freezingPrice + "</td>"+
 				"<td>"+ this.rebatePrice + "</td>"+
 				"<td>"+ this.withdrawPrice + "</td>"+
 				"<td>"+ this.surpluPrice + "</td>"+
 				<s:if test="#session.role.roleId!=7">
-				"<td><a class='edit_btn' href='goCheckUserPindekeInfo.do?id="+this.id +"'>查看</a><a class='edit_btn' href='goUpdateUserPindekeInfo.do?id="+this.id +"'>编辑</a>"+statusStr2+"<!--<a class='del_btn' onclick='del(\"delUserPindekeInfo.do?id="+this.id+"&isDelete=1\")'>删除</a>--></td>"
+				"<td>"+
+				"<a class='edit_btn' href='goCheckUserPindekeInfo.do?id="+this.id +"'>查看</a>"+
+				//"<a class='edit_btn' href='goUpdateUserPindekeInfo.do?id="+this.id +"'>编辑</a>"+
+				statusStr2+
+				"<!--<a class='del_btn' onclick='del(\"delUserPindekeInfo.do?id="+this.id+"&isDelete=1\")'>删除</a>-->"+
+				"</td>"
 				</s:if>
 				);
 	}
@@ -211,4 +226,31 @@ function frozenRefreshPage(result){
 		MAOWU.page.init(${page.rowCount}, "userPindekeInfoList.do?randIni="+rand);	
 		$("#query_btn").click(query);		
 	});	
+	
+    /**
+	 **  修改拼得客编号
+	 **/
+	function update(pindekeNumber,id)
+	{
+//		if(pindekeNumber != null && pindekeNumber != "")
+//		{
+			var url = "updatePindekeNumber.do?userPindekeInfoPojo.id="+id+"&userPindekeInfoPojo.pindekeNumber="+pindekeNumber;
+			doOpreator(url,null);
+//		}else{
+//			alert("请输入编号");
+//		}
+
+	}
+	function doOpreator(url,params){
+		MAOWU.ajax.get(url, params, goRefreshPage);
+	}
+
+	function goRefreshPage(result){
+		var rand=Math.random() * ( 100000 + 1);
+		if(result=="1"){
+			queryData("userPindekeInfoCnt.do", "userPindekeInfoList.do?randdelete="+rand,pageSize);
+		}else{
+			alert("修改失败");
+		}
+	}
 </script>

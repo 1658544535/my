@@ -326,8 +326,8 @@
 		t.status as status,
 		t.is_pindeke as isPindeke,
 		t.create_date as createDate,
-		d.create_date as manufacturerdate,
 		<!--
+		d.create_date as manufacturerdate,
 		u.create_date as consumerdate,
 		a.create_date as agencydate,
 		-->
@@ -341,8 +341,8 @@
 		<!--
 		left join user_agency a on a.user_id=t.id
 		left join user_consumer u on u.user_id=t.id
-		-->
 		left join user_manufacturer d on d.user_id=t.id
+		-->
 		where 1=1 
 		<if test="id!=null and id!='' ">
 			and t.id = #{id}
@@ -389,12 +389,14 @@
 			and t.id=#{id}
 		</if>
 		<if test="os!=null and os!='' ">
-			and t.type = #{os}
+			and t.type = cast(#{os} as char)
 		</if>
+		<!--
 		<if test="userManufacturerIsNotNull != null and userManufacturerIsNotNull == 1">
 			and d.id is not null and d.status = 1
 		</if>
-		order by t.create_date desc
+		-->
+		order by t.id desc
 		<if test="pageSize != null">
 			limit #{pageNo} , #{pageSize}
 		</if>
@@ -557,7 +559,10 @@
 	</update>
 	
 	<select id="getUserIdByInvitationCode" resultType="sysLoginPojo" parameterType="sysLoginPojo">
-		select t.id as id
+		select 
+		t.id as id,
+		t.status as status,
+		t.is_pindeke as isPindeke
 		from sys_login t 
 		where t.invitation_code = #{invitationCode} and t.status = 1
 	</select>
@@ -750,8 +755,7 @@
 		t.status as status,
 		t.is_pindeke as isPindeke,
 		t.create_date as createDate,
-		d.create_date as manufacturerdate,
-		<!--
+		<!--d.create_date as manufacturerdate,
 		u.create_date as consumerdate,
 		a.create_date as agencydate,
 		-->
@@ -765,8 +769,8 @@
 		<!--
 		left join user_agency a on a.user_id=t.id
 		left join user_consumer u on u.user_id=t.id
-		-->
 		left join user_manufacturer d on d.user_id=t.id
+		-->
 		where 1=1 
 		<if test="judgeSource == 1 ">
 			and t.source in(1,2)
@@ -810,12 +814,14 @@
 			and t.id=#{id}
 		</if>
 		<if test="os!=null and os!='' ">
-			and t.type = #{os}
+			and t.type = cast(#{os} as char)
 		</if>
+		<!--
 		<if test="userManufacturerIsNotNull != null and userManufacturerIsNotNull == 1">
 			and d.id is not null and d.status = 1
 		</if>
-		order by t.create_date desc
+		-->
+		order by t.id desc
 		limit 30000
 	</select>
 </mapper>

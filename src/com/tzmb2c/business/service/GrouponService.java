@@ -26,6 +26,7 @@ import com.tencent.common.Util;
 import com.tzmb2c.utils.IdWorker;
 import com.tzmb2c.utils.SmsSendUtil;
 import com.tzmb2c.utils.StringUtil;
+import com.tzmb2c.web.pojo.AliRedEnvelopePojo;
 import com.tzmb2c.web.pojo.CartPojo;
 import com.tzmb2c.web.pojo.CouponOrderPojo;
 import com.tzmb2c.web.pojo.CouponPojo;
@@ -45,6 +46,7 @@ import com.tzmb2c.web.pojo.SysLoginPojo;
 import com.tzmb2c.web.pojo.UserCouponPojo;
 import com.tzmb2c.web.pojo.UserOrderNoticePojo;
 import com.tzmb2c.web.pojo.UserPindekeInfoPojo;
+import com.tzmb2c.web.service.AliRedEnvelopeService;
 import com.tzmb2c.web.service.CouponService;
 import com.tzmb2c.web.service.GroupFreeCouponService;
 import com.tzmb2c.web.service.GroupFreeCouponSettingService;
@@ -107,6 +109,8 @@ public class GrouponService {
   private UserPindekeInfoService userPindekeInfoService;
   @Autowired
   private ProductService productService;
+  @Autowired
+  private AliRedEnvelopeService aliRedEnvelopeService;
 
   /**
    * 根据订单金额判断能否使用优惠券
@@ -365,13 +369,11 @@ public class GrouponService {
         grouponUserRecordPojo.setUpdateBy(uid);
         grouponUserRecordPojo.setUpdateDate(new Date());
         grouponUserRecordService.add(grouponUserRecordPojo);
-        Util.log("修改订单的团记录id为添加的");
+        Util.log("订单记录开团记录id");
         OrderPojo orderPojo = new OrderPojo();
         orderPojo.setId(orderId);
         orderPojo.setSourceId(grouponActivityRecordPojo.getId());
         orderService.updateOrder(orderPojo);
-        // 微信通知
-        orderPojo = orderService.getfindByIdOrder(orderId);
         // 修改总开团数
         if (source == 1) {
           try {
@@ -386,7 +388,31 @@ public class GrouponService {
             e.printStackTrace();
           }
         }
+        orderPojo = orderService.getfindByIdOrder(orderId);
         if (orderPojo != null) {
+          Util.log("0.1红包活动修改口令表");
+          if (source == 5 && orderPojo.getInviteCode() != null
+              && !"".equals(orderPojo.getInviteCode())) {
+            AliRedEnvelopePojo aliRedEnvelope =
+                aliRedEnvelopeService.getByInviteCode(orderPojo.getInviteCode());
+            if (aliRedEnvelope != null) {
+              AliRedEnvelopePojo aliRedEnvelopeUp = new AliRedEnvelopePojo();
+              aliRedEnvelopeUp.setId(aliRedEnvelope.getId());
+              aliRedEnvelopeUp.setAttendId(grouponActivityRecordPojo.getId());
+              aliRedEnvelopeUp.setHeaderId(uid);
+              aliRedEnvelopeUp.setVersions(aliRedEnvelope.getVersions());
+              aliRedEnvelopeUp.setUpdateDate(new Date());
+              int i = aliRedEnvelopeService.update(aliRedEnvelopeUp);
+              if (i > 0) {
+                Util.log("口令表修改成功!");
+              }
+            } else {
+              Util.log("口令表查询不到数据!");
+            }
+          } else {
+            Util.log("没有邀请码!");
+          }
+          // 微信通知
           SysLoginPojo user = sysLoginService.getfindByIdSysLogin(uid);
           if (user != null) {
             if (StringUtils.isNotBlank(user.getOpenid())) {
@@ -394,8 +420,10 @@ public class GrouponService {
               Util.log("微信支付成功通知!");
               wxNotice(3, orderId, user.getOpenid(), uid);
               if (orderPojo.getSource() == 5) {
-                Util.log("0.1抽奖开团微信通知!");
-                oneWXNotice(1, orderId, uid);
+                // ----------------------------------
+                // Util.log("0.1抽奖开团微信通知!");
+                // oneWXNotice(1, orderId, uid);
+                // ----------------------------------
               } else {
                 Util.log("微信开团成功通知!");
                 wxNotice(4, orderId, user.getOpenid(), uid);
@@ -405,8 +433,10 @@ public class GrouponService {
               Util.log("微信支付成功通知!");
               addUserOrderNotice(1, uid, orderId);
               if (orderPojo.getSource() == 5) {
-                Util.log("0.1抽奖开团微信通知!");
-                addUserOrderNotice(2, uid, orderId);
+                // ----------------------------------
+                // Util.log("0.1抽奖开团微信通知!");
+                // addUserOrderNotice(2, uid, orderId);
+                // ----------------------------------
               } else {
                 Util.log("微信开团成功通知!");
                 addUserOrderNotice(2, uid, orderId);
@@ -513,10 +543,12 @@ public class GrouponService {
                 grouponUserRecord.setStatus(3);
                 grouponUserRecord.setPrize(1);
                 grouponUserRecordService.update(grouponUserRecord);
-                Util.log("0.1抽奖拼团成功微信通知!");
-                oneWXNotice(3, orderId, uid);
-                Util.log("0.1抽奖拼团成功短信通知!");
-                smsOneOpenWin(activityId, grouponActivityRecordPojo.getId());
+                // ---------------------------------------
+                // Util.log("0.1抽奖拼团成功微信通知!");
+                // oneWXNotice(3, orderId, uid);
+                // Util.log("0.1抽奖拼团成功短信通知!");
+                // smsOneOpenWin(activityId, grouponActivityRecordPojo.getId());
+                // ---------------------------------------
               }
             }
             SysLoginPojo user = sysLoginService.getfindByIdSysLogin(uid);
@@ -844,8 +876,10 @@ public class GrouponService {
                       }
                       // 0.1抽奖拼团成功,团长中一等奖,随机抽取一人
                       if (source == 5) {
-                        Util.log("0.1抽奖成团微信通知!");
-                        oneWXNotice(3, orderId, uid);
+                        // ----------------------------------
+                        // Util.log("0.1抽奖成团微信通知!");
+                        // oneWXNotice(3, orderId, uid);
+                        // ----------------------------------
                         List<Long> userIds = new ArrayList<Long>();
                         Util.log("查询团长,设置中奖");
                         params.clear();
@@ -875,8 +909,6 @@ public class GrouponService {
                             orderup.setId(orderprizes.get(0).getId());
                             orderService.updateOrder(orderup);
                           }
-
-
                           // 记录团长userId
                           userIds.add(grouponUserRecordList.get(0).getUserId());
                         }
@@ -909,7 +941,6 @@ public class GrouponService {
                             orderup.setId(orderprizes.get(0).getId());
                             orderService.updateOrder(orderup);
                           }
-
                           // 记录中奖人userId
                           userIds.add(gur.getUserId());
                         }
@@ -928,22 +959,32 @@ public class GrouponService {
                             orderService.updateOrder(orderPojo);
                           }
                         }
-                        Util.log("0.1抽奖未中奖微信通知!");
-                        try {
-                          oneWXNotice(5, orderId, uid);
-                        } catch (Exception ex) {
-                          Util.log("0.1抽奖未中奖微信通知失败!");
-                          ex.printStackTrace();
+                        // ----------------------------------
+                        // Util.log("0.1抽奖未中奖微信通知!");
+                        // try {
+                        // oneWXNotice(5, orderId, uid);
+                        // } catch (Exception ex) {
+                        // Util.log("0.1抽奖未中奖微信通知失败!");
+                        // ex.printStackTrace();
+                        // }
+                        // ----------------------------------
+                        if (grouponActivityPojo != null
+                            && (grouponActivityPojo.getId() == 8760
+                                || grouponActivityPojo.getId() == 8858
+                                || grouponActivityPojo.getId() == 9437 || grouponActivityPojo
+                                .getId() == 9543)) {
+                          Util.log("0.1抽奖中奖微信通知!");
+                          try {
+                            oneWXNotice(4, orderId, uid);
+                          } catch (Exception ex) {
+                            Util.log("0.1抽奖中奖微信通知失败!");
+                            ex.printStackTrace();
+                          }
                         }
-                        Util.log("0.1抽奖中奖微信通知!");
-                        try {
-                          oneWXNotice(4, orderId, uid);
-                        } catch (Exception ex) {
-                          Util.log("0.1抽奖中奖微信通知失败!");
-                          ex.printStackTrace();
-                        }
-                        Util.log("0.1抽奖拼团成功短信通知!");
-                        smsOneOpenWin(activityId, attendId);
+                        // ----------------------------------
+                        // Util.log("0.1抽奖拼团成功短信通知!");
+                        // smsOneOpenWin(activityId, attendId);
+                        // ----------------------------------
                       }
                     }
                     Util.log("激活团免券!");
@@ -1338,6 +1379,21 @@ public class GrouponService {
   }
 
   /**
+   * 返回当前时间加上N天
+   * 
+   * @param current 当前时间
+   * @param H 天数
+   * @return
+   */
+  public static Date getTimeAddDay(Date current, int D) {
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(current);
+    cal.add(Calendar.DATE, D);
+    return cal.getTime();
+  }
+
+
+  /**
    * 领取团免券
    * 
    * @param userId 用户id
@@ -1443,16 +1499,16 @@ public class GrouponService {
               // 插入user_coupon(判断是否指定商品)
               UserCouponPojo userCoupon = new UserCouponPojo();
               SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-              Date validSdate = new Date();
+              new Date();
               // 创建时间
               long gentime = sdf.parse(StringUtil.dateString(new Date())).getTime();
               // 有效期开始时间
-              long stime = sdf.parse(StringUtil.dateString(validSdate)).getTime();
-              Calendar calendar = Calendar.getInstance();
-              calendar.setTime(validSdate);
-              calendar.add(Calendar.HOUR, 24);
+              // long stime = sdf.parse(StringUtil.dateString(validSdate)).getTime();
+              // Calendar calendar = Calendar.getInstance();
+              // calendar.setTime(validSdate);
+              // calendar.add(Calendar.HOUR, 24);
               // 有效期结束时间
-              long etime = sdf.parse(StringUtil.dateString(calendar.getTime())).getTime();
+              // long etime = sdf.parse(StringUtil.dateString(calendar.getTime())).getTime();
               IdWorker idGen = new IdWorker(0, 0);
               userCoupon.setCouponNo(String.valueOf(idGen.nextId()));
               userCoupon.setCouponId(linkId);
@@ -1462,8 +1518,10 @@ public class GrouponService {
               userCoupon.setStatus(1);
               userCoupon.setUsed(0);
               userCoupon.setUseTime(0L);
-              userCoupon.setValidstime(stime / 1000);
-              userCoupon.setValidetime(etime / 1000);
+              // userCoupon.setValidstime(stime / 1000);
+              // userCoupon.setValidetime(etime / 1000);
+              userCoupon.setValidstime(couponPojo.getValidStime());
+              userCoupon.setValidetime(couponPojo.getValidEtime());
               userCoupon.setProductId(couponPojo.getProductId() == null ? 0L : couponPojo
                   .getProductId());
               int a = couponService.addUserCoupon(userCoupon);
@@ -1925,6 +1983,19 @@ public class GrouponService {
                     "groupDate",
                     order.getGroupDate() == null ? StringUtil.checkVal(new Date()) : StringUtil
                         .checkVal(StringUtil.dateString(order.getGroupDate())));
+                if (type != null && type == 4 && order.getSourceId() != null
+                    && order.getSourceId() > 0) {
+                  Map<String, Object> params = new HashMap<String, Object>();
+                  params.put("attendId", order.getSourceId());
+                  List<AliRedEnvelopePojo> aliRedEnvelopes = aliRedEnvelopeService.listPage(params);
+                  if (aliRedEnvelopes != null && aliRedEnvelopes.size() > 0) {
+                    item.put("invCode", StringUtil.checkVal(aliRedEnvelopes.get(0).getInviteCode()));
+                  } else {
+                    item.put("invCode", "");
+                  }
+                } else {
+                  item.put("invCode", "");
+                }
                 data.add(item);
                 // }
 

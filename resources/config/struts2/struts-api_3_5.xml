@@ -1220,5 +1220,9 @@
 		<action name="openDrawValid" class="com.tzmb2c.web.action.AppApiAction" method="setDrawValid">
 			<result>/api/apiWeb.jsp</result>
 		</action>
+		<!-- app接口异常处理 -->
+		<action name="appApiError" class="com.tzmb2c.web.action.AppApiWalletAction" method="appApiError">
+			<result>/api/apiWeb.jsp</result>
+		</action>
 	</package>
 </struts>

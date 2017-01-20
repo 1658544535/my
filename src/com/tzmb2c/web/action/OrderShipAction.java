@@ -208,6 +208,7 @@ public class OrderShipAction extends SuperAction {
       order.setOrderStatus(3);
       order.setSendDate(new Date());
       order.setRemarks(orderShip.getRemarks());
+      order.setAutoRecTime(GrouponService.getTimeAddDay(new Date(), 15));
       orderService.updateOrderStatus(order);
       String content =
           "【拼得好】您购买的宝贝已由" + orderShipList.getLogisticsNameCN() + "快递发出，正在奔向您的途中，快递单号："
@@ -234,6 +235,7 @@ public class OrderShipAction extends SuperAction {
       order.setOrderStatus(3);
       order.setSendDate(new Date());
       order.setRemarks(orderShip.getRemarks());
+      order.setAutoRecTime(GrouponService.getTimeAddDay(new Date(), 15));
       orderService.updateOrderStatus(order);
       // 订单已发货自动发送“发货短信”
       if (orderShip != null && orderShip.getConsigneePhone() != null) {

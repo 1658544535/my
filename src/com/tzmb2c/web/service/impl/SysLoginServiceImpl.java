@@ -167,14 +167,14 @@ public class SysLoginServiceImpl implements SysLoginService {
     if (os != null) {
       map.put("os", os);
     }
-    if (page != null) {
-      map.put("pageSize", page.getPageSize());
-      map.put("pageNo", (page.getPageNo() - 1) * page.getPageSize());
-    } else {
-      map.put("pageSize", 10);
-      map.put("pageNo", 0);
-    }
-
+      if (page != null) {
+        map.put("pageSize", page.getPageSize());
+        map.put("pageNo", (page.getPageNo() - 1) * page.getPageSize());
+      } else {
+        map.put("pageSize", 10);
+        map.put("pageNo", 0);
+      }
+      
     list = sysLoginDao.sysLoginAllList(map);
 
 

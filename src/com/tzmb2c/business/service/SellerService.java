@@ -1400,6 +1400,8 @@ public class SellerService {
       nm = "quanfengkuaidi";
     } else if (logisticsnm.contains("京东")) {
       nm = "jd";
+    } else if (logisticsnm.contains("万象")) {
+      nm = "wanxiangwuliu";
     } else {
       nm = logisticsnm;
     }

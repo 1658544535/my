@@ -746,3 +746,89 @@ ALTER TABLE user_certificates_photo ADD image8 varchar(100) default '' COMMENT '
 alter table product_sku_link add is_delete int(2) default '0' COMMENT '是否删除(1是0否)';
 ##增加-sku_att
 ALTER TABLE sku_attribute ADD is_delete INT(2) DEFAULT '0' COMMENT '是否删除(1是0否)';
+
+#user_pindeke_info新增invitation_code字段
+ALTER TABLE user_pindeke_info
+ADD COLUMN invitation_code  varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '分享邀请码' AFTER update_date;
+## 支付宝红包口令表
+CREATE TABLE ali_red_envelope (
+  id bigint(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  invite_code varchar(30) NOT NULL COMMENT '邀请码',
+  passwd_img1 varchar(50) NOT NULL COMMENT '红包口令图片1',
+  passwd_img2 varchar(50) NOT NULL COMMENT '红包口令图片2',
+  attend_id bigint(20) NOT NULL DEFAULT 0 COMMENT '参团id',
+  header_id bigint(20) NOT NULL DEFAULT 0 COMMENT '团长用户id',
+  versions int NOT NULL DEFAULT 0 COMMENT '版本更新',
+  create_date datetime DEFAULT NULL COMMENT '生成时间',
+  update_date datetime DEFAULT NULL COMMENT '更新时间',
+  is_used int(2) default 0 comment '是否使用(1是0否)',
+  order_id bigint(20) default 0 comment '订单id',
+  PRIMARY KEY (id),
+  KEY IDX_INVITE_CODE (invite_code),
+  KEY IDX_ATTEND_ID (attend_id),
+  KEY IDX_ORDER_ID (order_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='支付宝红包口令表';
+
+alter table user_order add invite_code varchar(30) COMMENT '邀请码';
+
+
+
+##增加菜单
+insert into sys_menu (id, name, name_en, level, path, icon, sorting, status, create_by, create_date, update_by, update_date, remarks, version) values('307','红包口令管理','','0','url','/images/menu_icon_10.png','14','1','1','2017-01-07 08:46:01','1','2017-01-07 08:46:36',NULL,'0');
+insert into sys_menu (id, name, name_en, level, path, icon, sorting, status, create_by, create_date, update_by, update_date, remarks, version) values('308','红包口令','','307','goAliRedEnvelope.do',NULL,'0','1','1','2017-01-07 08:49:56','1','2017-01-07 08:49:56',NULL,'0');
+##添加菜单
+INSERT INTO sys_menu (id, name, name_en, level, path, icon, sorting, status, create_by, create_date, update_by, update_date, remarks, version) VALUES (306, '兑换券管理', '', 305, 'goUserRedeemCode.do', null, 0, 1, 1, '2016-12-27 11:58:24', 1, '2016-12-27 11:58:24', null, 0);
+INSERT INTO sys_menu (id, name, name_en, level, path, icon, sorting, status, create_by, create_date, update_by, update_date, remarks, version) VALUES (305, '钱包功能', '', 0, 'url', '/images/menu_icon_10.png', 13, 1, 1, '2016-12-27 11:52:20', 1, '2016-12-27 11:52:20', null, 0);
+
+##添加角色菜单
+INSERT INTO sys_role_menu (role_id, menu_id) VALUES (1, 306);
+INSERT INTO sys_role_menu (role_id, menu_id) VALUES (1, 305);
+
+INSERT INTO sys_role_menu (role_id, menu_id) VALUES (1, 307);
+INSERT INTO sys_role_menu (role_id, menu_id) VALUES (1, 308);
+
+
+##新增拼得客当月销售额记录表
+CREATE TABLE pindeke_month_sale (
+  id bigint(20) NOT NULL auto_increment COMMENT 'id',
+  user_id bigint(20) default '0' COMMENT '用户id',
+  type int unsigned default '0' NOT NULL COMMENT '类型 :1为排行榜2为30天销售额',
+  section_time varchar(20) default '' COMMENT '区间时间',
+  total double(20,2) default 0.00 COMMENT '累计销售金额',
+  is_settle int(2) default '0' COMMENT '是否已返佣奖励(1是0否)',
+  settle_amt double(20,2) default 0.00 COMMENT '奖励金额',
+  ranking int(2) default '0' COMMENT '排名',
+  inviter_id bigint(20) default '0' COMMENT '邀请者id',
+  create_by bigint(20) default '0' COMMENT '创建者',
+  create_date datetime default NULL COMMENT '创建时间',
+  update_by bigint(20) default '0' COMMENT '更新者',
+  update_date datetime default NULL COMMENT '更新时间',
+  PRIMARY KEY  (id),
+  KEY IDX_USER_ID (user_id),
+  INDEX IDX_INVITER_ID(inviter_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='拼得客当月销售额记录表';
+
+INSERT INTO sys_menu (id, name, name_en, level, path, icon, sorting, status, create_by, create_date, update_by, update_date, remarks, version) VALUES (309, '拼得客排行榜', '', 286, 'goPindekeMonthSale.do', null, 5, 1, 1, '2017-01-11 16:18:28', 1, '2017-01-11 16:18:28', null, 0);
+INSERT INTO sys_role_menu (role_id, menu_id) VALUES (1, 309);
+
+INSERT INTO sys_menu (id, name, name_en, level, path, icon, sorting, status, create_by, create_date, update_by, update_date, remarks, version) VALUES (310, '拼得客邀请用户列表', '', 286, 'goPindekeMonthSaleInviter.do', null, 6, 1, 1, '2017-01-12 11:32:42', 1, '2017-01-12 11:32:42', null, 0);
+INSERT INTO sys_role_menu (role_id, menu_id) VALUES (1, 310);
+
+##增加-product
+alter table product add faraway text COMMENT '偏远地区';
+##增加-sys_area
+ALTER TABLE sys_area ADD is_often INT(2) DEFAULT 0 COMMENT '是否常用地址';
+
+##增加字段
+ALTER TABLE user_order ADD is_handle INT(2) DEFAULT 0 COMMENT '是否待处理订单（0-否1-是）';
+ALTER TABLE user_order ADD cs_remarks varchar(255) default '' COMMENT '客户订单留言';
+alter table user_order ADD auto_rec_time datetime default NULL COMMENT '自动收货时间';
+
+##添加菜单
+INSERT INTO sys_menu (id, name, name_en, level, path, icon, sorting, status, create_by, create_date, update_by, update_date, remarks, version) VALUES (312, '订单查询', '', 17, 'goQueryOrder.do?b=1&os', null, 0, 1, 1, '2017-01-16 14:35:43', 1, '2017-01-16 14:52:20', null, 0);
+INSERT INTO sys_menu (id, name, name_en, level, path, icon, sorting, status, create_by, create_date, update_by, update_date, remarks, version) VALUES (311, '待处理订单列表', '', 17, 'order.do?os=8', null, 1, 1, 1, '2017-01-16 14:36:53', 1, '2017-01-16 14:54:54', null, 0);
+INSERT INTO sys_role_menu (role_id, menu_id) VALUES (1, 311);
+INSERT INTO sys_role_menu (role_id, menu_id) VALUES (1, 312);
+
+##增加拼得客编号字段
+alter table user_pindeke_info add pindeke_number varchar(30) default NULL COMMENT '拼得客编号';

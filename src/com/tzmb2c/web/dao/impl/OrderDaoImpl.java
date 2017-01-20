@@ -95,6 +95,18 @@ public class OrderDaoImpl implements OrderDao {
   }
 
   @Override
+  public List<OrderPojo> getPindekeRanking(Map<String, Object> map) {
+
+    return orderMapper.getPindekeRanking(map);
+  }
+
+  @Override
+  public List<OrderPojo> getPindekeMonthSale(Map<String, Object> map) {
+
+    return orderMapper.getPindekeMonthSale(map);
+  }
+  
+  @Override
   public void delOrder(Long id) throws SQLException {
 
     orderMapper.delOrder(id);
@@ -409,6 +421,11 @@ public class OrderDaoImpl implements OrderDao {
   @Override
   public List<OrderPojo> exportOrderExcel(Map<String, Object> map) throws SQLException {
     return orderMapper.exportOrderExcel(map);
+  }
+
+  @Override
+  public List<OrderPojo> onlyOrderTabList(Map<String, Object> params) throws SQLException {
+    return orderMapper.onlyOrderTabList(params);
   }
 
 }

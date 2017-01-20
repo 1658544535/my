@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.AliRedEnvelopeMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id as id,
+		invite_code as inviteCode,
+		passwd_img1 as passwdImg1,
+		passwd_img2 as passwdImg2,
+		attend_id as attendId,
+		header_id as headerId,
+		versions as versions,
+		create_date as createDate,
+		update_date as updateDate,
+		is_used as isUsed,
+		order_id as orderId
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="AliRedEnvelopePojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			ali_red_envelope
+		where
+			id = #{id}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from ali_red_envelope
+		where 1=1
+		  <if test="id != null ">
+			and id = #{id}
+		  </if>
+		  <if test="inviteCode != null and inviteCode != '' ">
+			 and invite_code like concat("%",#{inviteCode},"%")
+		  </if>
+		  <if test="passwdImg1 != null and passwdImg1 != '' ">
+			and passwd_img1 = #{passwdImg1}
+		  </if>
+		  <if test="passwdImg2 != null and passwdImg2 != '' ">
+			and passwd_img2 = #{passwdImg2}
+		  </if>
+		  <if test="attendId != null ">
+			and attend_id = #{attendId}
+		  </if>
+		  <if test="headerId != null ">
+			and header_id = #{headerId}
+		  </if>
+		  <if test="versions != null ">
+			and versions = #{versions}
+		  </if>
+		  <if test="createDate != null ">
+			and create_date = #{createDate}
+		  </if>
+		  <if test="updateDate != null ">
+			and update_date = #{updateDate}
+		  </if>
+		  <if test="isUsed != null ">
+			and is_used = #{isUsed}
+		  </if>
+		  <if test="orderId != null ">
+			and order_id = #{orderId}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="AliRedEnvelopePojo">
+		select
+			<include refid="Base_Column_List" />
+		from ali_red_envelope
+		where 1=1
+			<if test="id != null ">
+			  and id = #{id}
+			</if>
+			<if test="inviteCode != null and inviteCode != '' ">
+		      and invite_code like concat("%",#{inviteCode},"%")
+			</if>
+			<if test="passwdImg1 != null and passwdImg1 != '' ">
+			  and passwd_img1 = #{passwdImg1}
+			</if>
+			<if test="passwdImg2 != null and passwdImg2 != '' ">
+			  and passwd_img2 = #{passwdImg2}
+			</if>
+			<if test="attendId != null ">
+			  and attend_id = #{attendId}
+			</if>
+			<if test="headerId != null ">
+			  and header_id = #{headerId}
+			</if>
+			<if test="versions != null ">
+			  and versions = #{versions}
+			</if>
+			<if test="createDate != null ">
+			  and create_date = #{createDate}
+			</if>
+			<if test="updateDate != null ">
+			  and update_date = #{updateDate}
+			</if>
+			<if test="isUsed != null ">
+			  and is_used = #{isUsed}
+			</if>
+			<if test="orderId != null ">
+			  and order_id = #{orderId}
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="AliRedEnvelopePojo">
+		update ali_red_envelope
+		<set>
+			<if test="inviteCode != null">
+			  invite_code = #{inviteCode},
+			</if>
+			<if test="passwdImg1 != null">
+			  passwd_img1 = #{passwdImg1},
+			</if>
+			<if test="passwdImg2 != null">
+			  passwd_img2 = #{passwdImg2},
+			</if>
+			<if test="attendId != null">
+			  attend_id = #{attendId},
+			</if>
+			<if test="headerId != null">
+			  header_id = #{headerId},
+			</if>
+			<if test="versions != null">
+			  versions = versions + 1,
+			</if>
+			<if test="createDate != null">
+			  create_date = #{createDate},
+			</if>
+			<if test="updateDate != null">
+			  update_date = #{updateDate},
+			</if>
+			<if test="isUsed != null">
+			  is_used = #{isUsed},
+			</if>
+			<if test="orderId != null">
+			  order_id = #{orderId},
+			</if>
+		</set>
+		where
+			id = #{id} and versions = #{versions}
+	</update>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from ali_red_envelope 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="AliRedEnvelopePojo">
+		insert into ali_red_envelope
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="inviteCode != null">
+				invite_code,
+			</if>
+			<if test="passwdImg1 != null">
+				passwd_img1,
+			</if>
+			<if test="passwdImg2 != null">
+				passwd_img2,
+			</if>
+			<if test="attendId != null">
+				attend_id,
+			</if>
+			<if test="headerId != null">
+				header_id,
+			</if>
+			<if test="versions != null">
+				versions,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="updateDate != null">
+				update_date,
+			</if>
+			<if test="isUsed != null">
+				is_used,
+			</if>
+			<if test="orderId != null">
+				order_id,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="inviteCode != null">
+				#{inviteCode},
+			</if>
+			<if test="passwdImg1 != null">
+				#{passwdImg1},
+			</if>
+			<if test="passwdImg2 != null">
+				#{passwdImg2},
+			</if>
+			<if test="attendId != null">
+				#{attendId},
+			</if>
+			<if test="headerId != null">
+				#{headerId},
+			</if>
+			<if test="versions != null">
+				#{versions},
+			</if>
+			<if test="createDate != null">
+				#{createDate},
+			</if>
+			<if test="updateDate != null">
+				#{updateDate},
+			</if>
+			<if test="isUsed != null">
+				#{isUsed},
+			</if>
+			<if test="orderId != null">
+				#{orderId},
+			</if>
+		</trim>
+	</insert>
+	
+	<select id="getByInviteCode" parameterType="Long" resultType="AliRedEnvelopePojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			ali_red_envelope
+		where
+			invite_code = #{inviteCode}
+	</select>
+	<!-- 根据邀请码修改数据 -->
+	<update id="update2" parameterType="AliRedEnvelopePojo">
+		update ali_red_envelope
+		<set>
+			<if test="passwdImg1 != null">
+			  passwd_img1 = #{passwdImg1},
+			</if>
+			<if test="passwdImg2 != null">
+			  passwd_img2 = #{passwdImg2},
+			</if>
+			<if test="attendId != null">
+			  attend_id = #{attendId},
+			</if>
+			<if test="headerId != null">
+			  header_id = #{headerId},
+			</if>
+			<if test="versions != null">
+			  versions = versions + 1,
+			</if>
+			<if test="createDate != null">
+			  create_date = #{createDate},
+			</if>
+			<if test="updateDate != null">
+			  update_date = #{updateDate},
+			</if>
+			<if test="isUsed != null">
+			  is_used = #{isUsed},
+			</if>
+			<if test="orderId != null">
+			  order_id = #{orderId},
+			</if>
+		</set>
+		where
+			invite_code = #{inviteCode} and versions = #{versions}
+	</update>
+	
+</mapper>

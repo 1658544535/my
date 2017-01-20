@@ -80,6 +80,7 @@ public class StatisticsAction extends SuperAction {
       params.put("beginTimeStr", beginTime);
       params.put("endTimeStr", endTime);
     }
+    params.put("home", 1);
     data = "" + grouponActivityRecordService.countBy(params);
     return SUCCESS;
   }
@@ -87,6 +88,7 @@ public class StatisticsAction extends SuperAction {
   public String openSuccessGroupCnt() throws Exception {
     Map<String, Object> params = new HashMap<String, Object>();
     params.put("status", 1);
+    params.put("home", 1);
     data = "" + grouponActivityRecordService.countBy(params);
     return SUCCESS;
   }

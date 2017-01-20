@@ -15,6 +15,7 @@ import maowu.framework.utils.datetime.DateTimeUtil;
 import maowu.framework.utils.web.SuperAction;
 import net.sf.json.JSONObject;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ import com.tzmb2c.business.service.SellerService;
 import com.tzmb2c.business.service.WalletService;
 import com.tzmb2c.utils.RandomUtils;
 import com.tzmb2c.utils.StringUtil;
+import com.tzmb2c.web.pojo.AliRedEnvelopePojo;
 import com.tzmb2c.web.pojo.AlipayOrderInfoPojo;
 import com.tzmb2c.web.pojo.CartPojo;
 import com.tzmb2c.web.pojo.CouponOrderPojo;
@@ -41,6 +43,7 @@ import com.tzmb2c.web.pojo.GrouponUserRecordPojo;
 import com.tzmb2c.web.pojo.OrderDetailPojo;
 import com.tzmb2c.web.pojo.OrderPojo;
 import com.tzmb2c.web.pojo.OrderShipPojo;
+import com.tzmb2c.web.pojo.PindekeMonthSalePojo;
 import com.tzmb2c.web.pojo.ProductFocusImagesPojo;
 import com.tzmb2c.web.pojo.ProductPojo;
 import com.tzmb2c.web.pojo.ProductRestrictionPojo;
@@ -59,6 +62,7 @@ import com.tzmb2c.web.pojo.UserWalletLogPojo;
 import com.tzmb2c.web.pojo.WxpayOrderInfoPojo;
 import com.tzmb2c.web.service.ActivityProductCommentService;
 import com.tzmb2c.web.service.ActivityTimeService;
+import com.tzmb2c.web.service.AliRedEnvelopeService;
 import com.tzmb2c.web.service.AlipayOrderInfoService;
 import com.tzmb2c.web.service.BaiduLoginService;
 import com.tzmb2c.web.service.CouponService;
@@ -79,6 +83,7 @@ import com.tzmb2c.web.service.OrderDetailService;
 import com.tzmb2c.web.service.OrderRefundService;
 import com.tzmb2c.web.service.OrderService;
 import com.tzmb2c.web.service.OrderShipService;
+import com.tzmb2c.web.service.PindekeMonthSaleService;
 import com.tzmb2c.web.service.ProductFocusImagesService;
 import com.tzmb2c.web.service.ProductRestrictionService;
 import com.tzmb2c.web.service.ProductSellService;
@@ -235,6 +240,10 @@ public class AppApiPinDeKeAction extends SuperAction {
   private UserWalletLogService userWalletLogService;
   @Autowired
   private UserRedeemCodeService userRedeemCodeService;
+  @Autowired
+  private AliRedEnvelopeService aliRedEnvelopeService;
+  @Autowired
+  private PindekeMonthSaleService pindekeMonthSaleService;
 
   // ---- 变量定义 ---- //
   private Long sid;
@@ -574,11 +583,38 @@ public class AppApiPinDeKeAction extends SuperAction {
   private Double ver;
   private File logo;
   private Long pdkUid;
+  private String invCode;// 邀请码
+  private String year;// 年
+  private String month;// 月
 
   // ---- getter and setter ---- //
 
   public String getIp() {
     return ip;
+  }
+
+  public String getYear() {
+    return year;
+  }
+
+  public void setYear(String year) {
+    this.year = year;
+  }
+
+  public String getMonth() {
+    return month;
+  }
+
+  public void setMonth(String month) {
+    this.month = month;
+  }
+
+  public String getInvCode() {
+    return invCode;
+  }
+
+  public void setInvCode(String invCode) {
+    this.invCode = invCode;
   }
 
   public Long getPdkUid() {
@@ -1817,6 +1853,7 @@ public class AppApiPinDeKeAction extends SuperAction {
         result.put("isGroup", "0");
         result.put("isOpen", "0");
         result.put("isPdk", "0");
+        result.put("isPrize", "0");
         if (userId != null) {
           // 判断是否是拼得客
           SysLoginPojo syslogin = sysLoginService.getfindByIdSysLogin(userId);
@@ -1853,7 +1890,7 @@ public class AppApiPinDeKeAction extends SuperAction {
           params.put("userId", userId);
           params.put("isHead", "0");
           int gurCount = grouponUserRecordService.countBy(params);
-          if (grouponActivityPojo.getType() == 7 || grouponActivityPojo.getType() == 6) {
+          if (grouponActivityPojo.getType() == 6) {
             if (garCount > 0 || gurCount > 0) {
               result.put("isOpen", "1");
               result.put("isGroup", "1");
@@ -1872,6 +1909,17 @@ public class AppApiPinDeKeAction extends SuperAction {
             } else {
               result.put("isGroup", "0");
             }
+          }
+          // 抽奖是否中奖
+          params.clear();
+          params.put("userId", userId);
+          params.put("status", 3);
+          params.put("prize", 1);
+          int j = grouponUserRecordService.countBy(params);
+          if (j > 0) {
+            result.put("isPrize", "1");
+          } else {
+            result.put("isPrize", "0");
           }
         }
 
@@ -1933,16 +1981,12 @@ public class AppApiPinDeKeAction extends SuperAction {
         result.put("waitGroupList", waitGroupList);
         result.put("activityType", activityType);
 
-        // 抽奖是否中奖
-        params.clear();
-        params.put("userId", userId);
-        params.put("status", 3);
-        params.put("prize", 1);
-        int i = grouponUserRecordService.countBy(params);
-        if (i > 0) {
-          result.put("isPrize", "1");
+        // 是否需要邀请码
+        if (grouponActivityPojo.getId() == 8760 || grouponActivityPojo.getId() == 8858
+            || grouponActivityPojo.getId() == 9437 || grouponActivityPojo.getId() == 9543) {
+          result.put("isInv", "1");
         } else {
-          result.put("isPrize", "0");
+          result.put("isInv", "0");
         }
         b = true;
       } else {
@@ -2253,6 +2297,38 @@ public class AppApiPinDeKeAction extends SuperAction {
         if (activityId == null) {
           activityId = 0L;
         }
+        // 判断是否是0.1红包商品开团8760 8858
+        if (source == 5
+            && (activityId == 8760 || activityId == 8858 || activityId == 9437 || activityId == 9543)
+            && (attendId == null || attendId == 0)) {
+          Boolean flag = true;
+          if (invCode == null || "".equals(invCode)) {
+            flag = false;
+            msg = "暂时不支持购买!";
+          } else {
+            AliRedEnvelopePojo aliRedEnvelope = aliRedEnvelopeService.getByInviteCode(invCode);
+            if (aliRedEnvelope == null) {
+              msg = "不存在该邀请码!";
+              flag = false;
+            } else if (aliRedEnvelope != null && aliRedEnvelope.getIsUsed() == 1) {
+              msg = "该邀请码已被使用!";
+              flag = false;
+            }
+          }
+          if (!flag) {
+            map.put("result", result);
+            map.put("success", false);
+            map.put("error_msg", msg);
+            JSONObject json = JSONObject.fromObject(map);
+            ServletActionContext.getResponse().setContentType("text/html; charset=utf-8");
+            try {
+              ServletActionContext.getResponse().getWriter().write(json.toString());
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+            return null;
+          }
+        }
         // 判断用户是否是拼得客
         if (source == 8 && (pdkUid == null || pdkUid == 0)) {
           if ((attendId == null || attendId == 0) && sysLogin.getIsPindeke() != 1) {
@@ -2334,14 +2410,15 @@ public class AppApiPinDeKeAction extends SuperAction {
         try {
           if (source == 1) {
             // 商品总量限购
-            if (proPojo.getLimitNum() > 0 && (attendId == null || attendId == 0)) {
-              if (proPojo.getSurplusNum() < 1) {
+            if (proPojo.getGaLimitNum() != null && proPojo.getGaLimitNum() > 0
+                && (attendId == null || attendId == 0)) {
+              if (proPojo.getGaSurplusNum() < 1) {
                 msg = "商品开团数量已达到上限!";
                 stockFlag = false;
               }
             }
             // 限购数量
-            if (proPojo.getMaxNum() > 0) {
+            if (proPojo.getMaxNum() != null && proPojo.getMaxNum() > 0) {
               if (proPojo.getMaxNum() < num) {
                 msg = "购买数量大于商品限购~";
                 stockFlag = false;
@@ -2369,7 +2446,7 @@ public class AppApiPinDeKeAction extends SuperAction {
         }
 
         // 免费抽判断是否参加过
-        if (source == 7 || source == 6) {
+        if (source == 6) {
           // 是否参团
           int gurCount = 0;
           params.clear();
@@ -2397,7 +2474,7 @@ public class AppApiPinDeKeAction extends SuperAction {
         }
 
         // 抽奖判断是否拼过团
-        if (source == 5 && activityId > 0) {
+        if (activityId > 0 && (source == 7 || source == 5)) {
           if (attendId != null && attendId > 0) {
             params.put("userId", uid);
             params.put("activityId", activityId);
@@ -2519,7 +2596,6 @@ public class AppApiPinDeKeAction extends SuperAction {
    * 
    * @throws Exception
    * */
-  @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   public String addOrderByPurchase() throws Exception {
     Map<String, Object> map = new HashMap<String, Object>();
     Map<String, Object> result = new HashMap<String, Object>();
@@ -2571,7 +2647,7 @@ public class AppApiPinDeKeAction extends SuperAction {
         || channel != 2 && payMethod != 1 && payMethod != 2 && payMethod != 4) {
       // 1-支付宝 2-微信APP支付 3-货到付款 4-钱包支付 5-银联支付 6-苹果支付 7-招行支付 8-微信公众号支付
       msg = "支付方式有误哦！";
-    } else if (4 == payMethod && user.getBalance() == 0) {
+    } else if (4 == payMethod && user.getBalance() <= 0) {
       msg = "钱包余额不足！~";
     } else if (8 == payMethod && StringUtils.isBlank(openid)) {
       msg = "支付参数错误";
@@ -2582,6 +2658,45 @@ public class AppApiPinDeKeAction extends SuperAction {
     } else if (skuLinkId == null || skuLinkId <= 0) {
       msg = "请选择规格！";
     } else {
+      // 偏远地区判断
+      try {
+        Boolean dFlag = false;
+        if (productPojo != null && address != null && productPojo.getFaraway() != null
+            && StringUtils.isNotEmpty(productPojo.getFaraway()) && address.getProvinceId() != null
+            && address.getProvinceId() > 0) {
+          List<Long> farawayList = new ArrayList<>();
+          String[] farawayArr = productPojo.getFaraway().split(",");
+          if (farawayArr != null && farawayArr.length > 0) {
+            for (String f : farawayArr) {
+              farawayList.add(Long.valueOf(f));
+            }
+          }
+          if (farawayList != null && farawayList.size() > 0) {
+            if (farawayList.contains(address.getProvinceId())) {
+              dFlag = true;
+            }
+          }
+        }
+        if (dFlag) {
+          map.put("result", result);
+          map.put("error_msg", "您的地址不在配送范围内!");
+          map.put("success", b);
+          JSONObject json1 = JSONObject.fromObject(map);
+          ServletActionContext.getResponse().setContentType("text/html; charset=utf-8");
+          try {
+            ServletActionContext.getResponse().getWriter().write(json1.toString());
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+          return null;
+        }
+      } catch (Exception e2) {
+        e2.printStackTrace();
+      }
+
+      if (activityId == null) {
+        activityId = 0l;
+      }
       // 判断用户是否是拼得客
       if (source == 8 && (pdkUid == null || pdkUid == 0)) {
         if ((attendId == null || attendId == 0) && user.getIsPindeke() != 1) {
@@ -2598,8 +2713,38 @@ public class AppApiPinDeKeAction extends SuperAction {
           return null;
         }
       }
-      if (activityId == null) {
-        activityId = 0l;
+      // 判断是否是0.1红包商品开团
+      AliRedEnvelopePojo aliRedEnvelope = null;
+      if (source == 5
+          && (activityId == 8760 || activityId == 8858 || activityId == 9437 || activityId == 9543)
+          && (attendId == null || attendId == 0)) {
+        Boolean flag = true;
+        if (invCode == null || "".equals(invCode)) {
+          flag = false;
+          msg = "暂时不支持购买!";
+        } else {
+          aliRedEnvelope = aliRedEnvelopeService.getByInviteCode(invCode);
+          if (aliRedEnvelope == null) {
+            msg = "不存在该邀请码!";
+            flag = false;
+          } else if (aliRedEnvelope != null && aliRedEnvelope.getIsUsed() == 1) {
+            msg = "该邀请码已被使用!";
+            flag = false;
+          }
+        }
+        if (!flag) {
+          map.put("result", result);
+          map.put("success", false);
+          map.put("error_msg", msg);
+          JSONObject json = JSONObject.fromObject(map);
+          ServletActionContext.getResponse().setContentType("text/html; charset=utf-8");
+          try {
+            ServletActionContext.getResponse().getWriter().write(json.toString());
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+          return null;
+        }
       }
       // 分割消息
       String[] msgs = null;
@@ -2671,7 +2816,7 @@ public class AppApiPinDeKeAction extends SuperAction {
       }
 
       // 免费抽判断是否参加过
-      if (source == 7 || source == 6) {
+      if (source == 6) {
         // 是否参团
         int gurCount = 0;
         params.clear();
@@ -2722,8 +2867,8 @@ public class AppApiPinDeKeAction extends SuperAction {
         try {
           if (source == 1) {
             // 商品总量限购
-            if (productPojo.getLimitNum() > 0 && (attendId == null || attendId == 0)) {
-              if (productPojo.getSurplusNum() < 1) {
+            if (productPojo.getGaLimitNum() > 0 && (attendId == null || attendId == 0)) {
+              if (productPojo.getGaSurplusNum() < 1) {
                 msg = "商品开团数量已达到上限!";
                 stockFlag = false;
               }
@@ -2770,7 +2915,7 @@ public class AppApiPinDeKeAction extends SuperAction {
         return null;
       }
       // 抽奖判断是否拼过团
-      if (source == 5 && activityId > 0) {
+      if (activityId > 0 && (source == 7 || source == 5)) {
         if (attendId != null && attendId > 0) {
           params.put("userId", uid);
           params.put("activityId", activityId);
@@ -2882,8 +3027,6 @@ public class AppApiPinDeKeAction extends SuperAction {
       // allCartPrice0 += deliverFee;
       // }
       // }
-
-
 
       // 生成一张新的订单的订单号
       String orderNo = new Date().getTime() + RandomUtils.runVerifyCode(6);
@@ -3024,12 +3167,15 @@ public class AppApiPinDeKeAction extends SuperAction {
 
       // 判断是否是拼得客订单
       if (pdkUid != null && pdkUid > 0) {
-        order.setPdkUid(pdkUid);
+        SysLoginPojo pdkUser = sysLoginService.findSysLoginById(pdkUid);
+        if (pdkUser != null && pdkUser.getIsPindeke() != null && pdkUser.getIsPindeke() == 1) {
+          order.setPdkUid(pdkUid);
+        }
       } else {
         if (source != null && source == 8) {
           if (attendId == null || attendId == 0) {
             // 开团
-            if (user.getIsPindeke() != null && user.getIsPindeke() > 0) {
+            if (user.getIsPindeke() != null && user.getIsPindeke() == 1) {
               order.setPdkUid(uid);
             }
           } else {
@@ -3041,6 +3187,10 @@ public class AppApiPinDeKeAction extends SuperAction {
             }
           }
         }
+      }
+      // 0.1红包邀请码
+      if (invCode != null && !"".equals(invCode)) {
+        order.setInviteCode(invCode);
       }
       orderService.insertOrder(order);
 
@@ -3054,6 +3204,26 @@ public class AppApiPinDeKeAction extends SuperAction {
         couponOrder.setOrderId(order.getId());
         couponOrder.setRelTime(time);
         couponService.addCouponOrder(couponOrder);
+      }
+      // 判断是否是0.1红包活动开团
+      try {
+        if (aliRedEnvelope != null && aliRedEnvelope.getIsUsed() == 0 && order.getId() != null
+            && order.getId() > 0) {
+          Util.log("修改邀请码使用状态");
+          AliRedEnvelopePojo aliRedEnvelopeUp = new AliRedEnvelopePojo();
+          aliRedEnvelopeUp.setId(aliRedEnvelope.getId());
+          aliRedEnvelopeUp.setVersions(aliRedEnvelope.getVersion());
+          aliRedEnvelopeUp.setIsUsed(1);
+          aliRedEnvelopeUp.setOrderId(order.getId());
+          aliRedEnvelopeUp.setUpdateDate(new Date());
+          int i = aliRedEnvelopeService.update(aliRedEnvelopeUp);
+          if (i > 0) {
+            Util.log("修改邀请码状态成功!");
+          }
+        }
+      } catch (Exception e) {
+        Util.log("修改邀请码使用状态出现异常!");
+        e.printStackTrace();
       }
 
       if ((attendId == null || attendId == 0) && source == 2) {
@@ -3578,7 +3748,7 @@ public class AppApiPinDeKeAction extends SuperAction {
     }
     int fullpay = 0;
     SysLoginPojo sysLogin = null;
-    if (uid != null || payMethod == 4) {
+    if (uid != null) {
       sysLogin = sysLoginService.findSysLoginById(uid);
     }
     if (uid == null) {
@@ -3608,10 +3778,46 @@ public class AppApiPinDeKeAction extends SuperAction {
       // 待支付状态
       order = orderService.findOrderByOrderNo(orderNo);
       if (order != null && 1 == order.getOrderStatus()) {
-        // 判断用户是否是拼得客
+        // 判断是否是0.1红包商品
+        try {
+          if ("5".equals(StringUtil.checkVal(order.getSource()))
+              && order.getActivityId() != null
+              && (order.getActivityId() == 8760 || order.getActivityId() == 8858
+                  || order.getActivityId() == 9437 || order.getActivityId() == 9543)
+              && (attendId == null || attendId == 0)) {
+            Boolean flag = true;
+            if (order.getInviteCode() == null || "".equals(order.getInviteCode())) {
+              error_msg = "您不能参加该活动!";
+              flag = false;
+            } else {
+              AliRedEnvelopePojo aliRedEnvelope =
+                  aliRedEnvelopeService.getByInviteCode(order.getInviteCode());
+              if (aliRedEnvelope == null || aliRedEnvelope.getOrderId() == null
+                  || aliRedEnvelope.getOrderId().longValue() != order.getId().longValue()) {
+                error_msg = "邀请码已被使用!";
+                flag = false;
+              }
+            }
+            if (!flag) {
+              map.put("result", result);
+              map.put("error_msg", error_msg);
+              map.put("success", b);
+              JSONObject json1 = JSONObject.fromObject(map);
+              ServletActionContext.getResponse().setContentType("text/html; charset=utf-8");
+              try {
+                ServletActionContext.getResponse().getWriter().write(json1.toString());
+              } catch (IOException e) {
+                e.printStackTrace();
+              }
+              return null;
+            }
+          }
+        } catch (Exception e2) {
+          e2.printStackTrace();
+        }
+        // 判断是否参过团
         try {
           if (order.getSourceId() != null && order.getSourceId() > 0) {
-            // 参团
             Map<String, Object> p = new HashMap<String, Object>();
             p.put("attendId", order.getSourceId());
             p.put("userId", uid);
@@ -3634,17 +3840,22 @@ public class AppApiPinDeKeAction extends SuperAction {
           if ("1".equals(StringUtil.checkVal(order.getSource()))) {
             if (order.getProductId() != null && order.getNum() > 0) {
               Boolean stockFlag = true;
-              ProductPojo proPojo = productService.getById(Long.valueOf(order.getProductId()));
+              ProductPojo proPojo = new ProductPojo();
+              proPojo.setId(Long.valueOf(order.getProductId()));
+              proPojo = productService.findProduct(proPojo);
               // 商品总量限购
-              if (proPojo.getLimitNum() > 0) {
-                if (proPojo.getSurplusNum() < order.getNum()) {
+              if (proPojo.getGaLimitNum() != null && proPojo.getGaLimitNum() > 0
+                  && (attendId == null || attendId == 0)) {
+                if (proPojo.getGaSurplusNum() < 1) {
                   stockFlag = false;
+                  error_msg = "商品开团数量已达到上限!";
                 }
               }
               // 单笔最大购买限购
-              if (proPojo.getMaxNum() > 0) {
+              if (proPojo.getMaxNum() != null && proPojo.getMaxNum() > 0) {
                 if (proPojo.getMaxNum() < order.getNum()) {
                   stockFlag = false;
+                  error_msg = "购买数量大于商品限购~";
                 }
               }
               // 活动购买限购
@@ -3660,13 +3871,14 @@ public class AppApiPinDeKeAction extends SuperAction {
                   if (productRestriction1.getMaxNum() > 0
                       && productRestriction1.getBuyNum() + order.getNum() > productRestriction1
                           .getMaxNum()) {
+                    error_msg = "购买数量大于商品限购~";
                     stockFlag = false;
                   }
                 }
               }
               if (!stockFlag) {
                 map.put("result", result);
-                map.put("error_msg", "对不起，您购买的数量大于商品的限购数量！~");
+                map.put("error_msg", error_msg);
                 map.put("success", b);
                 JSONObject json1 = JSONObject.fromObject(map);
                 ServletActionContext.getResponse().setContentType("text/html; charset=utf-8");
@@ -3696,7 +3908,8 @@ public class AppApiPinDeKeAction extends SuperAction {
               params.put("activityId", order.getActivityId());
               garCount = grouponActivityRecordService.countBy(params);
               Util.log("0.1抽奖判断是开团还是参团");
-              if ("5".equals(StringUtil.checkVal(order.getSource()))) {
+              if ("5".equals(StringUtil.checkVal(order.getSource()))
+                  || "7".equals(StringUtil.checkVal(order.getSource()))) {
                 Util.log("根据sourceId判断是开团还是参团");
                 if (order.getSourceId() != null && order.getSourceId() > 0) {
                   Util.log("参团");
@@ -3711,8 +3924,7 @@ public class AppApiPinDeKeAction extends SuperAction {
                     msg = "您已经参加过该团!";
                   }
                 }
-              } else if ("7".equals(StringUtil.checkVal(order.getSource()))
-                  || "6".equals(StringUtil.checkVal(order.getSource()))) {
+              } else if ("6".equals(StringUtil.checkVal(order.getSource()))) {
                 Util.log("限时秒杀和免费抽奖判断是否参过或拼过团");
                 if (gurCount > 0 || garCount > 0) {
                   Util.log("拼过团或参过团");
@@ -4319,7 +4531,8 @@ public class AppApiPinDeKeAction extends SuperAction {
 
         // 成团时间
         orderInfo.put("groupTime", StringUtil.checkVal(order.getGroupDate()));
-
+        // 客服留言
+        orderInfo.put("csRemarks", StringUtil.checkVal(order.getCsRemarks()));
         // 发货时间
         orderInfo.put("sendTime", "");
         orderInfo.put("logisticsName", "");
@@ -4699,4 +4912,232 @@ public class AppApiPinDeKeAction extends SuperAction {
     return null;
   }
 
+  /**
+   * 
+   * 注册拼得客并绑定
+   * 
+   * @return
+   * @throws SQLException
+   * @throw
+   * @return String
+   */
+  @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+  public String registerPdkByInvitCode() throws SQLException {
+    String msg = "";
+    boolean b = false;
+    Map<String, Object> map = new HashMap<String, Object>();
+    Map<String, Object> result = new HashMap<String, Object>();
+    if (code == null || "".equals(code) || code.length() != 6) {
+      msg = "推荐码不能为空哦！~";
+    } else if (userId == null || userId <= 0) {
+      msg = "扫码用户ID不能为空哦！~";
+    } else {
+      // 根据推荐码查询拼得客用户
+      SysLoginPojo sysLogin = new SysLoginPojo();
+      sysLogin.setInvitationCode(code);
+      SysLoginPojo sysLoginCode = sysLoginService.getUserIdByInvitationCode(sysLogin);
+      // 查询扫码用户
+      SysLoginPojo sysLoginPojo = sysLoginService.findSysLoginById(userId);
+      // 查询扫码用户拼得客信息
+      UserPindekeInfoPojo userPindekeInfoPojo = userPindekeInfoService.findByUserId(userId);
+      if (sysLoginPojo != null) {
+        if (sysLoginPojo.getInviterId() != null && sysLoginPojo.getInviterId() > 0) {
+          if (userPindekeInfoPojo != null && userPindekeInfoPojo.getStatus() == 2) {
+            result.put("status", "2");
+            msg = "您的拼得客审核不通过,点确定修改申请信息!";
+          } else {
+            result.put("status", "0");
+            msg = "你已经绑定过了!";
+          }
+        } else {
+          if (userPindekeInfoPojo != null) {
+            if (sysLoginCode != null && sysLoginCode.getIsPindeke() == 1) {
+              SysLoginPojo user = new SysLoginPojo();
+              user.setInviterId(sysLoginCode.getId());
+              user.setId(userId);
+              sysLoginService.updateSysLogin(user);
+              result.put("status", "1");
+              msg = "绑定成功！~";
+              b = true;
+            } else {
+              result.put("status", "0");
+              msg = "根据邀请码查询不到拼得客!";
+            }
+          } else {
+            result.put("status", "1");
+            msg = "快去注册成为拼得客吧!";
+          }
+        }
+      } else {
+        result.put("status", "0");
+        msg = "扫码用户不存在!";
+      }
+    }
+    map.put("result", result);
+    map.put("error_msg", msg);
+    map.put("success", b);
+    JSONObject json = JSONObject.fromObject(map);
+    ServletActionContext.getResponse().setContentType("text/html; charset=utf-8");
+    try {
+      ServletActionContext.getResponse().getWriter().write(json.toString());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
+  /**
+   * 领取红包口令图片
+   * */
+  public String receiveRedApi() throws SQLException {
+    Map<String, Object> map = new HashMap<String, Object>();
+    Map<String, Object> result = new HashMap<String, Object>();
+    String msg = "";
+    boolean success = false;
+    if (uid == null || uid < 1) {
+      msg = "用户ID不能为空!";
+    } else if (invCode == null || "".equals(invCode)) {
+      msg = "邀请码不能为空!";
+    } else {
+      AliRedEnvelopePojo are = aliRedEnvelopeService.getByInviteCode(invCode);
+      if (are != null && are.getAttendId() != null && are.getAttendId() > 0) {
+        // 判断是否存在中奖纪录--判断是否是团长是的话领取第一张口令--不是团长领取第二张
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("attendId", are.getAttendId());
+        params.put("userId", uid);
+        params.put("isPrize", 1);
+        List<GrouponUserRecordPojo> gurList = grouponUserRecordService.listPage(params);
+        if (gurList != null && gurList.size() > 0) {
+          params.clear();
+          params.put("attendId", are.getAttendId());
+          List<AliRedEnvelopePojo> areList = aliRedEnvelopeService.listPage(params);
+          if (areList != null && areList.size() > 0) {
+            if (gurList.get(0).getIsHead() == 1) {
+              result.put("url", ConstParam.URL + "/upfiles/aliRedEnvelope" + File.separator
+                  + StringUtil.checkVal(areList.get(0).getPasswdImg1()));
+              success = true;
+            } else {
+              result.put("url", ConstParam.URL + "/upfiles/aliRedEnvelope" + File.separator
+                  + StringUtil.checkVal(areList.get(0).getPasswdImg2()));
+              success = true;
+            }
+          } else {
+            msg = "查询不到红包纪录!";
+          }
+        } else {
+          msg = "查询不到中奖纪录!";
+        }
+      } else {
+        msg = "查询不到红包纪录!";
+      }
+    }
+    map.put("result", result);
+    map.put("error_msg", msg);
+    map.put("success", success);
+    JSONObject json = JSONObject.fromObject(map);
+    ServletActionContext.getResponse().setContentType("text/html; charset=utf-8");
+    try {
+      ServletActionContext.getResponse().getWriter().write(json.toString());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
+  /**
+   * 
+   * 拼得客销售额排行榜
+   * 
+   * @return
+   * @throws SQLException
+   * @throw
+   * @return String
+   */
+  public String pdkSellRankingList() throws SQLException {
+    String msg = "";
+    boolean b = false;
+    Map<String, Object> map = new HashMap<String, Object>();
+    Map<String, Object> result = new HashMap<String, Object>();
+    Map<String, Object> items = new HashMap<String, Object>();
+    ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+
+    if (userId == null || userId <= 0) {
+      msg = "用户ID不能为空哦！~";
+    } else {
+      Map<String, Object> params = new HashMap<String, Object>();
+      params.put("type", 1);
+      String sectionTime = UtilDate.getDate().substring(0, 6);
+      params.put("sectionTime", sectionTime);
+      if (StringUtils.isNotBlank(year) && StringUtils.isNotBlank(month) && year.length() == 4
+          && month.length() == 2) {
+        sectionTime = year + month;
+        params.put("sectionTime", sectionTime);
+      }
+      params.put("totalMax", StringEscapeUtils.escapeSql(" and pms.total > 3000 "));
+
+      params.put("orderBy", " pms.ranking asc,pms.id asc ");
+      // params.put("orderBy", " pms.total desc,pms.id asc ");
+
+      // 分页
+      int ps = 10;
+      // if (pageSize != null && pageSize != 0) {
+      // ps = pageSize;
+      // }
+      // if (pageNo == null || pageNo == 0) {
+      params.put("pageNo", 0);
+      // } else {
+      // params.put("pageNo", (pageNo - 1) * ps);
+      // }
+      params.put("pageSize", ps);
+
+      List<PindekeMonthSalePojo> pindekeMonthSalePojos = pindekeMonthSaleService.listPage(params);
+      if (pindekeMonthSalePojos != null && pindekeMonthSalePojos.size() > 0) {
+        DecimalFormat df = new DecimalFormat("0.00");
+        for (PindekeMonthSalePojo pindekeMonthSalePojo : pindekeMonthSalePojos) {
+          items = new HashMap<String, Object>();
+          items.put(
+              "userLogo",
+              pindekeMonthSalePojo.getUserLogo() == null
+                  || "".equals(pindekeMonthSalePojo.getUserLogo()) ? "" : ConstParam.URL
+                  + "/upfiles/userlogo" + File.separator
+                  + StringUtil.checkVal(pindekeMonthSalePojo.getUserLogo()));
+          items.put("userName", StringUtil.checkVal(pindekeMonthSalePojo.getUserName()));
+          // items.put("price", StringUtil.checkVal(pindekeMonthSalePojo.getTotal()));
+          items.put("price", df.format(pindekeMonthSalePojo.getTotal()));
+          items.put("ranking", StringUtil.checkVal(pindekeMonthSalePojo.getRanking()));
+          list.add(items);
+        }
+      }
+
+      result.put("list", list);
+      result.put("myRanking", "无");
+      params.clear();
+      params.put("type", 1);
+      params.put("userId", userId);
+      params.put("sectionTime", sectionTime);
+      params.put("pageNo", 0);
+      params.put("pageSize", 1);
+      List<PindekeMonthSalePojo> pindekeMonthSalePojos2 = pindekeMonthSaleService.listPage(params);
+      if (pindekeMonthSalePojos2 != null && pindekeMonthSalePojos2.size() > 0) {
+        Integer rank = pindekeMonthSalePojos2.get(0).getRanking();
+        if (rank != null) {
+          result.put("myRanking", StringUtil.checkVal(rank));
+        }
+      }
+
+      b = true;
+    }
+
+    map.put("result", result);
+    map.put("error_msg", msg);
+    map.put("success", b);
+    JSONObject json = JSONObject.fromObject(map);
+    ServletActionContext.getResponse().setContentType("text/html; charset=utf-8");
+    try {
+      ServletActionContext.getResponse().getWriter().write(json.toString());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
 }

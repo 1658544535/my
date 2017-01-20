@@ -178,4 +178,6 @@
 	<bean id="userCouponFlagService" class="com.tzmb2c.web.service.impl.UserCouponFlagServiceImpl" />
 	<bean id="productRestrictionService" class="com.tzmb2c.web.service.impl.ProductRestrictionServiceImpl" />
 	<bean id="userRedeemCodeService" class="com.tzmb2c.web.service.impl.UserRedeemCodeServiceImpl" />
+	<bean id="aliRedEnvelopeService" class="com.tzmb2c.web.service.impl.AliRedEnvelopeServiceImpl" />
+	<bean id="pindekeMonthSaleService" class="com.tzmb2c.web.service.impl.PindekeMonthSaleServiceImpl" />
 </beans>

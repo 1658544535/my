@@ -219,10 +219,6 @@ public class OrderPojo extends SuperPojo {
    */
   private String pdkLoginname;
   /**
-   * 自动收货时间
-   */
-  private Date autoRecTime;
-  /**
    * 商家扣款
    */
   private Double sellerDeduct;
@@ -240,6 +236,22 @@ public class OrderPojo extends SuperPojo {
   private Double sellerGoodsPrice;
   private Integer saleApplyNum;// 退款申请待处理
   private Integer saleOverNum;// 已退货待处理
+  /**
+   * 邀请码
+   */
+  private String inviteCode;
+  private Long inviterId;// 推荐者
+  private Double factPriceAll;// 销售额
+  private Integer isHandle;// 是否待处理
+  private String csRemarks;
+  /**
+   * 自动退款时间
+   */
+  private Date autoRecTime;
+  /**
+   * 自动退款时间字符串
+   */
+  private String autoRecTimeStr;
 
   public Integer getSaleApplyNum() {
     return saleApplyNum;
@@ -249,20 +261,24 @@ public class OrderPojo extends SuperPojo {
     this.saleApplyNum = saleApplyNum;
   }
 
+  public String getAutoRecTimeStr() {
+    if (autoRecTime != null) {
+      autoRecTimeStr = StringUtil.dateString(autoRecTime);
+    }
+    return autoRecTimeStr;
+  }
+
+  public void setAutoRecTimeStr(String autoRecTimeStr) {
+    this.autoRecTimeStr = autoRecTimeStr;
+  }
+
+
   public Integer getSaleOverNum() {
     return saleOverNum;
   }
 
   public void setSaleOverNum(Integer saleOverNum) {
     this.saleOverNum = saleOverNum;
-  }
-
-  public Date getAutoRecTime() {
-    return autoRecTime;
-  }
-
-  public void setAutoRecTime(Date autoRecTime) {
-    this.autoRecTime = autoRecTime;
   }
 
   public Double getSellerDeduct() {
@@ -295,6 +311,22 @@ public class OrderPojo extends SuperPojo {
 
   public void setSellerGoodsPrice(Double sellerGoodsPrice) {
     this.sellerGoodsPrice = sellerGoodsPrice;
+  }
+
+  public Date getAutoRecTime() {
+    return autoRecTime;
+  }
+
+  public void setAutoRecTime(Date autoRecTime) {
+    this.autoRecTime = autoRecTime;
+  }
+
+  public String getInviteCode() {
+    return inviteCode;
+  }
+
+  public void setInviteCode(String inviteCode) {
+    this.inviteCode = inviteCode;
   }
 
   public String getPdkLoginname() {
@@ -1746,6 +1778,38 @@ public class OrderPojo extends SuperPojo {
 
   public void setEndday1(String endday1) {
     this.endday1 = endday1;
+  }
+
+  public Long getInviterId() {
+    return inviterId;
+  }
+
+  public void setInviterId(Long inviterId) {
+    this.inviterId = inviterId;
+  }
+
+  public Double getFactPriceAll() {
+    return factPriceAll;
+  }
+
+  public void setFactPriceAll(Double factPriceAll) {
+    this.factPriceAll = factPriceAll;
+  }
+
+  public Integer getIsHandle() {
+    return isHandle;
+  }
+
+  public void setIsHandle(Integer isHandle) {
+    this.isHandle = isHandle;
+  }
+
+  public String getCsRemarks() {
+    return csRemarks;
+  }
+
+  public void setCsRemarks(String csRemarks) {
+    this.csRemarks = csRemarks;
   }
 
 }

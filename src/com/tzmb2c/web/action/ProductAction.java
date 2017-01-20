@@ -1334,9 +1334,14 @@ public class ProductAction extends SuperAction {
       ac.put("productType1List", productTypeService.getProductTypeByPids(productTypePojo));
       List<SysDictPojo> skuTypeList = sysDictService.getSysDictListByType("sku_attr_type");
       ac.put("skuTypeList", skuTypeList);
+      SysAreaPojo sysAreaPojo = new SysAreaPojo();
+      sysAreaPojo.setPid(0L);
+      List<SysAreaPojo> sysAreaPojos = sysAreaService.getSysAreaByPid(sysAreaPojo);
+      ac.put("sysAreaPojos", sysAreaPojos);
     }
     return SUCCESS;
   }
+
 
   /**
    * 添加商品
@@ -1452,6 +1457,21 @@ public class ProductAction extends SuperAction {
     }
 
     // productPojo.setBaseNumber(0);
+    // 商品偏远地区
+    // try {
+    // if (productPojo.getFaraway() != null && !"".equals(productPojo.getFaraway())) {
+    // String[] farawayArr = productPojo.getFaraway().split(",");
+    // List<String> faraway = new ArrayList<String>();
+    // for (int i = 0; i < farawayArr.length; i++) {
+    // faraway.add(farawayArr[i]);
+    // }
+    // JSONArray json = JSONArray.fromObject(faraway);
+    // productPojo.setFaraway(json.toString());
+    // }
+    // } catch (Exception e1) {
+    // Util.log("添加偏远地区出现异常");
+    // e1.printStackTrace();
+    // }
     productService.addProduct(productPojo);
 
     // String content = "F***";
@@ -1827,6 +1847,32 @@ public class ProductAction extends SuperAction {
       }
       JSONArray json = JSONArray.fromObject(items);
       ac.put("skuListData", json.toString());
+      // 偏远地区判断
+      sysAreaPojo = new SysAreaPojo();
+      sysAreaPojo.setPid(0L);
+      List<SysAreaPojo> sysAreaPojos = sysAreaService.getSysAreaByPid(sysAreaPojo);
+      if (sysAreaPojos != null && sysAreaPojos.size() > 0) {
+        String[] farawayArr = null;
+        List<Long> farawayList = new ArrayList<>();
+        if (productPojo.getFaraway() != null && !"".equals(productPojo.getFaraway())) {
+          farawayArr = productPojo.getFaraway().split(",");
+          if (farawayArr != null && farawayArr.length > 0) {
+            for (String f : farawayArr) {
+              farawayList.add(Long.valueOf(f));
+            }
+          }
+        }
+        if (farawayList != null && farawayList.size() > 0) {
+          for (SysAreaPojo sysAreaPojo : sysAreaPojos) {
+            if (farawayList.contains(sysAreaPojo.getId())) {
+              sysAreaPojo.setIsOften(0);
+            } else {
+              sysAreaPojo.setIsOften(1);
+            }
+          }
+        }
+      }
+      ac.put("sysAreaPojos", sysAreaPojos);
     } catch (Exception e) {
       Util.log("查询sku列表出现异常");
       e.printStackTrace();

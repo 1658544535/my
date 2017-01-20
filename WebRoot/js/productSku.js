@@ -493,6 +493,9 @@ $(document).delegate('.stock_price_blur', 'change', function() {
     	        	} else if (result != '') {
     	            	stock_price_data[dataid]['skuImage'] = result;
     	            }
+    	        },
+    	        error: function(result) {
+    	        	alert("上传失败,请重新上传!");
     	        }
     	    });
         } else if (stock_price_attr == 'skuStatuss'){

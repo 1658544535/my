@@ -174,4 +174,6 @@
     <bean id="userCouponFlagDao" class="com.tzmb2c.web.dao.impl.UserCouponFlagDaoImpl" />
 	<bean id="productRestrictionDao" class="com.tzmb2c.web.dao.impl.ProductRestrictionDaoImpl" />
 	<bean id="userRedeemCodeDao" class="com.tzmb2c.web.dao.impl.UserRedeemCodeDaoImpl" />
+	<bean id="aliRedEnvelopeDao" class="com.tzmb2c.web.dao.impl.AliRedEnvelopeDaoImpl" />
+	<bean id="pindekeMonthSaleDao" class="com.tzmb2c.web.dao.impl.PindekeMonthSaleDaoImpl" />
 </beans>
