@@ -1164,7 +1164,7 @@ public class SellerWebAction extends SuperAction {
       String typeIds = ":" + String.valueOf(productPojo.getProductTypeIds()) + ":";
       productPojo.setProductTypeIds(typeIds);
       productPojo.setBaseNumber(0);
-      // productPojo.setVersion(1);
+      productPojo.setVersion(1);
       productService.addProductSeller(productPojo);// 商品插入
       // >>>product_sell<<<
       ProductSellPojo productSellPojo = new ProductSellPojo();
