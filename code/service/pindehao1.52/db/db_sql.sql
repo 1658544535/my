@@ -671,12 +671,6 @@ alter table product add surplus_num int(11) default 0 COMMENT '剩余数量';
 alter table user_deal_log add surplus_price double(20,2) default 0.0 COMMENT '剩余金额';
 alter table user_deal_log add false_date DATETIME DEFAULT NULL COMMENT '审核不通过时间';
 
-##新增菜单
-insert into sys_menu (id, name, name_en, level, path, icon, sorting, status, create_by, create_date, update_by, update_date, remarks, version) values('305','钱包功能','','0','url','/images/menu_icon_10.png','13','1','1','2016-12-27 11:52:20','1','2016-12-27 11:52:20',NULL,'0');
-insert into sys_menu (id, name, name_en, level, path, icon, sorting, status, create_by, create_date, update_by, update_date, remarks, version) values('306','兑换券管理','','305','goUserRedeemCode.do',NULL,'0','1','1','2016-12-27 11:58:24','1','2016-12-27 11:58:24',NULL,'0');
-insert into sys_role_menu (role_id, menu_id) values('1','305');
-insert into sys_role_menu (role_id, menu_id) values('1','306');
-
 ##sys_login表添加2字段
 ALTER TABLE sys_login
 ADD COLUMN balance  double(20,2) NULL DEFAULT 0.00 COMMENT '用户余额' AFTER is_pindeke,
@@ -709,47 +703,11 @@ INSERT INTO sys_role_menu (role_id, menu_id) VALUES (1, 305);
 ##增加-团记录表
 alter table groupon_activity_record add pdk_uid bigint(20) COMMENT '拼得客uid';
 
-##增加-订单表
-alter table user_order add auto_rec_time datetime default NULL COMMENT '自动收货时间';
-alter table user_order add seller_deduct double(20,2) default '0.00' COMMENT '商家扣款';
-alter table user_order add platform_msg varchar(500) default '' COMMENT '平台留言';
-alter table user_order add order_profit double(20,2) default '0.00' COMMENT '订单利润';
-alter table user_order add seller_goods_price double(20,2) default '0.00' COMMENT '商家货款';
-
-## 订单表增加 订单来源和平团是否成功状态
-ALTER TABLE user_certificates_photo ADD image4_begin_date date default NULL COMMENT '身份证有效开始时间';
-ALTER TABLE user_certificates_photo ADD image4_end_date date default NULL COMMENT '身份证有效结束时间';
-ALTER TABLE user_certificates_photo ADD image2_no varchar(30) default '' COMMENT '组织机构代码号';
-ALTER TABLE user_certificates_photo ADD image3_no varchar(30) default '' COMMENT '纳税人识别号';
-ALTER TABLE user_certificates_photo ADD image5_no varchar(30) default '' COMMENT '统一社会信用代码';
-ALTER TABLE user_certificates_photo ADD image2_begin_date date default NULL COMMENT '组织机构证有效开始时间';
-ALTER TABLE user_certificates_photo ADD image2_end_date date default NULL COMMENT '组织机构证有效结束时间';
-ALTER TABLE user_certificates_photo ADD qc_image1 varchar(100) default '' COMMENT '质检报告图片1';
-ALTER TABLE user_certificates_photo ADD qc_image2 varchar(100) default '' COMMENT '质检报告图片2';
-ALTER TABLE user_certificates_photo ADD qc_image3 varchar(100) default '' COMMENT '质检报告图片3';
-ALTER TABLE user_certificates_photo ADD qc_image4 varchar(100) default '' COMMENT '质检报告图片4';
-ALTER TABLE user_certificates_photo ADD qc_image5 varchar(100) default '' COMMENT '质检报告图片5';
-ALTER TABLE user_certificates_photo ADD qc_image6 varchar(100) default '' COMMENT '质检报告图片6';
-ALTER TABLE user_certificates_photo ADD bl_image1 varchar(100) default '' COMMENT '品牌授权证明图片1';
-ALTER TABLE user_certificates_photo ADD bl_image2 varchar(100) default '' COMMENT '品牌授权证明图片2';
-ALTER TABLE user_certificates_photo ADD bl_image3 varchar(100) default '' COMMENT '品牌授权证明图片3';
-ALTER TABLE user_certificates_photo ADD bl_image4 varchar(100) default '' COMMENT '品牌授权证明图片4';
-ALTER TABLE user_certificates_photo ADD bl_image5 varchar(100) default '' COMMENT '品牌授权证明图片5';
-ALTER TABLE user_certificates_photo ADD bl_image6 varchar(100) default '' COMMENT '品牌授权证明图片6';
-ALTER TABLE user_certificates_photo ADD bl_image7 varchar(100) default '' COMMENT '品牌授权证明图片7';
-ALTER TABLE user_certificates_photo ADD bl_image8 varchar(100) default '' COMMENT '品牌授权证明图片8';
-ALTER TABLE user_certificates_photo ADD bl_image9 varchar(100) default '' COMMENT '品牌授权证明图片9';
-ALTER TABLE user_certificates_photo ADD bl_image10 varchar(100) default '' COMMENT '品牌授权证明图片10';
-ALTER TABLE user_certificates_photo ADD image8 varchar(100) default '' COMMENT '开户许可证';
-
 ##增加-sku_link
 alter table product_sku_link add is_delete int(2) default '0' COMMENT '是否删除(1是0否)';
 ##增加-sku_att
 ALTER TABLE sku_attribute ADD is_delete INT(2) DEFAULT '0' COMMENT '是否删除(1是0否)';
 
-#user_pindeke_info新增invitation_code字段
-ALTER TABLE user_pindeke_info
-ADD COLUMN invitation_code  varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '分享邀请码' AFTER update_date;
 ## 支付宝红包口令表
 CREATE TABLE ali_red_envelope (
   id bigint(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
@@ -788,6 +746,23 @@ INSERT INTO sys_role_menu (role_id, menu_id) VALUES (1, 307);
 INSERT INTO sys_role_menu (role_id, menu_id) VALUES (1, 308);
 
 
+##增加-product
+alter table product add faraway text COMMENT '偏远地区';
+##增加-sys_area
+ALTER TABLE sys_area ADD is_often INT(2) DEFAULT 0 COMMENT '是否常用地址';
+
+##增加字段
+ALTER TABLE user_order ADD is_handle INT(2) DEFAULT 0 COMMENT '是否待处理订单（0-否1-是）';
+ALTER TABLE user_order ADD cs_remarks varchar(255) default '' COMMENT '客户订单留言';
+alter table user_order ADD auto_rec_time datetime default NULL COMMENT '自动收货时间';
+
+##添加菜单
+INSERT INTO sys_menu (id, name, name_en, level, path, icon, sorting, status, create_by, create_date, update_by, update_date, remarks, version) VALUES (312, '订单查询', '', 17, 'goQueryOrder.do?b=1&os', null, 0, 1, 1, '2017-01-16 14:35:43', 1, '2017-01-16 14:52:20', null, 0);
+INSERT INTO sys_menu (id, name, name_en, level, path, icon, sorting, status, create_by, create_date, update_by, update_date, remarks, version) VALUES (311, '待处理订单列表', '', 17, 'order.do?os=8', null, 1, 1, 1, '2017-01-16 14:36:53', 1, '2017-01-16 14:54:54', null, 0);
+INSERT INTO sys_role_menu (role_id, menu_id) VALUES (1, 311);
+INSERT INTO sys_role_menu (role_id, menu_id) VALUES (1, 312);
+
+
 ##新增拼得客当月销售额记录表
 CREATE TABLE pindeke_month_sale (
   id bigint(20) NOT NULL auto_increment COMMENT 'id',
@@ -814,21 +789,47 @@ INSERT INTO sys_role_menu (role_id, menu_id) VALUES (1, 309);
 INSERT INTO sys_menu (id, name, name_en, level, path, icon, sorting, status, create_by, create_date, update_by, update_date, remarks, version) VALUES (310, '拼得客邀请用户列表', '', 286, 'goPindekeMonthSaleInviter.do', null, 6, 1, 1, '2017-01-12 11:32:42', 1, '2017-01-12 11:32:42', null, 0);
 INSERT INTO sys_role_menu (role_id, menu_id) VALUES (1, 310);
 
-##增加-product
-alter table product add faraway text COMMENT '偏远地区';
-##增加-sys_area
-ALTER TABLE sys_area ADD is_often INT(2) DEFAULT 0 COMMENT '是否常用地址';
 
-##增加字段
-ALTER TABLE user_order ADD is_handle INT(2) DEFAULT 0 COMMENT '是否待处理订单（0-否1-是）';
-ALTER TABLE user_order ADD cs_remarks varchar(255) default '' COMMENT '客户订单留言';
-alter table user_order ADD auto_rec_time datetime default NULL COMMENT '自动收货时间';
-
-##添加菜单
-INSERT INTO sys_menu (id, name, name_en, level, path, icon, sorting, status, create_by, create_date, update_by, update_date, remarks, version) VALUES (312, '订单查询', '', 17, 'goQueryOrder.do?b=1&os', null, 0, 1, 1, '2017-01-16 14:35:43', 1, '2017-01-16 14:52:20', null, 0);
-INSERT INTO sys_menu (id, name, name_en, level, path, icon, sorting, status, create_by, create_date, update_by, update_date, remarks, version) VALUES (311, '待处理订单列表', '', 17, 'order.do?os=8', null, 1, 1, 1, '2017-01-16 14:36:53', 1, '2017-01-16 14:54:54', null, 0);
-INSERT INTO sys_role_menu (role_id, menu_id) VALUES (1, 311);
-INSERT INTO sys_role_menu (role_id, menu_id) VALUES (1, 312);
 
 ##增加拼得客编号字段
 alter table user_pindeke_info add pindeke_number varchar(30) default NULL COMMENT '拼得客编号';
+
+#user_pindeke_info新增invitation_code字段
+ALTER TABLE user_pindeke_info
+ADD COLUMN invitation_code  varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '分享邀请码' AFTER update_date;
+
+##增加订单字段
+alter table user_order add rebate_ratio double(20,2) default 0.00 COMMENT '返佣比例';
+
+#################################### 商家中心功能 ##########################################
+##增加-订单表
+alter table user_order add seller_deduct double(20,2) default '0.00' COMMENT '商家扣款';
+alter table user_order add platform_msg varchar(500) default '' COMMENT '平台留言';
+alter table user_order add order_profit double(20,2) default '0.00' COMMENT '订单利润';
+alter table user_order add seller_goods_price double(20,2) default '0.00' COMMENT '商家货款';
+
+## 订单表增加 订单来源和平团是否成功状态
+ALTER TABLE user_certificates_photo ADD image4_begin_date date default NULL COMMENT '身份证有效开始时间';
+ALTER TABLE user_certificates_photo ADD image4_end_date date default NULL COMMENT '身份证有效结束时间';
+ALTER TABLE user_certificates_photo ADD image2_no varchar(30) default '' COMMENT '组织机构代码号';
+ALTER TABLE user_certificates_photo ADD image3_no varchar(30) default '' COMMENT '纳税人识别号';
+ALTER TABLE user_certificates_photo ADD image5_no varchar(30) default '' COMMENT '统一社会信用代码';
+ALTER TABLE user_certificates_photo ADD image2_begin_date date default NULL COMMENT '组织机构证有效开始时间';
+ALTER TABLE user_certificates_photo ADD image2_end_date date default NULL COMMENT '组织机构证有效结束时间';
+ALTER TABLE user_certificates_photo ADD qc_image1 varchar(100) default '' COMMENT '质检报告图片1';
+ALTER TABLE user_certificates_photo ADD qc_image2 varchar(100) default '' COMMENT '质检报告图片2';
+ALTER TABLE user_certificates_photo ADD qc_image3 varchar(100) default '' COMMENT '质检报告图片3';
+ALTER TABLE user_certificates_photo ADD qc_image4 varchar(100) default '' COMMENT '质检报告图片4';
+ALTER TABLE user_certificates_photo ADD qc_image5 varchar(100) default '' COMMENT '质检报告图片5';
+ALTER TABLE user_certificates_photo ADD qc_image6 varchar(100) default '' COMMENT '质检报告图片6';
+ALTER TABLE user_certificates_photo ADD bl_image1 varchar(100) default '' COMMENT '品牌授权证明图片1';
+ALTER TABLE user_certificates_photo ADD bl_image2 varchar(100) default '' COMMENT '品牌授权证明图片2';
+ALTER TABLE user_certificates_photo ADD bl_image3 varchar(100) default '' COMMENT '品牌授权证明图片3';
+ALTER TABLE user_certificates_photo ADD bl_image4 varchar(100) default '' COMMENT '品牌授权证明图片4';
+ALTER TABLE user_certificates_photo ADD bl_image5 varchar(100) default '' COMMENT '品牌授权证明图片5';
+ALTER TABLE user_certificates_photo ADD bl_image6 varchar(100) default '' COMMENT '品牌授权证明图片6';
+ALTER TABLE user_certificates_photo ADD bl_image7 varchar(100) default '' COMMENT '品牌授权证明图片7';
+ALTER TABLE user_certificates_photo ADD bl_image8 varchar(100) default '' COMMENT '品牌授权证明图片8';
+ALTER TABLE user_certificates_photo ADD bl_image9 varchar(100) default '' COMMENT '品牌授权证明图片9';
+ALTER TABLE user_certificates_photo ADD bl_image10 varchar(100) default '' COMMENT '品牌授权证明图片10';
+ALTER TABLE user_certificates_photo ADD image8 varchar(100) default '' COMMENT '开户许可证';
