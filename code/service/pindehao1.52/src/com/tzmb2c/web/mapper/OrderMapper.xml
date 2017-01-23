@@ -1099,6 +1099,7 @@
 		</if>
 		<if test="inviteCode != null and inviteCode != ''">
 			and t.invite_code = #{inviteCode}
+		</if>
 		<if test="autoRecTime != null">
 		    and t.auto_rec_time = #{autoRecTime}
 		</if>
