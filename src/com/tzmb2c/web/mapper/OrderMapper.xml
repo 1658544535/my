@@ -910,7 +910,7 @@
 		(select is_head from groupon_user_record where attend_id=t.source_id and user_id=t.user_id limit 1) as isHead,
 		t.source_id as attendId,
 		t.is_refund as isRefund,
-		t.invite_code as inviteCode
+		t.invite_code as inviteCode,
 		t.auto_rec_time as autoRecTime,
 		t.seller_deduct as sellerDeduct,
 		t.platform_msg as platformMsg,
