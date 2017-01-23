@@ -515,10 +515,13 @@ var distributionPrice =new tt.Field(" 商品价格","productPojo.distributionPri
 var sellingPrice =new tt.Field(" 商品原价","productPojo.sellingPrice").setMsgId("sellingPrice_mgId");
 var videoUrl =new tt.Field(" 视频URL","productPojo.videoUrl").setMsgId("videoUrl_mgId");
 var maxNum =new tt.Field(" 限购","productPojo.maxNum").setMsgId("maxNum_mgId");
+var baseNum =new tt.Field("基础销量","productPojo.baseNumber").setMsgId("baseNumber_mgId");
+var limitNum =new tt.Field("最大开团次数","productPojo.limitNum").setMsgId("limitNum_mgId");
+var surplusNum =new tt.Field("最大开团次数","productPojo.surplusNum").setMsgId("surplusNum_mgId");
 	tt.vf.req.add(productType1,productTypeIds,productTypeId,productName,productNum,productSketch,distributionPrice,sellingPrice);
 	new tt.LV().set(0, 500).add(productSketch);
-	tt.vf.num.add(maxNum);
-	new tt.NRV().set(0, '++').add(maxNum);
+	tt.vf.num.add(maxNum,baseNum,limitNum,surplusNum);
+	new tt.NRV().set(0, 99999999).add(maxNum,baseNum,limitNum,surplusNum);
 	$(document).ready(function() {
 		selectTypeChange();
 		areaCount();
