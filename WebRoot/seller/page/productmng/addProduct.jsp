@@ -346,23 +346,69 @@ $(document).delegate(".uploadPreview_imgfile","change",function(){
 											     </c:forEach>
 									           </select>
                                             </div>   --%>
-                                           <div class="ui-form-item view-InputItem" prop-id="76" prop-name="商品主图">
+                                            <div class="ui-form-item view-InputItem" prop-id="76" prop-name="商品主图">
                                                 <label for="" class="ui-label">
                                                     <span class="ui-form-required">
                                                         *
                                                     </span>
-                                                    商品主图:
+                                                    商品主图：<br>750*350px
+                                                </label>
+                                        <div class="uploadify main_img"style="position:relative;height: 240px; width: 480px;">
+                                        <button class="uploadPreview_note"style="width:480px;height:240px;line-height:240px;">
+                                        <i class="iconfont">&#xf00f7;</i>添加图片</button>
+                                        <div class="uploadPreview_img"style="display:none;"> <img style="width:480px;height:240px;"/></div>
+                                        <input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="upfile" data-id="'+dataId+'"style="position:absolute;width:100%;height:100%;left:0;top:0;opacity:0;z-index:3;filter:alpha(opacity=0);cursor:pointer;"/>
+                                       </br><span id="image_mgId"></span>
+                                       </div> 
+                                  </div>
+                                  <div class="ui-form-item view-InputItem" prop-id="76" prop-name="商品主图">
+                                                <label for="" class="ui-label">
+                                                    <span class="ui-form-required">
+                                                        *
+                                                    </span>
+                                                    高清缩略图：<br>400*400px
                                                 </label>
                                         <div class="uploadify main_img"style="position:relative;height: 120px; width: 120px;">
                                         <button class="uploadPreview_note"style="width:120px;height:120px;line-height:120px;">
                                         <i class="iconfont">&#xf00f7;</i>添加图片</button>
                                         <div class="uploadPreview_img"style="display:none;"> <img style="width:120px;height:120px;"/></div>
-                                        <input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="upfile" data-id="'+dataId+'"style="position:absolute;width:100%;height:100%;left:0;top:0;opacity:0;z-index:3;filter:alpha(opacity=0);cursor:pointer;"/>
+                                        <input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="upfile2" data-id="'+dataId+'"style="position:absolute;width:100%;height:100%;left:0;top:0;opacity:0;z-index:3;filter:alpha(opacity=0);cursor:pointer;"/>
                                        </br><span id="image_mgId"></span>
                                        </div> 
-                                       <div class="product-age-notice">
+                                  </div>
+                                  <div class="ui-form-item view-InputItem" prop-id="76" prop-name="商品主图">
+                                                <label for="" class="ui-label">
+                                                    <span class="ui-form-required">
+                                                        *
+                                                    </span>
+                                                    商品缩略图：<br>200*200px
+                                                </label>
+                                        <div class="uploadify main_img"style="position:relative;height: 120px; width: 120px;">
+                                        <button class="uploadPreview_note"style="width:120px;height:120px;line-height:120px;">
+                                        <i class="iconfont">&#xf00f7;</i>添加图片</button>
+                                        <div class="uploadPreview_img"style="display:none;"> <img style="width:120px;height:120px;"/></div>
+                                        <input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="upfile3" data-id="'+dataId+'"style="position:absolute;width:100%;height:100%;left:0;top:0;opacity:0;z-index:3;filter:alpha(opacity=0);cursor:pointer;"/>
+                                       </br><span id="image_mgId"></span>
+                                       </div> 
+                                  </div>
+                                           <div class="ui-form-item view-InputItem" prop-id="76" prop-name="商品主图">
+                                                <label for="" class="ui-label">
+                                                    <span class="ui-form-required">
+                                                        *
+                                                    </span>
+                                                    商品轮播图：<br>640*400px
+
+                                                </label>
+                                        <div class="uploadify main_img"style="position:relative;height: 120px; width: 120px;">
+                                        <button class="uploadPreview_note"style="width:120px;height:120px;line-height:120px;">
+                                        <i class="iconfont">&#xf00f7;</i>添加图片</button>
+                                        <div class="uploadPreview_img"style="display:none;"> <img style="width:120px;height:120px;"/></div>
+                                        <input type="file" accept="image/png,image/gif,image/jpg,image/jpeg" class="uploadPreview_imgfile" name="upfiles" data-id="'+dataId+'"style="position:absolute;width:100%;height:100%;left:0;top:0;opacity:0;z-index:3;filter:alpha(opacity=0);cursor:pointer;"/>
+                                       </br><span id="image_mgId"></span>
+                                       </div> 
+                                       <!-- <div class="product-age-notice">
 											<font color="#df434e">展示在商品列表页（规格800 * 800）</font>
-	                                    </div> 
+	                                    </div>  -->
                                        <div id="imageBox"></div>
                                        <br /><i class="iconfont" onclick="addImage()">󰅵</i>
                                   </div>                        
@@ -418,7 +464,7 @@ $(document).delegate(".uploadPreview_imgfile","change",function(){
                                 </div>
                             </div>
                             --%>
-                            <div class="product-add-block">
+                            <!-- <div class="product-add-block">
                                 <h4>
                                     服务保证
                                 </h4>
@@ -440,10 +486,10 @@ $(document).delegate(".uploadPreview_imgfile","change",function(){
                                         <font>7天无理由退货服务</font>
                                     </label>
                                 </div>
-<!--                                 <a class="promise-detail" href="#" target="_blank">
+                                <a class="promise-detail" href="#" target="_blank">
                                     详情&gt;
-                                </a> -->
-                            </div>
+                                </a>
+                            </div> -->
                             <div class="product-add-footbtn">
                                 <a onclick="window.history.back()" class="ui-button ui-button-lwhite product-add-bigbtn">
                                     返回
@@ -666,9 +712,9 @@ var proxyPrice =new tt.Field(" 供货价(包邮)","productPojo.proxyPrice").setM
 //var userBrandId =new tt.Field("品牌","productPojo.userBrandId").setMsgId("userBrandId_mgId");
 tt.Conf.reqStarCls = ""; 
 tt.vf.req.add(productType1,productTypeIds,productTypeId,productName,productNum/* ,location_mgId,productSketch */,distributionPrice,sellingPrice,proxyPrice/* ,weight,userBrandId */);
-new tt.LV().set(0, 150).add(productSketch);
-tt.vf.num.add(weight);
-new tt.NRV().set(0, '++').add(weight);
+//new tt.LV().set(0, 150).add(productSketch);
+//tt.vf.num.add(weight);
+//new tt.NRV().set(0, '++').add(weight);
 window.onload = function(){
 	$("#past").hide();
 	

@@ -1111,12 +1111,55 @@ public class SellerWebAction extends SuperAction {
         // 50, 0.5f,false);
         // ImageUtils.pressImages(waterPic,uploadPath+file_name,4,0.5f);
         // 图片压缩
-        CompressPicture cp = new CompressPicture();
-        String compressPath =
-            ServletActionContext.getServletContext().getRealPath("/upfiles/product/small")
+        // CompressPicture cp = new CompressPicture();
+        // String compressPath =
+        // ServletActionContext.getServletContext().getRealPath("/upfiles/product/small")
+        // + File.separator;
+        // cp.compressPic(upfile, compressPath, "upfiles/product/small/", file_name, 300, 300,
+        // true);
+        productPojo.setImageMain(file_name);
+      }
+      if (upfile2 != null) {
+        String file_name = StringUtil.getCurrentDateStr() + ".jpg";
+        String uploadPath =
+            ServletActionContext.getServletContext().getRealPath("/upfiles/product")
                 + File.separator;
-        cp.compressPic(upfile, compressPath, "upfiles/product/small/", file_name, 300, 300, true);
+        FileUtil.uploadFile(file_name, uploadPath, "upfiles/product/", upfile);
+        // 给图片加水印
+        // String waterPic =
+        // ServletActionContext.getServletContext().getRealPath("/images")+File.separator+"water_logo.png";
+        // ImageUtils.pressImageganji(uploadPath+file_name, waterPic, 50,
+        // 50, 0.5f,false);
+        // ImageUtils.pressImages(waterPic,uploadPath+file_name,4,0.5f);
+        // 图片压缩
+        // CompressPicture cp = new CompressPicture();
+        // String compressPath =
+        // ServletActionContext.getServletContext().getRealPath("/upfiles/product/small")
+        // + File.separator;
+        // cp.compressPic(upfile, compressPath, "upfiles/product/small/", file_name, 300, 300,
+        // true);
         productPojo.setImage(file_name);
+      }
+      if (upfile3 != null) {
+        String file_name = StringUtil.getCurrentDateStr() + ".jpg";
+        String uploadPath =
+            ServletActionContext.getServletContext().getRealPath("/upfiles/product")
+                + File.separator;
+        FileUtil.uploadFile(file_name, uploadPath, "upfiles/product/", upfile);
+        // 给图片加水印
+        // String waterPic =
+        // ServletActionContext.getServletContext().getRealPath("/images")+File.separator+"water_logo.png";
+        // ImageUtils.pressImageganji(uploadPath+file_name, waterPic, 50,
+        // 50, 0.5f,false);
+        // ImageUtils.pressImages(waterPic,uploadPath+file_name,4,0.5f);
+        // 图片压缩
+        // CompressPicture cp = new CompressPicture();
+        // String compressPath =
+        // ServletActionContext.getServletContext().getRealPath("/upfiles/product/small")
+        // + File.separator;
+        // cp.compressPic(upfile, compressPath, "upfiles/product/small/", file_name, 300, 300,
+        // true);
+        productPojo.setImageSmall(file_name);
       }
       productPojo.setIsNew("0");
       productPojo.setRecommend(0);
@@ -1167,39 +1210,39 @@ public class SellerWebAction extends SuperAction {
       productPojo.setVersion(1);
       productService.addProductSeller(productPojo);// 商品插入
       // >>>product_sell<<<
-      ProductSellPojo productSellPojo = new ProductSellPojo();
-      productSellPojo.setProductId(productPojo.getId());
-      productSellPojo.setProductName(productPojo.getProductName());
-      productSellPojo.setProductImage(productPojo.getImage());
-      productSellPojo.setPrice(productPojo.getDistributionPrice());
-      productSellPojo.setSellNumber(productPojo.getSellNumber());
-      productSellPojo.setCreateDate(new Date());
-      productSellPojo.setCreateBy(productPojo.getCreateBy());
-      productSellPojo.setUpdateDate(new Date());
-      productSellPojo.setUpdateBy(productPojo.getUpdateBy());
-      productSellPojo.setProductType1(productPojo.getProductType1());
-      productSellPojo.setProductTypeIds(productPojo.getProductTypeIds());
-      productSellPojo.setStatus(productPojo.getStatus());
-      productSellService.addSeller(productSellPojo);
-      if (upfile != null) {
-        // 商品图片1张
-        String file_name = StringUtil.getCurrentDateStr() + ".jpg";
-        String uploadPath =
-            ServletActionContext.getServletContext().getRealPath("/upfiles/product")
-                + File.separator;
-        FileUtil.uploadFile(file_name, uploadPath, "upfiles/product/", upfile);
-        productImagesPojo = new ProductImagesPojo();
-        productImagesPojo.setProductId(productPojo.getId());
-        productImagesPojo.setImages(file_name);
-        productImagesPojo.setUserId(uid);
-        productImagesPojo.setCreateBy(uid);
-        productImagesPojo.setUpdateBy(uid);
-        productImagesPojo.setStatus(1);
-        productImagesPojo.setSorting(1);
-        productImagesService.addProductImagesSeller(productImagesPojo);
-      } else {
-        productPojo.setImage("");
-      }
+      // ProductSellPojo productSellPojo = new ProductSellPojo();
+      // productSellPojo.setProductId(productPojo.getId());
+      // productSellPojo.setProductName(productPojo.getProductName());
+      // productSellPojo.setProductImage(productPojo.getImage());
+      // productSellPojo.setPrice(productPojo.getDistributionPrice());
+      // productSellPojo.setSellNumber(productPojo.getSellNumber());
+      // productSellPojo.setCreateDate(new Date());
+      // productSellPojo.setCreateBy(productPojo.getCreateBy());
+      // productSellPojo.setUpdateDate(new Date());
+      // productSellPojo.setUpdateBy(productPojo.getUpdateBy());
+      // productSellPojo.setProductType1(productPojo.getProductType1());
+      // productSellPojo.setProductTypeIds(productPojo.getProductTypeIds());
+      // productSellPojo.setStatus(productPojo.getStatus());
+      // productSellService.addSeller(productSellPojo);
+      // if (upfile != null) {
+      // // 商品图片1张
+      // String file_name = StringUtil.getCurrentDateStr() + ".jpg";
+      // String uploadPath =
+      // ServletActionContext.getServletContext().getRealPath("/upfiles/product")
+      // + File.separator;
+      // FileUtil.uploadFile(file_name, uploadPath, "upfiles/product/", upfile);
+      // productImagesPojo = new ProductImagesPojo();
+      // productImagesPojo.setProductId(productPojo.getId());
+      // productImagesPojo.setImages(file_name);
+      // productImagesPojo.setUserId(uid);
+      // productImagesPojo.setCreateBy(uid);
+      // productImagesPojo.setUpdateBy(uid);
+      // productImagesPojo.setStatus(1);
+      // productImagesPojo.setSorting(1);
+      // productImagesService.addProductImagesSeller(productImagesPojo);
+      // } else {
+      // productPojo.setImage("");
+      // }
       // 焦点图片9张
       if (upfiles != null && upfiles.length > 0) {
         for (int i = 0; i < upfiles.length; i++) {
