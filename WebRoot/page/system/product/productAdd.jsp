@@ -147,21 +147,21 @@ document.onkeydown = function () {
 				<tr>
 					<td align="right" width="20%" class="grey">销售基数:</td>
 					<td>
-					   <input class="floatLeft" type="text" name="productPojo.baseNumber" id="baseNumber" value="">
+					   <input class="floatLeft" type="text" name="productPojo.baseNumber" id="baseNumber" value="" >
 						<span id="baseNumber_mgId"></span> 
 					</td>
 				</tr>
 				<tr>
 					<td align="right" width="20%" class="grey">商品最大开团次数:</td>
 					<td>
-					   <input class="floatLeft" type="text" name="productPojo.limitNum" id="baseNumber" value="">
+					   <input class="floatLeft" type="text" name="productPojo.limitNum" id="baseNumber" value="" >
 						<span id="limitNum_mgId"></span> 
 					</td>
 				</tr>
 				<tr>
 					<td align="right" width="20%" class="grey">商品剩余开团次数:</td>
 					<td>
-					   <input class="floatLeft" type="text" name="productPojo.surplusNum" id="baseNumber" value="">
+					   <input class="floatLeft" type="text" name="productPojo.surplusNum" id="baseNumber" value="" >
 						<span id="surplusNum_mgId"></span> 
 					</td>
 				</tr>
@@ -430,10 +430,13 @@ var distributionPrice =new tt.Field(" 商品价格","productPojo.distributionPri
 var sellingPrice =new tt.Field(" 商品原价","productPojo.sellingPrice").setMsgId("sellingPrice_mgId");
 var videoUrl =new tt.Field(" 视频URL","productPojo.videoUrl").setMsgId("videoUrl_mgId");
 var maxNum =new tt.Field(" 限购","productPojo.maxNum").setMsgId("maxNum_mgId");
+var baseNum =new tt.Field("基础销量","productPojo.baseNumber").setMsgId("baseNumber_mgId");
+var limitNum =new tt.Field("最大开团次数","productPojo.limitNum").setMsgId("limitNum_mgId");
+var surplusNum =new tt.Field("最大开团次数","productPojo.surplusNum").setMsgId("surplusNum_mgId");
 	tt.vf.req.add(productType1,productTypeIds,productTypeId,productName,productNum,productSketch,distributionPrice,sellingPrice);
 	new tt.LV().set(0, 500).add(productSketch);
-	tt.vf.num.add(maxNum);
-	new tt.NRV().set(0, '++').add(maxNum);
+	tt.vf.num.add(maxNum,baseNum,limitNum,surplusNum);
+	new tt.NRV().set(0, 99999999).add(maxNum,baseNum,limitNum,surplusNum);
 	$(document).ready(function() {
 		selectTypeChange();
 		//计算偏远地区选择个数
