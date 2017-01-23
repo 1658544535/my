@@ -176,4 +176,5 @@
 	<bean id="userRedeemCodeDao" class="com.tzmb2c.web.dao.impl.UserRedeemCodeDaoImpl" />
 	<bean id="aliRedEnvelopeDao" class="com.tzmb2c.web.dao.impl.AliRedEnvelopeDaoImpl" />
 	<bean id="pindekeMonthSaleDao" class="com.tzmb2c.web.dao.impl.PindekeMonthSaleDaoImpl" />
+	<bean id="sellerBankDao" class="com.tzmb2c.web.dao.impl.SellerBankDaoImpl" />
 </beans>

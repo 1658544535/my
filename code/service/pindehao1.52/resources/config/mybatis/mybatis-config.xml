@@ -193,5 +193,6 @@
 		<typeAlias alias="userRedeemCodePojo" type="com.tzmb2c.web.pojo.UserRedeemCodePojo" />
 		<typeAlias alias="aliRedEnvelopePojo" type="com.tzmb2c.web.pojo.AliRedEnvelopePojo" />
 		<typeAlias alias="pindekeMonthSalePojo" type="com.tzmb2c.web.pojo.PindekeMonthSalePojo" />
+		<typeAlias alias="sellerBankPojo" type="com.tzmb2c.web.pojo.SellerBankPojo" />
 	</typeAliases>
 </configuration>
