@@ -4936,13 +4936,23 @@ public class AppApiBaByMakerAction extends SuperAction {
             if (productPojo != null) {
               result.put("content", StringUtil.checkVal(productPojo.getProductSketch()));
               if (grouponActivityPojo.getType() == 5 || grouponActivityPojo.getType() == 7) {
-                result.put("title", "我买了" + StringUtil.checkVal(productPojo.getProductName()) + "");
+                if (grouponActivityPojo.getId().longValue() == 9543
+                    || grouponActivityPojo.getId().longValue() == 9759
+                    || grouponActivityPojo.getCreateBy() == -1) {
+                  result.put("title", StringUtil.checkVal(productPojo.getProductName()) + "");
+                } else {
+                  result.put("title", "我买了" + StringUtil.checkVal(productPojo.getProductName())
+                      + "");
+                }
+                // if (grouponActivityPojo.getCreateBy() == -1) {
+                // result.put("title", StringUtil.checkVal(productPojo.getProductName()) + "");
+                // } else {
+                // result.put("title", "我买了" + StringUtil.checkVal(productPojo.getProductName())
+                // + "");
+                // }
               } else {
                 result.put("title", "我买了" + StringUtil.checkVal(grouponActivityPojo.getPrice())
                     + "元的" + StringUtil.checkVal(productPojo.getProductName()) + "");
-              }
-              if (grouponActivityPojo.getId().longValue() == 9543) {
-                result.put("title", StringUtil.checkVal(productPojo.getProductName()) + "");
               }
               result.put("url", ConstParam.WX_URL2 + "/groupon_join.php?aid=" + id + "&pdkUid="
                   + grouponActivityRecordPojo.getPdkUid());
