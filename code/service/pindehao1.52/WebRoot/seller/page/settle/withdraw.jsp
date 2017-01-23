@@ -39,6 +39,8 @@ function goRefreshPage(result){
 		queryData("goWithdrawWebCount.do", "goWithdrawWebList.do?randquery="+rand);
 	}else if(result=="2"){
 		alert("申请后1小时后才能再次申请！");
+	}else if(result=="3"){
+	    alert("您还未绑定银行卡");
 	}else{
 		alert("操作失败！");
 	}
@@ -56,6 +58,7 @@ function goRefreshPage(result){
 		<link type="text/css" rel="stylesheet" href="<s:i18n name="sysconfig"><s:text name="seller_dns" /></s:i18n>/js/testJSP/js/validate/css/validate.css" /> 
 		<script language="javascript" src="<s:i18n name="sysconfig"><s:text name="seller_dns" /></s:i18n>/js/testJSP/js/validate/talent-validate-all.js" ></script>
 		<link rel="stylesheet" href="<s:i18n name="sysconfig"><s:text name="seller_dns" /></s:i18n>/seller/css/pageSellerItemPlist-73ca4d5fc7m.css" type="text/css" media="all" />
+		
     </head>
 	<body>
 		<jsp:include page="../sellerHeader.jsp"></jsp:include>
@@ -109,25 +112,66 @@ function goRefreshPage(result){
                         <h2>
                             提现记录
                         </h2>
+        <!--   <form action="manufacturerWithdrawExcel.do"  method="post" id="sysform1" onkeydown="if(event.keyCode==13)return false;">
+           <div  class="ui-table-container p20 with-title">
+				              
+						<label>  编号：</label><input type="text" name="manufacturerWithdrawPojo.number"><input id="query_btn" type="button" class="submit_btn" value="查询" />
+				</div>
+					<a class="btn-write" onclick="$('#sysform1').submit()">导出Excel</a>
+		   </form>-->
+		   
+		   <form action="order.do?os=${os}&a=${a}" method="post" id="sysform">
+			<div id="search_show" style="">
+				<table width="100%" border="0" class="Search_table">
+					<tr>
+						<td align="right">编号：</td>
+						<td><label><input type="text"
+								name="manufacturerWithdrawPojo.number" id="ticketRulePojo.ticketName"
+								value="${manufacturerWithdrawPojo.number }"></label>
+						</td>
+					</tr>
+				</table>
+			</div>
+							<div class="floatRight">
+					<input id="query_btn" type="button" class="submit_btn" value="查询" />
+				</div>
+			
+		</form>
                         <div class="ui-table-container p20 with-title">
                             <table class="ui-table">
                                 <!-- 可以在class中加入ui-table-inbox或ui-table-noborder分别适应不同的情况 -->
                                 <thead>
                                     <tr>
                                         <th>
-                                            提现日
-                                        </th>
-                                        <th>
-                                            提现金额
-                                        </th>
-                                        <th>
-                                            申请/审核时间
+                                            编号
                                         </th>
                                         <th>
                                             状态
                                         </th>
+
                                         <th>
-                                            操作
+                                            提现金额
+                                        </th>
+                                        <th>
+                                           手续费
+                                        </th>
+                                       <th>
+                                            银行名
+                                        </th>
+                                       <th>
+                                            账户ID
+                                        </th>
+                                        <th>
+                                            账户名
+                                        </th>
+                                        <th>
+                                            提现日
+                                        </th>
+                                        <th>
+                                             申请/审核时间
+                                        </th>
+                                        <th>
+                                             操作
                                         </th>
                                     </tr>
                                 </thead>
@@ -159,10 +203,8 @@ function goRefreshPage(result){
 	var pageSize = 10;
 	
 	function query() {
-		if(tt.validate()){
 			var rand=Math.random() * ( 100000 + 1);
 			queryData("goWithdrawWebCount.do", "goWithdrawWebList.do?randquery="+rand,pageSize);
-		}
 	}
 	
 	function installPage() {
@@ -171,10 +213,15 @@ function goRefreshPage(result){
 			str = "<a class='ui-button ui-button-sorange ui-dbutton-self mr-5' style='width: 62px' onclick='unWithdraw("+this.id+")' >取消申请</a>";
 		}
 		$("#body").append(
-				"<tr><td><p>"+this.withdrawDateStr+"</p></td>"+
-                "<td><p><em>"+this.withdrawAmount+"</em></p></td>"+
-                "<td><p>申请："+this.createDateStr+"</p><p>审核："+this.updateDateStr+"</p></td>"+
+				"<tr><td><p>"+this.number+"</p></td>"+
                 "<td><p><span></span>"+this.statusName+"</p></td>"+
+                "<td><p><em>"+this.withdrawAmount+"</em></p></td>"+
+                "<td><p><em>"+this.withdrawalFee+"</em></p></td>"+
+                "<td><p><em>"+this.bankName+"</em></p></td>"+
+                "<td><p><em>"+this.bankCardNo+"</em></p></td>"+
+                "<td><p><em>"+this.userName+"</em></p></td>"+
+                "<td><p><em>"+this.withdrawDateStr+"</em></p></td>"+
+                "<td><p>申请："+this.createDateStr+"</p><p>审核："+this.updateDateStr+"</p></td>"+
                 "<td>"+str+"</td>"+
                 "</tr>"
                 );
