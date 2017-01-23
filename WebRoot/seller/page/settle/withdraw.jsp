@@ -40,7 +40,9 @@ function goRefreshPage(result){
 	}else if(result=="2"){
 		alert("申请后1小时后才能再次申请！");
 	}else if(result=="3"){
-	    alert("您还未绑定银行卡");
+	    alert("您还未绑定银行卡！");
+	}else if(result=="4"){
+	    alert("你的账户还未通过审核哦！");
 	}else{
 		alert("操作失败！");
 	}
@@ -98,8 +100,9 @@ function goRefreshPage(result){
                                              <font>${balance}</font>元
                                         </span>
                                         &nbsp;&nbsp;&nbsp;&nbsp;
-                                        <input class="ui-input" type="text" name="manufacturerWithdrawPojo.withdrawAmount" id="withdrawAmount" placeholder="提现金额">
-                                        <input type="button" value="提现" class="ui-button ui-button-sgreen view-BtnApply withdraw-apply-btn"  onclick="withdraw()">
+                                      <!--  <input class="ui-input" type="text" name="manufacturerWithdrawPojo.withdrawAmount" id="withdrawAmount" placeholder="提现金额">-->
+                                        <a href="goWithdrawals.do" class="ui-button ui-button-sgreen view-BtnApply withdraw-apply-btn">提现</a>
+                                       <!-- <input type="button" value="提现" class="ui-button ui-button-sgreen view-BtnApply withdraw-apply-btn"  onclick="withdraw()">-->
                                         <span class="orange" style="font-size:12px;margin-left:10px;width:150px">
                                             注：提现金额最少为100元；申请后1小时后才能再次申请
                                         </span>

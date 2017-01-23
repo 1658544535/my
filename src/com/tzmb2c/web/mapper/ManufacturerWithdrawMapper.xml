@@ -6,11 +6,10 @@
 
 	<insert id="insertManufacturerWithdraw" parameterType="manufacturerWithdrawPojo" useGeneratedKeys="true" keyProperty="id">
 		insert into user_manufacturer_withdraw 
-		(user_id,withdraw_date,withdraw_amount,status,create_by,create_date,update_by,update_date,version,remarks)
+		(user_id,withdraw_date,withdraw_amount,status,create_by,create_date,update_by,update_date,version,remarks,number,withdrawal_fee,bank_name,bank_card_no,user_name)
 		values
-		(#{userId},#{withdrawDate},#{withdrawAmount},#{status},#{createBy},now(),#{updateBy},now(),#{version},#{remarks})
+		(#{userId},#{withdrawDate},#{withdrawAmount},#{status},#{createBy},now(),#{updateBy},now(),#{version},#{remarks},#{number},#{withdrawalFee},#{bankName},#{bankCardNo},#{userName})
 	</insert>
-
 	<delete id="delWithdrawById" parameterType="Long">
 		delete from user_manufacturer_withdraw where id = #{id}
 	</delete>
@@ -39,6 +38,21 @@
 		<if test="remarks != null">
 		remarks = #{remarks},
 		</if>
+		<if test="number != null">
+		number = #{number},
+		</if>
+		<if test="withdrawalFee != null">
+		withdrawal_fee = #{withdrawalFee},
+		</if>
+		<if test="bankName != null">
+		bank_name = #{bankName},
+		</if>
+		<if test="bankCardNo != null">
+		bank_card_no = #{bankCardNo},
+		</if>
+		<if test="userName != null">
+		user_name = #{userName},
+		</if>
 		version = #{version}
 		where 
 		1 = 1
@@ -63,9 +77,17 @@
 		t.create_date as createDate,
 		t.update_by as updateBy,
 		t.update_date as updateDate,
-		t.version as version
+		t.version as version,
+		t.number as number,
+		t.withdrawal_fee as withdrawalFee,
+		t.bank_name as bankName,
+		t.bank_card_no as bankCardNo,
+		t.user_name as userName
 		from user_manufacturer_withdraw t 
 		where 1=1
+		<if test="number != null">
+		and t.number = #{number} 
+		</if>
 		<if test="userId != null">
 		and t.user_id = #{userId} 
 		</if>
@@ -89,6 +111,9 @@
 		count(*)
 		from user_manufacturer_withdraw t 
 		where 1=1
+		<if test="number != null">
+		and t.number = #{number} 
+		</if>
 		<if test="userId != null">
 		and t.user_id = #{userId} 
 		</if>
@@ -116,7 +141,12 @@
 		t.update_date as updateDate,
 		t.remarks as remarks,
 		t.version as version,
-		HOUR(TIMEDIFF(NOW(),t.create_date)) as period
+		HOUR(TIMEDIFF(NOW(),t.create_date)) as period,
+		t.number as number,
+		t.withdrawal_fee as withdrawalFee,
+		t.bank_name as bankName,
+		t.bank_card_no as bankCardNo,
+		t.user_name as userName
 		from user_manufacturer_withdraw t 
 		where t.user_id = #{userId}
 		<if test="status != null">
@@ -136,7 +166,12 @@
 		t.create_date as createDate,
 		t.update_by as updateBy,
 		t.update_date as updateDate,
-		t.version as version
+		t.version as version,
+		t.number as number,
+		t.withdrawal_fee as withdrawalFee,
+		t.bank_name as bankName,
+		t.bank_card_no as bankCardNo,
+		t.user_name as userName
 		from user_manufacturer_withdraw t 
 		where t.id = #{id}
 	</select>

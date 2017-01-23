@@ -383,6 +383,18 @@
 			<result name="success">/seller/page/martshow/preview.jsp</result>
 		</action>
 		
+		<!-- 账户设置页面 -->
+		<action name="goEditSellerBank" class="com.tzmb2c.web.action.SellerSettleWebAction" method="goEditSellerBank">
+			<result name="success">/seller/page/settle/updateSellerBank.jsp</result>
+		</action>
+		<!-- 账户设置 -->
+		<action name="editSellerBank" class="com.tzmb2c.web.action.SellerSettleWebAction" method="editSellerBank">
+		</action>
+		<!-- 提现页面 -->
+		<action name="goWithdrawals" class="com.tzmb2c.web.action.SellerSettleWebAction" method="goWithdrawals">
+			<result name="success">/seller/page/settle/withdrawals.jsp</result>
+		</action>
+		
 		
 	</package>
 	

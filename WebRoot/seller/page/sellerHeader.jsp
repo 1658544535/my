@@ -204,6 +204,11 @@
                                         提现
                                     </a>
                                 </li> 
+                                <li class="ui-nav-subitem">
+                                    <a href="goEditSellerBank.do">
+                                        账户设置
+                                    </a>
+                                </li> 
                             </ul>
                         </li>
 			</ul>

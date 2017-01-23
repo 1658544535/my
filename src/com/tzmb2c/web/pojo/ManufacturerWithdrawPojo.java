@@ -47,6 +47,10 @@ public class ManufacturerWithdrawPojo extends SuperPojo {
   private String createDateStr;
   private String updateDateStr;
   private Double period; // 提交提现申请的间隔时间
+  private String number;
+  private Double withdrawalFee;
+  private String bankName;
+  private String bankCardNo;
 
   public String getStatusName() {
     return statusName;
@@ -79,7 +83,7 @@ public class ManufacturerWithdrawPojo extends SuperPojo {
   public void setWithdrawDate(Date withdrawDate) {
     this.withdrawDate = withdrawDate;
     if (this.withdrawDate != null) {
-      this.withdrawDateStr = StringUtil.dateToString(this.withdrawDate);
+      withdrawDateStr = StringUtil.dateToString(this.withdrawDate);
     }
   }
 
@@ -106,15 +110,15 @@ public class ManufacturerWithdrawPojo extends SuperPojo {
   public void setStatus(Integer status) {
     this.status = status;
     if (this.status != null && this.status == 0) {
-      this.statusName = "待审核";
+      statusName = "待审核";
     } else if (this.status != null && this.status == 1) {
-      this.statusName = "申请已取消";
+      statusName = "申请已取消";
     } else if (this.status != null && this.status == 2) {
-      this.statusName = "待提现";
+      statusName = "待提现";
     } else if (this.status != null && this.status == 3) {
-      this.statusName = "审核不通过";
+      statusName = "审核不通过";
     } else if (this.status != null && this.status == 4) {
-      this.statusName = "已提现";
+      statusName = "已提现";
     }
   }
 
@@ -163,4 +167,38 @@ public class ManufacturerWithdrawPojo extends SuperPojo {
   public void setPeriod(Double period) {
     this.period = period;
   }
+
+  public String getNumber() {
+    return number;
+  }
+
+  public void setNumber(String number) {
+    this.number = number;
+  }
+
+  public Double getWithdrawalFee() {
+    return withdrawalFee;
+  }
+
+  public void setWithdrawalFee(Double withdrawalFee) {
+    this.withdrawalFee = withdrawalFee;
+  }
+
+  public String getBankName() {
+    return bankName;
+  }
+
+  public void setBankName(String bankName) {
+    this.bankName = bankName;
+  }
+
+  public String getBankCardNo() {
+    return bankCardNo;
+  }
+
+  public void setBankCardNo(String bankCardNo) {
+    this.bankCardNo = bankCardNo;
+  }
+
+
 }

@@ -833,3 +833,31 @@ ALTER TABLE user_certificates_photo ADD bl_image8 varchar(100) default '' COMMEN
 ALTER TABLE user_certificates_photo ADD bl_image9 varchar(100) default '' COMMENT '品牌授权证明图片9';
 ALTER TABLE user_certificates_photo ADD bl_image10 varchar(100) default '' COMMENT '品牌授权证明图片10';
 ALTER TABLE user_certificates_photo ADD image8 varchar(100) default '' COMMENT '开户许可证';
+
+##新增商家银行账户表
+CREATE TABLE seller_bank (
+  id bigint(20) NOT NULL auto_increment COMMENT 'id',
+  user_id bigint(20) default '0' COMMENT '用户id',
+  bank_name varchar(100) default '' COMMENT '银行名',
+  province int(11) default NULL COMMENT '省',
+  city int(11) default NULL COMMENT '城市',
+  area int(11) default NULL COMMENT '区域',
+  bank_branch varchar(100) default '' COMMENT '开户支行',
+  bank_card_no varchar(50) default '' COMMENT '银行卡号',
+  user_name varchar(50) default '' COMMENT '开户人姓名',
+  phone varchar(50) default '' COMMENT '手机号',
+  status int(1) unsigned default '1' COMMENT '审核状态（0-未审核1-审核成功2-审核失败）',
+  create_date datetime default NULL COMMENT '创建时间',
+  create_by bigint(20) default '0' COMMENT '创建人',
+  update_date datetime default NULL COMMENT '修改时间',
+  update_by bigint(20) default '0' COMMENT '修改人',
+  PRIMARY KEY  (`id`),
+  KEY `IDX_USER_ID` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商家银行账户表';
+
+##新增字段
+ALTER TABLE user_manufacturer_withdraw add number varchar(30) default '' COMMENT '编号';
+ALTER TABLE user_manufacturer_withdraw add withdrawal_fee double(20,2) default 0.00 COMMENT '提现手续费';
+ALTER TABLE user_manufacturer_withdraw add bank_name varchar(100) default '' COMMENT '银行名';
+ALTER TABLE user_manufacturer_withdraw add bank_card_no varchar(50) default '' COMMENT '银行卡号';
+ALTER TABLE user_manufacturer_withdraw add user_name varchar(50) default '' COMMENT '开户人姓名';

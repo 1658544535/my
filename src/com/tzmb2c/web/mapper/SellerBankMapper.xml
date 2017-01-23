@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tzmb2c.web.mapper.SellerBankMapper">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Base_Column_List">
+		id as id,
+		user_id as userId,
+		bank_name as bankName,
+		province as province,
+		city as city,
+		area as area,
+		bank_branch as bankBranch,
+		bank_card_no as bankCardNo,
+		user_name as userName,
+		phone as phone,
+		status as status,
+		create_date as createDate,
+		create_by as createBy,
+		update_date as updateDate,
+		(select balance from user_manufacturer um where um.user_id=user_id) as balance,
+		update_by as updateBy
+	</sql>
+	
+	<select id="getById" parameterType="Long" resultType="SellerBankPojo">
+		select
+			<include refid="Base_Column_List" />
+		from
+			seller_bank
+		where
+			id = #{id}
+	</select>
+	
+	<select id="countBy" parameterType="java.util.Map" resultType="int">
+		select count(*)
+		from seller_bank
+		where 1=1
+		  <if test="id != null ">
+			and id = #{id}
+		  </if>
+		  <if test="userId != null ">
+			and user_id = #{userId}
+		  </if>
+		  <if test="bankName != null and bankName != '' ">
+			and bank_name = #{bankName}
+		  </if>
+		  <if test="province != null ">
+			and province = #{province}
+		  </if>
+		  <if test="city != null ">
+			and city = #{city}
+		  </if>
+		  <if test="area != null ">
+			and area = #{area}
+		  </if>
+		  <if test="bankBranch != null and bankBranch != '' ">
+			and bank_branch = #{bankBranch}
+		  </if>
+		  <if test="bankCardNo != null and bankCardNo != '' ">
+			and bank_card_no = #{bankCardNo}
+		  </if>
+		  <if test="userName != null and userName != '' ">
+			and user_name = #{userName}
+		  </if>
+		  <if test="phone != null and phone != '' ">
+			and phone = #{phone}
+		  </if>
+		  <if test="status != null ">
+			and status = #{status}
+		  </if>
+		  <if test="createDate != null ">
+			and create_date = #{createDate}
+		  </if>
+		  <if test="createBy != null ">
+			and create_by = #{createBy}
+		  </if>
+		  <if test="updateDate != null ">
+			and update_date = #{updateDate}
+		  </if>
+		  <if test="updateBy != null ">
+			and update_by = #{updateBy}
+		  </if>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultType="SellerBankPojo">
+		select
+		sb.id as id,
+		sb.user_id as userId,
+		sb.bank_name as bankName,
+		sb.province as province,
+		sb.city as city,
+		sb.area as area,
+		sb.bank_branch as bankBranch,
+		sb.bank_card_no as bankCardNo,
+		sb.user_name as userName,
+		sb.phone as phone,
+		sb.status as status,
+		sb.create_date as createDate,
+		sb.create_by as createBy,
+		sb.update_date as updateDate,
+		(select balance from user_manufacturer um where um.user_id=sb.user_id) as balance,
+		sb.update_by as updateBy
+		from seller_bank sb
+		where 1=1
+			<if test="id != null ">
+			  and sb.id = #{id}
+			</if>
+			<if test="userId != null ">
+			  and sb.user_id = #{userId}
+			</if>
+			<if test="bankName != null and bankName != '' ">
+			  and sb.bank_name = #{bankName}
+			</if>
+			<if test="province != null ">
+			  and sb.province = #{province}
+			</if>
+			<if test="city != null ">
+			  and sb.city = #{city}
+			</if>
+			<if test="area != null ">
+			  and sb.area = #{area}
+			</if>
+			<if test="bankBranch != null and bankBranch != '' ">
+			  and sb.bank_branch = #{bankBranch}
+			</if>
+			<if test="bankCardNo != null and bankCardNo != '' ">
+			  and sb.bank_card_no = #{bankCardNo}
+			</if>
+			<if test="userName != null and userName != '' ">
+			  and sb.user_name = #{userName}
+			</if>
+			<if test="phone != null and phone != '' ">
+			  and sb.phone = #{phone}
+			</if>
+			<if test="status != null ">
+			  and sb.status = #{status}
+			</if>
+			<if test="createDate != null ">
+			  and sb.create_date = #{createDate}
+			</if>
+			<if test="createBy != null ">
+			  and sb.create_by = #{createBy}
+			</if>
+			<if test="updateDate != null ">
+			  and sb.update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null ">
+			  and sb.update_by = #{updateBy}
+			</if>
+		<if test="orderBy != null and orderBy !=''">
+			order by ${orderBy}
+		</if>
+		<if test="pageSize != null">
+			limit #{pageNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<update id="update" parameterType="SellerBankPojo">
+		update seller_bank
+		<set>
+			<if test="userId != null">
+			  user_id = #{userId},
+			</if>
+			<if test="bankName != null">
+			  bank_name = #{bankName},
+			</if>
+			<if test="province != null">
+			  province = #{province},
+			</if>
+			<if test="city != null">
+			  city = #{city},
+			</if>
+			<if test="area != null">
+			  area = #{area},
+			</if>
+			<if test="bankBranch != null">
+			  bank_branch = #{bankBranch},
+			</if>
+			<if test="bankCardNo != null">
+			  bank_card_no = #{bankCardNo},
+			</if>
+			<if test="userName != null">
+			  user_name = #{userName},
+			</if>
+			<if test="phone != null">
+			  phone = #{phone},
+			</if>
+			<if test="status != null">
+			  status = #{status},
+			</if>
+			<if test="createDate != null">
+			  create_date = #{createDate},
+			</if>
+			<if test="createBy != null">
+			  create_by = #{createBy},
+			</if>
+			<if test="updateDate != null">
+			  update_date = #{updateDate},
+			</if>
+			<if test="updateBy != null">
+			  update_by = #{updateBy},
+			</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from seller_bank 
+		where
+			id = #{id}
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="SellerBankPojo">
+		insert into seller_bank
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="bankName != null">
+				bank_name,
+			</if>
+			<if test="province != null">
+				province,
+			</if>
+			<if test="city != null">
+				city,
+			</if>
+			<if test="area != null">
+				area,
+			</if>
+			<if test="bankBranch != null">
+				bank_branch,
+			</if>
+			<if test="bankCardNo != null">
+				bank_card_no,
+			</if>
+			<if test="userName != null">
+				user_name,
+			</if>
+			<if test="phone != null">
+				phone,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+			<if test="updateDate != null">
+				update_date,
+			</if>
+			<if test="updateBy != null">
+				update_by,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="userId != null">
+				#{userId},
+			</if>
+			<if test="bankName != null">
+				#{bankName},
+			</if>
+			<if test="province != null">
+				#{province},
+			</if>
+			<if test="city != null">
+				#{city},
+			</if>
+			<if test="area != null">
+				#{area},
+			</if>
+			<if test="bankBranch != null">
+				#{bankBranch},
+			</if>
+			<if test="bankCardNo != null">
+				#{bankCardNo},
+			</if>
+			<if test="userName != null">
+				#{userName},
+			</if>
+			<if test="phone != null">
+				#{phone},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+			<if test="createDate != null">
+				#{createDate},
+			</if>
+			<if test="createBy != null">
+				#{createBy},
+			</if>
+			<if test="updateDate != null">
+				#{updateDate},
+			</if>
+			<if test="updateBy != null">
+				#{updateBy},
+			</if>
+		</trim>
+	</insert>
+	
+</mapper>
