@@ -67,6 +67,7 @@
 	<select id="getManufacturerWithdrawList" parameterType="java.util.Map" resultType="manufacturerWithdrawPojo" >
 		select 
 		t.id as id,
+		<!--HOUR(TIMEDIFF(NOW(),t.create_date)) as period,-->
 		t.user_id as userId,
 		(select name from sys_login where id=t.user_id) as userName,
 		(select balance from user_manufacturer where user_id = t.user_id) as settleBalance,
@@ -100,7 +101,7 @@
 		<if test="endDateStr !=null and endDateStr !=''">
 			and str_to_date(t.withdraw_date,'%Y-%m-%d') &lt;= #{endDateStr}
 		</if>
-		order by t.create_date desc,t.user_id
+		order by t.id desc
 		<if test="pageSize != null">
 			limit #{pageNo} , #{pageSize}
 		</if>

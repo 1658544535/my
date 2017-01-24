@@ -13,10 +13,9 @@
 		<!-- 新增提交 -->
 		<action name="addSellerBank" class="com.tzmb2c.web.action.SellerBankAction" method="add">
 		</action>		
-		<!-- 编辑页面 -->
-		<action name="goEditSellerBank" class="com.tzmb2c.web.action.SellerBankAction" method="goEditSellerBank">
+	<!--<action name="goEditSellerBank" class="com.tzmb2c.web.action.SellerBankAction" method="goEditSellerBank">
 			<result name="success">/page/system/sellerBank/updateSellerBank.jsp</result>
-		</action>
+		</action> -->
 		<!-- 编辑提交 -->
 		<action name="updateSellerBank" class="com.tzmb2c.web.action.SellerBankAction" method="update">
 		</action>
