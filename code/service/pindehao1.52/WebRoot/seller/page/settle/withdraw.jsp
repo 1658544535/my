@@ -60,7 +60,6 @@ function goRefreshPage(result){
 		<link type="text/css" rel="stylesheet" href="<s:i18n name="sysconfig"><s:text name="seller_dns" /></s:i18n>/js/testJSP/js/validate/css/validate.css" /> 
 		<script language="javascript" src="<s:i18n name="sysconfig"><s:text name="seller_dns" /></s:i18n>/js/testJSP/js/validate/talent-validate-all.js" ></script>
 		<link rel="stylesheet" href="<s:i18n name="sysconfig"><s:text name="seller_dns" /></s:i18n>/seller/css/pageSellerItemPlist-73ca4d5fc7m.css" type="text/css" media="all" />
-		
     </head>
 	<body>
 		<jsp:include page="../sellerHeader.jsp"></jsp:include>
@@ -123,21 +122,16 @@ function goRefreshPage(result){
 					<a class="btn-write" onclick="$('#sysform1').submit()">导出Excel</a>
 		   </form>-->
 		   
-		   <form action="order.do?os=${os}&a=${a}" method="post" id="sysform">
+		    <form action="" method="post" accept-charset="utf-8" id="sysform">
 			<div id="search_show" style="">
 				<table width="100%" border="0" class="Search_table">
 					<tr>
 						<td align="right">编号：</td>
-						<td><label><input type="text"
-								name="manufacturerWithdrawPojo.number" id="ticketRulePojo.ticketName"
-								value="${manufacturerWithdrawPojo.number }"></label>
-						</td>
+						<td><label><input type="text" name="number" id="number"></label>
+						<input id="query_btn" type="button" class="submit_btn" value="查询" /></td>
 					</tr>
 				</table>
 			</div>
-							<div class="floatRight">
-					<input id="query_btn" type="button" class="submit_btn" value="查询" />
-				</div>
 			
 		</form>
                         <div class="ui-table-container p20 with-title">
@@ -206,8 +200,9 @@ function goRefreshPage(result){
 	var pageSize = 10;
 	
 	function query() {
+	        var number=document.getElementById("number").value;
 			var rand=Math.random() * ( 100000 + 1);
-			queryData("goWithdrawWebCount.do", "goWithdrawWebList.do?randquery="+rand,pageSize);
+			queryData("goWithdrawWebCount.do?manufacturerWithdrawPojo.number="+number, "goWithdrawWebList.do?manufacturerWithdrawPojo.number="+number+"&randquery="+rand,pageSize);
 	}
 	
 	function installPage() {
