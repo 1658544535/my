@@ -343,58 +343,66 @@ public class SellerSettleWebAction extends SuperAction {
   public synchronized String doWithdrawWebCheck() throws SQLException {
     SysLoginPojo sysLoginPojo = UserUtil.getWebUser();
     result = "0";
-    if (sysLoginPojo != null && manufacturerWithdrawPojo != null
-        && manufacturerWithdrawPojo.getWithdrawAmount() != null
-        && manufacturerWithdrawPojo.getWithdrawAmount() >= 100.00) {
-      long uid = sysLoginPojo.getId();
-      ManufacturerPojo manufacturerPojo = manufacturerService.findManufacturerByUserId(uid);
-      if (manufacturerPojo != null
-          && manufacturerWithdrawPojo.getWithdrawAmount().doubleValue() <= manufacturerPojo
-              .getBalance().doubleValue()) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("userId", uid);
-        List<ManufacturerWithdrawPojo> manufacturerWithdraws =
-            manufacturerWithdrawService.getManufacturerWithdrawByUserId(map);
-        if (manufacturerWithdraws.size() == 0 || manufacturerWithdraws.get(0).getPeriod() >= 1.00) {
-          Map<String, Object> map1 = new HashMap<String, Object>();
-          map1.put("userId", uid);
-          List<SellerBankPojo> sellerBankPojos = sellerBankService.listPage(map1);
-          if (sellerBankPojos != null && sellerBankPojos.size() > 0) {
-            SellerBankPojo sellerBank = sellerBankPojos.get(0);
-            if (sellerBank.getStatus() == 1) {
-              manufacturerWithdrawPojo.setUserId(uid);
-              manufacturerWithdrawPojo
-                  .setNumber(String.valueOf((int) ((Math.random() * 9 + 1) * 100000)));
-              // manufacturerWithdrawPojo.setWithdrawDate(new Date());
-              manufacturerWithdrawPojo.setStatus(0);
-              manufacturerWithdrawPojo.setBankName(sellerBank.getBankName());
-              manufacturerWithdrawPojo.setBankCardNo(sellerBank.getBankCardNo());
-              manufacturerWithdrawPojo.setUserName(sellerBank.getUserName());
-              manufacturerWithdrawPojo.setCreateBy(uid);
-              manufacturerWithdrawPojo.setUpdateBy(uid);
-              try {
-                int i =
-                    manufacturerWithdrawService
-                        .insertManufacturerWithdraw(manufacturerWithdrawPojo);
-                if (i > 0) {
-                  manufacturerPojo = new ManufacturerPojo();
-                  manufacturerPojo.setAddBalance(-manufacturerWithdrawPojo.getWithdrawAmount());
-                  manufacturerPojo.setUserId(uid);
-                  manufacturerService.updateManufacturer(manufacturerPojo);
-                  result = "1";
+    UserVerifyPojo userVerify = new UserVerifyPojo();
+    userVerify.setLoginname(sellerBankPojo.getPhone());
+    userVerify = userVerifyService.findNewestByPhone(userVerify);
+    if (userVerify == null || userVerify.getCaptcha() == null
+        || !phonecode.equals(userVerify.getCaptcha())) {
+      result = "5";
+    } else {
+      if (sysLoginPojo != null && manufacturerWithdrawPojo != null
+          && manufacturerWithdrawPojo.getWithdrawAmount() != null
+          && manufacturerWithdrawPojo.getWithdrawAmount() >= 100.00) {
+        long uid = sysLoginPojo.getId();
+        ManufacturerPojo manufacturerPojo = manufacturerService.findManufacturerByUserId(uid);
+        if (manufacturerPojo != null
+            && manufacturerWithdrawPojo.getWithdrawAmount().doubleValue() <= manufacturerPojo
+                .getBalance().doubleValue()) {
+          Map<String, Object> map = new HashMap<String, Object>();
+          map.put("userId", uid);
+          List<ManufacturerWithdrawPojo> manufacturerWithdraws =
+              manufacturerWithdrawService.getManufacturerWithdrawByUserId(map);
+          if (manufacturerWithdraws.size() == 0 || manufacturerWithdraws.get(0).getPeriod() >= 1.00) {
+            Map<String, Object> map1 = new HashMap<String, Object>();
+            map1.put("userId", uid);
+            List<SellerBankPojo> sellerBankPojos = sellerBankService.listPage(map1);
+            if (sellerBankPojos != null && sellerBankPojos.size() > 0) {
+              SellerBankPojo sellerBank = sellerBankPojos.get(0);
+              if (sellerBank.getStatus() == 1) {
+                manufacturerWithdrawPojo.setUserId(uid);
+                manufacturerWithdrawPojo
+                    .setNumber(String.valueOf((int) ((Math.random() * 9 + 1) * 100000)));
+                // manufacturerWithdrawPojo.setWithdrawDate(new Date());
+                manufacturerWithdrawPojo.setStatus(0);
+                manufacturerWithdrawPojo.setBankName(sellerBank.getBankName());
+                manufacturerWithdrawPojo.setBankCardNo(sellerBank.getBankCardNo());
+                manufacturerWithdrawPojo.setUserName(sellerBank.getUserName());
+                manufacturerWithdrawPojo.setCreateBy(uid);
+                manufacturerWithdrawPojo.setUpdateBy(uid);
+                try {
+                  int i =
+                      manufacturerWithdrawService
+                          .insertManufacturerWithdraw(manufacturerWithdrawPojo);
+                  if (i > 0) {
+                    manufacturerPojo = new ManufacturerPojo();
+                    manufacturerPojo.setAddBalance(-manufacturerWithdrawPojo.getWithdrawAmount());
+                    manufacturerPojo.setUserId(uid);
+                    manufacturerService.updateManufacturer(manufacturerPojo);
+                    result = "1";
+                  }
+                } catch (Exception e) {
+                  e.printStackTrace();
+                  result = "0";
                 }
-              } catch (Exception e) {
-                e.printStackTrace();
-                result = "0";
+              } else {
+                result = "4";
               }
             } else {
-              result = "4";
+              result = "3";
             }
           } else {
-            result = "3";
+            result = "2";
           }
-        } else {
-          result = "2";
         }
       }
     }

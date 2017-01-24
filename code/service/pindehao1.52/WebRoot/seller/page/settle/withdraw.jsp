@@ -195,11 +195,11 @@ function goRefreshPage(result){
 	</body>
 </html>
 <script type="text/javascript">
-	var withdrawAmount = new tt.Field("提现金额","manufacturerWithdrawPojo.withdrawAmount").setMsgId("withdrawAmount_mgId");
+	//var withdrawAmount = new tt.Field("提现金额","manufacturerWithdrawPojo.withdrawAmount").setMsgId("withdrawAmount_mgId");
 	//tt.Conf.reqStarCls = "";
-	tt.vf.req.add(withdrawAmount);
-	tt.vf.num.add(withdrawAmount);
-	new tt.NRV().set(100, ${balance}).add(withdrawAmount);
+	//tt.vf.req.add(withdrawAmount);
+	//tt.vf.num.add(withdrawAmount);
+	//new tt.NRV().set(100, ${balance}).add(withdrawAmount);
 	
 	var ctx  ="<s:property value="ctx" />";
 	var pagecount = "${page.rowCount}";
