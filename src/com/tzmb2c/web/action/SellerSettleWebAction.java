@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.tzmb2c.business.service.SellerService;
 import com.tzmb2c.common.Pager;
 import com.tzmb2c.utils.FileUtil;
+import com.tzmb2c.utils.StringUtil;
 import com.tzmb2c.utils.UserUtil;
 import com.tzmb2c.web.pojo.ManufacturerPojo;
 import com.tzmb2c.web.pojo.ManufacturerSettlePojo;
@@ -543,7 +544,7 @@ public class SellerSettleWebAction extends SuperAction {
       ots = new FileOutputStream(file);
       wwb = Workbook.createWorkbook(ots);
       WritableSheet sheet = wwb.createSheet("sheet1", 0);
-      String[] cellStr = {"编号", "状态", "提现金额", "提现手续费", "银行名", "银行卡号", "开户人姓名", "提现日", "申请时间"};
+      String[] cellStr = {"编号", "状态", "提现金额", "手续费", "银行名", "银行卡号", "开户人姓名", "提现日", "申请/审核时间"};
       for (int i = 0; i < cellStr.length; i++) {
         sheet.addCell(new Label(i, 0, cellStr[i]));
         if (i == cellStr.length - 1) {
@@ -558,17 +559,25 @@ public class SellerSettleWebAction extends SuperAction {
         // orderDetailService.getfindByUserIdOrderDetail(order.getId());
         // for (int s = 1; s <= list2.size(); s++) {
         int celli = 0;
-        sheet.addCell(new Label(celli, i, manufacturerWithdrawPojo.getNumber()));
-        sheet.addCell(new Label(++celli, i, manufacturerWithdrawPojo.getStatusName()));
-        sheet.addCell(new Label(++celli, i, String.valueOf(manufacturerWithdrawPojo
-            .getWithdrawAmount())));
-        sheet.addCell(new Label(++celli, i, String.valueOf(manufacturerWithdrawPojo
+        sheet
+            .addCell(new Label(celli, i, StringUtil.checkVal(manufacturerWithdrawPojo.getNumber())));
+        sheet.addCell(new Label(++celli, i, StringUtil.checkVal(manufacturerWithdrawPojo
+            .getStatusName())));
+        sheet.addCell(new Label(++celli, i, StringUtil.checkVal(String
+            .valueOf(manufacturerWithdrawPojo.getWithdrawAmount()))));
+        sheet.addCell(new Label(++celli, i, StringUtil.checkVal(manufacturerWithdrawPojo
             .getWithdrawalFee())));
-        sheet.addCell(new Label(++celli, i, manufacturerWithdrawPojo.getBankName()));
-        sheet.addCell(new Label(++celli, i, manufacturerWithdrawPojo.getBankCardNo()));
-        sheet.addCell(new Label(++celli, i, manufacturerWithdrawPojo.getUserName()));
-        sheet.addCell(new Label(++celli, i, manufacturerWithdrawPojo.getWithdrawDateStr()));
-        sheet.addCell(new Label(++celli, i, manufacturerWithdrawPojo.getCreateDateStr()));
+        sheet.addCell(new Label(++celli, i, StringUtil.checkVal(manufacturerWithdrawPojo
+            .getBankName())));
+        sheet.addCell(new Label(++celli, i, StringUtil.checkVal(manufacturerWithdrawPojo
+            .getBankCardNo())));
+        sheet.addCell(new Label(++celli, i, StringUtil.checkVal(manufacturerWithdrawPojo
+            .getUserName1())));
+        sheet.addCell(new Label(++celli, i, StringUtil.checkVal(manufacturerWithdrawPojo
+            .getWithdrawDateStr())));
+        sheet.addCell(new Label(++celli, i, StringUtil.checkVal("申请："
+            + manufacturerWithdrawPojo.getCreateDateStr() + "审核："
+            + manufacturerWithdrawPojo.getUpdateDateStr())));
         i++;
       }
       wwb.write();

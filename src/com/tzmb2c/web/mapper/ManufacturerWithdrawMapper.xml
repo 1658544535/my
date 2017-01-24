@@ -70,6 +70,7 @@
 		<!--HOUR(TIMEDIFF(NOW(),t.create_date)) as period,-->
 		t.user_id as userId,
 		(select name from sys_login where id=t.user_id) as userName,
+		t.user_name as userName1,
 		(select balance from user_manufacturer where user_id = t.user_id) as settleBalance,
 		t.withdraw_date as withdrawDate,
 		t.withdraw_amount as withdrawAmount,

@@ -394,7 +394,9 @@
 		<action name="goWithdrawals" class="com.tzmb2c.web.action.SellerSettleWebAction" method="goWithdrawals">
 			<result name="success">/seller/page/settle/withdrawals.jsp</result>
 		</action>
-		
+		<!--账户提现列表导出-->
+		<action name="manufacturerWithdrawExcel" class="com.tzmb2c.web.action.SellerSettleWebAction" method="manufacturerWithdrawExcel">
+		</action>
 		
 	</package>
 	
