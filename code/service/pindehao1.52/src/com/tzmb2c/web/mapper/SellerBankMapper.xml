@@ -15,6 +15,7 @@
 		user_name as userName,
 		phone as phone,
 		status as status,
+		(CASE WHEN status = 0 THEN '未审核' WHEN status = 1 THEN '审核成功' WHEN status = 2 THEN '审核失败'END) as statusName,
 		create_date as createDate,
 		create_by as createBy,
 		update_date as updateDate,
@@ -39,7 +40,7 @@
 			and id = #{id}
 		  </if>
 		  <if test="userId != null ">
-			and user_id = #{userId}
+			and user_id like concat("%",#{userId},"%" )
 		  </if>
 		  <if test="bankName != null and bankName != '' ">
 			and bank_name = #{bankName}
@@ -90,11 +91,15 @@
 		sb.province as province,
 		sb.city as city,
 		sb.area as area,
+		(select name from sys_area sa where sa.id=sb.province) as provinceName,
+		(select name from sys_area sa where sa.id=sb.city) as cityName,
+		(select name from sys_area sa where sa.id=sb.area) as areaName,
 		sb.bank_branch as bankBranch,
 		sb.bank_card_no as bankCardNo,
 		sb.user_name as userName,
 		sb.phone as phone,
 		sb.status as status,
+		(CASE WHEN sb.status = 0 THEN '未审核' WHEN sb.status = 1 THEN '审核成功' WHEN sb.status = 2 THEN '审核失败'END) as statusName,
 		sb.create_date as createDate,
 		sb.create_by as createBy,
 		sb.update_date as updateDate,
@@ -106,7 +111,7 @@
 			  and sb.id = #{id}
 			</if>
 			<if test="userId != null ">
-			  and sb.user_id = #{userId}
+			  and sb.user_id like concat("%",#{userId},"%" )
 			</if>
 			<if test="bankName != null and bankName != '' ">
 			  and sb.bank_name = #{bankName}

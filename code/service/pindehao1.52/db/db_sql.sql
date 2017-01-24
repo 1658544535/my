@@ -861,3 +861,6 @@ ALTER TABLE user_manufacturer_withdraw add withdrawal_fee double(20,2) default 0
 ALTER TABLE user_manufacturer_withdraw add bank_name varchar(100) default '' COMMENT '银行名';
 ALTER TABLE user_manufacturer_withdraw add bank_card_no varchar(50) default '' COMMENT '银行卡号';
 ALTER TABLE user_manufacturer_withdraw add user_name varchar(50) default '' COMMENT '开户人姓名';
+
+##新增菜单
+INSERT INTO sys_menu (id, name, name_en, level, path, icon, sorting, status, create_by, create_date, update_by, update_date, remarks, version) VALUES (312, '商家账户审核', '', 174, 'goSellerBank.do', null, 5, 1, 1, '2017-01-24 09:17:18', 1, '2017-01-24 09:44:44', null, 0);

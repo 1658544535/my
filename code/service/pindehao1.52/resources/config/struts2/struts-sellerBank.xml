@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="sellerBank" extends="default">
+		<!-- 进入列表页面 -->
+		<action name="goSellerBank" class="com.tzmb2c.web.action.SellerBankAction" method="goSellerBank">
+			<result name="success">/page/system/sellerBank/sellerBankList.jsp</result>
+		</action>
+		<!-- 新增 -->
+		<action name="goAddSellerBank" class="com.tzmb2c.web.action.SellerBankAction" method="goAddSellerBank">
+		    <result name="success">/page/system/sellerBank/addSellerBank.jsp</result>
+		</action>
+		<!-- 新增提交 -->
+		<action name="addSellerBank" class="com.tzmb2c.web.action.SellerBankAction" method="add">
+		</action>		
+		<!-- 编辑页面 -->
+		<action name="goEditSellerBank" class="com.tzmb2c.web.action.SellerBankAction" method="goEditSellerBank">
+			<result name="success">/page/system/sellerBank/updateSellerBank.jsp</result>
+		</action>
+		<!-- 编辑提交 -->
+		<action name="updateSellerBank" class="com.tzmb2c.web.action.SellerBankAction" method="update">
+		</action>
+	</package>
+	<package name="sellerBank-json" extends="json-default">
+		<!-- 内容 -->
+		<action name="sellerBankList" class="com.tzmb2c.web.action.SellerBankAction" method="sellerBankList">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>	
+		<!-- 条数 -->
+		<action name="sellerBankCnt" class="com.tzmb2c.web.action.SellerBankAction" method="sellerBankRowCnt">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
+		<!-- 根据ID删除 -->
+		<action name="delSellerBank" class="com.tzmb2c.web.action.SellerBankAction" method="delete">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+		<!-- 删除选中 -->
+		<action name="delSellerBankAll" class="com.tzmb2c.web.action.SellerBankAction" method="deleteAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 通过审核 -->
+		<action name="checkSellerBank" class="com.tzmb2c.web.action.SellerBankAction" method="check">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 审核不通过-->
+		<action name="uncheckSellerBank" class="com.tzmb2c.web.action.SellerBankAction" method="uncheck">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中通过审核 -->
+		<action name="checkSellerBankAll" class="com.tzmb2c.web.action.SellerBankAction" method="checkAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>		
+		<!-- 选中取消审核 -->
+		<action name="uncheckSellerBankAll" class="com.tzmb2c.web.action.SellerBankAction" method="uncheckAll">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>			
+	</package>
+</struts>
