@@ -441,7 +441,7 @@ $(document).delegate(".uploadPreview_imgfile","change",function(){
                                             </thead>
                                             <tbody> </tbody>
                                         </table>
-                                        <p align="right"><font color="#df434e" size="1">（图片展示在商品详情页）</font></p>
+                                        <!-- <p align="right"><font color="#df434e" size="1">（图片展示在商品详情页）</font></p> -->
                                     </div>
                                 </div>
                             </div>
