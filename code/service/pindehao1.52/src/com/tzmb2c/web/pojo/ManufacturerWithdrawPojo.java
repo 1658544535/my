@@ -51,6 +51,7 @@ public class ManufacturerWithdrawPojo extends SuperPojo {
   private Double withdrawalFee;
   private String bankName;
   private String bankCardNo;
+  private String userName1;
 
   public String getStatusName() {
     return statusName;
@@ -198,6 +199,14 @@ public class ManufacturerWithdrawPojo extends SuperPojo {
 
   public void setBankCardNo(String bankCardNo) {
     this.bankCardNo = bankCardNo;
+  }
+
+  public String getUserName1() {
+    return userName1;
+  }
+
+  public void setUserName1(String userName1) {
+    this.userName1 = userName1;
   }
 
 
