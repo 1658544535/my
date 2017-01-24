@@ -329,6 +329,8 @@
     <include file="/config/struts2/struts-aliRedEnvelope.xml" /> 
     <!-- 拼得客当月销售额记录表 -->
     <include file="/config/struts2/struts-pindekeMonthSale.xml" /> 
+    <!-- 商家银行账户表 -->
+    <include file="/config/struts2/struts-sellerBank.xml" /> 
     <!-- ****** API xml ****** -->
     <!-- api入口 -->
 	<include file="/config/struts2/struts-api.xml" />

@@ -59,6 +59,34 @@ public class SellerBankPojo extends SuperPojo {
    */
   private Integer status;
   private Double balance;
+  private String statusName;
+  private String provinceName;
+  private String cityName;
+  private String areaName;
+
+  public String getProvinceName() {
+    return provinceName;
+  }
+
+  public void setProvinceName(String provinceName) {
+    this.provinceName = provinceName;
+  }
+
+  public String getCityName() {
+    return cityName;
+  }
+
+  public void setCityName(String cityName) {
+    this.cityName = cityName;
+  }
+
+  public String getAreaName() {
+    return areaName;
+  }
+
+  public void setAreaName(String areaName) {
+    this.areaName = areaName;
+  }
 
   public void setId(Long value) {
     id = value;
@@ -154,5 +182,13 @@ public class SellerBankPojo extends SuperPojo {
 
   public void setBalance(Double balance) {
     this.balance = balance;
+  }
+
+  public String getStatusName() {
+    return statusName;
+  }
+
+  public void setStatusName(String statusName) {
+    this.statusName = statusName;
   }
 }

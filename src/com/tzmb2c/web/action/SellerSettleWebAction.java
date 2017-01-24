@@ -638,7 +638,12 @@ public class SellerSettleWebAction extends SuperAction {
       map.put("userId", sysLoginPojo.getId());
       List<SellerBankPojo> sellerBankList = sellerBankService.listPage(map);
       if (sellerBankList.size() > 0) {
-        sellerBankPojo = sellerBankList.get(0);
+        if (sellerBankList.get(0).getStatus() == 1) {
+          sellerBankPojo = sellerBankList.get(0);
+        } else {
+          FileUtil.alertMessageBySkip("你的账户还未通过审核哦！", "goWithdrawWeb.do");
+          return null;
+        }
       } else {
         FileUtil.alertMessageBySkip("你还未绑定银行卡哦！", "goWithdrawWeb.do");
         return null;
