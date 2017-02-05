@@ -96,4 +96,6 @@ public interface SysLoginMapper {
   List<SysLoginPojo> listPage(Map<String, Object> params) throws SQLException;
 
   List<SysLoginExcelPojo> getSysLoginAll2(Map<String, Object> map);
+
+  List<SysLoginPojo> getSUserList(Map<String, Object> params) throws SQLException;
 }

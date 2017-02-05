@@ -804,6 +804,9 @@
 		<if test="sellerGoodsPrice != null">
 		    and t.seller_goods_price = #{sellerGoodsPrice}
 		</if>
+		<if test="suserId != null">
+			and t.suser_id = #{suserId}
+		</if>
 		<if test="logisticsName!=null and logisticsName!=''">
 			and (s.logistics_name like concat("%",(SELECT name_en FROM sys_dict WHERE NAME LIKE concat("%",#{logisticsName},"%") AND TYPE = 'logistics_type'),"%")
 			 or s.logistics_name like concat("%",#{logisticsName},"%"))
@@ -811,6 +814,7 @@
 		<if test="logisticsNo!=null and logisticsNo!=''">
 			and s.logistics_no = #{logisticsNo}
 		</if>
+		
 		<if test="notuserIds !=null and notuserIds !=''">
 		and t.user_id  not in 
 		<foreach collection="notuserIds" item="notuserIds" index="index" open="(" separator="," close=")">
@@ -1118,6 +1122,9 @@
 		</if>
 		<if test="sellerGoodsPrice != null">
 		    and t.seller_goods_price = #{sellerGoodsPrice}
+		</if>
+		<if test="suser_id != null">
+			and t.suser_id = #{suserId}
 		</if>
 		<if test="userName !=null and userName !=''">
 			and a.name like concat("%",#{userName},"%")

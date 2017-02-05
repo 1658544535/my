@@ -793,6 +793,10 @@ public class OrderAction extends SuperAction {
     ac.put("consigneeType", sysDictService.getSysDictListByType("consignee_type"));
     ac.put("payMethod", sysDictService.getSysDictListByType("pay_method_type"));
     ac.put("pageNoVal", pageNoVal);
+    // 商家列表
+    Map<String, Object> params = new HashMap<String, Object>();
+    List<SysLoginPojo> suserList = sysLoginService.getSUserList(params);
+    ac.put("suserList", suserList);
     Map<String, Object> map = new HashMap<String, Object>();
     if (order != null) {
       map.put("orderNo", order.getOrderNo());
@@ -830,6 +834,7 @@ public class OrderAction extends SuperAction {
       map.put("groupEndDateStr", order.getGroupEndDateStr());
       map.put("notShip", order.getNotShip());
       map.put("pdkLoginname", order.getPdkLoginname());
+      map.put("suserId", order.getSuserId());
     }
     /*
      * if (agency!= null) { map.put("agencyId",agency.getAgencyId()); }
@@ -921,6 +926,7 @@ public class OrderAction extends SuperAction {
       map.put("groupEndDateStr", order.getGroupEndDateStr());
       map.put("notShip", order.getNotShip());
       map.put("pdkLoginname", order.getPdkLoginname());
+      map.put("suserId", order.getSuserId());
     }
     /*
      * if (agency!= null) { map.put("agencyId",agency.getAgencyId()); }
@@ -4644,6 +4650,11 @@ public class OrderAction extends SuperAction {
     }
     if (b != null) {
       page.setRowCount(0);
+      // 商家列表
+      ActionContext ac = ActionContext.getContext();
+      Map<String, Object> params = new HashMap<String, Object>();
+      List<SysLoginPojo> suserList = sysLoginService.getSUserList(params);
+      ac.put("suserList", suserList);
     } else {
       ActionContext ac = ActionContext.getContext();
       ac.put("orderStatus", sysDictService.getSysDictListByType("order_status"));
@@ -4689,6 +4700,7 @@ public class OrderAction extends SuperAction {
         map.put("groupEndDateStr", order.getGroupEndDateStr());
         map.put("notShip", order.getNotShip());
         map.put("pdkLoginname", order.getPdkLoginname());
+        map.put("suserId", order.getSuserId());
       }
       /*
        * if (agency!= null) { map.put("agencyId",agency.getAgencyId()); }
@@ -4775,6 +4787,7 @@ public class OrderAction extends SuperAction {
         map.put("groupEndDateStr", order.getGroupEndDateStr());
         map.put("notShip", order.getNotShip());
         map.put("pdkLoginname", order.getPdkLoginname());
+        map.put("suserId", order.getSuserId());
       }
       /*
        * if (agency!= null) { map.put("agencyId",agency.getAgencyId()); }

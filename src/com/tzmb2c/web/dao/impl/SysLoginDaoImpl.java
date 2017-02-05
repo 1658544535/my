@@ -228,12 +228,16 @@ public class SysLoginDaoImpl implements SysLoginDao {
 
   @Override
   public List<SysLoginPojo> listPage(Map<String, Object> params) throws SQLException {
-    // TODO Auto-generated method stub
     return sysLoginMapper.listPage(params);
   }
 
   @Override
   public List<SysLoginExcelPojo> getSysLoginAll2(Map<String, Object> map) {
     return sysLoginMapper.getSysLoginAll2(map);
+  }
+
+  @Override
+  public List<SysLoginPojo> getSUserList(Map<String, Object> params) throws SQLException {
+    return sysLoginMapper.getSUserList(params);
   }
 }
