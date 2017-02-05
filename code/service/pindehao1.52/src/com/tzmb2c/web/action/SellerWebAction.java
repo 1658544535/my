@@ -2862,7 +2862,8 @@ public class SellerWebAction extends SuperAction {
       page = new Pager();
     }
     if (logiPojo != null) {
-      userOrderRefundPojo.setUserId(logiPojo.getId());
+      UserOrderRefundPojo userOrderRefund = new UserOrderRefundPojo();
+      userOrderRefund.setUserId(logiPojo.getId());
       /*
        * ShopPojo shopPojo = new ShopPojo(); shopPojo.setUserId(logiPojo.getId()); shopPojo =
        * shopService.findShop(shopPojo); if (shopPojo != null) {
@@ -2870,13 +2871,37 @@ public class SellerWebAction extends SuperAction {
        * userOrderRefundPojo.setShopId(-1l); }
        */
       if (userOrderRefundPojo != null) {
-        userOrderRefundPojo.setStatus(userOrderRefundPojo.getStatus());
-        userOrderRefundPojo.setOrderNo(userOrderRefundPojo.getOrderNo());
+        if (userOrderRefundPojo.getStatus() != null && userOrderRefundPojo.getStatus() != -1) {
+          userOrderRefund.setStatus(userOrderRefundPojo.getStatus());
+        }
+        if (userOrderRefundPojo.getReStatus() != null && userOrderRefundPojo.getReStatus() != -1) {
+          userOrderRefund.setReStatus(userOrderRefundPojo.getReStatus());
+        }
+        if (userOrderRefundPojo.getOrderNo() != null
+            && !"".equals(userOrderRefundPojo.getOrderNo().trim())) {
+          userOrderRefund.setOrderNo(userOrderRefundPojo.getOrderNo());
+        }
+        if (userOrderRefundPojo.getProductNum() != null
+            && !"".equals(userOrderRefundPojo.getProductNum().trim())) {
+          userOrderRefund.setProductNum(userOrderRefundPojo.getProductNum());
+        }
+        if (userOrderRefundPojo.getConsigneePhone() != null
+            && !"".equals(userOrderRefundPojo.getConsigneePhone().trim())) {
+          userOrderRefund.setConsigneePhone(userOrderRefundPojo.getConsigneePhone());
+        }
+        if (userOrderRefundPojo.getIdStr() != null
+            && !"".equals(userOrderRefundPojo.getIdStr().trim())
+            && !"0".equals(userOrderRefundPojo.getIdStr().trim())) {
+          userOrderRefund.setId(Long.valueOf(userOrderRefundPojo.getIdStr()));
+        }
+        if (userOrderRefundPojo.getType() != 0) {
+          userOrderRefund.setType(userOrderRefundPojo.getType());
+        }
         // userOrderRefundPojo.setServiceInvolved(userOrderRefundPojo.getServiceInvolved());
       }
       page.setPageSize(10);
       userOrderRefundPojos =
-          userOrderRefundService.findUserOrderRefundByUserId2(userOrderRefundPojo, page);
+          userOrderRefundService.findUserOrderRefundByUserId2(userOrderRefund, page);
     }
     JSONArray json = JSONArray.fromObject(userOrderRefundPojos);
     page.setResult(json.toString());

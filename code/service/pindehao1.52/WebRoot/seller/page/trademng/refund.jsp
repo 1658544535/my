@@ -74,11 +74,35 @@
                                                     </option>
                                                 </select>  
                                            </div> --%>    
+                                           <div class="ui-form-item">
+                                                <label for="" class="ui-label">
+                                                    订单号
+                                                </label>
+                                                <input class="ui-input" type="text" name="userOrderRefundPojo.orderNo" value="">
+                                            </div>
+                                            <div class="ui-form-item">
+                                                <label for="" class="ui-label">
+                                                    商品货号
+                                                </label>
+                                                <input class="ui-input" type="text" name="userOrderRefundPojo.productNum" value="">
+                                            </div>
+                                            <div class="ui-form-item">
+                                                <label for="" class="ui-label">
+                                                    收货手机
+                                                </label>
+                                                <input class="ui-input" type="text" name="userOrderRefundPojo.consigneePhone" value="">
+                                            </div>
+                                            <div class="ui-form-item">
+                                                <label for="" class="ui-label">
+                                                    退款编号
+                                                </label>
+                                                <input class="ui-input" type="text" name="userOrderRefundPojo.idStr" value="">
+                                            </div>
                                        <div class="ui-form-item">         
                                                  <label for="" class="ui-label">
                                                     售后状态
                                                 </label>
-                                                <select class="ui-select" name="userOrderRefundPojo.status" id="status">
+                                                <%-- <select class="ui-select" name="userOrderRefundPojo.status" id="status">
                                                     <option value="0" selected="">
                                                         全部
                                                     </option>
@@ -103,13 +127,47 @@
                                                     <option value="7">
                                                         退款成功
                                                     </option>
+                                                </select> --%>
+                                                <select class="ui-select" name="userOrderRefundPojo.reStatus" id="reStatus">
+                                                    <option value="-1" selected="">
+                                                        全部
+                                                    </option>
+                                                    <option value="0">
+                                                        无售后/取消售后
+                                                    </option>
+                                                    <option value="1">
+                                                        售后处理中
+                                                    </option>
+                                                    <option value="2">
+                                                        退款中
+                                                    </option>
+                                                    <option value="3">
+                                                        退款成功
+                                                    </option>
                                                 </select>
                                             </div>
                                             <div class="ui-form-item">
                                                 <label for="" class="ui-label">
-                                                    订单号
+                                                    售后类型
                                                 </label>
-                                                <input class="ui-input" type="text" name="userOrderRefundPojo.orderNo" value="">
+                                                <select class="ui-select" name="userOrderRefundPojo.type" id="type">
+                                                    <option value="0" selected="">
+                                                        全部
+                                                    </option>
+                                                    <option value="1">
+                                                        仅退款
+                                                    </option>
+                                                    <option value="2">
+                                                        退货退款
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="ui-form-item">
+                                                <label for="" class="ui-label">
+                                                    申请时间
+                                                </label>
+                                                <input class="ui-input" type="text" name="" value="">
+                                            	<input class="ui-input" type="text" name="" value="">
                                             </div>
                                             <div class="ui-form-item search-btn">
 <!--                                            		<input type="hidden" name="page.pageNo" value=${page.pageNo}  id="pageNo" /> -->
@@ -190,7 +248,8 @@ function query() {
 
 function orderRefundDetails(id){
 //	serviceInvolved = $("#serviceInvolved").val();
-	status = $("#status").val();
+	//status = $("#status").val();
+	status = 0;
 	$.ajax({
 		type: "post",
 //		url: "findUserOrderRefundListByorderId.do?orderId="+id+"&serviceInvolved="+serviceInvolved+"&uorStatus="+status,
@@ -202,29 +261,30 @@ function orderRefundDetails(id){
 			for (var i = 0; i < o_msg.length; i++) {
 				var sh="";
 				var zc="";
-				var wl="<p><a href='goRefundExpressSearch.do?type="+o_msg[i].logType+ "&postid="+o_msg[i].logistics+"' target='_blank'>"+"查看物流"+"</a></p>";
+				var wl="";
+				//wl += "<p><a href='goRefundExpressSearch.do?type="+o_msg[i].logType+ "&postid="+o_msg[i].logistics+"' target='_blank'>"+"查看物流"+"</a></p>";
 				var reStatusName="-";
 				var reTypeName="-";
 				if(o_msg[i].type==1){
-					reTypeName="退款";
-					wl="<p style='display:none;'><a href='goRefundExpressSearch.do?type="+o_msg[i].logType+ "&postid="+o_msg[i].logistics+"' target='_blank'>"+"查看物流"+"</a></p>";
+					reTypeName="仅退款";
+					//wl="<p style='display:none;'><a href='goRefundExpressSearch.do?type="+o_msg[i].logType+ "&postid="+o_msg[i].logistics+"' target='_blank'>"+"查看物流"+"</a></p>";
 				}else if(o_msg[i].type==2){
-					reTypeName="退货";
-					wl="<p style='display:none;'><a href='goRefundExpressSearch.do?type="+o_msg[i].logType+ "&postid="+o_msg[i].logistics+"' target='_blank'>"+"查看物流"+"</a></p>";
+					reTypeName="退货退款";
+					//wl="<p style='display:none;'><a href='goRefundExpressSearch.do?type="+o_msg[i].logType+ "&postid="+o_msg[i].logistics+"' target='_blank'>"+"查看物流"+"</a></p>";
 				}else if(o_msg[i].type==3){
 					reTypeName="售后服务";
 				}
-				if(o_msg[i].status==1){
+				/* if(o_msg[i].status==1){
 					reStatusName="审核中";
-					zc="<p style='margin-bottom: 10px'><a id='cfgoods' href='goRefundDetailWeb.do?orderDetailPojo.id="+o_msg[i].detailId+ "#reject'  class='ui-button ui-button-sblue' >申请仲裁</a></p>";
+					//zc="<p style='margin-bottom: 10px'><a id='cfgoods' href='goRefundDetailWeb.do?orderDetailPojo.id="+o_msg[i].detailId+ "#reject'  class='ui-button ui-button-sblue' >申请仲裁</a></p>";
 				}else if(o_msg[i].status==2){
 					reStatusName="请退货";
-					zc="<p style='margin-bottom: 10px'><a id='cfgoods' href='goRefundDetailWeb.do?orderDetailPojo.id="+o_msg[i].detailId+ "#reject' class='ui-button ui-button-sblue' >申请仲裁</a></p>";
+					//zc="<p style='margin-bottom: 10px'><a id='cfgoods' href='goRefundDetailWeb.do?orderDetailPojo.id="+o_msg[i].detailId+ "#reject' class='ui-button ui-button-sblue' >申请仲裁</a></p>";
 				}else if(o_msg[i].status==3){
 					reStatusName="退货中";
-					wl="<p style='display:none;'><a href='goRefundExpressSearch.do?type="+o_msg[i].logType+ "&postid="+o_msg[i].logistics+"' target='_blank'>"+"查看物流"+"</a></p>";
-					sh="<p style='margin-bottom: 10px'><a id='cfgoods' onclick='confirmGoods("+o_msg[i].id+ ","+o_msg[i].id+ ","+o_msg[i].detailId+")' href='#' ba-ins='click~refundConfirm:2617680' class='ui-button ui-button-sblue' >确认收货</a></p>";
-					zc="<p style='margin-bottom: 10px'><a id='cfgoods' href='goRefundDetailWeb.do?orderDetailPojo.id="+o_msg[i].detailId+ "#reject'  class='ui-button ui-button-sblue' >申请仲裁</a></p>";
+					//wl="<p style='display:none;'><a href='goRefundExpressSearch.do?type="+o_msg[i].logType+ "&postid="+o_msg[i].logistics+"' target='_blank'>"+"查看物流"+"</a></p>";
+					//sh="<p style='margin-bottom: 10px'><a id='cfgoods' onclick='confirmGoods("+o_msg[i].id+ ","+o_msg[i].id+ ","+o_msg[i].detailId+")' href='#' ba-ins='click~refundConfirm:2617680' class='ui-button ui-button-sblue' >确认收货</a></p>";
+					//zc="<p style='margin-bottom: 10px'><a id='cfgoods' href='goRefundDetailWeb.do?orderDetailPojo.id="+o_msg[i].detailId+ "#reject'  class='ui-button ui-button-sblue' >申请仲裁</a></p>";
 				}else if(o_msg[i].status==4){
 					reStatusName="退货成功";
 				}else if(o_msg[i].status==5){
@@ -232,6 +292,21 @@ function orderRefundDetails(id){
 				}else if(o_msg[i].status==6){
 					reStatusName="审核不成功";
 				}else if(o_msg[i].status==7){
+					reStatusName="退款成功";
+				} */
+				if(o_msg[i].reStatus == 0){
+					reStatusName="无售后/取消售后";
+				}else if(o_msg[i].reStatus == 1){
+					if(o_msg[i].type == 1){
+						reStatusName="仅退款，待商家处理";
+					}else if(o_msg[i].type == 2){
+						reStatusName="退货退款，待商家处理";
+					}else{
+						reStatusName="售后处理中";
+					}
+				}else if(o_msg[i].reStatus == 2){
+					reStatusName="退款中";
+				}else if(o_msg[i].reStatus == 3){
 					reStatusName="退款成功";
 				}
 				var sta=2;
@@ -254,7 +329,7 @@ function orderRefundDetails(id){
                     o_msg[i].productNum+
                 "</span>"+
                 "<span class='sku'>订单号："+
-                    "<a target='_blank' class='c-999' href='getMyOrderDetailWeb.do?orderPojo.id="+o_msg[i].orderId+"'>"+
+                    "<a target='_blank' class='c-999' href='javascript:;'>"+
                         o_msg[i].orderNo+
                     "</a>"+
                 "</span>"+
@@ -301,7 +376,7 @@ function installPage() {
 			"<div class='trade-entry mt-10'>"+
 				"<div class='order-entry' >"+
 					"<div class='order-head'>"+
-					"<span>订单号:"+this.orderNo+"</span>"+
+					//"<span>订单号:"+this.orderNo+"</span>"+
 				    "<span>申请时间:"+this.creatDateString+"</span>"+
 				    "<span id='buyname'>买家姓名:"+this.loginName+"</span>"+
 				    "<span>手机号码:"+this.consigneePhone+"</span>"+

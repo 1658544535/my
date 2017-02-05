@@ -87,7 +87,25 @@ public class UserOrderRefundPojo extends SuperPojo {
   private String productNum;
   private Long activityId;
   private Integer source;
+  private Integer reStatus;
+  private String idStr;
 
+
+  public String getIdStr() {
+    return idStr;
+  }
+
+  public void setIdStr(String idStr) {
+    this.idStr = idStr;
+  }
+
+  public Integer getReStatus() {
+    return reStatus;
+  }
+
+  public void setReStatus(Integer reStatus) {
+    this.reStatus = reStatus;
+  }
 
   public Long getActivityId() {
     return activityId;
