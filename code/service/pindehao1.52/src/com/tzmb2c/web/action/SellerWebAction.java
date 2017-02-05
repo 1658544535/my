@@ -2897,6 +2897,15 @@ public class SellerWebAction extends SuperAction {
         if (userOrderRefundPojo.getType() != 0) {
           userOrderRefund.setType(userOrderRefundPojo.getType());
         }
+        if (userOrderRefundPojo.getBeginDate() != null
+            && !"".endsWith(userOrderRefundPojo.getBeginDate())
+            && userOrderRefundPojo.getEndDate() != null
+            && !"".endsWith(userOrderRefundPojo.getEndDate())
+            && userOrderRefundPojo.getBeginDate().length() == 19
+            && userOrderRefundPojo.getEndDate().length() == 19) {
+          userOrderRefund.setBeginDate(userOrderRefundPojo.getBeginDate());
+          userOrderRefund.setEndDate(userOrderRefundPojo.getEndDate());
+        }
         // userOrderRefundPojo.setServiceInvolved(userOrderRefundPojo.getServiceInvolved());
       }
       page.setPageSize(10);

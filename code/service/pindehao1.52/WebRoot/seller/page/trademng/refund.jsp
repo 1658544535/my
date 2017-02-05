@@ -14,7 +14,7 @@
 		<script type="text/javascript" src="<s:i18n name="sysconfig"><s:text name="seller_dns" /></s:i18n>/js/jquery-ui.js"></script>
 		<script type="text/javascript" src="<s:i18n name="sysconfig"><s:text name="seller_dns" /></s:i18n>/js/pagination/jquery.pagination.js"></script>
 		<script type="text/javascript" src="<s:i18n name="sysconfig"><s:text name="seller_dns" /></s:i18n>/js/sys_util_web.js"></script>
-		
+		<script src="<s:i18n name="sysconfig"><s:text name="seller_dns" /></s:i18n>/js/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
 		<style>
 			.disNone{
 				display:none;
@@ -166,8 +166,8 @@
                                                 <label for="" class="ui-label">
                                                     申请时间
                                                 </label>
-                                                <input class="ui-input" type="text" name="" value="">
-                                            	<input class="ui-input" type="text" name="" value="">
+                                                <input class="ui-input" type="text" name="userOrderRefundPojo.beginDate" value="" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'e\')}'})" id="s">-
+                                            	<input class="ui-input" type="text" name="userOrderRefundPojo.endDate" value="" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm;ss',minDate:'#F{$dp.$D(\'s\')}'})" id="e">
                                             </div>
                                             <div class="ui-form-item search-btn">
 <!--                                            		<input type="hidden" name="page.pageNo" value=${page.pageNo}  id="pageNo" /> -->
