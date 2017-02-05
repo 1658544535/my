@@ -81,9 +81,7 @@ public class autoRecTask {
                   grouponActivityService.getById(orderPojo.getActivityId());
               if (grouponActivity != null && grouponActivity.getRebateRatio() > 0.0) {
                 logger.info("计算返佣金额!");
-                Double price =
-                    grouponActivity.getRebateRatio() / 100
-                        * (orderPojo.getFactPrice() + orderPojo.getUsedPrice());
+                Double price = orderPojo.getRebatePrice();
                 UserPindekeInfoPojo userPindekeInfo =
                     userPindekeInfoService.findByUserId(orderPojo.getPdkUid());
                 if (userPindekeInfo != null) {
@@ -100,7 +98,7 @@ public class autoRecTask {
                   logger.info("修改订单返佣信息!");
                   OrderPojo pdkOrderUp = new OrderPojo();
                   pdkOrderUp.setId(orderPojo.getId());
-                  pdkOrderUp.setRebatePrice(price);
+                  // pdkOrderUp.setRebatePrice(price);
                   pdkOrderUp.setRebateTime(nowDate);
                   pdkOrderUp.setIsRebate(1);
                   int uo = orderService.updateOrder(pdkOrderUp);

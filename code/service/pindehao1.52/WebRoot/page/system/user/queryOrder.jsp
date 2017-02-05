@@ -209,9 +209,9 @@ function allcb(){
 							<select name="order.orderStatus" id="orderStatus"
 								class="floatLeft">
 									<option value="">----请选择----</option>
-									<c:forEach items="${orderStatus}" var="orderStatus">
-											<c:if test="${orderStatus.value == 2 or orderStatus.value == 3 or orderStatus.value == 4 }"><option value="${orderStatus.value}" <c:if test="${order.orderStatus == orderStatus.value }">selected=selected</c:if>>${orderStatus.name}</option></c:if>
-									</c:forEach>
+									<option value="2">已付款</option>
+									<option value="3">已发货</option>
+									<option value="4">已确认</option>
 							</select>
 						</td>	
 						<c:if test="${os == '' || os == 3}">

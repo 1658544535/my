@@ -871,6 +871,12 @@ public class SysLoginAction extends SuperAction {
     return SUCCESS;
   }
 
+  public String updateRemarks() throws Exception {
+    // remarks = java.net.URLDecoder.decode(remarks, "UTF-8");
+    sysLoginService.updateSysLogin(sysLogin);
+    return SUCCESS;
+  }
+
   public AgencyPojo getAgency() {
     return agency;
   }

@@ -80,6 +80,9 @@
 		<!-- 修改处理订单状态 -->
 		<action name="updateOrderhandleStatus" class="com.tzmb2c.web.action.OrderAction" method="updateOrderhandleStatus">
 		</action>
+		<!--批量确认收货 -->
+		<action name="updatesendOrder" class="com.tzmb2c.web.action.OrderAction" method="updatesendOrder">
+		</action>
 	</package>
 	<package name="order-refund" extends="struts-default">
 		<!-- 支付宝退款异步通知 -->

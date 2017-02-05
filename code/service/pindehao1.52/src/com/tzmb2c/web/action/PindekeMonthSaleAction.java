@@ -219,8 +219,7 @@ public class PindekeMonthSaleAction extends SuperAction {
       map.put("sectionTime", UtilDate.getDate().substring(0, 6));
     }
     map.put("type", 1);
-    map.put("orderBy", " pms.ranking asc,pms.id asc ");
-    // map.put("orderBy", " pms.total desc,pms.id asc ");
+    map.put("orderBy", " pms.ranking asc ");
     List<PindekeMonthSalePojo> pindekeMonthSaleList = null;
     try {
       pindekeMonthSaleList = pindekeMonthSaleService.listPage2(map);
@@ -263,11 +262,11 @@ public class PindekeMonthSaleAction extends SuperAction {
         map.put("endTimeStr", endTimeStr);
       }
       map.put("type", 2);
-      Calendar c = Calendar.getInstance();
-      c = Calendar.getInstance();
-      c.setTime(date);
-      c.add(Calendar.MONTH, -1);
-      map.put("createDateStr", StringUtil.dateString(c.getTime()));
+      // Calendar c = Calendar.getInstance();
+      // c = Calendar.getInstance();
+      // c.setTime(date);
+      // c.add(Calendar.MONTH, -1);
+      // map.put("createDateStr", StringUtil.dateString(c.getTime()));
       int i = pindekeMonthSaleService.countBy2(map);
       page.setRowCount(i);
     } catch (Exception e) {
@@ -305,11 +304,11 @@ public class PindekeMonthSaleAction extends SuperAction {
       map.put("endTimeStr", endTimeStr);
     }
     map.put("type", 2);
-    Calendar c = Calendar.getInstance();
-    c = Calendar.getInstance();
-    c.setTime(date);
-    c.add(Calendar.MONTH, -1);
-    map.put("createDateStr", StringUtil.dateString(c.getTime()));
+    // Calendar c = Calendar.getInstance();
+    // c = Calendar.getInstance();
+    // c.setTime(date);
+    // c.add(Calendar.MONTH, -1);
+    // map.put("createDateStr", StringUtil.dateString(c.getTime()));
     try {
       int i = pindekeMonthSaleService.countBy2(map);
       page.setRowCount(i);
@@ -352,13 +351,12 @@ public class PindekeMonthSaleAction extends SuperAction {
       map.put("endTimeStr", endTimeStr);
     }
     map.put("type", 2);
-    Calendar c = Calendar.getInstance();
-    c = Calendar.getInstance();
-    c.setTime(date);
-    c.add(Calendar.MONTH, -1);
-    map.put("createDateStr", StringUtil.dateString(c.getTime()));
-    map.put("orderBy", " pms.ranking asc,pms.id asc ");
-    // map.put("orderBy", " pms.total desc,pms.id asc ");
+    // Calendar c = Calendar.getInstance();
+    // c = Calendar.getInstance();
+    // c.setTime(date);
+    // c.add(Calendar.MONTH, -1);
+    // map.put("createDateStr", StringUtil.dateString(c.getTime()));
+    map.put("orderBy", " pms.total desc,pms.id asc ");
     List<PindekeMonthSalePojo> pindekeMonthSaleList = null;
     try {
       pindekeMonthSaleList = pindekeMonthSaleService.listPage2(map);

@@ -150,7 +150,8 @@
 			udl.remark as remark,
 			udl.surplus_price as surplusPrice,
 			udl.false_date as falseDate,
-			upi.pindeke_number as pindekeNumber
+			upi.pindeke_number as pindekeNumber,
+		    (select loginname from sys_login where id=udl.user_id) as loginname
 		from user_deal_log udl
 			left join user_pindeke_info upi on upi.user_id = udl.user_id
 		where 1=1

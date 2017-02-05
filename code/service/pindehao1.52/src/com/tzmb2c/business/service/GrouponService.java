@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -776,15 +777,22 @@ public class GrouponService {
                       Util.log("团状态改为拼团成功且订单状态改为待发货,插入成团时间");
                       if (orderList != null && orderList.size() > 0) {
                         OrderPojo orderup = null;
+                        Double rebatePrice = 0.0;
+                        Double factPrice = 0.0;
                         for (OrderPojo order : orderList) {
                           orderup = new OrderPojo();
                           orderup.setIsSuccess(1);
                           orderup.setGroupDate(new Date());
                           orderup.setId(order.getId());
-                          // 来源是拼得客的设置订单拼得客用户id
-                          // if (source == 8) {
-                          // orderup.setPdkUid(grouponActivityRecordPojo.getUserId());
-                          // }
+                          if (source == 8 && order.getFactPrice() != null
+                              && grouponActivityPojo.getRebateRatio() != null) {
+                            Util.log("记录拼得客返佣比例和金额");
+                            factPrice = 0.0;
+                            factPrice = order.getFactPrice() - order.getUsedPrice();
+                            rebatePrice = grouponActivityPojo.getRebateRatio() / 100 * factPrice;
+                            orderup.setRebateRatio(grouponActivityPojo.getRebateRatio());
+                            orderup.setRebatePrice(rebatePrice);
+                          }
                           orderService.updateOrder(orderup);
                         }
                       } else {
@@ -999,32 +1007,43 @@ public class GrouponService {
                             + "激活团免券成功" : "用户:" + grouponUserRecord.getUserId() + "激活团免券失败");
                       }
                     }
-                    if (source == 8) {
-                      Util.log("拼得客成团处理!");
-                      Util.log("查询这个团的全部订单!");
-                      params.clear();
-                      params.put("sourceId", grouponActivityRecordPojo.getId());
-                      params.put("isDeleteOrder", 0);
-                      params.put("isCancelOrder", 0);
-                      params.put("payStatus", 1);
-                      List<OrderPojo> orderList = orderService.listPage(params);
-                      if (orderList != null && orderList.size() > 0) {
-                        Util.log("计算返佣金额!");
-                        Double freezingPrice = 0.0;
-                        for (OrderPojo orderPojo : orderList) {
-                          freezingPrice +=
-                              grouponActivityPojo.getRebateRatio() / 100 * orderPojo.getFactPrice();
-                        }
-                        Util.log("返佣金额添加拼得客的冻结金额!");
-                        UserPindekeInfoPojo userPindekeInfo =
-                            userPindekeInfoService.findByUserId(orderList.get(0).getPdkUid());
-                        if (userPindekeInfo != null) {
-                          UserPindekeInfoPojo userPindekeInfoUp = new UserPindekeInfoPojo();
-                          userPindekeInfoUp.setId(userPindekeInfo.getId());
-                          userPindekeInfoUp.setFreezingPriceAdd(freezingPrice);
-                          userPindekeInfoService.update(userPindekeInfoUp);
+                    try {
+                      if (source == 8) {
+                        DecimalFormat df = new DecimalFormat("#.##");
+                        Util.log("拼得客成团处理!");
+                        Util.log("查询这个团的全部订单!");
+                        params.clear();
+                        params.put("sourceId", grouponActivityRecordPojo.getId());
+                        params.put("isDeleteOrder", 0);
+                        params.put("isCancelOrder", 0);
+                        params.put("payStatus", 1);
+                        List<OrderPojo> orderList = orderService.listPage(params);
+                        if (orderList != null && orderList.size() > 0) {
+                          Util.log("计算返佣金额!");
+                          Double freezingPrice = 0.0;
+                          Double factPrice = 0.0;
+                          for (OrderPojo orderPojo : orderList) {
+                            if (orderPojo.getRebateRatio() != null) {
+                              factPrice = 0.0;
+                              factPrice = orderPojo.getFactPrice() - orderPojo.getUsedPrice();
+                              freezingPrice += orderPojo.getRebateRatio() / 100 * factPrice;
+                            }
+                          }
+                          Util.log("返佣金额添加拼得客的冻结金额!");
+                          UserPindekeInfoPojo userPindekeInfo =
+                              userPindekeInfoService.findByUserId(orderList.get(0).getPdkUid());
+                          if (userPindekeInfo != null) {
+                            UserPindekeInfoPojo userPindekeInfoUp = new UserPindekeInfoPojo();
+                            userPindekeInfoUp.setId(userPindekeInfo.getId());
+                            userPindekeInfoUp.setFreezingPriceAdd(Double.valueOf(df
+                                .format(freezingPrice)));
+                            userPindekeInfoService.update(userPindekeInfoUp);
+                          }
                         }
                       }
+                    } catch (Exception e) {
+                      Util.log("拼得客成团处理异常!");
+                      e.printStackTrace();
                     }
                   } else {
                     OrderPojo orderPojo = orderService.getfindByIdOrder(orderId);
