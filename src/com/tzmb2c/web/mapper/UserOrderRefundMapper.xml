@@ -506,17 +506,39 @@
         uor.shop_id as shopId,
         uor.loginname as loginname,
         uo.consignee_phone as consigneePhone,
-        uo.out_trade_no as orderNo,
+        <!-- uo.out_trade_no as orderNo, -->
+        order_no as orderNo,
         uor.create_date as createDate,
         uor.service_involved as serviceInvolved,
         uor.logistics as logistics
-        from user_order_refund as uor LEFT JOIN user_order uo ON uor.order_id=uo.id
+        from user_order_refund as uor 
+        LEFT JOIN user_order uo ON uor.order_id=uo.id
+        left join user_order_detail uod on uod.order_id = uo.id
+        left join product p on p.id = uod.product_id
 		where uo.suser_id=#{userId}
-        <if test="status != null and status != ''">
+        <if test="status != null ">
             and uor.status=#{status}
         </if>
+        <if test="reStatus != null ">
+            and uod.re_status = #{reStatus}
+        </if>
+        <!-- <if test="orderNo != null and orderNo != ''">
+            and uo.out_trade_no like concat("%",#{orderNo},"%")
+        </if> -->
         <if test="orderNo != null and orderNo != ''">
-            and uo.out_trade_no like concat("%",#{orderNo},"%" )
+            and uo.order_no like concat("%",#{orderNo},"%")
+        </if>
+        <if test="productNum != null and productNum != ''">
+            and p.product_num like concat("%",#{productNum},"%")
+        </if>
+        <if test="consigneePhone != null and consigneePhone != ''">
+            and uo.consignee_phone like concat("%",#{consigneePhone},"%")
+        </if>
+        <if test="id != null ">
+            and uor.id = #{id}
+        </if>
+        <if test="type != null and type != 0 ">
+            and uor.type = #{type}
         </if>
         group by uor.order_id
         order by uor.id desc
@@ -532,8 +554,8 @@
 		uor.id as id,
 		uor.product_id as productId,
 		uor.product_name as productName,
-		uor.product_num as productNum,
-		uor.product_no as productNo,
+		t.product_num as productNum,
+		t.product_no as productNo,
 		uor.detail_id as detailId,
 		uor.images as images,
 		uor.order_id as orderId,
@@ -550,9 +572,11 @@
 		uor.service_involved as serviceInvolved,
 		uor.coupon_price as couponPrice,
 		(uor.stock_price*uor.refund_num) as sumPrice,
-		(uor.stock_price*uor.refund_num-uor.coupon_price) as refundSumPrice
+		(uor.stock_price*uor.refund_num-uor.coupon_price) as refundSumPrice,
+		uod.re_status as reStatus
 		from user_order_refund as uor left join user_shop us on uor.shop_id=us.id
 		left join product t on t.id=uor.product_id left join user_order uo on uo.id=uor.order_id
+		left join user_order_detail uod on uod.order_id = uo.id
 		where uor.order_id=#{orderId}
 		<if test="status != null and status != ''">
 			and uor.status=#{status}

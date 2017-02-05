@@ -223,6 +223,11 @@ public class UserOrderRefundServiceImpl implements UserOrderRefundService {
     if (userOrderRefundPojo != null) {
       map.put("userId", userOrderRefundPojo.getUserId());
       map.put("status", userOrderRefundPojo.getStatus());
+      map.put("reStatus", userOrderRefundPojo.getReStatus());
+      map.put("productNum", userOrderRefundPojo.getProductNum());
+      map.put("consigneePhone", userOrderRefundPojo.getConsigneePhone());
+      map.put("id", userOrderRefundPojo.getId());
+      map.put("type", userOrderRefundPojo.getType());
       map.put("orderNo", userOrderRefundPojo.getOrderNo());
       map.put("serviceInvolved", userOrderRefundPojo.getServiceInvolved());
     }

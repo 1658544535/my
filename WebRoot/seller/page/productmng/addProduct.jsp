@@ -117,6 +117,13 @@ $(document).delegate(".uploadPreview_imgfile","change",function(){
                                                 </p>
                                                 <p><span id="productType1_mgId"></span><span id="productTypeIds_mgId"></span><span id="productTypeId_mgId"></span></p>
                                             </div>
+                                            <div class="ui-form-item">
+                                                <label for="" class="ui-label">
+                                                    商品库存:
+                                                </label>
+                                                <p class="ui-form-text">0
+                                                </p>
+                                            </div>
                                             <%-- <div class="ui-form-item hide">
                                                 <label for="" class="ui-label">
                                                     <span class="ui-form-required">
