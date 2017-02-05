@@ -95,6 +95,8 @@
 				<param name="bufferSize">4096</param>
 			</result>  
 		</action>
+		<action name="updateRemarks" class="com.tzmb2c.web.action.SysLoginAction" method="updateRemarks">
+		</action>
 	</package>
 	
 	<package name="SysLogin-json" extends="json-default">

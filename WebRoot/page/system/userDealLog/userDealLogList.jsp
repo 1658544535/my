@@ -62,6 +62,7 @@
 				<table width="100%" border="0" class="Info_list_table">
 					<tr>
 						<th><input type="checkbox" id="selectcb" name="selectcb" onclick="allcb()" ></th>
+						<th>用户账号</th>
 						<th>申请人</th>
 						<th>转账方式</th>
 						<th>转账帐号</th>
@@ -131,6 +132,7 @@
 		
 		$("#body").append(
 				"<tr><td><input name='tids' type='checkbox' value="+this.id +" /></td>"+
+				"<td>"+ this.loginname + "</td>"+
 				"<td>"+this.pindekeNumber+"<p>"+ this.name + "</p></td>"+
 				"<td>"+ transType + "</td>"+
 				"<td>"+ this.typeNo + "</td>"+

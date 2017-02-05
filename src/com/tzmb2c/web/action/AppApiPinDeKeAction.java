@@ -3149,9 +3149,6 @@ public class AppApiPinDeKeAction extends SuperAction {
             msg = "查询不到优惠券!";
           }
         }
-
-
-
         // 支付金额减去代金券金额
         allCartPrice0 = allCartPrice0 - m;
       }
@@ -3586,9 +3583,7 @@ public class AppApiPinDeKeAction extends SuperAction {
                   grouponActivityService.getById(orderPojo.getActivityId());
               if (grouponActivity != null && grouponActivity.getRebateRatio() > 0.0) {
                 Util.log("计算返佣金额!");
-                Double price =
-                    grouponActivity.getRebateRatio() / 100
-                        * (orderPojo.getFactPrice() + orderPojo.getUsedPrice());
+                Double price = orderPojo.getRebatePrice();
                 UserPindekeInfoPojo userPindekeInfo =
                     userPindekeInfoService.findByUserId(orderPojo.getPdkUid());
                 if (userPindekeInfo != null) {
@@ -3606,9 +3601,11 @@ public class AppApiPinDeKeAction extends SuperAction {
                   Date nowDate = new Date();
                   OrderPojo orderUp = new OrderPojo();
                   orderUp.setId(orderPojo.getId());
-                  orderUp.setRebatePrice(price);
+                  // orderUp.setRebatePrice(price);
                   orderUp.setRebateTime(nowDate);
                   orderUp.setIsRebate(1);
+                  // 记录返佣比例
+                  // orderUp.setRebateRatio(grouponActivity.getRebateRatio());
                   int uo = orderService.updateOrder(orderUp);
                   if (uo > 0) {
                     Util.log("修改订单返佣信息成功!");

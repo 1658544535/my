@@ -66,6 +66,8 @@ public class SysLoginPojo extends SuperPojo {
   private Double balanceAdd;
   private Double totalBalanceAdd;
   private Double balanceReduce;
+  private String remarks;
+
 
   public Double getBalanceReduce() {
     return balanceReduce;
@@ -561,6 +563,16 @@ public class SysLoginPojo extends SuperPojo {
 
   public void setJudgeSource(Integer judgeSource) {
     this.judgeSource = judgeSource;
+  }
+
+  @Override
+  public String getRemarks() {
+    return remarks;
+  }
+
+  @Override
+  public void setRemarks(String remarks) {
+    this.remarks = remarks;
   }
 
 }

@@ -252,6 +252,7 @@ public class OrderPojo extends SuperPojo {
    * 自动退款时间字符串
    */
   private String autoRecTimeStr;
+  private Double rebateRatio;
 
   public Integer getSaleApplyNum() {
     return saleApplyNum;
@@ -259,6 +260,14 @@ public class OrderPojo extends SuperPojo {
 
   public void setSaleApplyNum(Integer saleApplyNum) {
     this.saleApplyNum = saleApplyNum;
+  }
+
+  public Double getRebateRatio() {
+    return rebateRatio;
+  }
+
+  public void setRebateRatio(Double rebateRatio) {
+    this.rebateRatio = rebateRatio;
   }
 
   public String getAutoRecTimeStr() {

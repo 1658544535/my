@@ -290,6 +290,9 @@
 		left join product p on ga.product_id = p.id
 		<if test="source != null ">
 			left join user_order uo on uo.source_id = gur.attend_id and uo.user_id = gur.user_id
+			<if test="refundFinish != null ">
+			left join user_order_detail uod on uo.id = uod.order_id
+			</if>
 		</if>
 		where 1=1
 			<if test="prizes != null ">
@@ -433,6 +436,9 @@
 		  	 select user_id from groupon_user_record where is_head = 1
 		  	 )
 		    </if>
+		    <if test="refundFinish != null ">
+				and uod.re_status != 7
+			</if>
 		   
 		<if test="orderBy != null and orderBy !=''">
 			order by ${orderBy}

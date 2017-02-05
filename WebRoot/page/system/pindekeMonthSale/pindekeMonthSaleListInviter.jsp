@@ -48,7 +48,7 @@
 		<!-- 查询结束 -->
 		<div class="h15"></div>
 		<div>
-			<a class="Add_btn" href="pindekeMonthSaleTask.do" >更新</a>
+			<!--<a class="Add_btn" href="pindekeMonthSaleTask.do" >更新</a> -->
 			<a class="Add_btn thirtyDay" href="#" >点击显示注册30天内拼得客</a>
 			<a class="Add_btn" onclick="settleAll('settlePindekeMonthSaleAll.do')" >批量返佣</a>
 			<%--

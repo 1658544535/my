@@ -2462,6 +2462,8 @@ public class AppApiGrouponAction extends SuperAction {
       // }
       // }
       params.put("source", 1);
+      // 过滤售后完成的订单
+      params.put("refundFinish", 1);
       params.put("orderBy", "gur.create_date desc,gur.id desc");
       List<GrouponUserRecordPojo> list = grouponUserRecordService.listPage(params);
       if (list.size() > 0) {
@@ -12064,42 +12066,6 @@ public class AppApiGrouponAction extends SuperAction {
     List<GrouponActivityPojo> grouponActivityList = grouponActivityService.listPage(params);
     if (grouponActivityList != null && grouponActivityList.size() > 0) {
       GrouponActivityPojo grouponActivityPojo = grouponActivityList.get(0);
-      goodsItem.put("actType", StringUtil.checkVal(grouponActivityPojo.getType()));
-      goodsItem.put("activityId", StringUtil.checkVal(grouponActivityPojo.getId()));
-      goodsItem.put("productId", StringUtil.checkVal(grouponActivityPojo.getProductId()));
-      goodsItem.put("productName", StringUtil.checkVal(grouponActivityPojo.getProductName()));
-      goodsItem.put("productImage",
-          grouponActivityPojo.getImageMain() == null ? "" : ConstParam.URL + "/upfiles/product"
-              + File.separator + grouponActivityPojo.getImageMain());
-      goodsItem.put("productPrice", StringUtil.checkVal(grouponActivityPojo.getPrice()));
-      goodsItem.put("limitNum", StringUtil.checkVal(grouponActivityPojo.getLimitNum()));
-      goodsItem.put("proSellrNum", StringUtil.checkVal(grouponActivityPojo.getSellNumber()));
-      goodsItem.put("alonePrice", StringUtil.checkVal(grouponActivityPojo.getDistributionPrice()));
-      goodsItem.put("groupNum", StringUtil.checkVal(grouponActivityPojo.getNum()));
-      if (grouponActivityPojo.getSurplusNum() != null && grouponActivityPojo.getSurplusNum() > 0) {
-        goodsItem.put("isSellOut", "0");
-      } else {
-        goodsItem.put("isSellOut", "1");
-      }
-      if (grouponActivityPojo.getLimitNum() == null || grouponActivityPojo.getLimitNum() <= 0) {
-        goodsItem.put("salePerce", "100.0");
-      } else {
-        Integer saleNum = 0;
-        saleNum = grouponActivityPojo.getLimitNum() - grouponActivityPojo.getSurplusNum();
-        String salePerce =
-            StringUtil.calcPerceStr(saleNum, grouponActivityPojo.getLimitNum()).replace("%", "");
-        goodsItem.put("salePerce", salePerce);
-      }
-      secKillList.add(goodsItem);
-    }
-    params.clear();
-    params.put("id", 8945);
-    params.put("status", 1);
-    params.put("isDelete", 0);
-    grouponActivityList = grouponActivityService.listPage(params);
-    if (grouponActivityList != null && grouponActivityList.size() > 0) {
-      GrouponActivityPojo grouponActivityPojo = grouponActivityList.get(0);
-      goodsItem = new HashMap<String, Object>();
       goodsItem.put("actType", StringUtil.checkVal(grouponActivityPojo.getType()));
       goodsItem.put("activityId", StringUtil.checkVal(grouponActivityPojo.getId()));
       goodsItem.put("productId", StringUtil.checkVal(grouponActivityPojo.getProductId()));

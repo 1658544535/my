@@ -47,8 +47,7 @@
 		<!-- 查询结束 -->
 		<div class="h15"></div>
 		<div>
-			<a class="Add_btn" href="pindekeRankingTask.do" >更新排行榜</a> 
-			<%--
+			<%--<a class="Add_btn" href="pindekeRankingTask.do" >更新排行榜</a> 
 			<a class="Add_btn" onclick="checkAll('checkPindekeMonthSaleAll.do')" >审核选中</a>
 			<a class="Add_btn" onclick="uncheckAll('uncheckPindekeMonthSaleAll.do')" >选中取消审核</a>
 			<a class="delAll_btn" onclick="deleteAll('delPindekeMonthSaleAll.do')" >选中删除</a>
@@ -119,10 +118,15 @@
 	 **/
 	function installPage() {
 		var isSellteName = "",option = "";
-		if(this.isSettle == 0 && this.total > 3000 && (this.ranking == 1 || this.ranking == 2 || this.ranking == 3)){
+		var now = new Date();
+		var year = now.getFullYear();
+		var month = now.getMonth() + 1;
+		month = month <= 9 ? "0" + month : month;
+		var st = year + "" + month;
+		if(st != this.sectionTime && this.isSettle == 0 && this.total > 3000 && (this.ranking == 1 || this.ranking == 2 || this.ranking == 3)){
 			isSellteName = "未返佣";
 			option = "<a class='edit_btn' onclick='settle(\"settlePindekeMonthSale.do?id="+this.id+"\")'>点击返佣</a>";
-		}else if(this.isSettle == 1 && this.total > 3000 && (this.ranking == 1 || this.ranking == 2 || this.ranking == 3)){
+		}else if(st != this.sectionTime && this.isSettle == 1 && this.total > 3000 && (this.ranking == 1 || this.ranking == 2 || this.ranking == 3)){
 			isSellteName = "已返佣";
 		}else{
 			isSellteName = "无返佣";

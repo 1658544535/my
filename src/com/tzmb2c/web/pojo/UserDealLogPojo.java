@@ -83,7 +83,7 @@ public class UserDealLogPojo extends SuperPojo {
   private Date falseDate;
   private String falseDateStr;
   private String pindekeNumber;// 拼得客编号
-
+  private String loginname;// 用户账号
 
   public String getFalseDateStr() {
     if (falseDate != null) {
@@ -279,5 +279,13 @@ public class UserDealLogPojo extends SuperPojo {
 
   public void setPindekeNumber(String pindekeNumber) {
     this.pindekeNumber = pindekeNumber;
+  }
+
+  public String getLoginname() {
+    return loginname;
+  }
+
+  public void setLoginname(String loginname) {
+    this.loginname = loginname;
   }
 }

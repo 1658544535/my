@@ -97,6 +97,22 @@ function allcb(){
 			alert("重置失败");
 		}
 	}
+	function update(id)
+	{
+		var idt = 'code'+id;
+		var d=document.getElementById(idt);
+		if(d != null){
+		d =d.value;  
+		 $.ajax({
+             type: "get",
+             url: "updateRemarks.do?sysLogin.id="+id+"&sysLogin.remarks="+d,
+             success: function(data){
+             	alert("成功");
+             }
+             });	
+		}
+            
+	}
 	</script>
 </head>
 <body>
@@ -185,6 +201,7 @@ function allcb(){
 						<!-- <th>来源渠道</th> -->
 						<th>注册时间</th>
 						<th>最后登录时间</th>
+						<th>留言</th>
 						<s:if test="#session.role.roleId!=7"><th>操作</th></s:if>
 					</tr>
 					<tbody id="body"></tbody>
@@ -250,7 +267,9 @@ function query() {
 		        //+ "</td><td>" + this.channel
 				+ "</td><td>" + this.createDateStr2
 				+ "</td><td>" + this.login_date2
-				+ "</td><s:if test="#session.role.roleId!=7"><td><a  class='edit_btn' onclick=del('"+this.id+"')>审核</a>"
+				+ "</td><td><textarea rows=5 id='code"+this.id+"'>"+this.remarks+"</textarea>"
+				+ "</td><s:if test="#session.role.roleId!=7"><td><a class='edit_btn' onclick='update("+this.id+")'>留言</a>"
+				+"<a  class='edit_btn' onclick=del('"+this.id+"')>审核</a>"
 				+ "<a class='edit_btn' href='goFindSysLogin.do?sysLogin.id="+this.id +"&os=<s:property value='os'/>"+"'>编辑</a>"
 				//+ "<a class='edit_btn' href='goFindUserInfo.do?userInfo.userId="+this.id +"&os=<s:property value='os'/>"+"'>用户信息</a>"
 				+ "<a class='del_btn' href='updateStatus.do?sysLogin.id="+this.id +"&sysLogin.status="+this.status+"&os=<s:property value='os'/>"+"'>冻结/解冻</a>"

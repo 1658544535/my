@@ -1121,7 +1121,7 @@ public class OrderAction extends SuperAction {
         order.setAutoRecTime(GrouponService.getTimeAddDay(new Date(), 15));
       }
       // 如果状态改为代发货则插入付款时间
-      if (order.getOrderStatus() == 2) {
+      if (order.getOrderStatus() != null && order.getOrderStatus() == 2) {
         order.setPaymentDate(new Date());
       }
       int i = orderService.updateOrder(order);
@@ -1207,9 +1207,7 @@ public class OrderAction extends SuperAction {
                   grouponActivityService.getById(orderPojo.getActivityId());
               if (grouponActivity != null && grouponActivity.getRebateRatio() > 0.0) {
                 Util.log("计算返佣金额!");
-                Double price =
-                    grouponActivity.getRebateRatio() / 100
-                        * (orderPojo.getFactPrice() + orderPojo.getUsedPrice());
+                Double price = orderPojo.getRebatePrice();
                 UserPindekeInfoPojo userPindekeInfo =
                     userPindekeInfoService.findByUserId(orderPojo.getPdkUid());
                 if (userPindekeInfo != null) {
@@ -1227,7 +1225,8 @@ public class OrderAction extends SuperAction {
                   Date nowDate = new Date();
                   OrderPojo orderUp = new OrderPojo();
                   orderUp.setId(orderPojo.getId());
-                  orderUp.setRebatePrice(price);
+                  // orderUp.setRebatePrice(price);
+                  // orderUp.setRebateRatio(grouponActivity.getRebateRatio());
                   orderUp.setRebateTime(nowDate);
                   orderUp.setIsRebate(1);
                   int uo = orderService.updateOrder(orderUp);
@@ -2370,6 +2369,8 @@ public class OrderAction extends SuperAction {
       sheet.addCell(new Label(29, 0, "商品货号"));
       sheet.addCell(new Label(30, 0, "拼得客账号"));
       sheet.addCell(new Label(31, 0, "是否团长"));
+      sheet.addCell(new Label(32, 0, "返佣金额"));
+      sheet.addCell(new Label(33, 0, "返佣比例"));
 
       Integer payMethod = 0;
       Integer orderStatus = 0;
@@ -2477,6 +2478,9 @@ public class OrderAction extends SuperAction {
         } else if (payMethod == 1) {
           sheet.addCell(new Label(24, i, "支付宝"));
           sheet.addCell(new Label(25, i, orderPojo.getTradeNo()));
+        } else if (payMethod == 4) {
+          sheet.addCell(new Label(24, i, "钱包"));
+          sheet.addCell(new Label(25, i, ""));
         } else {
           sheet.addCell(new Label(24, i, ""));
           sheet.addCell(new Label(25, i, ""));
@@ -2509,7 +2513,8 @@ public class OrderAction extends SuperAction {
         } else {
           sheet.addCell(new Label(31, i, "否"));
         }
-
+        sheet.addCell(new Label(32, i, StringUtil.checkVal(orderPojo.getRebatePrice())));
+        sheet.addCell(new Label(33, i, StringUtil.checkVal(orderPojo.getRebateRatio())));
         i++;
       }
       wwb.write();
@@ -4826,4 +4831,111 @@ public class OrderAction extends SuperAction {
     FileUtil.alertMessageBySkip("修改成功！", "order.do?os=" + os);
     return null;
   }
+
+
+  /**
+   * 批量确认收货
+   * 
+   * @return
+   * @throws SQLException
+   */
+  public String updatesendOrder() throws SQLException {
+    if (tids != null && tids.length > 0) {
+      boolean flag = true;
+      OrderPojo order = new OrderPojo();
+      SysLoginPojo loginPojo = UserUtil.getUser();
+      order.setUpdateBy(loginPojo.getId());
+      for (String tid : tids) {
+        order.setId(Long.valueOf(tid));
+        order.setOrderStatus(4);
+        order.setConfirmDate(new Date());
+        try {
+          int i = orderService.updateOrderStatus2(order);
+          if (i > 0) {
+            try {
+              Util.log("判断订单类型是不是拼得客!");
+              OrderPojo orderPojo = orderService.getfindByIdOrder(Long.valueOf(tid));
+              if (orderPojo != null && orderPojo.getActivityId() != null
+                  && orderPojo.getSource() == 8 && orderPojo.getPdkUid() != null
+                  && orderPojo.getPdkUid() > 0 && orderPojo.getIsRebate() != null
+                  && orderPojo.getIsRebate() == 0) {
+                Util.log("判断订单是否是0元");
+                if (orderPojo.getFactPrice().doubleValue() == 0.0) {
+                  Util.log("0元不用返佣!");
+                } else {
+                  GrouponActivityPojo grouponActivity =
+                      grouponActivityService.getById(orderPojo.getActivityId());
+                  if (grouponActivity != null && grouponActivity.getRebateRatio() > 0.0) {
+                    Util.log("计算返佣金额!");
+                    Double price = orderPojo.getRebatePrice();
+                    UserPindekeInfoPojo userPindekeInfo =
+                        userPindekeInfoService.findByUserId(orderPojo.getPdkUid());
+                    if (userPindekeInfo != null) {
+                      Util.log("减去拼得客冻结金额且添加拼得客剩余金额!");
+                      UserPindekeInfoPojo userPindeke = new UserPindekeInfoPojo();
+                      userPindeke.setId(userPindekeInfo.getId());
+                      userPindeke.setFreezingPriceMinus(price);// 冻结金额
+                      userPindeke.setSurpluPriceAdd(price);// 余额
+                      userPindeke.setRebatePriceAdd(price);// 总返佣金额
+                      int upi = userPindekeInfoService.update(userPindeke);
+                      if (upi > 0) {
+                        Util.log("修改拼得客金额成功!");
+                      }
+                      Util.log("修改订单返佣信息!");
+                      Date nowDate = new Date();
+                      OrderPojo orderUp = new OrderPojo();
+                      orderUp.setId(orderPojo.getId());
+                      // orderUp.setRebatePrice(price);
+                      orderUp.setRebateTime(nowDate);
+                      orderUp.setIsRebate(1);
+                      // 记录返佣比例
+                      // orderUp.setRebateRatio(grouponActivity.getRebateRatio());
+                      int uo = orderService.updateOrder(orderUp);
+                      if (uo > 0) {
+                        Util.log("修改订单返佣信息成功!");
+                      }
+                      Util.log("插入交易记录表!");
+                      UserDealLogPojo userDealLog = new UserDealLogPojo();
+                      userDealLog.setDealType(1);
+                      userDealLog.setDealDate(nowDate);
+                      userDealLog.setDealAmount(price);
+                      userDealLog.setUserId(userPindekeInfo.getUserId());
+                      userDealLog.setStatus(0);
+                      userDealLog.setGroupId(orderPojo.getSourceId());
+                      userDealLog.setRemark(1);
+                      userDealLog.setSurplusPrice(userPindekeInfo.getSurpluPrice() == null ? 0.0
+                          : userPindekeInfo.getSurpluPrice() + price);
+                      userDealLog.setCreateBy(orderPojo.getUserId());
+                      userDealLog.setCreateDate(nowDate);
+                      userDealLog.setUpdateBy(orderPojo.getUserId());
+                      userDealLog.setUpdateDate(nowDate);
+                      int udl = userDealLogService.add(userDealLog);
+                      if (udl > 0) {
+                        Util.log("插入交易记录表成功!");
+                      }
+                    }
+                  }
+                }
+              }
+            } catch (Exception e) {
+              Util.log("拼得客返佣出现异常!");
+              e.printStackTrace();
+            }
+          }
+        } catch (Exception e) {
+          flag = false;
+          e.printStackTrace();
+        }
+      }
+      if (!flag) {
+        FileUtil.alertMessageBySkip("确认出错！", "order.do?os=" + os);
+      } else {
+        FileUtil.alertMessageBySkip("确认成功！", "order.do?os=" + os);
+      }
+    } else {
+      FileUtil.alertMessageBySkip("请先勾选！", "order.do?os=" + os);
+    }
+    return null;
+  }
+
 }

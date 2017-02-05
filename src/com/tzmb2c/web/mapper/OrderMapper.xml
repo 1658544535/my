@@ -131,6 +131,7 @@
 		t.pdk_uid as pdkUid,
 		t.is_rebate as isRebate,
 		t.rebate_price as rebatePrice,
+		t.rebate_ratio as rebateRatio,
 		t.rebate_time as rebateTime,
 		t.invite_code as inviteCode,
 		t.auto_rec_time as autoRecTime,
@@ -387,6 +388,9 @@
 		</if>
 		<if test="rebatePrice != null and rebatePrice != ''">
 			uo.rebate_price =#{rebatePrice},
+		</if>
+		<if test="rebateRatio != null and rebateRatio != ''">
+		uo.rebate_ratio =#{rebateRatio},
 		</if>
 		<if test="isRebate != null and isRebate != ''">
 			uo.is_rebate =#{isRebate},
@@ -1177,7 +1181,9 @@
 		t.is_success as isSuccess,
 		t.source as source,
 		(case when t.source=1 then "普通拼团" when t.source=2 then "团免" when t.source=3 then "猜价" when t.source=4 then "单独购" when t.source=5 then "0.1夺宝" when t.source=6 then "掌上秒杀"end) as sourceName,
-		t.remarks as remarks
+		t.remarks as remarks,
+		t.rebate_ratio as rebateRatio,
+		t.rebate_ratio as rebatePrice
 		from user_order as t 
 		left join user_order_ship s on s.order_id = t.id
 		<!--left join user_agency ua on ua.user_id=t.agency_user_id-->
@@ -1384,6 +1390,8 @@
 		    uod.re_status as reStatus,
 		    uo.is_refund as isRefund,
 		    uo.buyer_message as buyerMessage,
+		    uo.rebate_ratio as rebateRatio,
+			uo.rebate_price as rebatePrice,
 		    p.product_num as productNum,
 		    (case when uo.user_id = gur.user_id then 1 else 0 end) as isHead
 		from user_order uo
@@ -2373,6 +2381,7 @@
 			t.pdk_uid as pdkUid,
 			t.is_rebate as isRebate,
 			t.rebate_price as rebatePrice,
+			t.rebate_ratio as rebateRatio,
 			t.rebate_time as rebateTime,
 			t.auto_rec_time as autoRecTime,
 			t.invite_code as inviteCode,
@@ -2913,6 +2922,9 @@
 			<if test="sellerGoodsPrice != null">
 			    seller_goods_price,
 			</if>
+			<if test="rebateRatio != null">
+				rebate_ratio,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -3091,6 +3103,9 @@
 			</if>
 			<if test="sellerGoodsPrice != null">
 			    #{sellerGoodsPrice},
+			</if>
+			<if test="rebateRatio != null">
+				#{rebateRatio},
 			</if>
 		</trim>
 	</insert>
@@ -3569,12 +3584,13 @@
 		</if>
 		and a.consignee != '许测试'
 	</select>
-	<!-- 用于拼得客月销售额-->
+	<!-- 用于拼得客销售额排名  -->
 	<select id="getPindekeRanking" resultType="orderPojo"
 		parameterType="java.util.Map">
 		select 
 		a.id as pdkUid,
-		sum(case when c.status = 1 then t.fact_price - c.used_price else t.fact_price end) as factPriceAll
+		sum(case when c.status = 1 then t.fact_price - c.used_price else t.fact_price end) as factPriceAll,
+		a.inviter_id as inviterId 
 		from user_order as t 
 		left join sys_login  a on t.pdk_uid = a.id	
 		left join coupon_order c on c.order_id = t.id and c.status = 1
@@ -3585,16 +3601,18 @@
 			and a.status = 1
 			and a.is_pindeke = 1
 			and UNIX_TIMESTAMP(t.paymentDate) >= UNIX_TIMESTAMP(CONCAT(#{paymentDateStart},' 00:00:00'))
+			and UNIX_TIMESTAMP(CONCAT(#{paymentDateEnd},' 00:00:00')) > UNIX_TIMESTAMP(t.paymentDate)
 		    group by t.pdk_uid
 			order by factPriceAll desc,pdkUid asc
 	</select>
 	
-		<!-- 用于拼得客销售额排名-->
+		<!--  用于拼得客注册30天销售额-->
 	<select id="getPindekeMonthSale" resultType="orderPojo"
 		parameterType="java.util.Map">
 		select 
 		a.id as pdkUid,
-		sum(case when c.status = 1 then t.fact_price - c.used_price else t.fact_price end) as factPriceAll
+		sum(case when c.status = 1 then t.fact_price - c.used_price else t.fact_price end) as factPriceAll,
+		a.inviter_id as inviterId 
 		from user_order as t 
 		left join sys_login  a on t.pdk_uid = a.id	
 		left join coupon_order c on c.order_id = t.id and c.status = 1
@@ -3607,6 +3625,7 @@
 			and a.inviter_id > 0
 			and a.create_date = date_add(CURDATE(), INTERVAL -31 DAY)
 			and t.paymentDate &lt; CURDATE()
+			<!--and t.paymentDate &lt;= now()-->
 		    group by t.pdk_uid
 		order by pdkUid asc;
 

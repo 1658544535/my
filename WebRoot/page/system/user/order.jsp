@@ -159,6 +159,33 @@ function allcb(){
 		}
 	}
 	 */
+	 function updatesendOrder(){
+		if (confirm("确定收货么？")) {
+				var code_Values = document.getElementsByName("tids");
+				var times_Values = document.getElementsByName("times2") ; 	
+				var num=0;
+				for(i = 0;i < code_Values.length;i++){
+				if(code_Values[i].type == "checkbox") 
+				{ 
+					if(code_Values[i].checked == true) 
+						{ 		
+						    num++;			
+							if(times_Values[i].value==null || times_Values[i].value==""){
+
+							code_Values[i].checked = false;
+							num--;
+							}
+						} 
+					}
+					
+				} 	
+				if(num<=0){
+				alert("您未勾选 或 勾选的订单都未超过15天没确认！");
+				}else{				
+			$("#idform").attr("action","updatesendOrder.do?os=${os}").submit();
+			}
+		}
+	}
 	</script>
 </head>
 <body>
@@ -334,7 +361,8 @@ function allcb(){
 		<!-- 查询结束 -->
 		<div class="h15"></div>
 		<div>
-		<s:if test="#session.role.roleId!=7">
+		<s:if test="#session.role.roleId!=7"> 
+		    <c:if test="${os==3}"><a class="Add_btn"  onclick="updatesendOrder()" >确认收货(批量)</a></c:if>
 			<s:if test="#session.user.type!=4"><!--<a class="delAll_btn" onclick="deleteAll()">删除全部</a>-->
 			<%--<s:if test="#request.orderType!=1"><a class="Add_btn"  onclick="checkOrderTypeAll()" >发货审核(批量)</a></s:if>--%>
 			<input title="导出所有结果" type="button" value="导出所有"  id="excelAll" class="submit_btn" style="float: right;"  />
@@ -549,7 +577,7 @@ function query() {
 		orderTypeStr = "";
 	}
 	 */
-	var trString= trStr+"<td><input  name='tids' type='checkbox' value="+this.id +"   /></td><td>" 
+	var trString= trStr+"<td><input  name='tids' type='checkbox' value="+this.id +"   /><input name='times2' value='"+this.times+"' type='hidden'/></td><td>"              	
 		        //+ this.userName + 
 		        //"</td><td>" + this.shopName+
 		        + ddd+
