@@ -6244,6 +6244,11 @@ public class AppApiGrouponAction extends SuperAction {
       if (activity != null && activity.getNum() != null) {
         order.setGroupNum(activity.getNum());
       }
+      // 商家订单利润计算和货款
+      if (productPojo.getProxyPrice() != null && productPojo.getProxyPrice() > 0) {
+        order.setSellerGoodsPrice(productPojo.getProxyPrice() * num);
+        order.setOrderProfit(allCartPrice0 - productPojo.getProxyPrice() * num);
+      }
       orderService.insertOrder(order);
 
       if ((attendId == null || attendId == 0) && source == 2) {
