@@ -3189,6 +3189,11 @@ public class AppApiPinDeKeAction extends SuperAction {
       if (invCode != null && !"".equals(invCode)) {
         order.setInviteCode(invCode);
       }
+      // 商家订单利润计算和货款
+      if (productPojo.getProxyPrice() != null && productPojo.getProxyPrice() > 0) {
+        order.setSellerGoodsPrice(productPojo.getProxyPrice() * num);
+        order.setOrderProfit(allCartPrice0 - productPojo.getProxyPrice() * num);
+      }
       orderService.insertOrder(order);
 
       if (m > 0.0) {

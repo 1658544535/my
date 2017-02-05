@@ -1454,7 +1454,8 @@
 		t.norm_type as normType,
 		t.limit_num as limitNum,
 		t.surplus_num as surplusNum,
-		t.faraway as faraway
+		t.faraway as faraway,
+		t.proxy_price as proxyPrice
 		from product t 
 		left join sys_login u on t.user_id = u.id
 		left join product_type pt on t.product_type_id = pt.id 
