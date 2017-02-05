@@ -346,6 +346,15 @@ function allcb(){
 						<td>
 							<input value="" name="order.pdkLoginname" type="text" />
 						</td>
+						<td align="right">商家：</td>
+						<td>
+							<select name="order.suserId" id="" class="floatLeft">
+									<option value="">----请选择----</option>
+									<c:forEach items="${suserList}" var="suser">
+										<option value="${suser.id}">${suser.name}</option>
+									</c:forEach>
+							</select>
+						</td>
 					</tr>
 				</table>
 				<input type="hidden" name="page.pageNo" value=0 id="pageNo">

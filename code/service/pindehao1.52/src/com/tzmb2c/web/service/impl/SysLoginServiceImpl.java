@@ -167,14 +167,14 @@ public class SysLoginServiceImpl implements SysLoginService {
     if (os != null) {
       map.put("os", os);
     }
-      if (page != null) {
-        map.put("pageSize", page.getPageSize());
-        map.put("pageNo", (page.getPageNo() - 1) * page.getPageSize());
-      } else {
-        map.put("pageSize", 10);
-        map.put("pageNo", 0);
-      }
-      
+    if (page != null) {
+      map.put("pageSize", page.getPageSize());
+      map.put("pageNo", (page.getPageNo() - 1) * page.getPageSize());
+    } else {
+      map.put("pageSize", 10);
+      map.put("pageNo", 0);
+    }
+
     list = sysLoginDao.sysLoginAllList(map);
 
 
@@ -401,7 +401,6 @@ public class SysLoginServiceImpl implements SysLoginService {
 
   @Override
   public List<SysLoginPojo> listPage(Map<String, Object> params) throws SQLException {
-    // TODO Auto-generated method stub
     return sysLoginDao.listPage(params);
   }
 
@@ -420,6 +419,12 @@ public class SysLoginServiceImpl implements SysLoginService {
       map.put("os", os);
     }
     return sysLoginDao.getSysLoginAll2(map);
+  }
+
+
+  @Override
+  public List<SysLoginPojo> getSUserList(Map<String, Object> params) throws SQLException {
+    return sysLoginDao.getSUserList(params);
   }
 
 }

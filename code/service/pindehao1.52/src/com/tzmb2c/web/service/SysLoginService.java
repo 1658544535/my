@@ -93,5 +93,17 @@ public interface SysLoginService {
 
   List<SysLoginPojo> listPage(Map<String, Object> params) throws SQLException;
 
-  public List<SysLoginExcelPojo> getSysLoginAll2(SysLoginExcelPojo SysLogin,Pager page, String os) throws SQLException;
+  /**
+   * 商家列表
+   * 
+   * @param params
+   * @return
+   * @throws SQLException
+   */
+  List<SysLoginPojo> getSUserList(Map<String, Object> params) throws SQLException;
+
+  public List<SysLoginExcelPojo> getSysLoginAll2(SysLoginExcelPojo SysLogin, Pager page, String os)
+      throws SQLException;
+
+
 }

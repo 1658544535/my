@@ -826,4 +826,9 @@
 		order by t.id desc
 		limit 30000
 	</select>
+	<!-- 查询商家列表 -->
+	<select id="getSUserList" resultType="sysLoginPojo" parameterType="java.util.Map">
+		select id,name from sys_login where type=2 and status=1
+	</select>
+	
 </mapper>

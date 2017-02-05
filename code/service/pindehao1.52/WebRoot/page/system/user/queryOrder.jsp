@@ -319,6 +319,15 @@ function allcb(){
 						<td>
 							<input value="" name="order.pdkLoginname" type="text" id="pdkLoginname"/>
 						</td>
+						<td align="right">商家：</td>
+						<td>
+							<select name="order.suserId" id="suserId" class="floatLeft">
+									<option value="">----请选择----</option>
+									<c:forEach items="${suserList}" var="suser">
+										<option value="${suser.id}">${suser.name}</option>
+									</c:forEach>
+							</select>
+						</td>
 					</tr>
 				</table>
 				<input type="hidden" name="page.pageNo" value=0 id="pageNo">
@@ -409,7 +418,7 @@ function allcb(){
 var ctx  ="<s:property value="ctx" />";
 var pagecount = "${page.rowCount}"; 
 function query() {
-	if($("#orderNo").val()!="" ||$("#productId").val()!=""||$("#consignee").val()!=""||$("#consigneePhone").val()!=""||$("#payStatus").val()!=""||$("#orderStatus").val()!=""||$("#refundStatus").val()!=""||$("#logisticsNo").val()!=""||$("#loginname").val()!=""||$("#attendId").val()!=""||$("#source").val()!=""||$("#overdue").val()!=""||$("#beganday").val()!=""||$("#endday").val()!=""||$("#groupBeginDateStr").val()!=""||$("#groupEndDateStr").val()!=""||$("#beganSendDate").val()!=""||$("#endSendDate").val()!=""||$("#notShip").val()!=""||$("#pdkLoginname").val()!=""){
+	if($("#orderNo").val()!="" ||$("#productId").val()!=""||$("#consignee").val()!=""||$("#consigneePhone").val()!=""||$("#payStatus").val()!=""||$("#orderStatus").val()!=""||$("#refundStatus").val()!=""||$("#logisticsNo").val()!=""||$("#loginname").val()!=""||$("#attendId").val()!=""||$("#source").val()!=""||$("#overdue").val()!=""||$("#beganday").val()!=""||$("#endday").val()!=""||$("#groupBeginDateStr").val()!=""||$("#groupEndDateStr").val()!=""||$("#beganSendDate").val()!=""||$("#endSendDate").val()!=""||$("#notShip").val()!=""||$("#pdkLoginname").val()!=""||$("#suserId").val()!=""){
 		pageNumber = 1;
 		var rand=Math.random() * ( 100000 + 1);
 		queryData("getQueryOrder.do?os=<s:property value='os'/>&a=<s:property value='a'/>&orderType=<s:property value='orderType'/>&order.userId=${order.userId}", "getQueryOrderList.do?os=<s:property value='os'/>&a=<s:property value='a'/>&orderType=<s:property value='orderType'/>&order.userId=${order.userId}&randquery="+rand);
