@@ -228,6 +228,8 @@ public class UserOrderRefundServiceImpl implements UserOrderRefundService {
       map.put("consigneePhone", userOrderRefundPojo.getConsigneePhone());
       map.put("id", userOrderRefundPojo.getId());
       map.put("type", userOrderRefundPojo.getType());
+      map.put("beginDate", userOrderRefundPojo.getBeginDate());
+      map.put("endDate", userOrderRefundPojo.getEndDate());
       map.put("orderNo", userOrderRefundPojo.getOrderNo());
       map.put("serviceInvolved", userOrderRefundPojo.getServiceInvolved());
     }
@@ -237,7 +239,6 @@ public class UserOrderRefundServiceImpl implements UserOrderRefundService {
     }
     return userOrderRefundDao.findUserOrderRefundByUserId2(map);
   }
-
 
   @Override
   public void updateStatusOfUserOrderRefundById(UserOrderRefundPojo userOrderRefundPojo) {

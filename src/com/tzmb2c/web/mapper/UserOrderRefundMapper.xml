@@ -540,6 +540,9 @@
         <if test="type != null and type != 0 ">
             and uor.type = #{type}
         </if>
+        <if test="beginDate != null and beginDate != '' and endDate != null and endDate != '' ">
+            and uor.create_date between #{beginDate} and #{endDate}
+        </if>
         group by uor.order_id
         order by uor.id desc
         <if test="pageSize != null">

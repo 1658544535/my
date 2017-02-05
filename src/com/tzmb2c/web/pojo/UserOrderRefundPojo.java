@@ -89,7 +89,23 @@ public class UserOrderRefundPojo extends SuperPojo {
   private Integer source;
   private Integer reStatus;
   private String idStr;
+  private String beginDate, endDate;
 
+  public String getBeginDate() {
+    return beginDate;
+  }
+
+  public void setBeginDate(String beginDate) {
+    this.beginDate = beginDate;
+  }
+
+  public String getEndDate() {
+    return endDate;
+  }
+
+  public void setEndDate(String endDate) {
+    this.endDate = endDate;
+  }
 
   public String getIdStr() {
     return idStr;
