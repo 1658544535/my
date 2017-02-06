@@ -94,7 +94,10 @@ public class OrderWebAction extends SuperAction {
       Map<String, Object> map = new HashMap<String, Object>();
       SysLoginPojo logiPojo = (SysLoginPojo) actionContext.getSession().get("wuser");
       int count = 0;
+      ActionContext ac = ActionContext.getContext();
+      ac.put("orderStatus", sysDictService.getSysDictListByType("order_status"));
       if (orderPojo != null) {
+        map.put("option", 1);
         map.put("channel", orderPojo.getChannel());
         map.put("orderNo", orderPojo.getOrderNo());
         map.put("consigneePhone", orderPojo.getConsigneePhone());
@@ -102,7 +105,12 @@ public class OrderWebAction extends SuperAction {
         map.put("endday", orderPojo.getEndday());
         map.put("activityId", orderPojo.getActivityId());
         map.put("orderStatus", orderPojo.getOrderStatus());
-        map.put("option", 1);
+        map.put("consignee", StringUtil.checkVal(orderPojo.getConsignee()).trim());
+        map.put("logisticsNo", orderPojo.getLogisticsNo());
+        map.put("logisticsName", orderPojo.getLogisticsName());
+        map.put("groupBeginDateStr", orderPojo.getGroupBeginDateStr());
+        map.put("groupEndDateStr", orderPojo.getGroupEndDateStr());
+        map.put("productName", StringUtil.checkVal(orderPojo.getProductName()).trim());
       }
       testUsers = SellerService.getTestUsers();
       if (testUsers != null && testUsers.size() > 0) {
@@ -140,6 +148,7 @@ public class OrderWebAction extends SuperAction {
     ActionContext actionContext = ActionContext.getContext();
     SysLoginPojo logiPojo = (SysLoginPojo) actionContext.getSession().get("wuser");
     if (orderPojo != null) {
+      map.put("option", 1);
       map.put("channel", orderPojo.getChannel());
       map.put("orderNo", orderPojo.getOrderNo());
       map.put("consigneePhone", orderPojo.getConsigneePhone());
@@ -147,7 +156,12 @@ public class OrderWebAction extends SuperAction {
       map.put("endday", orderPojo.getEndday());
       map.put("activityId", orderPojo.getActivityId());
       map.put("orderStatus", orderPojo.getOrderStatus());
-      map.put("option", 1);
+      map.put("consignee", StringUtil.checkVal(orderPojo.getConsignee()).trim());
+      map.put("logisticsNo", orderPojo.getLogisticsNo());
+      map.put("logisticsName", orderPojo.getLogisticsName());
+      map.put("groupBeginDateStr", orderPojo.getGroupBeginDateStr());
+      map.put("groupEndDateStr", orderPojo.getGroupEndDateStr());
+      map.put("productName", StringUtil.checkVal(orderPojo.getProductName()).trim());
     }
     testUsers = SellerService.getTestUsers();
     if (testUsers != null && testUsers.size() > 0) {

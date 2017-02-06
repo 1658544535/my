@@ -43,9 +43,64 @@
                                 </div>
                                 <div class="ui-box-container">
                                     <form action="getMyOrderWeb.do" method="post" accept-charset="utf-8" id="sysform">
-                                        <input type="hidden" name="orderPojo.orderStatus" value="" id="" />
                                         <div class="ui-box-content">
+                                        	<div class="ui-form-item">
+                                                <label for="" class="ui-label">
+                                                	 订单编号
+                                                </label>
+                                                <input class="ui-input ui-input-theme" type="text" name="orderPojo.orderNo" value="">
+                                            </div>
                                             <div class="ui-form-item">
+                                                <label for="" class="ui-label">
+                                                	 商品名称
+                                                </label>
+                                                <input class="ui-input ui-input-theme" type="text" name="orderPojo.productName" value="">
+                                            </div>
+                                            <div class="ui-form-item">
+                                                <label for="" class="ui-label">
+                                           	      	收货手机
+                                                </label>
+                                                <input class="ui-input ui-input-theme" type="text" name="orderPojo.consigneePhone"
+                                                value="">
+                                            </div>
+                                            <div class="ui-form-item">
+                                                <label for="" class="ui-label">
+                                               		收货人
+                                                </label>
+                                                <input class="ui-input ui-input-theme" type="text" name="orderPojo.consignee" value="">
+                                            </div>
+                                            <div class="ui-form-item">
+                                                <label for="order_type" class="ui-label">
+                                            	        订单状态
+                                                </label>
+                                                <select class="w-mart-select ui-select-theme" name="orderPojo.orderStatus">
+	                                                <option value="">
+	                                                    	全部
+	                                                </option>
+	                                                <option value="1">
+	                                                    	待付款
+	                                                </option>
+	                                                <option value="2">
+	                                                    	已付款
+	                                                </option>
+	                                                <option value="3">
+	                                                    	已发货
+	                                                </option>
+	                                                <option value="4">
+	                                                    	已确认
+	                                                </option>
+	                                                <option value="5">
+	                                                    	已评论
+	                                                </option>
+                                            	</select>
+                                            </div>
+                                            <div class="ui-form-item">
+                                                <label for="" class="ui-label">
+                                                	 快递单号
+                                                </label>
+                                                <input class="ui-input ui-input-theme" type="text" name="orderPojo.logisticsNo" value="">
+                                            </div>
+                                            <%-- <div class="ui-form-item">
                                                 <label for="order_type" class="ui-label">
                                             	        订单来源
                                                 </label>
@@ -63,36 +118,16 @@
                                            	                         微信
                                                     </option>
                                                 </select>
-                                            </div>
-                                            <div class="ui-form-item">
-                                                <label for="" class="ui-label">
-                                             	       专场id
-                                                </label>
-                                                <input class="ui-input ui-input-theme" type="text" name="orderPojo.activityId" value="">
-                                            </div>
-                                            <div class="ui-form-item">
-                                                <label for="" class="ui-label">
-                                                	    订单号
-                                                </label>
-                                                <input class="ui-input ui-input-theme" type="text" name="orderPojo.orderNo" value="">
-                                            </div>
-                                            <div class="ui-form-item">
-                                                <label for="" class="ui-label">
-                                           	         手机号
-                                                </label>
-                                                <input class="ui-input ui-input-theme" type="text" name="orderPojo.consigneePhone"
-                                                value="">
-                                            </div>
-                                            <br>
+                                            </div> --%>
                                             <div class="ui-form-item c-999">
                                                 <label for="" class="ui-label">
-                                               	     下单时间
+                                               	     成团时间
                                                 </label>
-                                                <input class="ui-input ui-input-theme" style="width:100px;" id="create-time-start-selector" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm',maxDate:'#F{$dp.$D(\'create-time-end-selector\')}'})" type="text" name="orderPojo.beganday" value="">
+                                                <input class="ui-input ui-input-theme" style="width:100px;" id="create-time-start-selector" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm',maxDate:'#F{$dp.$D(\'create-time-end-selector\')}'})" type="text" name="orderPojo.groupBeginDateStr" value="">
                                                 <label for="" class="ul-label">
                                                     -
                                                 </label>
-                                                <input class="ui-input ui-input-theme" style="width:100px;" id="create-time-end-selector" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm',minDate:'#F{$dp.$D(\'create-time-start-selector\')}'})" type="text" name="orderPojo.endday" value="">
+                                                <input class="ui-input ui-input-theme" style="width:100px;" id="create-time-end-selector" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm',minDate:'#F{$dp.$D(\'create-time-start-selector\')}'})" type="text" name="orderPojo.groupEndDateStr" value="">
                                             </div>
                                             <br/>
                                             <div class="ui-form-item search-btn">
@@ -109,8 +144,8 @@
                                <div class="ui-form-item excel-btn" style="display: '' ;">
                                    <a  id="excel"  class="ui-button ui-button-mwhite ui-btn-theme" id="">导出已选订单</a>&nbsp;&nbsp;&nbsp;&nbsp;
                                    <a  id="excelAll"  class="ui-button ui-button-mwhite ui-btn-theme" id="">导出所有查询订单</a>&nbsp;&nbsp;&nbsp;&nbsp;                                 			              
-					               <input type="submit" value="订单导入" class="ui-button ui-button-mwhite ui-btn-theme"  />
-					               <input type="file" name="importupfile" class="ui-button ui-button-mwhite ui-btn-theme"" />				                  
+					               <!-- <input type="submit" value="订单导入" class="ui-button ui-button-mwhite ui-btn-theme"  /> 
+					               <input type="file" name="importupfile" class="ui-button ui-button-mwhite ui-btn-theme"" />-->				                  
                              </div>
                              </form>
                             </div>
@@ -125,7 +160,7 @@
                                             商品
                                         </th>
                                         <th class="ol-order-price">
-                                            单价
+                                            供货价
                                         </th>
                                         <th class="ol-order-number">
                                             数量
@@ -133,33 +168,17 @@
                                         <th class="ol-order-price">
                                             维权售后
                                         </th>
-                                        <th class="ol-order-price">
+                             <!--            <th class="ol-order-price">
                                             订单金额
                                         </th>
                                         <th class="ol-order-price">
                                             成交价
-                                        </th>
+                                        </th> -->
                                         <th class="ol-order-status">
-                                            <select id="order-status-selector" name="orderStatus" onchange="searchByorderStatus()">
-                                                <option value="">
-                                                    全部
-                                                </option>
-                                                <option value="1">
-                                                    待付款
-                                                </option>
-                                                <option value="2">
-                                                    已付款
-                                                </option>
-                                                <option value="3">
-                                                    已发货
-                                                </option>
-                                                <option value="4">
-                                                    已确认
-                                                </option>
-                                                <option value="5">
-                                                    已评论
-                                                </option>
-                                            </select>
+                                            备注
+                                        </th>
+                                         <th class="ol-order-status">
+                                            操作
                                         </th>
                                     </tr>
                                 </thead>
@@ -183,12 +202,12 @@
 	var pageSize = 10;
 	
 	function query() {
-		var id = $("input[name='orderPojo.activityId']").val();
+		/*var id = $("input[name='orderPojo.activityId']").val();
 		var r = /^[0-9]*[1-9][0-9]*$/;
 		if(id != "" && !r.test(id)){
 			alert("专场ID必须为正整数！");
 			return;
-		}
+		}*/
 		if(tt.validate()){
 			var rand=Math.random() * ( 100000 + 1);
 			queryData("getMyOrderCountWeb.do", "getMyOrderListWeb.do?randquery="+rand,pageSize);
@@ -197,8 +216,7 @@
 	
 	var tbody = "";
 	var createDate;
-	
-	function orderDetails(id,os){
+	function orderDetails(id,os,sellerMessage){
 		$.ajax({
 			type: "post",
 			url: "orderDetailAllList.do?contentGuide=1&page.pageNo=1&page.pageSize=100&orderDetail.orderId="+id,
@@ -206,30 +224,36 @@
 			async: false,
 			success: function (msg) {
 				var o_msg = eval(msg);
+				var lastDate = createDate.getTime() + 86400000 * 2;
+				var nowDate = new Date().getTime();
+				colorStr = "";
 				for (var i = 0; i < o_msg.length; i++) {
-					var lastDate = createDate.getTime() + 86400000 * 2;
-					var nowDate = new Date().getTime();
-					var colorStr = "";
 					if(nowDate > lastDate && o_msg[i].reStatus == 0){
 						colorStr = "red";
 						//$("#numStr").attr("class","red");
 					}
-					var reStatusName="-";
-					if(o_msg[i].reStatus==1 || o_msg[i].reStatus==2 || o_msg[i].reStatus==3){
+					var reStatusName="无售后";
+					/* if(o_msg[i].reStatus==1 || o_msg[i].reStatus==2 || o_msg[i].reStatus==3){
 						reStatusName="<a href='goRefundDetailWeb.do?orderDetailPojo.id="+o_msg[i].id+"'>退款中，等待处理</a>";
 					}else if(o_msg[i].reStatus==4 || o_msg[i].reStatus==5 || o_msg[i].reStatus==6 || o_msg[i].reStatus==7){
 						reStatusName="<a href='goRefundDetailWeb.do?orderDetailPojo.id="+o_msg[i].id+"'>售后服务完成</a>";
+					} */
+					if(o_msg[i].reStatus==1 || o_msg[i].reStatus==2 || o_msg[i].reStatus==3){
+						reStatusName="退款中，等待处理";
+					}else if(o_msg[i].reStatus==4 || o_msg[i].reStatus==5 || o_msg[i].reStatus==6 || o_msg[i].reStatus==7){
+						reStatusName="售后服务完成";
 					}
 	            	tbody += "<tr class='order-item'>"+
 	                "<td class='ol-b-item-info clearfix' style='width: 360px'>"+
-	                "<a class='image' href='http://b2c.taozhuma.com/goProductDetail.do?productPojo.id="+o_msg[i].productId+"' target='_blank'>"+
+	                /*"<a class='image' href='http://b2c.taozhuma.com/goProductDetail.do?productPojo.id="+o_msg[i].productId+"' target='_blank'>"+
 	                    "<img src='<s:i18n name="sysconfig"><s:text name="seller_dns" /></s:i18n>/upfiles/product/"+ o_msg[i].productImage + "'>"+
 	                "</a>"+
-	                "<a class='title c-666' target='_blank' href='http://b2c.taozhuma.com/goProductDetail.do?productPojo.id="+o_msg[i].productId+"'>"+o_msg[i].productName+
+	                 "<a class='title c-666' target='_blank' href='http://b2c.taozhuma.com/goProductDetail.do?productPojo.id="+o_msg[i].productId+"'>"+o_msg[i].productName+
+	                "</a>"+ */
+	                "<a class='image' href='#'>"+
+	                    "<img src='<s:i18n name="sysconfig"><s:text name="seller_dns" /></s:i18n>/upfiles/product/"+ o_msg[i].productImage + "'>"+
 	                "</a>"+
-	                "<span class='sku'>"+
-	                    "SKU："+o_msg[i].productSku+"&nbsp;&nbsp;&nbsp;"+
-	                "</span>"+
+	                "<span class='sku'>"+o_msg[i].productName+"&nbsp;&nbsp;&nbsp;</span>"+
 		            "</td>"+
 		            "<td class='ol-b-item-price'>"+
 		                "<p>"+
@@ -241,13 +265,11 @@
 		            "<td class='ol-b-ops c-999'>"+
 		               reStatusName+
 		            "</td>"+
-		            "<td class='ol-b-subtotal' rowspan='1'>"+
-		                "<span class='price' style='color: #292929;'>"+
-		                    "￥"+o_msg[i].stockPriceMultiplyNum+"</span>"+
-		            "</td>"+
-		            "<td class='ol-b-subtotal' rowspan='1'>"+
-		                "<span class='price'>"+
-		                    "￥"+o_msg[i].stockPriceMultiplyNum+"</span>"+
+		            "<td class='ol-b-subtotal' rowspan='1' style='font-size:12px'>"+
+				        "<span>"+
+		                    "<a class='edit_btn' onclick=update('"+id+"','"+sellerMessage+"')>备注</a>"+
+		                "</span><br>"+
+		                "<span class='sellerMessage'>"+sellerMessage+"</span>"+
 		            "</td>"+
 		            "<td class='ol-b-status c-999' rowspan='1'>"+
 		                "<span class='green'>"+os+"</span>"+
@@ -264,15 +286,14 @@
 	
 	function installPage() {
 		createDate = new Date(this.createDateStr);
-		
 		var vString="";
 		tbody = "";
-		orderDetails(this.id,this.orderStatusName);
+		orderDetails(this.id,this.orderStatusName,this.sellerMessage);
 		if(this.orderStatus==2){
-			 vString = "<span style='float:right;'><a class='edit_btn' href='goOrderShipAddSeller.do?orderPojo.id="+this.id+"'>发货</a></span>";
-			}
+			vString = "<span style='float:right;'><a class='edit_btn' href='goOrderShipAddSeller.do?orderPojo.id="+this.id+"'>发货</a></span>";
+		}
 		$("#body").append(
-				 "<div class='trade-entry mt-10'>"+
+			"<div class='trade-entry mt-10'>"+
                 "<div class='order-entry'>"+
                     "<div class='order-head'>"+
                         "<input  name='tids' type='checkbox' value="+this.id +">"+
@@ -284,20 +305,11 @@
                            " 下单时间："+this.createDateStr+
                         "</span>"+
                         "<span>"+
-                           " 专场ID："+
-                            "<a href='getMartShowItemWeb.do?specialId="+this.activityId+"'>"+
-                                +this.activityId+
-                            "</a>"+
-                        "</span>"+
-                        "<span>"+
                            " 收件人："+this.consignee+" / "+this.consigneePhone+
                         "</span>"+
-                       "<span>"+
-                           "<a class='edit_btn' onclick=update('"+this.id+"','"+this.sellerMessage+"') title='"+this.sellerMessage+"'>备注</a>"+
-                       "</span>"+
-                       "<span>"+
+                        "<span>"+
                            vString+
-                       "</span>"+
+                        "</span>"+
                     "</div>"+
                     "<table class='pure-table'>"+
                         "<tbody id='tbody'>"+
@@ -353,7 +365,7 @@
 		var checkbox=document.getElementById("selectcb"); 
 		if(checkbox.checked==true){
 			var code_Values = document.getElementsByName("tids") ; 
-			for(i = 0;i < code_Values.length;i++){ 
+			for(var i = 0;i < code_Values.length;i++){ 
 				if(code_Values[i].type == "checkbox") 
 					{ 
 						code_Values[i].checked = true; 

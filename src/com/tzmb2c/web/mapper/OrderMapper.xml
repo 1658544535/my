@@ -650,6 +650,9 @@
 		left join user_order_detail uod on t.id = uod.order_id
 		<!-- left join groupon_user_record gur on gur.attend_id=t.source_id and gur.is_head=1 and gur.activity_id = t.activity_id -->
 		where t.is_delete_order=0
+		<if test="productName !=null and productName !='' ">
+			and uod.product_name like concat("%",#{productName},"%")
+		</if>
 		<if test="groupBeginDateStr != null and groupBeginDateStr != '' and groupEndDateStr != null and groupEndDateStr != '' ">
 			and t.group_date between #{groupBeginDateStr} and #{groupEndDateStr}
 		</if>
@@ -959,6 +962,9 @@
 		</if>
 		<if test="productId!=null  and productId!=''">
 			and uod.product_id like concat("%",#{productId},"%")
+		</if>
+		<if test="productName !=null and productName !='' ">
+			and uod.product_name like concat("%",#{productName},"%")
 		</if>
 		<if test="a != null">
 			and (t.order_type != 1 or (t.order_type = 1 and t.order_status != 1))
