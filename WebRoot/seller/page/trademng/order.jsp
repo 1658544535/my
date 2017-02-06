@@ -160,7 +160,7 @@
                                             商品
                                         </th>
                                         <th class="ol-order-price">
-                                            供货价
+                                            供货价(包邮)
                                         </th>
                                         <th class="ol-order-number">
                                             数量
