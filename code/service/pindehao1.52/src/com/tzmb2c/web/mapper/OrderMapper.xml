@@ -3958,4 +3958,12 @@
 			limit #{pageNo}, #{pageSize}
 		</if>
 	</select>
+	
+	<update id="updateSellerMessage" parameterType="orderPojo">
+		update user_order set
+		seller_message=#{sellerMessage},
+		update_by=#{updateBy},  
+		update_date=now()
+		where id = #{id}
+	</update>
 </mapper>

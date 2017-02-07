@@ -662,4 +662,9 @@ public class OrderServiceImpl implements OrderService {
     return orderDao.onlyOrderTabList(params);
   }
 
+  @Override
+  public int updateSellerMessage(OrderPojo orderPojo) throws SQLException {
+    return orderDao.updateSellerMessage(orderPojo);
+  }
+
 }
