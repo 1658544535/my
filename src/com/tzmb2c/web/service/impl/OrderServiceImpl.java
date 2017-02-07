@@ -206,7 +206,7 @@ public class OrderServiceImpl implements OrderService {
   public List<OrderPojo> getPindekeMonthSale(Map<String, Object> map) {
     return orderDao.getPindekeMonthSale(map);
   }
-  
+
   @Override
   public void orderDeleteId(String[] tids) {
     for (String tid : tids) {
@@ -344,6 +344,11 @@ public class OrderServiceImpl implements OrderService {
   @Override
   public OrderPojo findOrderByOrderNo(String orderNo) {
     return orderDao.findOrderByOrderNo(orderNo);
+  }
+
+  @Override
+  public OrderPojo findOrderByOrderNo2(Map<String, Object> map) {
+    return orderDao.findOrderByOrderNo2(map);
   }
 
   @Override

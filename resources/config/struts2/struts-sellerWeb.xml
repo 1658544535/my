@@ -398,11 +398,38 @@
 		<action name="manufacturerWithdrawExcel" class="com.tzmb2c.web.action.SellerSettleWebAction" method="manufacturerWithdrawExcel">
 		</action>
 		
+		
+		<!-- 发货订单处理 页面-->
+		<action name="goOrderDeliveryWeb" class="com.tzmb2c.web.action.OrderWebAction" method="goOrderDeliveryWeb">
+			<result name="success">/seller/page/trademng/delivery.jsp</result>
+		</action>
+		<!--下载发货模板-->
+		<action name="downloadTemplatesWeb" class="com.tzmb2c.web.action.OrderWebAction" method="downloadTemplatesWeb">
+		</action>
+		<!--批量导入订单EXCEL-->
+		<action name="importOrderWeb" class="com.tzmb2c.web.action.OrderWebAction" method="importOrderWeb">
+		</action>
+		<!--单条导入-->
+		<action name="importOneOrderWeb" class="com.tzmb2c.web.action.OrderWebAction" method="importOneOrderWeb">
+		</action>
 	</package>
 	
 	
 	
 	<package name="sellerWeb-json" extends="json-default">
+			<!-- 发货订单列表 -->
+		<action name="orderDeliveryListWeb" class="com.tzmb2c.web.action.OrderWebAction" method="orderDeliveryListWeb">
+			<result type="json">
+				<param name="root">page.result</param>
+			</result>
+		</action>
+		
+		<!-- 发货订单列表条数 -->
+		<action name="orderDeliveryCountWeb" class="com.tzmb2c.web.action.OrderWebAction" method="goOrderDeliveryWeb">
+			<result type="json">
+				<param name="root">page.rowCount</param>
+			</result>
+		</action>	
 		<!-- 保存修改的密码  -->
 		<action name="doForgetPassword" class="com.tzmb2c.web.action.SellerBasicInfoWebAction" method="doForgetPassword">
 		</action>		
