@@ -174,7 +174,13 @@
 												<input type="hidden" name="page.pageNo" value=0  id="pageNo" />
                                                 <a href="#" class="ui-button ui-button-mred" id="query_btn">
                                                 <i class="iconfont">&#xf012c;</i>
-                                                    查询
+                                                    &nbsp;&nbsp;查询&nbsp;&nbsp;
+                                                </a>
+                                            </div>
+                                            <div class="ui-form-item search-btn">
+                                                <a href="#" class="ui-button ui-button-mred" id="">
+                                                <i class="iconfont">&#xf012c;</i>
+                                                    批量导出
                                                 </a>
                                             </div>
                                         </div>
@@ -184,6 +190,13 @@
                             <table class="ui-table order-list">
                                 <thead>
                                     <tr>
+                                    <style>
+                                    	.ui-table th {
+										    border-bottom: 1px solid #ececec;
+										    padding: 10px 0px;
+										    color: #999;
+										}
+									</style>
                                         <th class="ol-order-items">
                                             商品
                                         </th>
@@ -317,7 +330,7 @@ function orderRefundDetails(id){
 				var sss="<p><a target='_blank' href='checkOrderRefundWeb.do?userOrderRefundPojo.id="+o_msg[i].id+ "&userOrderRefundPojo.orderId="+o_msg[i].orderId+"&userOrderRefundPojo.detailId="+o_msg[i].detailId+"&is="+sta+"'>"+"审核通过"+"</a></p>";
 				var uuu="<p><a target='_blank' href='checkOrderRefundWeb.do?userOrderRefundPojo.id="+o_msg[i].id+ "&userOrderRefundPojo.orderId="+o_msg[i].orderId+"&userOrderRefundPojo.detailId="+o_msg[i].detailId+"&is=6'>"+"审核不通过"+"</a></p>";                
                 if(o_msg[i].serviceInvolved==1){
-                      kkk="<p><a target='_blank' href='updateServiceInvolvedById.do?userOrderRefundPojo.id="+o_msg[i].id+ "'>"+"申请客服介入"+"</a></p>";
+                      //kkk="<p><a target='_blank' href='updateServiceInvolvedById.do?userOrderRefundPojo.id="+o_msg[i].id+ "'>"+"申请客服介入"+"</a></p>";
                 }
               
 				tbody +="<tr class='order-item'>"+
@@ -325,7 +338,7 @@ function orderRefundDetails(id){
                 "<a class='image' href='javascript:;'>"+
                     "<img src='<s:i18n name="sysconfig"><s:text name="seller_dns" /></s:i18n>/upfiles/product/"+o_msg[i].productImage+"'>"+
                 "</a>"+
-                "<span class='title c-666'>"+
+                "<span class='title c-666'>商品货号："+
                     o_msg[i].productNum+
                 "</span>"+
                 "<span class='sku'>订单号："+
@@ -347,7 +360,7 @@ function orderRefundDetails(id){
                   "<p>"+reStatusName+"</p>"+               
             "</td>"+
             "<td class='ol-b-operate'>"+
-            "<p><a href='goRefundDetailWeb.do?orderDetailPojo.id="+o_msg[i].detailId+ "' target='_blank'>"+"售后详情"+"</a></p>"+
+            "<p><a href='goRefundDetailWeb.do?orderDetailPojo.id="+o_msg[i].detailId+ "' target='_blank'>"+"处理/查看"+"</a></p>"+
             wl+
             sh+
             zc+
@@ -376,7 +389,7 @@ function installPage() {
 			"<div class='trade-entry mt-10'>"+
 				"<div class='order-entry' >"+
 					"<div class='order-head'>"+
-					//"<span>订单号:"+this.orderNo+"</span>"+
+					"<span>订单号:"+this.orderNo+"</span>"+
 				    "<span>申请时间:"+this.creatDateString+"</span>"+
 				    "<span id='buyname'>买家姓名:"+this.loginName+"</span>"+
 				    "<span>手机号码:"+this.consigneePhone+"</span>"+
