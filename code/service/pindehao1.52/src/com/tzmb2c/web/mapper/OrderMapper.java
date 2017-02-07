@@ -57,7 +57,7 @@ public interface OrderMapper {
   public List<OrderPojo> getPindekeRanking(Map<String, Object> map);
 
   public List<OrderPojo> getPindekeMonthSale(Map<String, Object> map);
-  
+
   public List<OrderPojo> orderAllListExcel(Map<String, Object> map);
 
   public List<OrderPojo> exportOrderExcel(Map<String, Object> map) throws SQLException;
@@ -83,6 +83,8 @@ public interface OrderMapper {
   public List<CartPojo> getCartsByIds(String ids) throws SQLException;
 
   public OrderPojo findOrderByOrderNo(String orderNo);
+
+  public OrderPojo findOrderByOrderNo2(Map<String, Object> map);
 
   public int shipOrderCountWeb(Map<String, Object> map);
 

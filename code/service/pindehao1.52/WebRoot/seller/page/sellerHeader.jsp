@@ -172,6 +172,11 @@
 								我的订单
 							</a>
 						</li>
+						<li class="ui-nav-subitem">
+							<a href="goOrderDeliveryWeb.do">
+							发货订单导入
+							</a>
+						</li>
 						<!--
 						<li class="ui-nav-subitem pageSellerOrderShipexportlist">
 							<a href="trademng/ship.html">

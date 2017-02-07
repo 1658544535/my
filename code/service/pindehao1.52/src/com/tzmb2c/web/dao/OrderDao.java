@@ -66,6 +66,8 @@ public interface OrderDao {
 
   OrderPojo findOrderByOrderNo(String orderNo);
 
+  OrderPojo findOrderByOrderNo2(Map<String, Object> map);
+
   OrderPojo orderStatusNum(Long id) throws SQLException;
 
   public int shipOrderCountWeb(Map<String, Object> map);
@@ -115,7 +117,7 @@ public interface OrderDao {
   List<OrderPojo> getPindekeRanking(Map<String, Object> map);
 
   List<OrderPojo> getPindekeMonthSale(Map<String, Object> map);
-  
+
   public List<OrderPojo> orderAllListExcel(Map<String, Object> map);
 
   void updateorders(Map<String, Object> map) throws SQLException;

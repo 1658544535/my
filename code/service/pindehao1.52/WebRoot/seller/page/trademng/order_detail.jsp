@@ -29,8 +29,52 @@
                         <h1 class="seller-title">
                             订单详情
                         </h1>
+                        
                         <div class="p20 seller-order">
-                            <h5 class="h5">
+                        <form action="updateOrder.do?os=${os}&guide=${guide}" method="post"  id="from5">
+                        <input name="order.id" id="orderId" value="${orderPojo.id}" class="inputText" type="hidden">
+                        <table style="width:100%">
+                        <tr>
+						<td>订单编号：${orderPojo.orderNo}</td>
+						<td>订单状态：
+							<c:forEach items="${orderStatus}" var="orderStatus">
+								<c:if test="${orderPojo.orderStatus==orderStatus.value}">
+									<label  name="order.orderStatus" class="floatLeft">${orderStatus.name}</label>
+								</c:if>
+							</c:forEach>
+						</td>
+						<td>支付状态：
+						<c:forEach items="${payStatus}" var="payStatus">
+								<c:if test="${orderPojo.payStatus==payStatus.value}">
+								<label name="order.payStatus" class="floatLeft">${payStatus.name}</label>
+								</c:if>
+						</c:forEach>
+						</td>
+						</tr>
+						<tr>
+						<td>下单时间：${orderPojo.creatDateString}</td>
+						<td>付款时间：${orderPojo.paymentDateStr}</td>
+						<td>成团时间：${orderPojo.groupDateStr}</td>
+						</tr>
+						<tr>
+						<td>确认收货时间：${orderPojo.confirmDateStr}</td>
+						<td>发货时间：${orderPojo.sendDateStr}</td>
+						<td>售后状态：${orderPojo.isCancelOrderName}</td>
+						</tr>
+						<tr>
+						<td>快递公司：${orderPojo.logisticsName}
+						</td>
+						<td>快递单号: ${orderPojo.logisticsNo}</td>
+						</tr>
+                      <!--  <tr>
+						<td align="right" class="grey" width="15%"  colspan="4"><input type="button" class="ok_btn" value="修改" id="sbutton6" /></td>
+					    </tr>	-->					
+					    </table>
+						</form>
+                        </div>
+                        
+                        <div class="p20 seller-order">
+       <!--                     <h5 class="h5">
                                 收货信息及交易详情
                                 <span>
                                     成交价
@@ -47,61 +91,62 @@
                                 <span style="width: 120px">
                                     单价
                                 </span>
-                            </h5>
+                            </h5>-->
                             <div class="trade-entry">
                                 <div class="order-entry">
                                     <div class="order-head">
-                                        <span>
-                                            订单编号：${orderPojo.orderNo }
+                                        <span style="display:inline-block;width:29%;">
+                                           商品
                                         </span>
-                                        <span>
-                                            下单时间：${orderPojo.createDateStr }
+                                       <span style="display:inline-block;width:29%;">
+                                           规格   
+                                        </span>                                        
+                                        <span style="display:inline-block;width:29%;"> 
+                                           供货价（包邮）   
                                         </span>
-                                        <c:if test="${orderPojo.orderStatus >= 2  }"><span>
-                                            付款时间：${orderPojo.createDateStr }
-                                        </span></c:if>
-                                        <c:if test="${orderPojo.orderStatus < 2  }"><span>
-                                            付款时间：
-                                        </span></c:if>
-                                        <c:if test="${orderShipPojo.createDateStr != null  }"><span>
-                                            发货时间：${orderShipPojo.createDateStr }
-                                        </span>
-                                        </c:if>
-                                        <c:if test="${orderShipPojo.createDateStr == null  }"><span>
-                                            发货时间：
-                                        </span>
-                                        </c:if>
-                                        <span>
-                                            订单状态：${orderPojo.orderStatusName }
+                                       <span>
+                                           数量
                                         </span>
                                     </div>
                                     <table class="pure-table">
                                         <tbody>
+                                        <tr></tr>
                                         <c:forEach items="${orderDetailPojos }" var="o">
                                             <tr class="order-item">
-                                                <td class="ol-b-item-info clearfix">
+                                                <td class="ol-b-item-info">
                                                     <a class="image" href="http://b2c.taozhuma.com/goProductDetail.do?productPojo.id=${o.productId }"
                                                     target="_blank">
                                                         <img src="<s:i18n name="sysconfig"><s:text name="seller_dns" /></s:i18n>/upfiles/product/${o.productImages }">
                                                     </a>
-                                                    <a class="title c-666" target="_blank" href="http://b2c.taozhuma.com/goProductDetail.do?productPojo.id=${o.productId }">
+                                                    <p>${o.businessCode }</p>
+                                                    <p>${o.productName }</p>
+                                         <!--             <a class="title c-666" target="_blank" href="http://b2c.taozhuma.com/goProductDetail.do?productPojo.id=${o.productId }">
                                                         ${o.productName }
                                                     </a>
-                                                    <span class="sku">
-                                                        商品编码：
-                                                        <b class="c-666">
-                                                            ${o.businessCode }
-                                                        </b>
-                                                        （SKU：${o.productSku }&nbsp;&nbsp;&nbsp; ）
-                                                    </span>
+                                                   <span class="sku">
+                                                           
+                                                                                                                                              （SKU：${o.productSku }&nbsp;&nbsp;&nbsp; ）
+                                                    </span>-->
                                                 </td>
-                                                <td class="ol-b-item-price">
-                                                    <p>
-                                                        ￥${o.stockPrice }
+                                           <td class="ol-b-item-info">
+                    ${o.productSku }              
+                                            </td>  
+                                              <td class="ol-b-item-info">
+                                                        ￥${o.stockPrice }              
+                                            </td>    
+                                            <td>
+                       ${o.num }
+                                            </td>
+                       <!--                           <td class="ol-b-item-price">
+                                                  <p>
+                                                        ￥${o.stockPrice }              
                                                     </p>
+                                                    
                                                     <p class="strike">
                                                         ￥${o.stockPriceOld }
                                                     </p>
+
+                                                   
                                                 </td>
                                                 <td class="ol-b-number" style="text-align: center; ">
                                                     ${o.num }
@@ -121,20 +166,20 @@
                                                         ￥${o.stockPrice*o.num }
                                                     </span>
                                                 </td>
-                                            </tr>
+                                            </tr>-->
                                             </c:forEach>
                                         </tbody>
                                     </table>
                                     <div style="border-bottom: solid 1px #EFEFEF; height: 36px; color: #333333; padding-right: 5px; padding-top: 5px; padding-bottom: 5px;">
                                      <div style="width: 220px; margin-right: 0px">
-                                      <p class="price" style="font-size: 12px">   
+               <!--                       <p class="price" style="font-size: 12px">   
                                                 <span>
                                                     备注：
                                                 </span>
                                                 <span>
                                                     ${orderPojo.sellerMessage}
                                                 </span>
-                                        </p>        
+                                        </p>    -->    
                                                 </div>
                                         <div style="width: 220px; margin-left: 740px">
                                         <%--     <p class="price">
@@ -346,7 +391,11 @@
 				$(".view-ModifyShipmentCancel").on("click",function(){
 					$(".view-ModifyShipmentPanel").hide();
 				});
-				
+				$("#sbutton6").click(function(){		
+			    if(tt.validate()){
+				  document.getElementById("from5").submit();
+			    }
+		});
 			})
 		</script>
 	</body>

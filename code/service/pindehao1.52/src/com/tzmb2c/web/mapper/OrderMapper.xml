@@ -1866,6 +1866,47 @@
 		left join product p on p.id = uod.product_id
 		where
 		1=1 and order_no = #{orderNo} 
+	</select>	
+	<select id="findOrderByOrderNo2" resultType="orderPojo"
+		parameterType="java.util.Map">
+		select t.id as id, 
+		t.user_id as userId, 
+		t.suser_id as suserId,
+		t.all_price as allPrice, 
+		t.fact_price as factPrice, 
+		t.consignee as consignee ,
+		t.consignee_address as consigneeAddress, 
+		t.consignee_phone as consigneePhone,
+		t.consignee_type as consigneeType,
+		(select name from sys_dict where value=t.consignee_type and type = 'consignee_type') as consigneeTypeName,
+		t.buyer_message as buyerMessage ,
+		t.order_status as orderStatus,
+		(select name from sys_dict where value=t.order_status and type = 'order_status') orderStatusName,
+		t.pay_status as payStatus,
+		(select name from sys_dict where value=t.pay_status and type = 'pay_status') payStatusName,
+		t.pay_method as payMethod,
+		(select name from sys_dict where value=t.pay_method and type = 'pay_method_type') payMethodName,
+		t.order_no as orderNo,
+		t.serial_number as serialNumber,
+		t.create_date as createDate,
+		t.espress_price as espressPrice,
+		(select name from sys_login where id=t.user_id ) userName,
+		(select address from user_info where user_id=t.user_id ) consignorAddress,
+		(select phone from user_info where user_id=t.user_id ) shipPhone,
+		t.out_trade_no as outTradeNo,
+		t.wallet_price as walletPrice,
+		t.activity_id as activityId,
+		t.source as source,
+		t.source_id as sourceId,
+		t.invite_code as inviteCode,
+		uod.product_id as productId,
+		uod.num as num,
+		p.max_num as maxNum
+		from user_order as t
+		left join user_order_detail uod on uod.order_id = t.id 
+		left join product p on p.id = uod.product_id
+		where
+		1=1 and t.order_no = #{orderNo} and t.suser_id= #{suserId}
 	</select>
 	<!--
 	<insert id="insertOrder" parameterType="orderPojo" useGeneratedKeys="true" keyProperty="id">

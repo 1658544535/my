@@ -105,7 +105,7 @@ public class OrderDaoImpl implements OrderDao {
 
     return orderMapper.getPindekeMonthSale(map);
   }
-  
+
   @Override
   public void delOrder(Long id) throws SQLException {
 
@@ -175,6 +175,11 @@ public class OrderDaoImpl implements OrderDao {
   @Override
   public OrderPojo findOrderByOrderNo(String orderNo) {
     return orderMapper.findOrderByOrderNo(orderNo);
+  }
+
+  @Override
+  public OrderPojo findOrderByOrderNo2(Map<String, Object> map) {
+    return orderMapper.findOrderByOrderNo2(map);
   }
 
   @Override

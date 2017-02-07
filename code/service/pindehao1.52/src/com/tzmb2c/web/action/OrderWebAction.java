@@ -1,11 +1,14 @@
 package com.tzmb2c.web.action;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -27,11 +30,15 @@ import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.ActionContext;
+import com.tzmb2c.business.service.GrouponService;
 import com.tzmb2c.business.service.SellerService;
 import com.tzmb2c.common.Pager;
 import com.tzmb2c.utils.FileUtil;
+import com.tzmb2c.utils.RandomUtils;
+import com.tzmb2c.utils.SmsSendUtil;
 import com.tzmb2c.utils.StringUtil;
 import com.tzmb2c.utils.UserUtil;
+import com.tzmb2c.web.pojo.DeliveryOrderImportPojo;
 import com.tzmb2c.web.pojo.OrderDetailPojo;
 import com.tzmb2c.web.pojo.OrderPojo;
 import com.tzmb2c.web.pojo.OrderShipPojo;
@@ -39,6 +46,7 @@ import com.tzmb2c.web.pojo.SysAreaPojo;
 import com.tzmb2c.web.pojo.SysDictPojo;
 import com.tzmb2c.web.pojo.SysLoginPojo;
 import com.tzmb2c.web.pojo.UserOrderRefundPojo;
+import com.tzmb2c.web.service.DeliveryOrderImportService;
 import com.tzmb2c.web.service.OrderDetailService;
 import com.tzmb2c.web.service.OrderService;
 import com.tzmb2c.web.service.OrderShipService;
@@ -66,7 +74,9 @@ public class OrderWebAction extends SuperAction {
   private SysDictService sysDictService;
   @Autowired
   private UserOrderRefundService userOrderRefundService;
-
+  @Autowired
+  private DeliveryOrderImportService deliveryOrderImportService;
+  private GrouponService grouponService;
   private OrderPojo orderPojo;
   private List<OrderPojo> orderPojos;
   private OrderDetailPojo orderDetailPojo;
@@ -81,6 +91,90 @@ public class OrderWebAction extends SuperAction {
   private List<Integer> testUsers;
   private UserOrderRefundPojo userOrderRefundPojo;
   private File upfile;
+  /**
+   * impBatchNo:本次导入批次号
+   */
+  private String impBatchNo;
+  private DeliveryOrderImportPojo deliveryOrderImportPojo;
+  private int success;
+  private int fail;
+  private List<DeliveryOrderImportPojo> deliveryOrderImportPojos;
+  private int repeatImport;
+  private String orderNum;
+  private String logisticsName;
+  private String logisticsNo;
+
+  public String getOrderNum() {
+    return orderNum;
+  }
+
+  public void setOrderNum(String orderNum) {
+    this.orderNum = orderNum;
+  }
+
+  public String getLogisticsName() {
+    return logisticsName;
+  }
+
+  public void setLogisticsName(String logisticsName) {
+    this.logisticsName = logisticsName;
+  }
+
+  public String getLogisticsNo() {
+    return logisticsNo;
+  }
+
+  public void setLogisticsNo(String logisticsNo) {
+    this.logisticsNo = logisticsNo;
+  }
+
+  public int getRepeatImport() {
+    return repeatImport;
+  }
+
+  public void setRepeatImport(int repeatImport) {
+    this.repeatImport = repeatImport;
+  }
+
+  public List<DeliveryOrderImportPojo> getDeliveryOrderImportPojos() {
+    return deliveryOrderImportPojos;
+  }
+
+  public void setDeliveryOrderImportPojos(List<DeliveryOrderImportPojo> deliveryOrderImportPojos) {
+    this.deliveryOrderImportPojos = deliveryOrderImportPojos;
+  }
+
+  public int getSuccess() {
+    return success;
+  }
+
+  public void setSuccess(int success) {
+    this.success = success;
+  }
+
+  public int getFail() {
+    return fail;
+  }
+
+  public void setFail(int fail) {
+    this.fail = fail;
+  }
+
+  public DeliveryOrderImportPojo getDeliveryOrderImportPojo() {
+    return deliveryOrderImportPojo;
+  }
+
+  public void setDeliveryOrderImportPojo(DeliveryOrderImportPojo deliveryOrderImportPojo) {
+    this.deliveryOrderImportPojo = deliveryOrderImportPojo;
+  }
+
+  public String getImpBatchNo() {
+    return impBatchNo;
+  }
+
+  public void setImpBatchNo(String impBatchNo) {
+    this.impBatchNo = impBatchNo;
+  }
 
   /**
    * 商家中心-我的订单前端页面
@@ -253,29 +347,29 @@ public class OrderWebAction extends SuperAction {
     }
     switch (oos) {
       case "1":
-        this.downloadFileName = "待付款订单.xls";
+        downloadFileName = "待付款订单.xls";
         break;
       case "2":
-        this.downloadFileName = "待发货单.xls";
+        downloadFileName = "待发货单.xls";
         break;
       case "3":
-        this.downloadFileName = "已发货订单.xls";
+        downloadFileName = "已发货订单.xls";
         break;
       case "4":
-        this.downloadFileName = "已确认订单.xls";
+        downloadFileName = "已确认订单.xls";
         break;
       case "5":
-        this.downloadFileName = "已评论订单.xls";
+        downloadFileName = "已评论订单.xls";
         break;
       default:
-        this.downloadFileName = "订单信息.xls";
+        downloadFileName = "订单信息.xls";
         break;
     }
     WritableWorkbook wwb = null;
     OutputStream ots = null;
     String filePath = null;
     String fileName = null;
-    fileName = this.downloadFileName;
+    fileName = downloadFileName;
 
     // filePath = "/home"+fileName;
     // 这里直接找到项目的路径，liunx和window路径不同，不能混淆在一起!!!
@@ -652,6 +746,556 @@ public class OrderWebAction extends SuperAction {
     return null;
   }
 
+
+
+  /**
+   * 跳转发货导入订单列表
+   * 
+   * @return
+   * @throws Exception
+   */
+  public String goOrderDeliveryWeb() throws Exception {
+    SysLoginPojo sysLogin = UserUtil.getWebUser();
+    if (sysLogin == null) {
+      FileUtil.alertMessageBySkip("请先登录", "sellerLogin.do");
+      return null;
+    }
+
+    int count = 0;
+    if (StringUtils.isNotBlank(impBatchNo)) {
+      Map<String, Object> map = new HashMap<String, Object>();
+      map.put("orderNo", deliveryOrderImportPojo != null ? deliveryOrderImportPojo.getOrderNo()
+          : "");
+      map.put("batchNo", impBatchNo);
+      count = deliveryOrderImportService.countBy(map);
+    }
+    if (page == null) {
+      page = new Pager();
+    }
+    page.setRowCount(count);
+    ActionContext ac = ActionContext.getContext();
+    ac.put("success", success);
+    ac.put("fail", fail);
+    return SUCCESS;
+  }
+
+  /**
+   * 发货订单列表
+   * 
+   * @return
+   * @throws SQLException
+   */
+  public String orderDeliveryListWeb() throws SQLException {
+    Map<String, Object> map = new HashMap<String, Object>();
+    if (page == null) {
+      page = new Pager();
+    }
+    if (StringUtils.isNotBlank(impBatchNo)) {
+      map.put("orderNo", deliveryOrderImportPojo != null ? deliveryOrderImportPojo.getOrderNo()
+          : "");
+      map.put("batchNo", impBatchNo);
+      map.put("pageSize", 10);
+      map.put("pageNo", (page.getPageNo() - 1) * page.getPageSize());
+
+      deliveryOrderImportPojos = deliveryOrderImportService.listPage(map);
+      JSONArray json = JSONArray.fromObject(deliveryOrderImportPojos);
+      page.setResult(json.toString());
+    } else {
+      page.setResult("{}");
+    }
+    return SUCCESS;
+  }
+
+  /**
+   * 下载导入模板
+   * 
+   * @return
+   * @throws Exception
+   */
+  public void downloadTemplatesWeb() throws Exception {
+    UserUtil.getWebUser();
+    new HashMap<String, Object>();
+    // 过滤记事本中的userId
+    String filePath1 = "";
+    String fileName1 = "userId.txt";
+    List<Integer> a = new ArrayList<>();
+    filePath1 =
+        ServletActionContext.getServletContext().getRealPath("/temp") + File.separator + fileName1;
+    File file1 = new File(filePath1);
+    if (file1.isFile() && file1.exists()) { // 判断文件是否存在
+      InputStreamReader read = new InputStreamReader(new FileInputStream(file1), "utf-8");// 编码格式
+      BufferedReader bufferedReader = new BufferedReader(read);
+      String lineTxt = null;
+      while ((lineTxt = bufferedReader.readLine()) != null) {
+        a.add(Integer.parseInt(lineTxt));
+      }
+      read.close();
+    }
+    downloadFileName = "发货模板.xls";
+    WritableWorkbook wwb = null;
+    OutputStream ots = null;
+    String filePath = null;
+    String fileName = null;
+    fileName = downloadFileName;
+
+    filePath =
+        ServletActionContext.getServletContext().getRealPath("/temp") + File.separator + fileName;
+    File file = new File(filePath);
+    if (!file.isFile()) {
+      file.createNewFile();
+    }
+    try {
+      ots = new FileOutputStream(file);
+      wwb = Workbook.createWorkbook(ots);
+      WritableSheet sheet = wwb.createSheet("sheet1", 0);
+      String[] cellStr = {"订单号", "快递公司", "快递单号"};
+      for (int i = 0; i < cellStr.length; i++) {
+        sheet.addCell(new Label(i, 0, cellStr[i]));
+        if (i == cellStr.length - 1) {
+          sheet.addCell(new Label(i, 0, cellStr[i]));
+        }
+      }
+      wwb.write();
+      ots.flush();
+    } catch (Exception e) {
+      // TODO: handle exception
+    } finally {
+      try {
+        if (wwb != null) {
+          wwb.close();
+        }
+        if (ots != null) {
+          ots.close();
+        }
+      } catch (Exception e2) {
+        e2.printStackTrace();
+      }
+    }
+    HttpServletResponse response = ServletActionContext.getResponse();
+    // 设置文件ContentType类型，这样设置，会自动判断下载文件类型
+    response.setContentType("application/vnd.ms-excel");
+    String fileNames = new String(fileName.getBytes("GB2312"), "ISO_8859_1");
+    response.setHeader("Content-Disposition", "attachment;fileName=" + fileNames);
+    ServletOutputStream out;
+    try {
+      FileInputStream fileInputStream = new FileInputStream(filePath);
+      out = response.getOutputStream();
+      int i = 0;
+      while ((i = fileInputStream.read()) != -1) {
+        out.write(i);
+      }
+      fileInputStream.close();
+      out.close();
+
+      File delfile = new File(filePath);
+      // 路径为文件且不为空则进行删除
+      if (delfile.isFile() && delfile.exists()) {
+        delfile.delete();
+      }
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * 订单导入Excel表格
+   * 
+   * @return
+   * @throws Exception
+   */
+  public String importOrderWeb() throws Exception {
+    SysLoginPojo sysLogin = UserUtil.getWebUser();
+    if (sysLogin == null) {
+      FileUtil.alertMessageBySkip("请先登录", "sellerLogin.do");
+      return null;
+    }
+    Map<String, Object> map = new HashMap<String, Object>();
+    int successCnt = 0;
+    int failCnt = 0;
+    if (importupfile != null) {
+      FileInputStream fis = null;
+      Workbook workBook = null;
+      Sheet sheet = null;
+      String orderNo = "";
+      String logisName = "";
+      String logisCName = "";
+      String logisNo = "";
+      String remarks = "";
+      String content = "";
+      boolean valid = true;// 数据检查状态；
+      int status = 0;// 导入状态（0为失败，1为成功）；
+      String batchNo = "";// 导入批次
+      DeliveryOrderImportPojo deliveryOrderImportPojo = null;
+      OrderShipPojo orderShipPojo = null;
+      OrderShipPojo updOrderShip = null;
+      try {
+        fis = new FileInputStream(importupfile);
+        workBook = Workbook.getWorkbook(fis);
+        sheet = workBook.getSheet(0);
+
+        // cell(i,j) i列 j行
+        if (sheet != null) {
+          int row = sheet.getRows();// 行
+          if (row >= 2) {
+            // 本次批次号
+            batchNo = System.nanoTime() + RandomUtils.runVerifyCode(3);
+            for (int j = 1; j < row; j++) {
+              remarks = "";
+              orderNo = "";
+              logisName = "";
+              logisCName = "";
+              logisNo = "";
+              status = 0;
+              valid = true;
+              if (sheet.getCell(0, j) != null
+                  && StringUtils.isNotBlank(sheet.getCell(0, j).getContents())) {
+                orderNo = sheet.getCell(0, j).getContents().trim();
+              }
+              // 获取快递名称
+              if (sheet.getCell(1, j) != null
+                  && StringUtils.isNotBlank(sheet.getCell(1, j).getContents())) {
+                logisCName = sheet.getCell(1, j).getContents().trim();
+                // 快递名称
+                logisName = SellerService.logisticsNameTrans(logisCName);
+              }
+              // 获取快递单号
+              if (sheet.getCell(2, j) != null
+                  && StringUtils.isNotBlank(sheet.getCell(2, j).getContents())) {
+                logisNo = sheet.getCell(2, j).getContents().trim();
+              }
+              if (StringUtils.isBlank(orderNo) && StringUtils.isBlank(logisCName)
+                  && StringUtils.isBlank(logisNo)) {
+                // 过滤空行
+                continue;
+              }
+              if (StringUtils.isBlank(orderNo)) {
+                valid = false;
+                remarks += "订单号不能为空；";
+              }
+              if (StringUtils.isBlank(logisCName)) {
+                valid = false;
+                remarks += "快递名称不能为空；";
+              }
+              if (StringUtils.isBlank(logisNo)) {
+                valid = false;
+                remarks += "快递单号不能为空；";
+              }
+              try {
+                if (valid) {
+                  // 判断重复导入订单
+                  if (StringUtils.isNotBlank(orderNo)) {
+                    map.put("orderNo", orderNo);
+                    map.put("suserId", sysLogin.getId());
+                    orderPojo = orderService.findOrderByOrderNo(orderNo);
+                    if (orderPojo == null) {
+                      remarks += "找不到该订单号；";
+                      failCnt++;
+                    } else if (!(orderPojo.getOrderStatus() == 2 || repeatImport == 1
+                        && orderPojo.getOrderStatus() == 3)) {
+                      if (orderPojo.getOrderStatus() == 3) {
+                        remarks += "该订单已发货,请选择重复导入；";
+                      } else {
+                        remarks += "该订单状态非已付款待发货；";
+                      }
+                      failCnt++;
+                    } else {
+                      orderShipPojo = new OrderShipPojo();
+                      orderShipPojo.setOrderId(orderPojo.getId());
+                      orderShipPojos = orderShipService.orderShipAllList(orderShipPojo, page);
+                      if (orderShipPojos != null && orderShipPojos.size() > 0) {
+                        orderShipPojo = orderShipPojos.get(0);
+                      } else {
+                        orderShipPojo = null;
+                      }
+                      if (orderShipPojo != null && repeatImport == 0) {
+                        remarks += "该订单已发货,请选择重复导入；";
+                        failCnt++;
+                      } else {
+                        if (orderShipPojo != null) {
+                          updOrderShip = new OrderShipPojo();
+                          updOrderShip.setLogisticsName(logisName);
+                          updOrderShip.setLogisticsNo(logisNo);
+                          updOrderShip.setId(orderShipPojo.getId());
+                          status = orderShipService.updateOrderShip(updOrderShip);
+                        } else {
+                          updOrderShip = new OrderShipPojo();
+                          updOrderShip.setOrderNo(orderPojo.getOrderNo());
+                          updOrderShip.setOrderId(orderPojo.getId());
+                          updOrderShip.setUserId(orderPojo.getUserId());
+                          updOrderShip.setOrderStatus(2);
+                          updOrderShip.setStatus(1);
+                          updOrderShip.setConsignee(orderPojo.getConsignee());
+                          updOrderShip.setConsigneeAddress(orderPojo.getConsigneeAddress());
+                          updOrderShip.setConsigneePhone(orderPojo.getConsigneePhone());
+                          updOrderShip.setConsigneeType(orderPojo.getConsigneeType());
+                          updOrderShip.setBuyerMessage(orderPojo.getBuyerMessage());
+                          updOrderShip.setConsignor("拼得好");
+                          updOrderShip.setConsignorAddress("汕头市澄海区");
+                          updOrderShip.setLogisticsNo(logisNo);
+                          updOrderShip.setLogisticsName(logisName);
+                          updOrderShip.setCreateBy(sysLogin.getId());
+                          updOrderShip.setUpdateBy(sysLogin.getId());
+                          updOrderShip.setCreateDate(new Date());
+                          updOrderShip.setUpdateDate(new Date());
+                          status = orderShipService.insertOrderShip(updOrderShip);
+                          if (status > 0) {
+                            // 更新订单发货状态
+                            orderService.updateOrderStatus(orderPojo.getId());
+                          }
+                        }
+
+                        if (status > 0) {
+                          successCnt++;
+                          status = 1;
+                          remarks += "导入成功；";
+                          // 发送短信
+                          content = "【拼得好】您购买的宝贝已由" + logisCName + "快递发出，正在奔向您的途中，快递单号：" + logisNo;
+                          SmsSendUtil.sendSMS(orderPojo.getConsigneePhone(), content);
+
+                          // 添加订单消息
+                          try {
+                            grouponService.addUserOrderNotice(6, orderPojo.getUserId(),
+                                orderPojo.getId());
+                          } catch (Exception e) {
+                            e.printStackTrace();
+                          }
+                        } else {
+                          failCnt++;
+                          remarks += "导入失败；";
+                        }
+                      }
+                    }
+                  }
+                } else {
+                  failCnt++;
+                }
+                deliveryOrderImportPojo = new DeliveryOrderImportPojo();
+                deliveryOrderImportPojo.setBatchNo(batchNo);
+                deliveryOrderImportPojo.setOrderNo(orderNo);
+                deliveryOrderImportPojo.setLogisticsName(logisName);
+                deliveryOrderImportPojo.setLogisticsNo(logisNo);
+                deliveryOrderImportPojo.setStatus(status);
+                deliveryOrderImportPojo.setRemarks(remarks);
+                deliveryOrderImportPojo.setCreateDate(new Date());
+                deliveryOrderImportPojo.setUpdateDate(new Date());
+                deliveryOrderImportPojo.setCreateBy(sysLogin.getId());
+                deliveryOrderImportPojo.setUpdateBy(sysLogin.getId());
+                deliveryOrderImportService.add(deliveryOrderImportPojo);
+              } catch (Exception ex) {
+                ex.printStackTrace();
+                failCnt++;
+                remarks += "导入异常；";
+              }
+            }
+            FileUtil.alertMessageBySkip("导入完成", "goOrderDeliveryWeb.do?impBatchNo=" + batchNo
+                + "&success=" + successCnt + "&fail=" + failCnt);
+          } else {
+            FileUtil.alertMessageBySkip("导入的文件没有数据哦！", "goOrderDeliveryWeb.do");
+          }
+        } else {
+          FileUtil.alertMessageBySkip("导入文件不能为空哦！", "goOrderDeliveryWeb.do");
+        }
+      } catch (Exception e) {
+        e.printStackTrace();
+      } finally {
+        if (fis != null) {
+          fis.close();
+        }
+        if (workBook != null) {
+          workBook.close();// 记得关闭
+        }
+      }
+    } else {
+      FileUtil.alertMessageBySkip("导入文件不能为空哦！", "goOrderDeliveryWeb.do");
+    }
+    return null;
+  }
+
+
+
+  /**
+   * 导入单条发货订单
+   * 
+   * @return
+   * @throws Exception
+   */
+  public String importOneOrderWeb() throws Exception {
+    SysLoginPojo sysLogin = UserUtil.getWebUser();
+    if (sysLogin == null) {
+      FileUtil.alertMessageBySkip("请先登录", "sellerLogin.do");
+      return null;
+    }
+    Map<String, Object> map = new HashMap<String, Object>();
+    int successCnt = 0;
+    int failCnt = 0;
+    String orderNo = "";
+    String logisName = "";
+    String logisCName = "";
+    String logisNo = "";
+    String remarks = "";
+    String content = "";
+    boolean valid = true;// 数据检查状态；
+    int status = 0;// 导入状态（0为失败，1为成功）；
+    String batchNo = "";// 导入批次
+    DeliveryOrderImportPojo deliveryOrderImportPojo = null;
+    OrderShipPojo orderShipPojo = null;
+    OrderShipPojo updOrderShip = null;
+    try {
+
+      // 本次批次号
+      batchNo = System.nanoTime() + RandomUtils.runVerifyCode(3);
+      remarks = "";
+      orderNo = "";
+      logisName = "";
+      logisCName = "";
+      logisNo = "";
+      status = 0;
+      valid = true;
+      if (orderNum != null && !"".equals(orderNum)) {
+        orderNo = orderNum;
+      }
+      // 获取快递名称
+      if (logisticsName != null && !"".equals(logisticsName)) {
+        logisCName = logisticsName;
+        // 快递名称
+        logisName = SellerService.logisticsNameTrans(logisCName);
+      }
+      // 获取快递单号
+      if (logisticsNo != null && !"".equals(logisticsNo)) {
+        logisNo = logisticsNo;
+      }
+      if (StringUtils.isBlank(orderNo) && StringUtils.isBlank(logisCName)
+          && StringUtils.isBlank(logisNo)) {
+        // 过滤空行
+        FileUtil.alertMessageBySkip("请填写导入的订单信息！", "goOrderDeliveryWeb.do");
+        return null;
+      }
+      if (StringUtils.isBlank(orderNo)) {
+        valid = false;
+        remarks += "订单号不能为空；";
+      }
+      if (StringUtils.isBlank(logisCName)) {
+        valid = false;
+        remarks += "快递名称不能为空；";
+      }
+      if (StringUtils.isBlank(logisNo)) {
+        valid = false;
+        remarks += "快递单号不能为空；";
+      }
+      try {
+        if (valid) {
+          // 判断重复导入订单
+          if (StringUtils.isNotBlank(orderNo)) {
+            map.put("orderNo", orderNo);
+            map.put("suserId", sysLogin.getId());
+            orderPojo = orderService.findOrderByOrderNo(orderNo);
+            if (orderPojo == null) {
+              remarks += "找不到该订单号；";
+              failCnt++;
+            } else if (!(orderPojo.getOrderStatus() == 2 || repeatImport == 1
+                && orderPojo.getOrderStatus() == 3)) {
+              if (orderPojo.getOrderStatus() == 3) {
+                remarks += "该订单已发货,请选择重复导入；";
+              } else {
+                remarks += "该订单状态非已付款待发货；";
+              }
+              failCnt++;
+            } else {
+              orderShipPojo = new OrderShipPojo();
+              orderShipPojo.setOrderId(orderPojo.getId());
+              orderShipPojos = orderShipService.orderShipAllList(orderShipPojo, page);
+              if (orderShipPojos != null && orderShipPojos.size() > 0) {
+                orderShipPojo = orderShipPojos.get(0);
+              } else {
+                orderShipPojo = null;
+              }
+              if (orderShipPojo != null && repeatImport == 0) {
+                remarks += "该订单已发货,请选择重复导入；";
+                failCnt++;
+              } else {
+                if (orderShipPojo != null) {
+                  updOrderShip = new OrderShipPojo();
+                  updOrderShip.setLogisticsName(logisName);
+                  updOrderShip.setLogisticsNo(logisNo);
+                  updOrderShip.setId(orderShipPojo.getId());
+                  status = orderShipService.updateOrderShip(updOrderShip);
+                } else {
+                  updOrderShip = new OrderShipPojo();
+                  updOrderShip.setOrderNo(orderPojo.getOrderNo());
+                  updOrderShip.setOrderId(orderPojo.getId());
+                  updOrderShip.setUserId(orderPojo.getUserId());
+                  updOrderShip.setOrderStatus(2);
+                  updOrderShip.setStatus(1);
+                  updOrderShip.setConsignee(orderPojo.getConsignee());
+                  updOrderShip.setConsigneeAddress(orderPojo.getConsigneeAddress());
+                  updOrderShip.setConsigneePhone(orderPojo.getConsigneePhone());
+                  updOrderShip.setConsigneeType(orderPojo.getConsigneeType());
+                  updOrderShip.setBuyerMessage(orderPojo.getBuyerMessage());
+                  updOrderShip.setConsignor("拼得好");
+                  updOrderShip.setConsignorAddress("汕头市澄海区");
+                  updOrderShip.setLogisticsNo(logisNo);
+                  updOrderShip.setLogisticsName(logisName);
+                  updOrderShip.setCreateBy(sysLogin.getId());
+                  updOrderShip.setUpdateBy(sysLogin.getId());
+                  updOrderShip.setCreateDate(new Date());
+                  updOrderShip.setUpdateDate(new Date());
+                  status = orderShipService.insertOrderShip(updOrderShip);
+                  if (status > 0) {
+                    // 更新订单发货状态
+                    orderService.updateOrderStatus(orderPojo.getId());
+                  }
+                }
+
+                if (status > 0) {
+                  successCnt++;
+                  status = 1;
+                  remarks += "导入成功；";
+                  // 发送短信
+                  content = "【拼得好】您购买的宝贝已由" + logisCName + "快递发出，正在奔向您的途中，快递单号：" + logisNo;
+                  SmsSendUtil.sendSMS(orderPojo.getConsigneePhone(), content);
+
+                  // 添加订单消息
+                  try {
+                    grouponService.addUserOrderNotice(6, orderPojo.getUserId(), orderPojo.getId());
+                  } catch (Exception e) {
+                    e.printStackTrace();
+                  }
+                } else {
+                  failCnt++;
+                  remarks += "导入失败；";
+                }
+              }
+            }
+          }
+        } else {
+          failCnt++;
+        }
+        deliveryOrderImportPojo = new DeliveryOrderImportPojo();
+        deliveryOrderImportPojo.setBatchNo(batchNo);
+        deliveryOrderImportPojo.setOrderNo(orderNo);
+        deliveryOrderImportPojo.setLogisticsName(logisName);
+        deliveryOrderImportPojo.setLogisticsNo(logisNo);
+        deliveryOrderImportPojo.setStatus(status);
+        deliveryOrderImportPojo.setRemarks(remarks);
+        deliveryOrderImportPojo.setCreateDate(new Date());
+        deliveryOrderImportPojo.setUpdateDate(new Date());
+        deliveryOrderImportPojo.setCreateBy(sysLogin.getId());
+        deliveryOrderImportPojo.setUpdateBy(sysLogin.getId());
+        deliveryOrderImportService.add(deliveryOrderImportPojo);
+      } catch (Exception ex) {
+        ex.printStackTrace();
+        failCnt++;
+        remarks += "导入异常；";
+      }
+
+      FileUtil.alertMessageBySkip("导入完成", "goOrderDeliveryWeb.do?impBatchNo=" + batchNo
+          + "&success=" + successCnt + "&fail=" + failCnt);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
 
   public OrderPojo getOrderPojo() {
     return orderPojo;
