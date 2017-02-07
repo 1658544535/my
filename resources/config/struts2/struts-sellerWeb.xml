@@ -412,6 +412,9 @@
 		<!--单条导入-->
 		<action name="importOneOrderWeb" class="com.tzmb2c.web.action.OrderWebAction" method="importOneOrderWeb">
 		</action>
+		<!--编辑留言-->
+		<action name="updateSellerMessageWeb" class="com.tzmb2c.web.action.OrderWebAction" method="updateSellerMessageWeb">
+		</action>
 	</package>
 	
 	

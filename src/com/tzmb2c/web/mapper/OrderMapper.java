@@ -188,4 +188,6 @@ public interface OrderMapper {
    * @return String
    */
   public String totalSale(Map<String, Object> params) throws SQLException;
+
+  public int updateSellerMessage(OrderPojo orderPojo) throws SQLException;
 }

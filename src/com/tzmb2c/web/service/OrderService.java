@@ -183,4 +183,6 @@ public interface OrderService {
    * @throws SQLException
    */
   public List<OrderPojo> onlyOrderTabList(Map<String, Object> params) throws SQLException;
+
+  public int updateSellerMessage(OrderPojo orderPojo) throws SQLException;
 }

@@ -224,6 +224,22 @@
                                 </div>
                             </div>
                             <h5 class="h5">
+                                平台留言
+                            </h5>
+                            <form action="updateSellerMessageWeb.do" method="post" id="form" enctype="multipart/form-data" >
+                            <input name="orderPojo.id" id="orderId" value="${orderPojo.id}" class="inputText" type="hidden">
+                            <div class="ui-box">
+                                <div class="ui-box-container" id="modifyPannel">
+                                    <div class="ui-box-content">
+                               <textarea rows="5" style="width:80%" name="orderPojo.sellerMessage">${orderPojo.sellerMessage}</textarea>
+                               <span style="margin-right:auto;">
+                                <a class="ui-button ui-button-sgreen view-BtnApply withdraw-apply-btn" onclick="$('#form').submit()">提交</a>
+                                </span>
+                                    </div>
+                                </div>
+                            </div>
+            		     	</form>
+                            <h5 class="h5">
                                 物流信息
                             </h5>
                           <div class="shipment-detail" >

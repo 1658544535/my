@@ -1297,6 +1297,33 @@ public class OrderWebAction extends SuperAction {
     return null;
   }
 
+  /**
+   * 编辑提交
+   * 
+   * @return
+   * @throws Throwable
+   */
+  public String updateSellerMessageWeb() throws Throwable {
+    SysLoginPojo sysLogin = UserUtil.getWebUser();
+    if (sysLogin != null && orderPojo != null) {
+      orderPojo.setUpdateBy(sysLogin.getId());
+      try {
+        orderService.updateSellerMessage(orderPojo);
+        FileUtil.alertMessageBySkip("提交成功！",
+            "getMyOrderDetailWeb.do?orderPojo.id=" + orderPojo.getId());
+      } catch (Exception e) {
+        e.printStackTrace();
+        FileUtil.alertMessageBySkip("提交失败！",
+            "getMyOrderDetailWeb.do?orderPojo.id=" + orderPojo.getId());
+      }
+    } else {
+      FileUtil.alertMessageBySkip("操作失败！",
+          "getMyOrderDetailWeb.do?orderPojo.id=" + orderPojo.getId());
+    }
+
+    return null;
+  }
+
   public OrderPojo getOrderPojo() {
     return orderPojo;
   }

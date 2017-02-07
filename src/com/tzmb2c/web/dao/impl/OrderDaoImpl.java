@@ -433,4 +433,9 @@ public class OrderDaoImpl implements OrderDao {
     return orderMapper.onlyOrderTabList(params);
   }
 
+  @Override
+  public int updateSellerMessage(OrderPojo orderPojo) throws SQLException {
+    return orderMapper.updateSellerMessage(orderPojo);
+  }
+
 }
