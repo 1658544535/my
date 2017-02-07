@@ -49,7 +49,7 @@
                             <p id="logisticsNo_mgId"></p>
             			</td>
             			<td style="float:left;margin:5px">
-                			<input class="ui-button ui-button-sgreen" value="开始导入" id="allImport"/>
+                			<input type="button" value="开始导入" class="ui-button-sgreen" style="font-size:13pt" id="allImport"/>
             			</td>
             		</tr>
             	</table>
@@ -73,7 +73,7 @@
             				<span style="font-size:10pt">发货订单：<input type="file" name="importupfile" /></span>
             			</td>
             			<td style="margin:auto" colspan="2">
-                			<input class="ui-button ui-button-sgreen" value="开始导入" id="oneImport"/>
+                			<input type="button" class="ui-button-sgreen" style="font-size:13pt" value="开始导入" id="oneImport"/>
             			</td>
             		</tr>
             		<tr>
