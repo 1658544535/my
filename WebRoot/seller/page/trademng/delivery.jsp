@@ -52,6 +52,14 @@
                 			<input type="button" value="开始导入" class="ui-button-sgreen" style="font-size:13pt" id="allImport"/>
             			</td>
             		</tr>
+            		<tr>
+            			<td style="float:left;margin-bottom:15px">
+                        	<span style="font-size:10pt;margin-left:100px;margin-right:10px;"><input name="repeatImport" type="checkbox" value="1"/> 允许重复导入</span>
+            			</td>
+            			<td style="float:left;margin-bottom:15px">
+                			<span style="color:red;font-size:5pt"> 注：该项勾选可导入相同订单并覆盖。</span>
+            			</td>
+            		</tr>
             	</table>
               </form>
               <div class="Clear"></div>
