@@ -178,7 +178,7 @@
                                                 </a>
                                             </div>
                                             <div class="ui-form-item search-btn">
-                                                <a href="#" class="ui-button ui-button-mred" id="">
+                                                <a href="#" class="ui-button ui-button-mred" id="excelAll">
                                                 <i class="iconfont">&#xf012c;</i>
                                                     批量导出
                                                 </a>
@@ -389,7 +389,7 @@ function installPage() {
 			"<div class='trade-entry mt-10'>"+
 				"<div class='order-entry' >"+
 					"<div class='order-head'>"+
-					"<span>订单号:"+this.orderNo+"</span>"+
+					//"<span>订单号:"+this.orderNo+"</span>"+
 				    "<span>申请时间:"+this.creatDateString+"</span>"+
 				    "<span id='buyname'>买家姓名:"+this.loginName+"</span>"+
 				    "<span>手机号码:"+this.consigneePhone+"</span>"+
@@ -412,5 +412,9 @@ function confirmGoods(id,orderId,detailId){
 	
 }
 
-
+$("#excelAll").click(function() {
+	var formParam = $("#sysform").serialize();
+	alert(formParam);
+	$(location).attr('href', 'getOrderRefundExcelSeller.do?'+formParam);
+});
 </script>

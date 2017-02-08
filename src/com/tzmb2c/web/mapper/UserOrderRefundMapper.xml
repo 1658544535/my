@@ -510,7 +510,13 @@
         order_no as orderNo,
         uor.create_date as createDate,
         uor.service_involved as serviceInvolved,
-        uor.logistics as logistics
+        uor.logistics as logistics,
+        p.product_num as productNum,
+        uor.type as type,
+        uor.coupon_price as couponPrice,
+		(uor.stock_price*uor.refund_num) as sumPrice,
+		(uor.stock_price*uor.refund_num-uor.coupon_price) as refundSumPrice,
+		uod.re_status as reStatus
         from user_order_refund as uor 
         LEFT JOIN user_order uo ON uor.order_id=uo.id
         left join user_order_detail uod on uod.order_id = uo.id
