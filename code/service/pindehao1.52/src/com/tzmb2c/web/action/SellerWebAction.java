@@ -2,7 +2,11 @@ package com.tzmb2c.web.action;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.sql.SQLException;
@@ -15,8 +19,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import jxl.Workbook;
+import jxl.write.Label;
+import jxl.write.WritableSheet;
+import jxl.write.WritableWorkbook;
 import maowu.framework.utils.web.SuperAction;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -2915,6 +2925,155 @@ public class SellerWebAction extends SuperAction {
     JSONArray json = JSONArray.fromObject(userOrderRefundPojos);
     page.setResult(json.toString());
     return SUCCESS;
+  }
+
+  /**
+   * 
+   * 批量导出售后订单Excel
+   * 
+   * @throw
+   * @return void
+   * @throws IOException
+   */
+  public void getOrderRefundExcelSeller() throws IOException {
+    SysLoginPojo logiPojo = UserUtil.getWebUser();
+    if (logiPojo != null) {
+      UserOrderRefundPojo userOrderRefund = new UserOrderRefundPojo();
+      userOrderRefund.setUserId(logiPojo.getId());
+      if (userOrderRefundPojo != null) {
+        if (userOrderRefundPojo.getStatus() != null && userOrderRefundPojo.getStatus() != -1) {
+          userOrderRefund.setStatus(userOrderRefundPojo.getStatus());
+        }
+        if (userOrderRefundPojo.getReStatus() != null && userOrderRefundPojo.getReStatus() != -1) {
+          userOrderRefund.setReStatus(userOrderRefundPojo.getReStatus());
+        }
+        if (userOrderRefundPojo.getOrderNo() != null
+            && !"".equals(userOrderRefundPojo.getOrderNo().trim())) {
+          userOrderRefund.setOrderNo(userOrderRefundPojo.getOrderNo());
+        }
+        if (userOrderRefundPojo.getProductNum() != null
+            && !"".equals(userOrderRefundPojo.getProductNum().trim())) {
+          userOrderRefund.setProductNum(userOrderRefundPojo.getProductNum());
+        }
+        if (userOrderRefundPojo.getConsigneePhone() != null
+            && !"".equals(userOrderRefundPojo.getConsigneePhone().trim())) {
+          userOrderRefund.setConsigneePhone(userOrderRefundPojo.getConsigneePhone());
+        }
+        if (userOrderRefundPojo.getIdStr() != null
+            && !"".equals(userOrderRefundPojo.getIdStr().trim())
+            && !"0".equals(userOrderRefundPojo.getIdStr().trim())) {
+          userOrderRefund.setId(Long.valueOf(userOrderRefundPojo.getIdStr()));
+        }
+        if (userOrderRefundPojo.getType() != 0) {
+          userOrderRefund.setType(userOrderRefundPojo.getType());
+        }
+        if (userOrderRefundPojo.getBeginDate() != null
+            && !"".endsWith(userOrderRefundPojo.getBeginDate())
+            && userOrderRefundPojo.getEndDate() != null
+            && !"".endsWith(userOrderRefundPojo.getEndDate())
+            && userOrderRefundPojo.getBeginDate().length() == 19
+            && userOrderRefundPojo.getEndDate().length() == 19) {
+          userOrderRefund.setBeginDate(userOrderRefundPojo.getBeginDate());
+          userOrderRefund.setEndDate(userOrderRefundPojo.getEndDate());
+        }
+      }
+      userOrderRefundPojos =
+          userOrderRefundService.findUserOrderRefundByUserId2(userOrderRefund, null);
+
+      WritableWorkbook wwb = null;
+      OutputStream ots = null;
+      String filePath = null;
+      String fileName = "售后订单.xls";
+
+      filePath =
+          ServletActionContext.getServletContext().getRealPath("/temp") + File.separator + fileName;
+      File file = new File(filePath);
+      if (!file.isFile()) {
+        file.createNewFile();
+      }
+      try {
+        ots = new FileOutputStream(file);
+        wwb = Workbook.createWorkbook(ots);
+        WritableSheet sheet = wwb.createSheet("sheet1", 0);
+        sheet.addCell(new Label(0, 0, "商品货号"));
+        sheet.addCell(new Label(1, 0, "退款编号"));
+        sheet.addCell(new Label(2, 0, "订单编号"));
+        sheet.addCell(new Label(3, 0, "买家"));
+        sheet.addCell(new Label(4, 0, "退款金额"));
+        sheet.addCell(new Label(5, 0, "申请时间"));
+        sheet.addCell(new Label(6, 0, "售后状态"));
+        sheet.addCell(new Label(7, 0, "退货运单号"));
+
+        for (int i = 1; i <= userOrderRefundPojos.size(); i++) {
+          userOrderRefundPojo = userOrderRefundPojos.get(i - 1);
+          sheet.addCell(new Label(0, i, userOrderRefundPojo.getProductNum()));
+          sheet.addCell(new Label(1, i, userOrderRefundPojo.getId().toString()));
+          sheet.addCell(new Label(2, i, userOrderRefundPojo.getOrderNo()));
+          sheet.addCell(new Label(3, i, userOrderRefundPojo.getLoginName()));
+          sheet.addCell(new Label(4, i, userOrderRefundPojo.getRefundSumPrice().toString()));
+          sheet.addCell(new Label(5, i, userOrderRefundPojo.getCreatDateString()));
+          int reStatus = userOrderRefundPojo.getReStatus();
+          int type = userOrderRefundPojo.getType();
+          String reStatusName = "";
+          if (reStatus == 0) {
+            reStatusName = "无售后/取消售后";
+          } else if (reStatus == 1) {
+            if (type == 1) {
+              reStatusName = "仅退款，待商家处理";
+            } else if (type == 2) {
+              reStatusName = "退货退款，待商家处理";
+            } else {
+              reStatusName = "售后处理中";
+            }
+          } else if (reStatus == 2) {
+            reStatusName = "退款中";
+          } else if (reStatus == 3) {
+            reStatusName = "退款成功";
+          }
+          sheet.addCell(new Label(6, i, reStatusName));
+          sheet.addCell(new Label(7, i, userOrderRefundPojo.getLogistics()));
+          i++;
+        }
+        wwb.write();
+        ots.flush();
+      } catch (Exception e) {
+        e.printStackTrace();
+      } finally {
+        try {
+          if (wwb != null) {
+            wwb.close();
+          }
+          if (ots != null) {
+            ots.close();
+          }
+        } catch (Exception e2) {
+          e2.printStackTrace();
+        }
+      }
+
+      HttpServletResponse response = ServletActionContext.getResponse();
+      response.setContentType("application/vnd.ms-excel");
+      String fileNames = new String(fileName.getBytes("GB2312"), "ISO_8859_1");
+      response.setHeader("Content-Disposition", "attachment;fileName=" + fileNames);
+      ServletOutputStream out;
+      try {
+        FileInputStream fileInputStream = new FileInputStream(filePath);
+        out = response.getOutputStream();
+        int i = 0;
+        while ((i = fileInputStream.read()) != -1) {
+          out.write(i);
+        }
+        fileInputStream.close();
+        out.close();
+
+        File delfile = new File(filePath);
+        if (delfile.isFile() && delfile.exists()) {
+          delfile.delete();
+        }
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
   }
 
   /**

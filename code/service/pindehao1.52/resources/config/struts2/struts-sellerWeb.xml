@@ -306,6 +306,10 @@
 		<action name="getOrderExcelSeller" class="com.tzmb2c.web.action.OrderWebAction" method="getOrderExcel2">
 		</action>
 		
+		<!--导出订单EXCEL-->
+		<action name="getOrderRefundExcelSeller" class="com.tzmb2c.web.action.SellerWebAction" method="getOrderRefundExcelSeller">
+		</action>
+		
 		<!--导入订单EXCEL-->
 		<action name="importOrderSeller" class="com.tzmb2c.web.action.OrderWebAction" method="importOrderSeller">
 		</action>
